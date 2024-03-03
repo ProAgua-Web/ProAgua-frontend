@@ -2,8 +2,8 @@
 
 import { Inter } from "next/font/google";
 
-import Header from "@/components/Header"
-import Navbar from "@/components/Navbar"
+import Header from "@/components/layout/Header"
+import Navbar from "@/components/layout/Navbar"
 import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
