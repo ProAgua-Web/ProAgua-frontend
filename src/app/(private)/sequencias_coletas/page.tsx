@@ -2,23 +2,10 @@
 
 import { useEffect, useState } from "react"
 
-import CardSequencia, { Sequencia } from "./CardSequencia"
+import { useSequencia, Sequencia, useSequencias } from "./utils"
+import CardSequencia from "./CardSequencia"
 
-const API_URL = 'http://localhost:8000/api/v1'
-
-function useSequencias() {
-    const [sequencias, setSequencias] = useState<Sequencia[]>([])
-
-    useEffect(() => {
-        fetch(API_URL + '/sequencias/?limit=100&offset=0')
-            .then(resp => resp.json())
-            .then(data => {
-                setSequencias(data.items.filter((item: any) => item.ponto_url !== null));
-            })
-    }, [])
-
-    return sequencias
-}
+const API_URL = 'http://localhost:8000/'
 
 function Filters() {
     return (
@@ -42,12 +29,22 @@ function Filters() {
                 </select>
             </div>
         </div>
+    )
+}
 
+function Card(props: { sequencia: Sequencia }) {
+    let sequencia = useSequencia(props.sequencia, API_URL);
+    return (
+        (sequencia &&
+            <CardSequencia
+                sequencia={ sequencia }
+            />
+        )
     )
 }
 
 export default function Coletas() {
-    const sequencias = useSequencias()
+    const sequencias = useSequencias(API_URL)
 
     return (
         <>
@@ -60,18 +57,9 @@ export default function Coletas() {
                     className="w-full grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] justify-center gap-8"
                 >
                     {/* Os resultados da pesquisa serão adicionados aqui */}
-                    {sequencias.map((item: Sequencia, i) => { 
-                        return (
-                            <CardSequencia
-                                key={i}
-                                sequencia={item}
-                            />
-                        )
-                    })}
+                    {sequencias.map((item: Sequencia, i) => <Card sequencia={ item }/> )}
 
-                    <div id="paginator"
-                        className="flex pagination"
-                    >
+                    <div id="paginator" className="flex pagination">
                         <button id="pagination-prev" className="hidden">&lt; Anterior</button>
                         <span id="page-info">Página 1 de 1</span>
                         <button id="pagination-next" className="hidden">Próxima &gt;</button>
