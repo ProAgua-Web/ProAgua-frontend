@@ -1,3 +1,4 @@
+import { Noto_Sans_Zanabazar_Square } from "next/font/google";
 import { useEffect, useState } from "react";
 
 export type Sequencia = {
@@ -7,6 +8,7 @@ export type Sequencia = {
 };
 
 export type Ponto = {
+    id: Number;
     ambiente: string;
     edificacao_url: string;
     tipo: number;
@@ -77,4 +79,16 @@ export function useSequencias(api_url: String) {
     }, [])
 
     return sequencias
+}
+
+export function usePontos(api_url: string) {
+    const [pontos, setPontos] = useState<Ponto[]>([])
+
+    useEffect(() => {
+        fetch(api_url)
+            .then(resp => resp.json())
+            .then(data => setPontos(data.items))
+    }, [])
+
+    return pontos
 }

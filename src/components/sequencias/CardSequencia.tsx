@@ -1,4 +1,4 @@
-import { SequenciaFull } from "./utils";
+import { SequenciaFull } from "@/utils/api_consumer";
 
 export default function CardSequencia(props: { sequencia: SequenciaFull }) {
     const view = () => {

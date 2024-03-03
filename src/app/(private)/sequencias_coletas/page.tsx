@@ -1,6 +1,6 @@
 'use client'
 
-import { useSequencia, Sequencia, useSequencias } from "@/components/sequencias/utils"
+import { useSequencia, Sequencia, useSequencias } from "@/utils/api_consumer"
 import CardSequencia from "@/components/sequencias/CardSequencia"
 import Filters from "@/components/sequencias/Filters"
 
