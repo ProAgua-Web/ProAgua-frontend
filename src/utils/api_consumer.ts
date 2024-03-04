@@ -92,3 +92,15 @@ export function usePontos(api_url: string) {
 
     return pontos
 }
+
+export function useEdificacoes(api_url: string) {
+    const [edificacoes, setEdificacoes] = useState<Edificacao[]>([])
+
+    useEffect(() => {
+        fetch(api_url)
+            .then(resp => resp.json())
+            .then(data => setEdificacoes(data.items))
+    }, [])
+
+    return edificacoes
+}
