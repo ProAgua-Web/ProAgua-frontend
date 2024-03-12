@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import ProAguaLogo from "/public/ProAguaLogo.svg"
-import Image from "next/image"
+import ProAguaLogo from "/public/ProAguaLogo.svg";
+import Image from "next/image";
 
 /*
 header {
@@ -49,45 +49,38 @@ a {
 }
 */
 
-export default function(props: {
-    expand: React.MouseEventHandler<HTMLButtonElement>
-    collapsed: Boolean
+export default function (props: {
+  expand: React.MouseEventHandler<HTMLButtonElement>;
+  collapsed: Boolean;
 }) {
-    return (
-        <header>
-            <div 
-                id="header-bar"
-                className="fixed flex z-10 w-full items-center h-[clamp(50px, 8vh, 100px)] bg-primary-500 text-white-100"
-            >
-                <button 
-                    id="menu-button"
-                    onClick={ props.expand }
-                    className="h-20 w-20 bg-primary-500 hover:bg-primary-600"
-                >
-                    -
-                </button>
-                <i className="bi bi-list header-icon"></i>
-                
-                <div
-                    id="header-content"
-                    className="w-full flex justify-center"
-                >
-                    <div id="proagua-logo" className="w-fit flex items-center gap-4">
-                        <Image
-                            src={ ProAguaLogo } 
-                            className="max-h-10"
-                            alt="Logo do projeto"
-                        />
-                        <a 
-                            href="/"
-                            className="text-2xl font-semibold text-white-100"
-                        >
-                            ProÁgua
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </header>
-        
-    )
+  return (
+    <header>
+      <div
+        id="header-bar"
+        className="h-[clamp(50px, 8vh, 100px)] fixed z-20 flex w-full items-center bg-primary-500 text-white-100"
+      >
+        <button
+          id="menu-button"
+          onClick={props.expand}
+          className="h-20 w-20 bg-primary-500 hover:bg-primary-600"
+        >
+          -
+        </button>
+        <i className="bi bi-list header-icon"></i>
+
+        <div id="header-content" className="flex w-full justify-center">
+          <div id="proagua-logo" className="flex w-fit items-center gap-4">
+            <Image
+              src={ProAguaLogo}
+              className="max-h-10"
+              alt="Logo do projeto"
+            />
+            <a href="/" className="text-2xl font-semibold text-white-100">
+              ProÁgua
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
 }

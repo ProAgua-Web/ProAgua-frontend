@@ -2,105 +2,109 @@ import { Noto_Sans_Zanabazar_Square } from "next/font/google";
 import { useEffect, useState } from "react";
 
 export type Sequencia = {
-    id: number;
-    amostragem: number;
-    ponto_url: string;
+  id: number;
+  amostragem: number;
+  ponto_url: string;
 };
 
 export type Ponto = {
-    id: Number;
-    ambiente: string;
-    edificacao_url: string;
-    tipo: number;
+  id: Number;
+  ambiente: string;
+  edificacao_url: string;
+  tipo: number;
 };
 
 export type Edificacao = {
-    codigo: string;
-    nome: string;
+  codigo: string;
+  nome: string;
 };
 
 export type SequenciaFull = {
-    id: number;
-    amostragem: number;
-    ambiente_ponto: string;
-    codigo_edificacao: string;
-    nome_edificacao: string;
-    tipo: number;
+  id: number;
+  amostragem: number;
+  ambiente_ponto: string;
+  codigo_edificacao: string;
+  nome_edificacao: string;
+  tipo: number;
 };
 
 export async function fetchJSON(url: string) {
-    const response = await fetch(url);
-    return response.json();
+  const response = await fetch(url);
+  return response.json();
 }
 
 export async function fetchPonto(pontoUrl: string): Promise<Ponto> {
-    const ponto = await fetchJSON(pontoUrl);
-    return ponto;
+  const ponto = await fetchJSON(pontoUrl);
+  return ponto;
 }
 
-export async function fetchEdificacao(edificacaoUrl: string): Promise<Edificacao> {
-    const edificacao = await fetchJSON(edificacaoUrl);
-    return edificacao;
+export async function fetchEdificacao(
+  edificacaoUrl: string,
+): Promise<Edificacao> {
+  const edificacao = await fetchJSON(edificacaoUrl);
+  return edificacao;
 }
 
 export function useSequencia(sequencia: Sequencia, api_url: String) {
-    const [values, setValues] = useState<SequenciaFull | null>(null);
+  const [values, setValues] = useState<SequenciaFull | null>(null);
 
-    useEffect(() => {
-        async function fetchData() {
-        const ponto = await fetchPonto(api_url + sequencia.ponto_url);
-        const edificacao = await fetchEdificacao(api_url + ponto.edificacao_url);
+  useEffect(() => {
+    async function fetchData() {
+      const ponto = await fetchPonto(api_url + sequencia.ponto_url);
+      const edificacao = await fetchEdificacao(api_url + ponto.edificacao_url);
 
-        setValues({
-            id: sequencia.id,
-            amostragem: sequencia.amostragem,
-            ambiente_ponto: ponto.ambiente,
-            codigo_edificacao: edificacao.codigo,
-            nome_edificacao: edificacao.nome,
-            tipo: ponto.tipo,
-        });
-        }
+      setValues({
+        id: sequencia.id,
+        amostragem: sequencia.amostragem,
+        ambiente_ponto: ponto.ambiente,
+        codigo_edificacao: edificacao.codigo,
+        nome_edificacao: edificacao.nome,
+        tipo: ponto.tipo,
+      });
+    }
 
-        fetchData();
-    }, []);
+    fetchData();
+  }, []);
 
-    return values;
+  return values;
 }
 
 export function useSequencias(api_url: String) {
-    const [sequencias, setSequencias] = useState<Sequencia[]>([])
+  const [sequencias, setSequencias] = useState<Sequencia[]>([]);
 
-    useEffect(() => {
-        fetch(api_url + 'api/v1/sequencias/?limit=100&offset=0')
-            .then(resp => resp.json())
-            .then(data => {
-                setSequencias(data.items.filter((item: any) => item.ponto_url !== null));
-            })
-    }, [])
+  useEffect(() => {
+    fetch(api_url + "api/v1/sequencias/?limit=100&offset=0")
+      .then((resp) => resp.json())
+      .then((data) => {
+        setSequencias(
+          data.items.filter((item: any) => item.ponto_url !== null),
+        );
+      });
+  }, []);
 
-    return sequencias
+  return sequencias;
 }
 
 export function usePontos(api_url: string) {
-    const [pontos, setPontos] = useState<Ponto[]>([])
+  const [pontos, setPontos] = useState<Ponto[]>([]);
 
-    useEffect(() => {
-        fetch(api_url)
-            .then(resp => resp.json())
-            .then(data => setPontos(data.items))
-    }, [])
+  useEffect(() => {
+    fetch(api_url)
+      .then((resp) => resp.json())
+      .then((data) => setPontos(data.items));
+  }, []);
 
-    return pontos
+  return pontos;
 }
 
 export function useEdificacoes(api_url: string) {
-    const [edificacoes, setEdificacoes] = useState<Edificacao[]>([])
+  const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
 
-    useEffect(() => {
-        fetch(api_url)
-            .then(resp => resp.json())
-            .then(data => setEdificacoes(data.items))
-    }, [])
+  useEffect(() => {
+    fetch(api_url)
+      .then((resp) => resp.json())
+      .then((data) => setEdificacoes(data.items));
+  }, []);
 
-    return edificacoes
+  return edificacoes;
 }

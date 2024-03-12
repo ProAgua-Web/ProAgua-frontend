@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
 import { Inter } from "next/font/google";
 
-import Header from "@/components/layout/Header"
-import Navbar from "@/components/layout/Navbar"
+import Header from "@/components/layout/Header";
+import Navbar from "@/components/layout/Navbar";
 import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -13,26 +13,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [collapsed, setCollapsed] = useState(true)
+  const [collapsed, setCollapsed] = useState(true);
 
   const toggleCollapsed = () => {
-    setCollapsed(!collapsed)
-  }
+    setCollapsed(!collapsed);
+  };
 
   return (
     <html lang="en">
       <body className={inter.className + " bg-background"}>
-        <Header 
-          expand={ toggleCollapsed }
-          collapsed={ collapsed }
-        />
-            
-        <Navbar 
-          collapse={ () => {} }
-          collapsed={ collapsed }
-        />
+        <Header expand={toggleCollapsed} collapsed={collapsed} />
 
-        <main className="relative w-[clamp(320px,90vw-2rem,1200px)] flex flex-col gap-4 m-auto p-8 pt-[calc(clamp(50px,8vh,100px)+2rem)] items-center">
+        <Navbar collapse={() => {}} collapsed={collapsed} />
+
+        <main className="relative m-auto flex w-[clamp(320px,90vw-2rem,1200px)] flex-col items-center gap-4 p-8 pt-[calc(clamp(50px,8vh,100px)+2rem)]">
           {children}
         </main>
       </body>
