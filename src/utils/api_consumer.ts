@@ -17,6 +17,9 @@ export type Ponto = {
 export type Edificacao = {
   codigo: string;
   nome: string;
+  campus: string;
+  cronograma: number;
+  imagem?: string;
 };
 
 export type SequenciaFull = {
@@ -107,4 +110,22 @@ export function useEdificacoes(api_url: string) {
   }, []);
 
   return edificacoes;
+}
+
+const API_BASE_URL = 'http://127.0.0.1:8000'
+
+export function useEdificacao(codigo_edificacao: string) {
+  const [edificacao, setEdificacao] = useState<Edificacao | null>(null);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchJSON(`${API_BASE_URL}/api/v1/edificacoes/${codigo_edificacao}`)
+      .then(data => {
+        setEdificacao(data);
+        setLoaded(true);
+      })
+  
+  }, []);
+
+  return { edificacao, loaded };
 }
