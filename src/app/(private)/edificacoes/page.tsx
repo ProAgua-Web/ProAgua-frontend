@@ -24,7 +24,7 @@ export default function Edificacoes() {
               >
                 {item.codigo} - {item.nome}
                 <a
-                  href="#"
+                  href={"/edificacoes/" + item.codigo}
                   className="hidden rounded p-2 text-blue-900 hover:bg-white group-hover/item:block"
                 >
                   Detalhes
