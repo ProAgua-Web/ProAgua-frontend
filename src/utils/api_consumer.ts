@@ -8,7 +8,7 @@ export type Sequencia = {
 };
 
 export type Ponto = {
-  id: Number;
+  id: number;
   ambiente: string;
   edificacao_url: string;
   tipo: number;
@@ -125,7 +125,22 @@ export function useEdificacao(codigo_edificacao: string) {
         setLoaded(true);
       })
   
-  }, []);
+  });
 
   return { edificacao, loaded };
+}
+
+export function usePonto(id_ponto: string) {
+  const [ponto, setPonto] = useState<Ponto | null>(null);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchJSON(`${API_BASE_URL}/api/v1/pontos/${id_ponto}`)
+      .then(data => {
+        setPonto(data);
+        setLoaded(true);
+      })
+  }, [id_ponto]);
+
+  return { ponto, loaded };
 }
