@@ -32,7 +32,7 @@ export default function CardPonto(props: { ponto: Ponto }) {
         <p className="text-sm">{ponto.ambiente}</p>
 
         <button
-          onClick={view}
+          onClick={() => window.location.href =  `${window.location.href}/${ponto.id}`}
           className="filled-button rounded-md bg-primary-500 p-3 text-xs font-semibold text-white"
         >
           <i className="bi bi-eye-fill"></i>
