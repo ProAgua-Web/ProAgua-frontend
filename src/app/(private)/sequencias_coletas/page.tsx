@@ -40,12 +40,12 @@ export default function Coletas() {
           </button>
         </div>
 
-        <button
+        <a
           className="floating-bt max-w-fit rounded-md bg-primary-500 p-4 text-white hover:bg-primary-600"
-          onClick={() => "goTo('sequencias_coletas/criar')"}
+          href="/sequencias_coletas/criar"
         >
           <i className="bi bi-plus-lg"></i> Adicionar sequência
-        </button>
+        </a>
       </div>
     </>
   );
