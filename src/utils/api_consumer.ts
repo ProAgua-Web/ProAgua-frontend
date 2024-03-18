@@ -89,14 +89,22 @@ export function useSequencias(api_url: String) {
   return sequencias;
 }
 
-export function usePontos(api_url: string) {
+export function usePontos(api_url: string = '') {
+  if (!api_url) {
+    api_url = `${API_BASE_URL}/api/v1/pontos`;
+  } else {
+    api_url = `${API_BASE_URL}${api_url}`;
+  }
+
   const [pontos, setPontos] = useState<Ponto[]>([]);
 
   useEffect(() => {
-    fetch(api_url)
-      .then((resp) => resp.json())
-      .then((data) => setPontos(data.items));
-  }, []);
+    fetchJSON(api_url)
+      .then(data => {
+        let items = data.items;
+        setPontos(items);
+      });
+  }, [api_url]);
 
   return pontos;
 }

@@ -5,7 +5,7 @@ import CardPonto from "@/components/pontos/CardPontos";
 import { usePontos } from "@/utils/api_consumer";
 
 export default function Pontos() {
-  const pontos = usePontos("http://localhost:8000/api/v1/pontos");
+  const pontos = usePontos();
 
   return (
     <>
