@@ -8,14 +8,9 @@ export default function VisualizarPonto({ params }: {
     }
 }) {
 
-    const ponto = usePonto(params.id_ponto)?.ponto;
-
+    const { ponto } = usePonto(params.id_ponto);
     const edificacao_cod = ponto?.edificacao_url.split("/").pop();
-    const edificacao = useEdificacao(edificacao_cod || "")?.edificacao;
-
-
-    console.log(`Ponto ${ponto}`);
-    console.log(`Edificação ${edificacao}`);
+    const { edificacao } = useEdificacao(edificacao_cod);
 
     return (
         <>

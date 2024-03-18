@@ -1,5 +1,6 @@
-import { Noto_Sans_Zanabazar_Square } from "next/font/google";
 import { useEffect, useState } from "react";
+
+export const API_BASE_URL = 'http://127.0.0.1:8000'
 
 export type Sequencia = {
   id: number;
@@ -100,19 +101,18 @@ export function usePontos(api_url: string) {
   return pontos;
 }
 
-export function useEdificacoes(api_url: string) {
+export function useEdificacoes(api_url: string = '') {
+  api_url = API_BASE_URL;
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
 
   useEffect(() => {
-    fetch(api_url)
+    fetch(api_url + '/api/v1/edificacoes')
       .then((resp) => resp.json())
       .then((data) => setEdificacoes(data.items));
   }, []);
 
   return edificacoes;
 }
-
-const API_BASE_URL = 'http://127.0.0.1:8000'
 
 export function useEdificacao(codigo_edificacao: string) {
   const [edificacao, setEdificacao] = useState<Edificacao | null>(null);
