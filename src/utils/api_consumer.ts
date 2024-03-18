@@ -21,6 +21,7 @@ export type Edificacao = {
   campus: string;
   cronograma: number;
   imagem?: string;
+  pontos_url: string;
 };
 
 export type SequenciaFull = {
@@ -133,7 +134,7 @@ export function useEdificacao(codigo_edificacao: string) {
         setLoaded(true);
       })
   
-  });
+  }, []);
 
   return { edificacao, loaded };
 }
