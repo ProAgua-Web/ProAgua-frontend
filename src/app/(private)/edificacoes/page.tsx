@@ -15,6 +15,11 @@ export default function Edificacoes() {
         <h2 className="w-full text-center text-2xl font-medium text-[#7a7a7a]">
           Lista edificações
         </h2>
+        <a 
+          className="bg-primary-500 rounded-lg text-white font-semibold p-4 m-4 block w-fit hover:bg-primary-600"
+          href="/edificacoes/criar"
+        >+ Criar edificação
+        </a>
         <ul>
           {edificacoes.map((item: Edificacao, i) => {
             return (
