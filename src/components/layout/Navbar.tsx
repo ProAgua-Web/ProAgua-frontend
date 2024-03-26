@@ -102,6 +102,11 @@ export default function Navbar(props: {
       icon: <i className="bi bi-gear-fill"></i>,
       name: "Configurações",
     },
+    {
+      href: "/export/",
+      icon: <i className="bi bi-clipboard-data-fill"></i>,
+      name: "Exportar dados",
+    },
   ];
 
   return (
