@@ -28,8 +28,32 @@ export type Edificacao = {
     pontos_url: string;
 };
 
+export type Coleta = {
+    id: number;
+    temperatura: number;
+    cloro_residual_livre: number;
+    turbidez: number;
+    coliformes_totais: boolean;
+    escherichia: boolean;
+    cor: number;
+    data: string;
+    ordem: string;
+    status: {
+        status: boolean;
+        message: string;
+    };
+    responsaveis_url: string;
+    sequencia_url: string;
+    ponto_url: string;
+};
+
 export async function fetchJSON(url: string) {
     const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error("Erro durante requisição de dados.");
+    }
+    
     return response.json();
 }
 
@@ -136,4 +160,25 @@ export function usePonto(id_ponto: string) {
     }, [id_ponto]);
 
     return { ponto, loaded };
+}
+
+export function useColetas(id_sequencia: number | null = null, query: string | null = null) {
+    const [coletas, setColetas] = useState<Coleta[]>([]);
+    
+    useEffect(() => {
+        let endpoint = id_sequencia 
+            ?`/api/v1/sequencias/${id_sequencia}/coletas`
+            : '/api/v1/coletas';
+        
+        if (query != null) {
+            endpoint += '?' + query;
+        }
+        
+        fetchJSON(API_BASE_URL + endpoint)
+            .then(data => {
+                setColetas(data);
+            })
+    }, [id_sequencia, query]);
+
+    return coletas;
 }
