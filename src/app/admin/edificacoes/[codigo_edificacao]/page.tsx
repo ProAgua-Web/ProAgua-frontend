@@ -1,12 +1,11 @@
-'use client'
+import { API_BASE_URL } from "@/utils/config";
 
-import { useEdificacao } from "@/utils/api_consumer";
-
-export default function VisualizarEdificacao({ params }:{ params: {
+export default async function VisualizarEdificacao({ params }:{ params: {
     codigo_edificacao: string
 } }) {
-    const { edificacao } = useEdificacao(params.codigo_edificacao);
-    
+    let resp = await fetch(API_BASE_URL + '/api/v1/edificacoes/' + params.codigo_edificacao);
+    const edificacao = await resp.json();
+
     return (
         <>
             <h2 className="mb-4 text-3xl font-bold text-neutral-600">
@@ -73,7 +72,7 @@ export default function VisualizarEdificacao({ params }:{ params: {
                     ? <img
                         id="imagePreview"
                         alt="Imagem Preview"
-                        src={`http://127.0.0.1:8000/${edificacao?.imagem}`}
+                        src={`${API_BASE_URL}/${edificacao?.imagem}`}
                         className="mb-4 max-h-48 w-full rounded-lg border border-neutral-300 bg-neutral-200 object-cover"
                     />
                     : <span className="text-neutral-500 text-sm">Sem imagem</span>

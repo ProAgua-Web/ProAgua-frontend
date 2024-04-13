@@ -1,13 +1,10 @@
-"use client";
-
 import Filters from "@/components/sequencias/Filters";
-import { useEdificacoes, Edificacao } from "@/utils/api_consumer";
+import { Edificacao } from "@/utils/api_consumer";
+import { getEdificacoes } from "@/utils/api_consumer";
 
-export default function Edificacoes() {
-  const edificacoes = useEdificacoes(
-    "http://localhost:8000/api/v1/edificacoes",
-  );
-
+export default async function Edificacoes() {
+  const edificacoes = await getEdificacoes();
+  
   return (
     <>
       <Filters />

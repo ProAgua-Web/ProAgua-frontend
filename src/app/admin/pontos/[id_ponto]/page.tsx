@@ -1,16 +1,19 @@
-'use client'
+import { Edificacao, Ponto } from "@/utils/api_consumer";
+import { API_BASE_URL, BASE_URL} from "@/utils/config";
 
-import { usePonto, useEdificacao } from "@/utils/api_consumer";
+import QRCode from "@/utils/qr_code";
 
-export default function VisualizarPonto({ params }: {
+export default async function VisualizarPonto({ params }: {
     params: {
         id_ponto: string
     }
 }) {
-
-    const { ponto } = usePonto(params.id_ponto);
-    const edificacao_cod = ponto?.edificacao_url.split("/").pop();
-    const { edificacao } = useEdificacao(edificacao_cod);
+    var resp = await fetch(API_BASE_URL + '/api/v1/pontos/' + params.id_ponto);
+    const ponto: Ponto = await resp.json();
+    
+    const edificacao_cod = ponto.edificacao_url.split("/").pop();
+    resp = await fetch(API_BASE_URL + '/api/v1/edificacoes/' + edificacao_cod);
+    const edificacao: Edificacao = await resp.json();
 
     return (
         <>
@@ -80,7 +83,8 @@ export default function VisualizarPonto({ params }: {
                     className="mt-4 rounded-md border bg-green-500 px-4 py-2 text-center font-semibold text-white hover:bg-green-600"
                     value="Alterar"
                 />
-
+                
+                <QRCode data={ BASE_URL + "/pontos/" + ponto.id}/>
             </form>
         </>
     );

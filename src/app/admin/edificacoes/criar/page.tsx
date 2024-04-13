@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
-const API_BASE_URL = "http://localhost:8000";
+import { API_BASE_URL } from "@/utils/config";
 
 export default function CriarEdificacao() {
     const [file, setFile] = useState<File | null>();

@@ -1,57 +1,9 @@
-"use client";
-
 import ProAguaLogo from "/public/ProAguaLogo.svg";
 import Image from "next/image";
 
-/*
-header {
-    position: fixed;
-    z-index: 1;
-    width: 100%;
-    justify-content: space-between;
-    
-    align-items: center;
-    height: clamp(50px, 8vh, 100px);
-    background-color: var(--header-bg);
-    color: var(--primary-white);
-    font-size: 1.5rem;
-    
-    display: grid;
-    grid-area: header;
-    grid-template-columns: 64px 1fr;
-    
-    box-shadow: 0px 2px 12px 0px rgba(0,0,0,0.25);
-}
-
-.navbar-header {
-    align-items: center;
-    height: clamp(50px, 8vh, 100px);
-    background-color: hsl(var(--clr-primary-900));
-    color: var(--primary-white);
-    font-size: 1.5rem;
-}
-
-a {
-    justify-content: center;
-    align-items: center;
-}
-
-
-.proagua-logo {
-    justify-self: center;
-    padding-right: 64px;
-}
-
-.header-icon {
-    font-size: 24px;
-    color: white;
-    line-height: 20px;
-}
-*/
-
 export default function (props: {
-  expand: React.MouseEventHandler<HTMLButtonElement>;
-  collapsed: Boolean;
+  expand?: React.MouseEventHandler<HTMLButtonElement>;
+  collapsed?: Boolean;
 }) {
   return (
     <header>

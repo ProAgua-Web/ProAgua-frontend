@@ -1,13 +1,35 @@
-'use client'
+"use client";
 
-import { Edificacao, useEdificacoes, usePontos, API_BASE_URL} from "@/utils/api_consumer";
-import { SyntheticEvent, useState } from "react";
+import { Edificacao, Ponto } from "@/utils/api_consumer";
+import { API_BASE_URL } from "@/utils/config";
+import { SyntheticEvent, useEffect, useState } from "react";
 
 export default function () {
-    const edificacoes = useEdificacoes();
+    const [edificacoes, setEdficiacoes] = useState<Edificacao[]>([]);
     const [edificacao, setEdificacao] = useState<Edificacao | null>(null)
-    const pontos = usePontos(edificacao ? edificacao.pontos_url : '')
+    const [pontos, setPontos] = useState<Ponto[] | null>(null);
 
+    useEffect(() => {
+        async () => {
+            const resp = await fetch('http://localhost:8000/api/v1/edificacoes');
+            const edificacoes: Edificacao[] = (await resp.json()).items;
+            
+            if (edificacoes != null) {
+                setEdficiacoes(edificacoes);
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        async () => {
+            if (edificacao != null) {
+                const resp = await fetch('http://localhost:8000' + edificacao.pontos_url);
+                const pontos: Ponto[] = (await resp.json()).items;
+                setPontos(pontos);
+            }
+        }
+    }, [edificacao])
+    
     const submitForm = (e: SyntheticEvent) => {
         e.preventDefault();
 
@@ -42,7 +64,6 @@ export default function () {
                 alert(err);
             });
     };
-
 
     return (
         <>

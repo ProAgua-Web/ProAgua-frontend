@@ -1,11 +1,11 @@
-"use client";
-
 import Filters from "@/components/sequencias/Filters";
 import CardPonto from "@/components/pontos/CardPontos";
-import { usePontos } from "@/utils/api_consumer";
+import { API_BASE_URL } from "@/utils/config";
+import { Ponto } from "@/utils/api_consumer";
 
-export default function Pontos() {
-  const pontos = usePontos();
+export default async function Pontos() {
+  const resp = await fetch(API_BASE_URL + '/api/v1/pontos');
+  const pontos: Ponto[] = (await resp.json()).items;
 
   return (
     <>

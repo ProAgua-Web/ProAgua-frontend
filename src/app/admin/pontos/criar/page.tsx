@@ -1,8 +1,7 @@
 'use client'
 
 import { Edificacao, useEdificacoes } from "@/utils/api_consumer";
-
-const API_BASE_URL = "http://localhost:8000";
+import { API_BASE_URL } from "@/utils/api_consumer";
 
 export default function Pontos() {
     const edificacoes: Edificacao[] = useEdificacoes();

@@ -1,109 +1,35 @@
-"use client";
-
-/*
-#navbar-content ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#navbar-content ul li a {
-    height: 50px;
-    box-sizing: border-box;
-    padding: 1rem;
-    text-decoration: none;
-    color: #516c79;
-    display: flex;
-    gap: 12px;
-    
-    margin: 0.8rem;
-    border-radius: 6px;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-}
-
-#navbar-content ul li a i {
-    font-size: 20px;
-}
-
-#navbar-content ul li a:hover {
-    background-color: #c1c2c4;
-}
-
-#navbar-content ul li a:active{
-    background-color: #8e8e8e;
-    border-bottom: 1px solid #717171;
-    color: white;
-}
-
-#navbar-header {
-    height: var(--header-height);
-    background-color: var(--navbar-header-bg);
-    border-right: 1px solid #00000020;
-
-    align-items: center;
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 1rem;
-}
-
-#navbar-wrapper {
-    width: 240px;
-    display: flex;
-    flex-direction: column;
-    grid-area: navbar;
-    transition: width 0.4s ease;
-    overflow: hidden;
-    box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.15);
-}
-
-#navbar-wrapper.collapsed {
-    width: 0px;
-}
-
-#navbar-content {
-    background-color: var(--navbar-bg);
-    border-right: 1px solid #00000020;
-    flex-grow: 1;
-}
-
-*/
-
 export default function Navbar(props: {
   collapse: React.MouseEventHandler<HTMLButtonElement>;
   collapsed: Boolean;
 }) {
   const navbar_links = [
     {
-      href: "/sequencias_coletas/",
+      href: "/admin/sequencias_coletas/",
       icon: <i className="bi bi-clipboard-data-fill"></i>,
       name: "Sequência Coletas",
     },
     {
-      href: "/edificacoes/",
+      href: "/admin/edificacoes/",
       icon: <i className="bi bi-buildings-fill"></i>,
       name: "Edificações",
     },
     {
-      href: "/pontos/",
+      href: "/admin/pontos/",
       icon: <i className="bi bi-geo-alt-fill"></i>,
       name: "Pontos de coleta",
     },
     {
-      href: "#solicitacoes",
+      href: "/admin#solicitacoes",
       icon: <i className="bi bi-envelope-fill"></i>,
       name: "Solicitações",
     },
     {
-      href: "/configuracoes/",
+      href: "/admin/configuracoes/",
       icon: <i className="bi bi-gear-fill"></i>,
       name: "Configurações",
     },
     {
-      href: "/export/",
+      href: "/admin/export/",
       icon: <i className="bi bi-clipboard-data-fill"></i>,
       name: "Exportar dados",
     },

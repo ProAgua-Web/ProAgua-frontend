@@ -17,7 +17,7 @@ export default function CardSequencia(props: { sequencia: Sequencia }) {
         <p className="text-sm">{sequencia.ponto?.ambiente}</p>
         <h5>Amostragem {sequencia.amostragem.toString()}</h5>
         <a
-          href={`/sequencias_coletas/${sequencia.id}`}
+          href={`sequencias_coletas/${sequencia.id}`}
           className="filled-button rounded-md bg-primary-500 p-3 text-xs font-semibold text-white"
         >
           <i className="bi bi-eye-fill"></i>

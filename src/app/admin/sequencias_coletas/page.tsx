@@ -1,12 +1,12 @@
-"use client";
-
-import { Sequencia, useSequencias } from "@/utils/api_consumer";
+import { Sequencia } from "@/utils/api_consumer";
 import CardSequencia from "@/components/sequencias/CardSequencia";
 import Filters from "@/components/sequencias/Filters";
+import { API_BASE_URL } from "@/utils/config";
 
 
-export default function Coletas() {
-    const sequencias = useSequencias();
+export default async function Coletas() {
+    let resp = await fetch(API_BASE_URL + '/api/v1/sequencias', {cache: 'no-cache'});
+    const sequencias: Sequencia[] = (await resp.json()).items;
 
     return (
         <>
@@ -36,7 +36,7 @@ export default function Coletas() {
 
                 <a
                     className="floating-bt max-w-fit rounded-md bg-primary-500 p-4 text-white hover:bg-primary-600"
-                    href="/sequencias_coletas/criar"
+                    href="sequencias_coletas/criar"
                 >
                     <i className="bi bi-plus-lg"></i> Adicionar sequência
                 </a>

@@ -34,7 +34,13 @@ export default function Login() {
             <a className="flex self-end text-[#1098F7]" href="">
               Esqueceu a senha?
             </a>
-            <Button label="Login" onClick={() => {}}></Button>
+            {/* <Button label="Login" onClick={() => {}}></Button> */}
+            <a
+              className="min-h-10 w-full rounded-md border bg-primary-500 p-3 text-white hover:bg-primary-600"
+              href="/admin/dashboard"
+            >
+              Login
+            </a>
           </form>
         </section>
       </div>

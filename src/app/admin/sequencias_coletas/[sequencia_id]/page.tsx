@@ -1,9 +1,6 @@
-'use client'
-
 import TableColetas from "@/components/coletas/TabelaColetas";
 import type { Sequencia, Coleta } from "@/utils/api_consumer";
-import { useColetas, useSequencia } from "@/utils/api_consumer";
-
+import { API_BASE_URL } from "@/utils/config";
 
 function groupColetas(coletas: Coleta[]) {
     let groups = [];
@@ -24,13 +21,17 @@ function groupColetas(coletas: Coleta[]) {
     return groups;
 }
 
-
-export default function Sequencia({ params }: { params : {sequencia_id: number} }) {
+export default async function Sequencia({ params }: { params : {sequencia_id: number} }) {
     const { sequencia_id } = params;
-    const sequencia: Sequencia | null = useSequencia(sequencia_id);
-    const coletas: Coleta[] = useColetas(sequencia_id);
-    const groups: Coleta[][] = groupColetas(coletas)
-    
+
+    let resp = await fetch(API_BASE_URL + '/api/v1/sequencias/' + sequencia_id);
+    const sequencia: Sequencia | null = await resp.json();
+
+    resp = await fetch(`${API_BASE_URL}/api/v1/sequencias/${sequencia_id}/coletas`, { cache: 'no-store'})
+    const coletas: Coleta[] = await resp.json();
+
+    const groups: Coleta[][] = groupColetas(coletas);
+
     return (
         <>
             <span className="text-4xl">Sequência de coletas</span>
@@ -44,7 +45,7 @@ export default function Sequencia({ params }: { params : {sequencia_id: number} 
                     <p>Edificação: {sequencia?.ponto?.edificacao.nome}</p>
                     <p>Código edificação: {sequencia?.ponto?.edificacao.codigo}</p>
                     <p>Ambiente: {sequencia?.ponto?.ambiente}</p>
-                    <a className="px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-md" href="/coletas/criar">
+                <a className="px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-md" href={`${sequencia_id}/criar`}>
                         <i className="bi bi-plus-lg"></i> Adicionar coleta
                     </a>
                 </div>
