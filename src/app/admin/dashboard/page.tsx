@@ -5,7 +5,19 @@ function PointList(props: {points: Ponto[]}) {
     return (
         <ul>
             {props.points.map((point) => {
-                return <li className="p-4 border-b border-b-neutral-300 hover:bg-blue-100 last-of-type:border-b-0">Ponto {point.id} | {point.edificacao.nome}, {point.ambiente} </li>
+                return (
+                    <li
+                        className="flex justify-between p-4 border-b border-b-neutral-300 hover:bg-blue-100 last-of-type:border-b-0"
+                    >
+                        <span>
+                            Ponto {point.id} | {point.edificacao.nome}, {point.ambiente}
+                        </span>
+                        <span>
+                            {point.status_message}
+                        </span>
+                        <a href={`pontos/${point.id}`} className="text-blue-800 font-medium underline hover:bg-white px-4 py-2 rounded">Detalhes</a>
+                    </li>
+                )
             })}
         </ul>
     )
