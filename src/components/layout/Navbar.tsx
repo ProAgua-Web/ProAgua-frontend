@@ -4,6 +4,11 @@ export default function Navbar(props: {
 }) {
   const navbar_links = [
     {
+      href: "/admin/dashboard/",
+      icon: <i className="bi bi-clipboard-data-fill"></i>,
+      name: "Dashboard",
+    },
+    {
       href: "/admin/sequencias_coletas/",
       icon: <i className="bi bi-clipboard-data-fill"></i>,
       name: "Sequência Coletas",
