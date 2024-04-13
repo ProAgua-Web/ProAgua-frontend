@@ -36,10 +36,6 @@ export default function CriarEdificacao() {
             body: JSON.stringify(data),
         })
             .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Erro ao criar edificação");
-                }
-
                 if (file != undefined && file != null) {
                     let formData = new FormData();
                     formData.append("imagem", file);
@@ -54,10 +50,10 @@ export default function CriarEdificacao() {
                 }
             })
             .then(() => {
-                window.location.href = "/edificacoes";
+                window.location.href = "admin/edificacoes";
             })
             .catch((err) => {
-                alert(err.msg);
+                alert(err.message);
             });
     };
 
