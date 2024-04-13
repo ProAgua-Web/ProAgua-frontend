@@ -14,7 +14,7 @@ export default async function Edificacoes() {
         </h2>
         <a 
           className="bg-primary-500 rounded-lg text-white font-semibold p-4 m-4 block w-fit hover:bg-primary-600"
-          href="/edificacoes/criar"
+          href="/admin/edificacoes/criar"
         >+ Criar edificação
         </a>
         <ul>
@@ -26,7 +26,7 @@ export default async function Edificacoes() {
               >
                 {item.codigo} - {item.nome}
                 <a
-                  href={"/edificacoes/" + item.codigo}
+                  href={"/admin/edificacoes/" + item.codigo}
                   className="hidden rounded p-2 text-blue-900 hover:bg-white group-hover/item:block"
                 >
                   Detalhes

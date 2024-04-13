@@ -13,7 +13,7 @@ export default function TableColetas(props: {coletas: Coleta[]}) {
                         <th className="px-4 py-2">Cloro residual livre</th>
                         <th className="px-4 py-2">Turbidez</th>
                         <th className="px-4 py-2">Coliformes totais</th>
-                        <th className="px-4 py-2">Scherichia coli</th>
+                        <th className="px-4 py-2">Escherichia coli</th>
                         <th className="px-4 py-2">Cor</th>
                         <th className="px-4 py-2">Data</th>
                         <th className="px-4 py-2">Responsáveis</th>
