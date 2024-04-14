@@ -84,7 +84,7 @@ export default async function VisualizarPonto({ params }: {
                     value="Alterar"
                 />
                 
-                <QRCode data={ BASE_URL + "/pontos/" + ponto.id}/>
+                <QRCode data={ BASE_URL + "/admin/pontos/" + ponto.id}/>
             </form>
         </>
     );

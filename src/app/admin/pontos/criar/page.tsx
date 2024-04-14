@@ -36,7 +36,7 @@ export default function Pontos() {
                 }
             })
             .then(() => {
-                window.location.href = "/pontos";
+                window.location.href = "/admin/pontos";
             })
             .catch((err) => {
                 alert(err);
