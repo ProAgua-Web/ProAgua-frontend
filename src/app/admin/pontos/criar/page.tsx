@@ -1,11 +1,9 @@
-'use client'
+import { Edificacao } from "@/utils/api_consumer";
 
-import { Edificacao, useEdificacoes } from "@/utils/api_consumer";
-import { API_BASE_URL } from "@/utils/api_consumer";
+export default async function Pontos() {
+    const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes");
+    const edificacoes: Edificacao[] = await resp.json();
 
-export default function Pontos() {
-    const edificacoes: Edificacao[] = useEdificacoes();
-    
     const submitForm = (e: React.SyntheticEvent) => {
         e.preventDefault();
 
@@ -23,7 +21,7 @@ export default function Pontos() {
             tipo: parseInt(target.tipo.value),
         };
 
-        fetch(API_BASE_URL + "/api/v1/pontos/", {
+        fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
