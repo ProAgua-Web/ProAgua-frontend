@@ -1,19 +1,78 @@
-import { Edificacao, Ponto } from "@/utils/api_consumer";
-import { API_BASE_URL, BASE_URL} from "@/utils/config";
+"use client";
+
+import { useEffect, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
+import { Edificacao } from "@/utils/api_consumer";
 
-export default async function VisualizarPonto({ params }: {
+export default function VisualizarPonto({ params }: {
     params: {
         id_ponto: string
     }
 }) {
-    var resp = await fetch(API_BASE_URL + '/api/v1/pontos/' + params.id_ponto);
-    const ponto: Ponto = await resp.json();
+    const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
+    const [editable, setEditable] = useState<boolean>(false);
     
-    const edificacao_cod = ponto.edificacao_url.split("/").pop();
-    resp = await fetch(API_BASE_URL + '/api/v1/edificacoes/' + edificacao_cod);
-    const edificacao: Edificacao = await resp.json();
+    const [ambiente, setAmbiente] = useState<string>("");
+    const [tombo, setTombo] = useState<string>("");
+    const [edificacao, setEdificacao] = useState<string>("");
+    const [tipo, setTipo] = useState<number>(-1);
+
+    const submitForm = (e: React.SyntheticEvent) => {
+        e.preventDefault();
+
+        const target = e.target as typeof e.target & {
+            edificacao: { value: string };
+            ambiente: { value: string };
+            tombo: { value: string };
+            tipo: { value: string };
+        };
+
+        const data = {
+            codigo_edificacao: target.edificacao.value,
+            ambiente: target.ambiente.value,
+            tombo: target.tombo.value,
+            tipo: parseInt(target.tipo.value),
+        };
+
+        fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/" + params.id_ponto, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Erro ao criar ponto");
+                }
+            })
+            .then(() => {
+                window.location.href = "/admin/pontos";
+            })
+            .catch((err) => {
+                alert(err);
+            });
+    };
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + params.id_ponto);
+            const ponto = await response.json();
+            
+            setAmbiente(ponto.ambiente);
+            setTombo(ponto.tombo);
+            setEdificacao(ponto.edificacao.codigo);
+            setTipo(ponto.tipo);
+        })();
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes");
+            setEdificacoes((await response.json()).items);
+        })();
+    }, []);
 
     return (
         <>
@@ -24,6 +83,7 @@ export default async function VisualizarPonto({ params }: {
             <form
                 method="none"
                 className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
+                onSubmit={submitForm}
             >
                 <label htmlFor="id">Id:</label>
                 <input
@@ -43,21 +103,37 @@ export default async function VisualizarPonto({ params }: {
                     id="ambiente"
                     name="ambiente"
                     className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    value={ponto?.ambiente || ""}
-                    disabled
+                    value={ambiente}
+                    onChange={(e) => setAmbiente(e.target.value)}
+                    disabled={!editable}
                 />
 
-                <label htmlFor="edificacao" className="mt-4">
-                    Edificação:
+                <label htmlFor="tombo" className="mt-4">
+                    tombo:
                 </label>
                 <input
                     type="text"
+                    id="tombo"
+                    name="tombo"
+                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    value={tombo}
+                    onChange={(e) => setTombo(e.target.value)}
+                    disabled={!editable}
+                />
+
+                <label htmlFor="" className="mt-4">Edificação:</label>
+                <select 
                     id="edificacao"
                     name="edificacao"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    value= {edificacao?.nome || ""}
-                    disabled
-                />
+                    className="bg-white rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    value={edificacao}
+                    disabled={!editable}
+                    onChange={(e) => setEdificacao(e.target.value)}
+                >
+                    {edificacoes.map((edificacao: Edificacao) => {
+                        return <option value={edificacao.codigo} >{edificacao.codigo} - {edificacao.nome}</option>
+                    })}
+                </select >
 
                 <label htmlFor="tipo" className="mt-4">
                     Tipo:
@@ -66,8 +142,9 @@ export default async function VisualizarPonto({ params }: {
                     id="tipo"
                     name="tipo"
                     className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    value={ponto?.tipo || 0}
-                    disabled
+                    value={tipo}
+                    onChange={(e) => setTipo(parseInt(e.target.value))}
+                    disabled={!editable}
                 >
                     <option value="1">Bebedouro</option>
                     <option value="2">Reservatório predial superior</option>
@@ -77,14 +154,22 @@ export default async function VisualizarPonto({ params }: {
                     <option value="6">CAERN</option>
                 </select>
 
+                <label className="mt-4">QR code:</label>
+                <QRCode data={ process.env.NEXT_PUBLIC_BASE_URL + "/pontos/" + params.id_ponto} width={150}/>                 
+
                 <input
                     id="editar"
                     type="submit"
                     className="mt-4 rounded-md border bg-green-500 px-4 py-2 text-center font-semibold text-white hover:bg-green-600"
-                    value="Alterar"
+                    value={ editable ? "Salvar" : "Alterar" }
+                    onClick={(e) => {
+                        if (!editable) {
+                            setEditable(true);
+                            e.preventDefault();
+                        }
+                    }}
                 />
                 
-                <QRCode data={ BASE_URL + "/admin/pontos/" + ponto.id}/>
             </form>
         </>
     );
