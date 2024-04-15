@@ -1,8 +1,10 @@
-import { Edificacao } from "@/utils/api_consumer";
+"use client"
 
-export default async function Pontos() {
-    const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes");
-    const edificacoes: Edificacao[] = await resp.json();
+import { Edificacao } from "@/utils/api_consumer";
+import { useEffect, useState } from "react";
+
+export default function Pontos() {
+    const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
 
     const submitForm = (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -41,6 +43,14 @@ export default async function Pontos() {
             });
     };
 
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes");
+            setEdificacoes((await response.json()).items);
+        })();
+    }, []);
+
+    
     return (
         <>
             <h1 className="mb-4 text-3xl font-bold text-neutral-600">Criar ponto</h1>
@@ -50,7 +60,6 @@ export default async function Pontos() {
                 className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
                 onSubmit={submitForm}
             >
-
                 <label htmlFor="" className="mt-4">Edificação:</label>
                 <select 
                     id="edificacao"
