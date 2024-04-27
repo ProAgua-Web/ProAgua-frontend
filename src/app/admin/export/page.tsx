@@ -122,7 +122,7 @@ export default function Page() {
         }
 
         const query = toURLParams(_filters);
-        const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/csv?" + query);
+        const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/excel?" + query);
         const blob = await resp.blob();
 
         var file = window.URL.createObjectURL(blob);
