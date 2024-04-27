@@ -1,33 +1,37 @@
 "use client";
 
-import { Edificacao, Ponto } from "@/utils/api_consumer";
-import { API_BASE_URL } from "@/utils/config";
+import { Edificacao, Ponto } from "@/utils/types";
 import { SyntheticEvent, useEffect, useState } from "react";
 
-export default function () {
+export default function Page() {
     const [edificacoes, setEdficiacoes] = useState<Edificacao[]>([]);
     const [edificacao, setEdificacao] = useState<Edificacao | null>(null)
     const [pontos, setPontos] = useState<Ponto[] | null>(null);
+    const tipos = [
+        "Bebedouro",
+        "Reservatório predial superior",
+        "Reservatório predial inferior",
+        "Reservatório de distribuição superior",
+        "Reservatório de distribuição inferior",
+        "CAERN"
+    ];
 
     useEffect(() => {
-        async () => {
-            const resp = await fetch('http://localhost:8000/api/v1/edificacoes');
+        (async () => {
+            const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/edificacoes');
             const edificacoes: Edificacao[] = (await resp.json()).items;
-            
-            if (edificacoes != null) {
-                setEdficiacoes(edificacoes);
-            }
-        }
+            setEdficiacoes(edificacoes);
+        })()
     }, [])
 
     useEffect(() => {
-        async () => {
+       ( async () => {
             if (edificacao != null) {
-                const resp = await fetch('http://localhost:8000' + edificacao.pontos_url);
+                const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + edificacao.pontos_url);
                 const pontos: Ponto[] = (await resp.json()).items;
                 setPontos(pontos);
             }
-        }
+        })()
     }, [edificacao])
     
     const submitForm = (e: SyntheticEvent) => {
@@ -45,7 +49,7 @@ export default function () {
             amostragem: parseInt(target.amostragem.value),
         };
 
-        fetch(API_BASE_URL + "/api/v1/sequencias/", {
+        fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/sequencias/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -58,13 +62,14 @@ export default function () {
                 }
             })
             .then(() => {
-                window.location.href = "/sequencias_coletas";
+                window.location.href = "/admin/sequencias_coletas";
             })
             .catch((err) => {
                 alert(err);
             });
     };
 
+    
     return (
         <>
             <>
@@ -99,7 +104,7 @@ export default function () {
                         <option>-</option>
                         {edificacao && pontos && pontos.map(ponto => {
                             return (
-                                <option value={ponto.id}>{ponto.tipo} - {ponto.ambiente}</option>
+                                <option value={ponto.id}>{tipos[ponto.tipo - 1]} - {ponto.ambiente}</option>
                             )
                         })}
                     </select>
