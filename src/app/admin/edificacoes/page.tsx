@@ -1,6 +1,6 @@
 import Filters from "@/components/sequencias/Filters";
-import { Edificacao } from "@/utils/api_consumer";
-import { getEdificacoes } from "@/utils/api_consumer";
+import { Edificacao } from "@/utils/types";
+import { getEdificacoes } from "@/utils/api_consumer/server_side_consumer";
 
 export default async function Edificacoes() {
   const edificacoes = await getEdificacoes();

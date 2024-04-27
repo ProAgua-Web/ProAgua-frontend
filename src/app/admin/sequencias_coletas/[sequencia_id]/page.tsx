@@ -1,5 +1,5 @@
 import TableColetas from "@/components/coletas/TabelaColetas";
-import type { Sequencia, Coleta } from "@/utils/api_consumer";
+import type { Sequencia, Coleta } from "@/utils/types";
 import { API_BASE_URL } from "@/utils/config";
 
 function groupColetas(coletas: Coleta[]) {

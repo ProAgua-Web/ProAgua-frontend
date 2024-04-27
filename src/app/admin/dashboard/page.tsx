@@ -1,4 +1,4 @@
-import { Ponto } from "@/utils/api_consumer";
+import { Ponto } from "@/utils/types";
 import { API_BASE_URL } from "@/utils/config";
 
 function PointList(props: {points: Ponto[]}) {
@@ -23,7 +23,7 @@ function PointList(props: {points: Ponto[]}) {
     )
 }
 export default async function page() {
-    const resp = await fetch(`${API_BASE_URL}/api/v1/pontos`);
+    const resp = await fetch(`${API_BASE_URL}/api/v1/pontos`, {cache: "no-cache"});
     const pendings: Ponto[] = (await resp.json()).items;
     
     return (
