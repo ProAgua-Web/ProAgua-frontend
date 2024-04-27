@@ -1,88 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
-import { Edificacao } from "@/utils/api_consumer";
+import { Edificacao } from "@/utils/types";
+import { useEdificacoes, usePonto } from "@/utils/api_consumer/client_side_consumer";
 
-export default function VisualizarPonto({ params }: {
-    params: {
-        id_ponto: string
-    }
-}) {
-    const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
+export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {
+    const edificacoes = useEdificacoes();
+    const ponto = usePonto(parseInt(params.id_ponto));
     const [editable, setEditable] = useState<boolean>(false);
-    
-    const [ambiente, setAmbiente] = useState<string>("");
-    const [tombo, setTombo] = useState<string>("");
-    const [edificacao, setEdificacao] = useState<string>("");
-    const [tipo, setTipo] = useState<number>(-1);
 
-    const submitForm = (e: React.SyntheticEvent) => {
-        e.preventDefault();
+    async function submitForm(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
 
-        const target = e.target as typeof e.target & {
-            edificacao: { value: string };
-            ambiente: { value: string };
-            tombo: { value: string };
-            tipo: { value: string };
-        };
-
-        const data = {
-            codigo_edificacao: target.edificacao.value,
-            ambiente: target.ambiente.value,
-            tombo: target.tombo.value,
-            tipo: parseInt(target.tipo.value),
-        };
-
-        fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/" + params.id_ponto, {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/" + params.id_ponto, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+                tombo: formData.get("tombo"),
+                ambiente: formData.get("ambiente"),
+                tipo: Number(formData.get("tipo")),
+                codigo_edificacao: formData.get("edificacao"),
+            }),
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Erro ao criar ponto");
-                }
-            })
-            .then(() => {
-                window.location.href = "/admin/pontos";
-            })
-            .catch((err) => {
-                alert(err);
-            });
-    };
-
-    useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + params.id_ponto);
-            const ponto = await response.json();
-            
-            setAmbiente(ponto.ambiente);
-            setTombo(ponto.tombo);
-            setEdificacao(ponto.edificacao.codigo);
-            setTipo(ponto.tipo);
-        })();
-    }, []);
-
-    useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes");
-            setEdificacoes((await response.json()).items);
-        })();
-    }, []);
+        
+        window.location.href = "/admin/pontos";
+    }
 
     return (
         <>
             <h2 className="mb-4 text-3xl font-bold text-neutral-600">
-                Visualizar Ponto
+                {editable ? "Editar" : "Visualizar"} Ponto
             </h2>
 
             <form
                 method="none"
-                className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
+                // className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
+                className="flex flex-col max-w-600px w-full"
                 onSubmit={submitForm}
             >
                 <label htmlFor="id">Id:</label>
@@ -90,34 +48,28 @@ export default function VisualizarPonto({ params }: {
                     type="text"
                     id="id"
                     name="id"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    value={params.id_ponto}
+                    className="rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    defaultValue={params.id_ponto}
                     disabled
                 />
 
-                <label htmlFor="ambiente" className="mt-4">
-                    Ambiente:
-                </label>
+                <label htmlFor="ambiente" className="mt-4">Ambiente:</label>
                 <input
                     type="text"
                     id="ambiente"
                     name="ambiente"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    value={ambiente}
-                    onChange={(e) => setAmbiente(e.target.value)}
+                    className="rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    defaultValue={ponto?.ambiente}
                     disabled={!editable}
                 />
 
-                <label htmlFor="tombo" className="mt-4">
-                    tombo:
-                </label>
+                <label htmlFor="tombo" className="mt-4">tombo:</label>
                 <input
                     type="text"
                     id="tombo"
                     name="tombo"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    value={tombo}
-                    onChange={(e) => setTombo(e.target.value)}
+                    className="rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    defaultValue={ponto?.tombo}
                     disabled={!editable}
                 />
 
@@ -125,10 +77,9 @@ export default function VisualizarPonto({ params }: {
                 <select 
                     id="edificacao"
                     name="edificacao"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    value={edificacao}
+                    className="bg-white rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    defaultValue={ponto?.edificacao.codigo}
                     disabled={!editable}
-                    onChange={(e) => setEdificacao(e.target.value)}
                 >
                     {edificacoes.map((edificacao: Edificacao) => {
                         return <option value={edificacao.codigo} >{edificacao.codigo} - {edificacao.nome}</option>
@@ -141,9 +92,8 @@ export default function VisualizarPonto({ params }: {
                 <select
                     id="tipo"
                     name="tipo"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    value={tipo}
-                    onChange={(e) => setTipo(parseInt(e.target.value))}
+                    className="bg-white rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    defaultValue={ponto?.tipo}
                     disabled={!editable}
                 >
                     <option value="1">Bebedouro</option>
@@ -160,8 +110,8 @@ export default function VisualizarPonto({ params }: {
                 <input
                     id="editar"
                     type="submit"
-                    className="mt-4 rounded-md border bg-green-500 px-4 py-2 text-center font-semibold text-white hover:bg-green-600"
-                    value={ editable ? "Salvar" : "Alterar" }
+                    className="mt-4 rounded-md border bg-green-500 px-4 py-3 mt-2 text-center font-semibold text-white hover:bg-green-600"
+                    value={ editable ? "Salvar" : "Habilitar edição" }
                     onClick={(e) => {
                         if (!editable) {
                             setEditable(true);
@@ -169,7 +119,24 @@ export default function VisualizarPonto({ params }: {
                         }
                     }}
                 />
+
+                <button
+                    type="button"
+                    className="mt-4 rounded-md border bg-red-500 px-4 py-3 mt-2 text-center font-semibold text-white hover:bg-red-600 disabled:bg-gray-400 disabled:text-gray-300"
+                    disabled={!editable}
+                    >
+                    Excluir
+                </button>
                 
+                {editable && (
+                    <button
+                        type="button"
+                        className="mt-4 rounded-md border bg-gray-500 px-4 py-3 mt-2 text-center font-semibold text-white hover:bg-gray-600"
+                        onClick={() => setEditable(false) }
+                        >
+                        Cancelar
+                    </button>
+                )} 
             </form>
         </>
     );
