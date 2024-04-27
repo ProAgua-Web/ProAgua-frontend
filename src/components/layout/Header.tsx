@@ -21,13 +21,13 @@ export default function (props: {
         <i className="bi bi-list header-icon"></i>
 
         <div id="header-content" className="flex w-full justify-center">
-          <div id="proagua-logo" className="flex w-fit items-center gap-4">
-            <Image
-              src={ProAguaLogo}
-              className="max-h-10"
-              alt="Logo do projeto"
-            />
-            <a href="/" className="text-2xl font-semibold text-white-100">
+          <div id="proagua-logo" className="w-fit items-center">
+            <a href="/" className="text-2xl font-semibold text-white-100 select-none flex gap-2 items-center">
+              <Image
+                src={ProAguaLogo}
+                className="max-h-10"
+                alt="Logo do projeto"
+              />
               ProÁgua
             </a>
           </div>
