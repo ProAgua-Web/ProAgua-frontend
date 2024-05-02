@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Edificacao, Ponto } from "@/utils/types";
+import { Edificacao, Ponto, Sequencia, Usuario } from "@/utils/types";
 
 export function useEdificacao(codigo_edificacao: string) {
     const [edificacao, setEdificacao] = useState<Edificacao>();
@@ -41,4 +41,49 @@ export function usePonto(id_ponto: number) {
     }, [id_ponto]);
 
     return ponto;
+}
+
+export function usePontos(codigo_edificacao: string | null = null, id_sequencia: number | null = null) {
+    const [pontos, setPontos] = useState<Ponto[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/');
+            const pontos = (await response.json()).items;
+
+            setPontos(pontos);
+        })();
+    }, [codigo_edificacao, id_sequencia]);
+
+    return pontos;
+}
+
+export function useSequencia(id_sequencia: number) {
+    const [sequencia, setSequencia] = useState<Sequencia | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia);
+            const sequencia = await response.json();
+
+            setSequencia(sequencia);
+        })();
+    }, [id_sequencia]);
+
+    return sequencia;
+}
+
+export function useUsuarios() {
+    const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/usuarios/');
+            const usuarios = (await response.json()).items;
+
+            setUsuarios(usuarios);
+        })();
+    }, []);
+
+    return usuarios;
 }
