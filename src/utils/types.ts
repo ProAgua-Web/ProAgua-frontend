@@ -44,10 +44,9 @@ export type Coleta = {
     cor: number;
     data: string;
     ordem: string;
-    status: {
-        status: boolean;
-        message: string;
-    };
+    status: boolean,
+    status_messages: string[],
+    ponto: Ponto,
     responsaveis_url: string;
     sequencia_url: string;
     ponto_url: string;
