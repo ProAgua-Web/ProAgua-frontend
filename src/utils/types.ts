@@ -64,3 +64,12 @@ export type Usuario = {
     is_active: boolean;
     date_joined: Date;
 }
+
+export const TIPOS_PONTOS = [
+    "Bebedouro",
+    "RPS (Reservatório predial superior)",
+    "RPI (Reservatório predial inferior)",
+    "RDS (Reservatório de distribuição superior)",
+    "RDI (Reservatório de distribuição inferior)",
+    "CAERN"
+];

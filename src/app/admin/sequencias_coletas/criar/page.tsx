@@ -1,20 +1,12 @@
 "use client";
 
-import { Edificacao, Ponto } from "@/utils/types";
+import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
 import { SyntheticEvent, useEffect, useState } from "react";
 
 export default function Page() {
     const [edificacoes, setEdficiacoes] = useState<Edificacao[]>([]);
     const [edificacao, setEdificacao] = useState<Edificacao | null>(null)
     const [pontos, setPontos] = useState<Ponto[] | null>(null);
-    const tipos = [
-        "Bebedouro",
-        "Reservatório predial superior",
-        "Reservatório predial inferior",
-        "Reservatório de distribuição superior",
-        "Reservatório de distribuição inferior",
-        "CAERN"
-    ];
 
     useEffect(() => {
         (async () => {
@@ -104,7 +96,7 @@ export default function Page() {
                         <option>-</option>
                         {edificacao && pontos && pontos.map(ponto => {
                             return (
-                                <option value={ponto.id}>{tipos[ponto.tipo - 1]} - {ponto.ambiente}</option>
+                                <option value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} - {ponto.ambiente}</option>
                             )
                         })}
                     </select>
