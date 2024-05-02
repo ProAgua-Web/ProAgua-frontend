@@ -1,5 +1,5 @@
 import TableColetas from "@/components/coletas/TabelaColetas";
-import type { Sequencia, Coleta } from "@/utils/types";
+import { type Sequencia, type Coleta, TIPOS_PONTOS } from "@/utils/types";
 import { API_BASE_URL } from "@/utils/config";
 
 function groupColetas(coletas: Coleta[]) {
@@ -22,6 +22,18 @@ function groupColetas(coletas: Coleta[]) {
 }
 
 export default async function Sequencia({ params }: { params : {sequencia_id: number} }) {
+    // TODO: Filtrar pontos
+    // Primeiro você deve selecionar em qual edificação o ponto está / onde a sequencia deve começar
+
+    // TODO: Evitar a criação de sequências de coletas iguais
+    // Por exemplo, não deve ser possível a criação de duas sequências de coletas no bebedouro
+    // do hall de entrada do LCC com a mesma amostragem
+    
+    // TODO: Decidir como que deve ser a lógica de sequências referentes ao mesmo fluxo
+    // Por exemplo, se temos um bebedouro, temos também seu ponto a montante
+    // dessa forma, se houver uma sequencia para o bebedouro e outra para a torneira
+    // suas coletas serão identicas
+    
     const { sequencia_id } = params;
 
     let resp = await fetch(API_BASE_URL + '/api/v1/sequencias/' + sequencia_id);
@@ -31,27 +43,45 @@ export default async function Sequencia({ params }: { params : {sequencia_id: nu
     const coletas: Coleta[] = await resp.json();
 
     const groups: Coleta[][] = groupColetas(coletas);
-
+    
     return (
         <>
-            <span className="text-4xl">Sequência de coletas</span>
-            
+            <span className="text-3xl font-bold text-neutral-700">Sequência de coleta</span>
             <div 
                 id="container"
-                className="flex flex-col card min-w-fit w-full p-8 gap-4 h-fit"
+                className="flex flex-col card min-w-fit w-full mt-4 gap-4 h-fit"
             >
-                <div className="flex gap-4">
-                    <p>Id: {sequencia?.id} </p>
-                    <p>Edificação: {sequencia?.ponto?.edificacao.nome}</p>
-                    <p>Código edificação: {sequencia?.ponto?.edificacao.codigo}</p>
-                    <p>Ambiente: {sequencia?.ponto?.ambiente}</p>
-                <a className="px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-md" href={`${sequencia_id}/criar`}>
-                        <i className="bi bi-plus-lg"></i> Adicionar coleta
-                    </a>
+                <div className="flex w-full p-4 border border-slate-400 bg-slate-200">
+                    <div className="flex-grow font-medium gap-2 flex flex-col">
+                        <h3 className="text-xl">Informações da edificação:</h3>
+                        <p className="text-neutral-700 ml-4">Edificação: {sequencia?.ponto?.edificacao.nome}</p>
+                        <p className="text-neutral-700 ml-4">Código edificação: {sequencia?.ponto?.edificacao.codigo}</p>
+                        <p className="text-neutral-700 ml-4">Ambiente: {sequencia?.ponto?.ambiente}</p>
+                    </div>
+                    <div>
+                        <a className="block w-fit h-fit px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-md" href={`${sequencia_id}/criar`}>
+                            <i className="bi bi-plus-lg"></i> Adicionar coleta
+                        </a>
+                    </div>
                 </div>
-                <div className="w-fit ">
-                    {groups?.map(group => {
-                        return <TableColetas coletas={group} />
+                <div className="w-fit">
+                    {groups?.map((group: Coleta[]) => {
+                        if (group.length == 0) {
+                            return null;
+                        }
+                        
+                        const ponto = group[0].ponto;
+
+                        return (
+                            <>
+                                <div className="p-4 border border-b-0 w-full border-slate-400 bg-primary-500 text-white font-semibold">
+                                    <p>Ponto: {TIPOS_PONTOS[ponto.tipo]}</p>
+                                    <p>Ambiente: {ponto.ambiente}</p>
+                                </div>
+
+                                <TableColetas coletas={group} />
+                            </>
+                        )
                     })}
                 </div>
             </div>
