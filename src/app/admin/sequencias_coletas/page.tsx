@@ -1,4 +1,4 @@
-import { Sequencia } from "@/utils/api_consumer";
+import { Sequencia } from "@/utils/types";
 import CardSequencia from "@/components/sequencias/CardSequencia";
 import Filters from "@/components/sequencias/Filters";
 import { API_BASE_URL } from "@/utils/config";

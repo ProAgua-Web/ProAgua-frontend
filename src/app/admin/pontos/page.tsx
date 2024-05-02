@@ -1,7 +1,7 @@
 import Filters from "@/components/sequencias/Filters";
 import CardPonto from "@/components/pontos/CardPontos";
 import { API_BASE_URL } from "@/utils/config";
-import { Ponto } from "@/utils/api_consumer";
+import { Ponto } from "@/utils/types";
 
 export default async function Pontos() {
   const resp = await fetch(API_BASE_URL + '/api/v1/pontos');

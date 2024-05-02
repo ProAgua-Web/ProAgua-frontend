@@ -1,6 +1,6 @@
 "use client";
 
-import { Usuario } from "@/utils/api_consumer";
+import { Usuario } from "@/utils/types";
 import { FormEvent } from "react";
 
 export default function ColetaForm(props: {users: Usuario[], api_url: string | undefined, sequencia_id: number }) {

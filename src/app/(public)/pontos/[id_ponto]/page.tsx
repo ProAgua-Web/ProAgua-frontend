@@ -1,5 +1,5 @@
 import Header from "@/components/layout/Header";
-import { Coleta, Ponto } from "@/utils/api_consumer";
+import { Coleta, Ponto } from "@/utils/types";
 import { API_BASE_URL } from "@/utils/config";
 
 
