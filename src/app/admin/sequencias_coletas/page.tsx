@@ -10,7 +10,7 @@ export default async function Coletas() {
 
     return (
         <>
-            <h2 className="text-3xl text-[#525252]">Sequências de Coletas</h2>
+            <h2 className="text-3xl text-[#525252]">Sequência de Coletas</h2>
             <div className="flex w-full flex-col items-center">
                 <Filters />
 

@@ -1,4 +1,4 @@
-import { Sequencia } from "@/utils/api_consumer";
+import { Sequencia } from "@/utils/types";
 
 export default function CardSequencia(props: { sequencia: Sequencia }) {
   const { sequencia } = props;
@@ -6,7 +6,7 @@ export default function CardSequencia(props: { sequencia: Sequencia }) {
   return (
     sequencia && (
       <div className="relative flex aspect-square w-[260px] flex-col items-center justify-between rounded-md border border-neutral-300 bg-white px-2 py-4 text-center shadow-lg">
-        <h6>{sequencia.id.toString()}</h6>
+        {/* <h6>{sequencia.id.toString()}</h6> */}
         <h3>{sequencia.ponto?.edificacao.codigo}</h3>
         <h2 className="text-center text-xl">
           {sequencia.ponto?.edificacao.nome}

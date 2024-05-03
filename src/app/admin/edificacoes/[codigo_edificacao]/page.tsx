@@ -26,7 +26,7 @@ export default function VisualizarEdificacao({ params }:{ params: { codigo_edifi
     return (
         <>
             <h2 className="mb-4 text-3xl font-bold text-neutral-600">
-                Criar Edificação
+                Editar Edificação
             </h2>
 
             <form
