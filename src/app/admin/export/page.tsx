@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TableColetas from "@/components/coletas/TabelaColetas";
-import { Edificacao } from "@/utils/types";
+import { Edificacao, Ponto } from "@/utils/types";
 
 function toURLParams(data: Object) {
     let params = [];
@@ -20,13 +20,21 @@ export default function Page() {
     const [filters, setFilters] = useState<any>({ data_minima: '', data_maxima: '', temperatura_minima: '', temperatura_maxima: '', cloro_residual_livre_minimo: '', cloro_residual_livre_maximo: '', turbidez_minima: '', turbidez_maxima: '', cor_minima: '', cor_maxima: '', coliformes_totais: false, escherichia: false, codigo_edificacao: '', ponto_id: '' });
     const [coletas, setColetas] = useState<any[]>([]);
     const [edificacoes, setEdificacoes] = useState<any[]>([]);
-
+    const [pontos, setPontos] = useState<any[]>([]);
 
     useEffect(() => {
         (async () => {
             const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes`);
             const edificacoes = await resp.json();
             setEdificacoes(edificacoes.items);
+        })();
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos`);
+            const pontos = await resp.json();
+            setPontos(pontos.items);
         })();
     }, []);
 
@@ -161,6 +169,18 @@ export default function Page() {
                                     <option key={edificacao.codigo} value={edificacao.codigo}>{edificacao.codigo}</option>
                                 ))}
                             </select>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="ponto_id">Ponto de coleta</label> 
+
+                            <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="ponto_id" id="ponto_id" onChange={e => setFilters({ ...filters, ponto_id: e.target.value })}>
+                                <option value="">-</option>
+                                
+                                {pontos && pontos.map((ponto: Ponto) => (
+                                    <option key={ponto.id} value={ponto.id}>{ponto.tipo} - {ponto.ambiente} - {ponto.tombo}</option>
+                                ))}
+                            </select>       
                         </div>
 
                         <div className="flex flex-col">
