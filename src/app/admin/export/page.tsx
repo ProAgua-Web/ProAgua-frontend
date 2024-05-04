@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TableColetas from "@/components/coletas/TabelaColetas";
-import { Edificacao, Ponto } from "@/utils/types";
+import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
 
 function toURLParams(data: Object) {
     let params = [];
@@ -178,7 +178,7 @@ export default function Page() {
                                 <option value="">-</option>
                                 
                                 {pontos && pontos.map((ponto: Ponto) => (
-                                    <option key={ponto.id} value={ponto.id}>{ponto.tipo} - {ponto.ambiente} - {ponto.tombo}</option>
+                                    <option key={ponto.id} value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} - {ponto.ambiente} - {ponto.tombo}</option>
                                 ))}
                             </select>       
                         </div>
