@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TableColetas from "@/components/coletas/TabelaColetas";
+import { Edificacao } from "@/utils/types";
 
 function toURLParams(data: Object) {
     let params = [];
@@ -16,8 +17,18 @@ function toURLParams(data: Object) {
 }
 
 export default function Page() {
-    const [filters, setFilters] = useState<any>({ data_minima: '', data_maxima: '', temperatura_minima: '', temperatura_maxima: '', cloro_residual_livre_minimo: '', cloro_residual_livre_maximo: '', turbidez_minima: '', turbidez_maxima: '', cor_minima: '', cor_maxima: '', coliformes_totais: false, escherichia: false });
+    const [filters, setFilters] = useState<any>({ data_minima: '', data_maxima: '', temperatura_minima: '', temperatura_maxima: '', cloro_residual_livre_minimo: '', cloro_residual_livre_maximo: '', turbidez_minima: '', turbidez_maxima: '', cor_minima: '', cor_maxima: '', coliformes_totais: false, escherichia: false, codigo_edificacao: '', ponto_id: '' });
     const [coletas, setColetas] = useState<any[]>([]);
+    const [edificacoes, setEdificacoes] = useState<any[]>([]);
+
+
+    useEffect(() => {
+        (async () => {
+            const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes`);
+            const edificacoes = await resp.json();
+            setEdificacoes(edificacoes.items);
+        })();
+    }, []);
 
     useEffect(() => {
         (async () => {
@@ -63,11 +74,11 @@ export default function Page() {
             }
 
             if (_filters.escherichia === 'both') {
-                _filters.escherichia =  null;
+                _filters.escherichia = null;
             }
 
             if (_filters.coliformes_totais === 'both') {
-                _filters.coliformes_totais =  null;
+                _filters.coliformes_totais = null;
             }
 
             const query = toURLParams(_filters);
@@ -141,6 +152,18 @@ export default function Page() {
                     >
 
                         <div className="flex flex-col">
+                            <label htmlFor="codigo_edificacao">Código da edificação</label>
+                            {/* Um select com todas as opções de código de edificação */}
+                            <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="codigo_edificacao" id="codigo_edificacao" onChange={e => setFilters({ ...filters, codigo_edificacao: e.target.value })}>
+                                <option value="">-</option>
+                                
+                                {edificacoes && edificacoes.map((edificacao: Edificacao) => (
+                                    <option key={edificacao.codigo} value={edificacao.codigo}>{edificacao.codigo}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="flex flex-col">
                             <label htmlFor="start-data">Data inicial</label>
                             <input
                                 type="date"
@@ -163,22 +186,6 @@ export default function Page() {
                                 onChange={e => setFilters({ ...filters, data_maxima: e.target.value })}
                             />
                         </div>
-
-                        {/* responsavel__username__contains: Optional[str] = Field(q=["responsavel__username__contains"])
-    data__gte: Optional[date] = Field(alias="data_minima")
-    data__lte: Optional[date] = Field(alias="data_maxima")
-    sequencia_id: Optional[int] = Field(alias="sequencia__id")
-    temperatura__gte: Optional[float] = Field(alias="temperatura_minima")
-    temperatura__lte: Optional[float] = Field(alias="temperatura_maxima")
-    cloro_residual_livre__gte: Optional[float] = Field(alias="cloro_residual_livre_minimo")
-    cloro_residual_livre__lte: Optional[float] = Field(alias="cloro_residual_livre_maximo")
-    turbidez__gte: Optional[float] = Field(alias="turbidez_minima")
-    turbidez__lte: Optional[float] = Field(alias="turbidez_maxima")
-    coliformes_totais: Optional[bool] = Field(alias="coliformes_totais")
-    escherichia: Optional[bool] = Field(alias="escherichia")
-    cor__gte: Optional[float] = Field(alias="cor_minima")
-    cor__lte: Optional[float] = Field(alias="cor_maxima")
-    ordem: Optional[str] = Field(alias="ordem") */}
 
                         <div className="flex flex-col">
                             <label htmlFor="min-temp">Temperatura mínima</label>
