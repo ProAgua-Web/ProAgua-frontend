@@ -1,4 +1,4 @@
-import { Ponto, Coleta } from "@/utils/api_consumer";
+import { Ponto, Coleta } from "@/utils/types";
 
 export default function TablePontos(props: {pontos: Ponto[]}) {
     const { pontos } = props;
