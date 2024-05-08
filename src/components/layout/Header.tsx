@@ -9,7 +9,7 @@ export default function (props: {
     <header>
       <div
         id="header-bar"
-        className="h-[clamp(50px, 8vh, 100px)] fixed z-20 flex w-full items-center bg-primary-500 text-white-100"
+        className="h-[clamp(50px, 8vh, 100px)] fixed z-20 flex w-full items-center bg-primary-500 text-white-100 shadow-lg"
       >
         <button
           id="menu-button"
