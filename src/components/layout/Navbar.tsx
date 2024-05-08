@@ -58,7 +58,7 @@ export default function Navbar(props: {
         <ul>
           {navbar_links.map((link) => {
             return (
-              <li className="text-xl hover:bg-[#c1c2c4]">
+              <li className="text-xl hover:bg-[#c1c2c4]" key={"li " + link.name}>
                 <a
                   href={link.href}
                   className="m-3 box-border flex min-h-12 gap-3 rounded-md p-4 leading-6 text-[#516c79]"
