@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { API_BASE_URL } from "@/utils/config";
+import React, { FormEvent, useEffect, useState } from "react";
 
 export default function CriarEdificacao() {
     // TODO: Criar campo para múltplas imagens
@@ -13,50 +12,46 @@ export default function CriarEdificacao() {
         setFile(event.target.files?.[0]);
     };
 
-    const submitForm = (e: React.SyntheticEvent) => {
-        e.preventDefault();
+    async function submitForm(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
-        const target = e.target as typeof e.target & {
-            codigo: { value: string };
-            nome: { value: string };
-            campus: { value: string };
-            cronograma: { value: string };
-        };
+        const formData = new FormData(event.currentTarget);
+        
+        // const target = event.target as typeof event.target & {
+        //     codigo: { value: string };
+        //     nome: { value: string };
+        //     campus: { value: string };
+        //     cronograma: { value: string };
+        // };
 
         const data = {
-            codigo: target.codigo.value,
-            nome: target.nome.value,
-            campus: target.campus.value,
-            cronograma: target.cronograma.value,
+            codigo: formData.get("codigo"),
+            nome: formData.get("nome"),
+            campus: formData.get("campus"),
+            cronograma: formData.get("cronograma"),
         };
 
-        fetch(API_BASE_URL + "/api/v1/edificacoes/", {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
         })
-            .then((response) => {
-                if (file != undefined && file != null) {
-                    let formData = new FormData();
-                    formData.append("imagem", file);
-
-                    return fetch(
-                        `${API_BASE_URL}/api/v1/edificacoes/${data.codigo}/imagem`,
-                        {
-                            method: "POST",
-                            body: formData,
-                        },
-                    );
-                }
-            })
-            .then(() => {
-                window.location.href = "admin/edificacoes";
-            })
-            .catch((err) => {
-                alert(err.message);
-            });
+            
+        if (file != undefined && file != null) {
+            let formData = new FormData();
+            formData.append("imagem", file);
+            await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/${data.codigo}/imagem`,
+                {
+                    method: "POST",
+                    body: formData,
+                },
+            );
+        }
+        
+        window.location.href = "/admin/edificacoes";
     };
 
     // Carregar imagem de preview
