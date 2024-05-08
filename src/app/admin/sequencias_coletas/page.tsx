@@ -1,4 +1,4 @@
-import { Sequencia } from "@/utils/types";
+import { Sequencia, TIPOS_PONTOS } from "@/utils/types";
 import CardSequencia from "@/components/sequencias/CardSequencia";
 import Filters from "@/components/sequencias/Filters";
 import { API_BASE_URL } from "@/utils/config";
@@ -14,14 +14,33 @@ export default async function Coletas() {
             <div className="flex w-full flex-col items-center">
                 <Filters />
 
-                <div
-                    id="result-list"
-                    className="grid w-full grid-cols-[repeat(auto-fill,minmax(260px,1fr))] justify-center gap-8"
-                >
-                    {/* Os resultados da pesquisa serão adicionados aqui */}
-                    {sequencias.map((item: Sequencia, i) => (
-                        <CardSequencia sequencia={item} />
-                    ))}
+                <div className="w-full">
+                    <table className="w-full border border-gray-400 mb-8">
+                        <thead className="bg-neutral-800 text-white">
+                            <tr>
+                                <th className="pl-12 px-2 py-3 text-left">Cód. Edificação</th>
+                                <th className="px-2 py-3 text-left">Ambiente ponto</th>
+                                <th className="px-2 py-3 text-left">Ponto</th>
+                                <th className="px-2 py-3 text-left">Tombo</th>
+                                <th className="px-2 py-3 text-left">Amostragem</th>
+                                <th className="pr-8 px-2 py-3 text-left">Acessar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sequencias.map((sequencia: Sequencia, i) => {
+                                return (
+                                    <tr className="bg-sky-100 even:bg-sky-200">
+                                        <td className="text-sm pl-12 px-2 py-3">{sequencia.ponto?.edificacao.codigo}</td>
+                                        <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
+                                        <td className="text-sm px-2 py-3">{TIPOS_PONTOS[sequencia.ponto?.tipo - 1]}</td>
+                                        <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
+                                        <td className="text-sm px-2 py-3">{sequencia.amostragem}</td>
+                                        <td className="text-sm pr-8 px-2 py-3"><a className="textext-smt-sm text-blue-800 underline" href={"/admin/sequencias_coletas/" + sequencia.id}>Acessar</a></td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
                 </div>
 
                 <div id="paginator" className="pagination flex">
