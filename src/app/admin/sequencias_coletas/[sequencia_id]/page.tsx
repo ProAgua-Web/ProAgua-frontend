@@ -75,14 +75,22 @@ export default async function Sequencia({ params }: { params : {sequencia_id: nu
                         return (
                             <>
                                 <div className="p-4 border border-b-0 w-full border-slate-400 bg-primary-500 text-white font-semibold">
-                                    <p>Ponto: {TIPOS_PONTOS[ponto.tipo]}</p>
+                                    <p>Ponto: {TIPOS_PONTOS[ponto.tipo - 1]}</p>
                                     <p>Ambiente: {ponto.ambiente}</p>
+                                    {ponto.tipo == 1 && (
+                                        <p>Tombo: {ponto.tombo}</p>
+                                    )}
                                 </div>
 
                                 <TableColetas coletas={group} />
                             </>
                         )
                     })}
+                </div>
+                <div className="mt-8 w-full flex justify-end">
+                    <a className="block w-full text-center h-fit px-6 py-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-md" href={`${sequencia_id}/criar`}>
+                        <span className="text-1xl">+</span> Adicionar coleta
+                    </a>
                 </div>
             </div>
         </>
