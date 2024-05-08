@@ -1,10 +1,8 @@
 'use client'
 
-import { TIPOS_PONTOS, Usuario } from "@/utils/types"
+import { TIPOS_PONTOS } from "@/utils/types"
 import { useSequencia, usePontos, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent } from "react";
-
-// import ColetaForm from "./ColetaForm";
 
 export default function Page({ params }: { params: {
     sequencia_id: number
@@ -17,45 +15,40 @@ export default function Page({ params }: { params: {
 
     const usuarios = useUsuarios();
 
-    function submitForm(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        for (let i = 0; i < 100; i++) {
-            console.log("HIIIII", i);
-        }
+    async function submitForm(event: FormEvent<HTMLFormElement>) {
+        const formData = new FormData(event.currentTarget);
+    
+        const data = {
+            sequencia_id: sequencia_id,
+            ponto_id: Number(formData.get("ponto")),
+            temperatura: Number(formData.get("temperatura")),
+            cloro_residual_livre: Number(formData.get("cloro_residual_livre")),
+            turbidez: Number(formData.get("turbidez")),
+            coliformes_totais: formData.get("coliformes_totais") == "on",
+            escherichia: formData.get("escherichia") == "on",
+            cor: Number(formData.get("cor")),
+            responsavel: [Number(formData.get("responsaveis"))],
+            data: new Date(String(formData.get("data"))),
+            ordem: formData.get("ordem"),
+        };
+        console.log(data);
 
-        (async () => {
-            const formData = new FormData(event.currentTarget);
-    
-            const data = {
-                sequencia_id: sequencia_id,
-                ponto_id: Number(formData.get("ponto")),
-                temperatura: Number(formData.get("temperatura")),
-                cloro_residual_livre: Number(formData.get("cloro_residual_livre")),
-                turbidez: Number(formData.get("turbidez")),
-                coliformes_totais: formData.get("coliformes_totais") == "on",
-                escherichia: formData.get("escherichia") == "on",
-                cor: Number(formData.get("cor")),
-                responsavel: [Number(formData.get("responsaveis"))],
-                data: new Date(String(formData.get("data"))),
-                ordem: formData.get("ordem"),
-            };
-    
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-    
-            window.location.href = `/admin/sequencias_coletas/${sequencia_id}`;
-        })()
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        console.log(response);
+        window.location.href = `/admin/sequencias_coletas/${sequencia_id}`;
+        event.preventDefault();
     };
 
     return (
         <>
             <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar nova coleta</h1>
-            <form className="w-full flex flex-col gap-4" onSubmit={submitForm}>
+            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
                 <label htmlFor="ponto">Ponto de Coleta:</label>                        
                 <select
                     name="ponto"
