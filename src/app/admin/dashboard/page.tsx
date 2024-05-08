@@ -12,7 +12,7 @@ function PointList(props: {points: Ponto[]}) {
                             className="group flex items-center justify-between p-4 border-b border-b-neutral-300 hover:bg-blue-100 last-of-type:border-b-0"
                         >
                             <span>
-                                Ponto {point.id} | {point.edificacao.nome}, {point.ambiente}
+                                Ponto {point.id} - {point.edificacao.nome}, {point.ambiente}
                             </span>
                             <p className="w-[300px] text-nowrap text-ellipsis overflow-hidden group-hover:text-wrap">
                                 {point.status_message}
@@ -26,6 +26,7 @@ function PointList(props: {points: Ponto[]}) {
     )
 }
 export default async function page() {
+    // TODO: Modificar link para página da sequencia de coletas que a coleta pertence
     const resp = await fetch(`${API_BASE_URL}/api/v1/pontos`, {cache: "no-cache"});
     const pendings: Ponto[] = (await resp.json()).items;
     

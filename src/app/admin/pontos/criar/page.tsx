@@ -1,9 +1,12 @@
 "use client"
 
-import { Edificacao } from "@/utils/api_consumer";
+import { Edificacao } from "@/utils/types";
 import { useEffect, useState } from "react";
 
 export default function Pontos() {
+    // TODO: adicionar campo para definição de ponto a montante
+    // TODO: adicionar campo para adição de imagem
+    
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
 
     const submitForm = (e: React.SyntheticEvent) => {

@@ -7,6 +7,8 @@ import { Edificacao } from "@/utils/types";
 import { useEdificacoes, usePonto } from "@/utils/api_consumer/client_side_consumer";
 
 export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {
+    // TODO: Adicionar campo para definição de ponto a montante
+    
     const edificacoes = useEdificacoes();
     const ponto = usePonto(parseInt(params.id_ponto));
     const [editable, setEditable] = useState<boolean>(false);

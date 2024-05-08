@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/utils/config";
 
 export default function CriarEdificacao() {
+    // TODO: Criar campo para múltplas imagens
+    
     const [file, setFile] = useState<File | null>();
     const [preview, setPreview] = useState<string>();
 
