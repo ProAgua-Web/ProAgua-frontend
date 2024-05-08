@@ -43,10 +43,11 @@ export default function TableColetas(props: {coletas: Coleta[]}) {
                                 <td className="px-2 py-3">{coleta.cor}</td>
                                 <td className="px-2 py-3">{coleta.data}</td>
                                 <td className="px-2 py-3">responsaveis</td>
-                                <td className="px-2 py-3 text-center flex gap-2">
-                                    {/* {coleta.status.status ? <i className="bi bi-check2"></i> : <i className="bi bi-x"></i>}
-                                    {coleta.status.message} */}
-                                    {coleta.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem"/>} <span className="max-w-40 block text-nowrap text-ellipsis overflow-hidden">{String(coleta.status_messages)}</span>
+                                <td className="px-2 py-3">
+                                    <span className="flex gap-2">
+                                        {coleta.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem"/>}
+                                        <span className="max-w-40 block text-nowrap text-ellipsis overflow-hidden">{String(coleta.status_messages)}</span>
+                                    </span>
                                 </td>
                                 <td className="px-2 py-3">
                                     <a 
