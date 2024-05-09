@@ -20,13 +20,13 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body className={inter.className + " bg-background"}>
         <Header expand={toggleCollapsed} collapsed={collapsed} />
 
         <Navbar collapse={() => {}} collapsed={collapsed} />
 
-        <main className="relative m-auto flex w-[clamp(320px,90vw-2rem,1200px)] flex-col items-center gap-4 p-8 pt-[calc(clamp(50px,8vh,100px)+2rem)]">
+        <main className={`relative mr-auto flex w-[clamp(320px,90vw-2rem,1200px)] flex-col items-center gap-4 p-8 pt-[calc(clamp(50px,8vh,100px)+2rem)] ${!collapsed ? 'ml-96' : 'ml-auto'}`}>
           {children}
         </main>
       </body>
