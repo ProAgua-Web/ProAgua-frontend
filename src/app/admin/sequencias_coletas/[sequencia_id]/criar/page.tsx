@@ -116,7 +116,7 @@ export default function Page({ params }: { params: {
                 />
 
                 <div className="flex gap-4">
-                    <label htmlFor="data">Data e hora:</label>
+                    <label htmlFor="data" className="flex self-center">Data e hora:</label>
                     <input
                         type="date"
                         id="data"

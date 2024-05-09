@@ -3,7 +3,7 @@
 import { useEdificacao } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useState } from "react";
 
-export default function VisualizarEdificacao({ params }:{ params: { codigo_edificacao: string } }) {
+export default function VisualizarEdificacao({ params }: { params: { codigo_edificacao: string } }) {
     const edificacao = useEdificacao(params.codigo_edificacao);
     const [editable, setEditable] = useState<Boolean>(false);
 
@@ -25,40 +25,35 @@ export default function VisualizarEdificacao({ params }:{ params: { codigo_edifi
 
     return (
         <>
-            <h2 className="mb-4 text-3xl font-bold text-neutral-600">
-                Editar Edificação
+            <h2 className="text-4xl text-neutral-700 font-bold mb-8">
+                {editable ? "Editar" : "Visualizar"} Edificação
             </h2>
-
-            <form
-                method="none"
-                className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
-                onSubmit={submitForm}
-            >
+            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
                 <label htmlFor="codigo">Código:</label>
                 <input
                     type="text"
                     id="codigo"
                     name="codigo"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    defaultValue={edificacao?.codigo}  
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    defaultValue={edificacao?.codigo}
                     disabled={!editable}
                 />
 
-                <label htmlFor="nome" className="mt-4">Nome:</label>
+                <label htmlFor="nome">Nome:</label>
                 <input
                     type="text"
                     id="nome"
                     name="nome"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     defaultValue={edificacao?.nome}
                     disabled={!editable}
                 />
 
-                <label htmlFor="campus" className="mt-4">Campus:</label>
+                <label htmlFor="campus">Campus:</label>
                 <select
                     id="campus"
                     name="campus"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     defaultValue={edificacao?.campus}
                     disabled={!editable}
                 >
@@ -66,18 +61,18 @@ export default function VisualizarEdificacao({ params }:{ params: { codigo_edifi
                     <option value="OE">Oeste</option>
                 </select>
 
-                <label htmlFor="cronograma" className="mt-4">Cronograma:</label>
+                <label htmlFor="cronograma">Cronograma:</label>
                 <input
                     type="number"
                     id="cronograma"
                     name="cronograma"
-                    className="rounded-md border border-neutral-200 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     defaultValue={edificacao?.cronograma}
                     disabled={!editable}
                 />
 
-                <label htmlFor="foto" className="mt-4">Imagem:</label>
-                {edificacao?.imagem 
+                <label htmlFor="foto">Imagem:</label>
+                {edificacao?.imagem
                     ? <img
                         id="imagePreview"
                         alt="Imagem Preview"
@@ -90,7 +85,7 @@ export default function VisualizarEdificacao({ params }:{ params: { codigo_edifi
                 <input
                     id="editar"
                     type="submit"
-                    className="mt-4 rounded-md border bg-green-500 px-4 py-2 text-center font-semibold text-white hover:bg-green-600"
+                    className={`rounded-lg border ${editable ? 'bg-green-500 hover:bg-green-600' : 'bg-primary-500 hover:bg-primary-600'} px-6 py-4 text-center font-semibold text-white`}
                     onClick={event => {
                         if (!editable) {
                             event.preventDefault();
@@ -102,9 +97,9 @@ export default function VisualizarEdificacao({ params }:{ params: { codigo_edifi
 
                 <button
                     type="button"
-                    className="mt-4 rounded-md border bg-red-500 px-4 py-3 mt-2 text-center font-semibold text-white hover:bg-red-600 disabled:bg-gray-400 disabled:text-gray-300"
+                    className={`rounded-lg border bg-red-500 px-6 py-4 text-center font-semibold text-white hover:bg-red-600 disabled:bg-gray-400 disabled:text-gray-300 ${editable ? '' : 'hidden'}`}
                     disabled={!editable}
-                    >
+                >
                     Excluir
                 </button>
 
@@ -112,7 +107,7 @@ export default function VisualizarEdificacao({ params }:{ params: { codigo_edifi
                     <>
                         <button
                             type="button"
-                            className="mt-4 rounded-md border bg-gray-500 px-4 py-2 text-center font-semibold text-white hover:bg-gray-600"
+                            className={`rounded-lg border bg-gray-500 px-6 py-4 text-center font-semibold text-white hover:bg-gray-600`}
                             onClick={() => setEditable(false)}
                         >
                             Cancelar

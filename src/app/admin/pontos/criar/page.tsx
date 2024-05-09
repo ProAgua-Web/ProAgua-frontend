@@ -65,45 +65,43 @@ export default function Pontos() {
 
     return (
         <>
-            <h1 className="mb-4 text-3xl font-bold text-neutral-600">Criar ponto</h1>
+            <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar ponto de coleta</h1>
 
-            <form
-                method="post"
-                className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
-                onSubmit={submitForm}
-            >
-                <label htmlFor="" className="mt-4">Edificação:</label>
+            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
+
+                <label htmlFor="">Edificação:</label>
                 <select 
                     id="edificacao"
                     name="edificacao"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 >
+                    <option value="">-</option>
                     {edificacoes.map((edificacao: Edificacao) => {
                         return <option value={edificacao.codigo} >{edificacao.codigo} - {edificacao.nome}</option>
                     })}
                 </select >
 
-                <label htmlFor="" className="mt-4">Ambiente:</label>
+                <label htmlFor="">Ambiente:</label>
                 <input
                     type="text"
                     id="ambiente"
                     name="ambiente"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 />
 
-                <label htmlFor="" className="mt-4">Tombo:</label>
+                <label htmlFor="">Tombo:</label>
                 <input
                     type="text"
                     id="tombo"
                     name="tombo"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 />
 
-                <label htmlFor="" className="mt-4">Tipo:</label>
+                <label htmlFor="">Tipo:</label>
                 <select
                     id="tipo"
                     name="tipo"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 >
                     <option value="1">Bebedouro</option>
                     <option value="2">RPS - Reservatório predial superior</option>
@@ -112,24 +110,21 @@ export default function Pontos() {
                     <option value="5">RDI - Reservatório de destribuição inferior</option>
                 </select>
 
-                <label htmlFor="" className="mt-4">Ponto a montante:</label>
+                <label htmlFor="">Ponto a montante:</label>
                 <select
                     id="amontante"
                     name="amontante"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 >
                 <option value="">-</option>
                 {pontos.map((ponto: Ponto) => {
-                    console.log(ponto)
                     return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo -1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan"  && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo: ""}</option>
                 })}
                 </select>
 
-                <input
-                    type="submit"
-                    value="Criar"
-                    className="mt-8 w-full self-end rounded-md bg-green-500 px-4 py-2 font-semibold text-white"
-                />
+                <div className="rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-center">
+                    <input id="criar" type="submit" value="Criar" />
+                </div>
             </form>
         </>
     );

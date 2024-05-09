@@ -65,21 +65,17 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
 
     return (
         <>
-            <h1 className="mb-4 text-3xl font-bold text-neutral-600">Criar ponto</h1>
+            <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar ponto de coleta</h1>
 
-            <form
-                method="post"
-                className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
-                onSubmit={submitForm}
-            >
+            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
 
                 {edificacoes.length > 0 && (
                     <>
-                        <label htmlFor="" className="mt-4">Edificação:</label>
+                        <label htmlFor="">Edificação:</label>
                         <select
                             id="edificacao"
                             name="edificacao"
-                            className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                            className="rounded-lg border border-neutral-400 px-6 py-4"
                             defaultValue={params.cod_edificacao}
                         >
                             {edificacoes.map((edificacao: Edificacao) => {
@@ -94,7 +90,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                     type="text"
                     id="ambiente"
                     name="ambiente"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 />
 
                 <label htmlFor="" className="mt-4">Tombo:</label>
@@ -102,14 +98,14 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                     type="text"
                     id="tombo"
                     name="tombo"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 />
 
                 <label htmlFor="" className="mt-4">Tipo:</label>
                 <select
                     id="tipo"
                     name="tipo"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 >
                     <option value="1">Bebedouro</option>
                     <option value="2">RPS - Reservatório predial superior</option>
@@ -122,7 +118,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                 <select
                     id="amontante"
                     name="amontante"
-                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                 >
                     <option value="">-</option>
                     {pontos.map((ponto: Ponto) => {
@@ -131,11 +127,9 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                     })}
                 </select>
 
-                <input
-                    type="submit"
-                    value="Criar"
-                    className="mt-8 w-full self-end rounded-md bg-green-500 px-4 py-2 font-semibold text-white"
-                />
+                <div className="rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-center">
+                    <input id="criar" type="submit" value="Criar" />
+                </div>
             </form>
         </>
     );

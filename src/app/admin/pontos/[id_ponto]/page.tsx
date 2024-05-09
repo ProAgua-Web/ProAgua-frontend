@@ -42,42 +42,38 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
 
     return (
         <>
-            <h2 className="mb-4 text-3xl font-bold text-neutral-600">
+            <h2 className="text-4xl text-neutral-700 font-bold mb-8">
                 {editable ? "Editar" : "Visualizar"} Ponto
             </h2>
 
-            <form
-                method="none"
-                // className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
-                className="flex flex-col max-w-600px w-full"
-                onSubmit={submitForm}
-            >
+            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
+
                 <label htmlFor="id">Id:</label>
                 <input
                     type="text"
                     id="id"
                     name="id"
-                    className="rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     defaultValue={params.id_ponto}
                     disabled
                 />
 
-                <label htmlFor="ambiente" className="mt-4">Ambiente:</label>
+                <label htmlFor="ambiente">Ambiente:</label>
                 <input
                     type="text"
                     id="ambiente"
                     name="ambiente"
-                    className="rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     defaultValue={ponto?.ambiente}
                     disabled={!editable}
                 />
 
-                <label htmlFor="tombo" className="mt-4">tombo:</label>
+                <label htmlFor="tombo">tombo:</label>
                 <input
                     type="text"
                     id="tombo"
                     name="tombo"
-                    className="rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     defaultValue={ponto?.tombo}
                     disabled={!editable}
                 />
@@ -85,12 +81,12 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 {
                     edificacoes.length > 0 && (
                         <>
-                            <label htmlFor="" className="mt-4">Edificação:</label>
+                            <label htmlFor="">Edificação:</label>
 
                             <select
                                 id="edificacao"
                                 name="edificacao"
-                                className="bg-white rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                                className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                                 defaultValue={ponto?.edificacao.codigo}
                                 disabled={!editable}
                             >
@@ -103,13 +99,13 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     )
                 }
 
-                <label htmlFor="tipo" className="mt-4">
+                <label htmlFor="tipo">
                     Tipo:
                 </label>
                 <select
                     id="tipo"
                     name="tipo"
-                    className="bg-white rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     defaultValue={ponto?.tipo}
                     disabled={!editable}
                 >
@@ -124,10 +120,10 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
 
                 {
                     pontos.length > 0 && (
-                        <><label htmlFor="amontante" className="mt-4">Amontante:</label><select
+                        <><label htmlFor="amontante">Amontante:</label><select
                             id="amontante"
                             name="amontante"
-                            className="bg-white rounded-md border border-neutral-300 mb-4 px-4 py-3 mt-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                            className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                             defaultValue={pontos.length > 0 ? ponto?.amontante?.id : undefined}
                             // value={ponto?.amontante?.id}
                             disabled={!editable}
@@ -139,38 +135,40 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                         </select></>)
                 }
 
-                <label className="mt-4">QR code:</label>
+                <label>QR code:</label>
                 <QRCode data={process.env.NEXT_PUBLIC_BASE_URL + "/pontos/" + params.id_ponto} width={150} />
 
                 <input
                     id="editar"
                     type="submit"
-                    className="mt-4 rounded-md border bg-green-500 px-4 py-3 mt-2 text-center font-semibold text-white hover:bg-green-600"
-                    value={editable ? "Salvar" : "Habilitar edição"}
-                    onClick={(e) => {
+                    className={`rounded-lg border ${editable ? 'bg-green-500 hover:bg-green-600' : 'bg-primary-500 hover:bg-primary-600'} px-6 py-4 text-center font-semibold text-white`}
+                    onClick={event => {
                         if (!editable) {
+                            event.preventDefault();
                             setEditable(true);
-                            e.preventDefault();
                         }
                     }}
+                    value={editable ? "Salvar" : "Habilitar edição"}
                 />
 
                 <button
                     type="button"
-                    className="mt-4 rounded-md border bg-red-500 px-4 py-3 mt-2 text-center font-semibold text-white hover:bg-red-600 disabled:bg-gray-400 disabled:text-gray-300"
+                    className={`rounded-lg border bg-red-500 px-6 py-4 text-center font-semibold text-white hover:bg-red-600 disabled:bg-gray-400 disabled:text-gray-300 ${editable ? '' : 'hidden'}`}
                     disabled={!editable}
                 >
                     Excluir
                 </button>
 
                 {editable && (
-                    <button
-                        type="button"
-                        className="mt-4 rounded-md border bg-gray-500 px-4 py-3 mt-2 text-center font-semibold text-white hover:bg-gray-600"
-                        onClick={() => setEditable(false)}
-                    >
-                        Cancelar
-                    </button>
+                    <>
+                        <button
+                            type="button"
+                            className={`rounded-lg border bg-gray-500 px-6 py-4 text-center font-semibold text-white hover:bg-gray-600`}
+                            onClick={() => setEditable(false)}
+                        >
+                            Cancelar
+                        </button>
+                    </>
                 )}
             </form>
         </>

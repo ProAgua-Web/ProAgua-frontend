@@ -69,60 +69,54 @@ export default function CriarEdificacao() {
 
     return (
         <>
-            <h2 className="mb-4 text-3xl font-bold text-neutral-600">
-                Criar Edificação
-            </h2>
+            <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar edificação</h1>
 
-            <form
-                method="post"
-                className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
-                onSubmit={submitForm}
-            >
+            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
                 <label htmlFor="codigo">Código:</label>
                 <input
                     type="text"
                     id="codigo"
                     name="codigo"
-                    className="rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                     required
                 />
 
-                <label htmlFor="nome" className="mt-4">
+                <label htmlFor="nome">
                     Nome:
                 </label>
                 <input
                     type="text"
                     id="nome"
                     name="nome"
-                    className="rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                     required
                 />
 
-                <label htmlFor="campus" className="mt-4">
+                <label htmlFor="campus">
                     Campus:
                 </label>
                 <select
                     id="campus"
                     name="campus"
-                    className="rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                     required
                 >
                     <option value="LE">Leste</option>
                     <option value="OE">Oeste</option>
                 </select>
 
-                <label htmlFor="cronograma" className="mt-4">
+                <label htmlFor="cronograma">
                     Cronograma:
                 </label>
                 <input
                     type="number"
                     id="cronograma"
                     name="cronograma"
-                    className="rounded-md border border-neutral-200 px-4 py-2"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
                     required
                 />
 
-                <label htmlFor="foto" className="mt-4">
+                <label htmlFor="foto">
                     Foto:
                 </label>
 
@@ -137,12 +131,9 @@ export default function CriarEdificacao() {
 
                 <input type="file" id="foto" name="foto" onChange={selectImage} />
 
-                <input
-                    id="criar"
-                    type="submit"
-                    className="mt-4 rounded-md border bg-green-500 px-4 py-2 text-center font-semibold text-white hover:bg-green-600"
-                    value="Criar"
-                />
+                <div className="rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-center">
+                    <input id="criar" type="submit" value="Criar" />
+                </div>
             </form>
         </>
     );

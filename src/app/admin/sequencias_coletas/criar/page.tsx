@@ -17,7 +17,7 @@ export default function Page() {
     }, [])
 
     useEffect(() => {
-       ( async () => {
+        (async () => {
             if (edificacao != null) {
                 const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + edificacao.pontos_url);
                 const pontos: Ponto[] = (await resp.json()).items;
@@ -34,7 +34,7 @@ export default function Page() {
             amostragem: Number(formData.get("amostragem")),
             ponto: Number(formData.get("ponto")),
         };
-        
+
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/sequencias/", {
             method: "POST",
             headers: {
@@ -42,67 +42,59 @@ export default function Page() {
             },
             body: JSON.stringify(data),
         })
-        
+
         if (!response.ok) {
             console.log("Erro ao criar sequencia");
         }
-            
-        window.location.href = "/admin/sequencias_coletas";    
+
+        window.location.href = "/admin/sequencias_coletas";
     };
 
     return (
         <>
-            <>
-                <h1 className="mb-4 text-3xl font-bold text-neutral-600">Criar sequencia de coletas</h1>
+            <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar sequencia de coletas</h1>
 
-                <form
-                    method="post"
-                    className="flex flex-col rounded-xl border border-neutral-200 p-8 shadow-lg"
-                    onSubmit={submitForm}
+            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
+
+                <label htmlFor="" >Edificação:</label>
+                <select
+                    id="edificacao"
+                    name="edificacao"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
+                    onChange={e => {
+                        let index = parseInt(e.target.value);
+                        setEdificacao(edificacoes[index]);
+                    }}
                 >
+                    <option>-</option>
+                    {edificacoes.map((edificacao, index) => <option value={index}>{edificacao.codigo} - {edificacao.nome}</option>)}
+                </select >
 
-                    <label htmlFor="" className="mt-4">Edificação:</label>
-                    <select
-                        id="edificacao"
-                        name="edificacao"
-                        className="bg-white rounded-md border border-neutral-200 px-4 py-2"
-                        onChange={e => {
-                            let index = parseInt(e.target.value);
-                            setEdificacao(edificacoes[index]);
-                        }}
-                    >
-                        <option>-</option>
-                        {edificacoes.map((edificacao, index) => <option value={index}>{edificacao.codigo} - {edificacao.nome}</option>)}
-                    </select >
+                <label htmlFor="" >Ponto:</label>
+                <select
+                    id="ponto"
+                    name="ponto"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
+                >
+                    <option>-</option>
+                    {edificacao && pontos && pontos.map(ponto => {
+                        return (
+                            <option value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} - {ponto.ambiente}</option>
+                        )
+                    })}
+                </select>
+                <label htmlFor="" >Amostragem:</label>
+                <input
+                    type="number"
+                    id="amostragem"
+                    name="amostragem"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
+                />
 
-                    <label htmlFor="" className="mt-4">Ponto:</label>
-                    <select
-                        id="ponto"
-                        name="ponto"
-                        className="bg-white rounded-md border border-neutral-200 px-4 py-2"
-                    >
-                        <option>-</option>
-                        {edificacao && pontos && pontos.map(ponto => {
-                            return (
-                                <option value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} - {ponto.ambiente}</option>
-                            )
-                        })}
-                    </select>
-                    <label htmlFor="" className="mt-4">Amostragem:</label>
-                    <input
-                        type="number"
-                        id="amostragem"
-                        name="amostragem"
-                        className="bg-white rounded-md border border-neutral-200 px-4 py-2"
-                    />
-
-                    <input
-                        type="submit"
-                        value="Criar"
-                        className="mt-8 w-full self-end rounded-md bg-green-500 px-4 py-2 font-semibold text-white"
-                    />
-                </form>
-            </>
+                <div className="rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-center">
+                    <input id="criar" type="submit" value="Criar" />
+                </div>
+            </form>
         </>
     );
 }
