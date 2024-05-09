@@ -25,7 +25,7 @@ export default function Pontos() {
             ambiente: target.ambiente.value,
             tombo: target.tombo.value,
             tipo: parseInt(target.tipo.value),
-            amontante: target.amontante.value,
+            amontante: parseInt(target.amontante.value),
         };
 
         fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/", {
