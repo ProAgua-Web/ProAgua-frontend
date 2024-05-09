@@ -1,13 +1,13 @@
 "use client"
 
-import { Edificacao } from "@/utils/types";
+import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
 import { useEffect, useState } from "react";
 
 export default function Pontos() {
-    // TODO: adicionar campo para definição de ponto a montante
     // TODO: adicionar campo para adição de imagem
-    
+
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
+    const [pontos, setPontos] = useState<Ponto[]>([]);
 
     const submitForm = (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -17,6 +17,7 @@ export default function Pontos() {
             ambiente: { value: string };
             tombo: { value: string };
             tipo: { value: string };
+            amontante: { value: string };
         };
 
         const data = {
@@ -24,6 +25,7 @@ export default function Pontos() {
             ambiente: target.ambiente.value,
             tombo: target.tombo.value,
             tipo: parseInt(target.tipo.value),
+            amontante: target.amontante.value,
         };
 
         fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/", {
@@ -53,7 +55,14 @@ export default function Pontos() {
         })();
     }, []);
 
-    
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos");
+            setPontos((await response.json()).items);
+        })();
+    }, []);
+
     return (
         <>
             <h1 className="mb-4 text-3xl font-bold text-neutral-600">Criar ponto</h1>
@@ -101,6 +110,19 @@ export default function Pontos() {
                     <option value="3">RPI - Reservatório predial inferior</option>
                     <option value="4">RDS - Reservatório de destribuição superior</option>
                     <option value="5">RDI - Reservatório de destribuição inferior</option>
+                </select>
+
+                <label htmlFor="" className="mt-4">Ponto a montante:</label>
+                <select
+                    id="amontante"
+                    name="amontante"
+                    className="bg-white rounded-md border border-neutral-200 px-4 py-2"
+                >
+                <option value="">-</option>
+                {pontos.map((ponto: Ponto) => {
+                    console.log(ponto)
+                    return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo -1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan"  && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo: ""}</option>
+                })}
                 </select>
 
                 <input
