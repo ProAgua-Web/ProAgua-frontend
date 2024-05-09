@@ -24,7 +24,7 @@ export default function Navbar(props: {
       name: "Pontos de coleta",
     },
     {
-      href: "/admin#solicitacoes",
+      href: "/admin/solicitacoes/",
       icon: <i className="bi bi-envelope-fill"></i>,
       name: "Solicitações",
     },
