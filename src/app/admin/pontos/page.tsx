@@ -34,7 +34,7 @@ function CardEdificacao(props: {group: [string, Ponto[]]}) {
 }
 
 export default async function Pontos() {
-  const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos');
+  const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos?limit=10000', {cache: "no-cache"});
   const pontos: Ponto[] = (await resp.json()).items;
   const groups = groupBy<Ponto>(pontos, (ponto: Ponto) => {
     return `${ponto.edificacao.codigo} - ${ponto.edificacao.nome}`
