@@ -1,7 +1,7 @@
 "use client";
 
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
 
 export default function Page() {
     const [edificacoes, setEdficiacoes] = useState<Edificacao[]>([]);
@@ -25,43 +25,31 @@ export default function Page() {
             }
         })()
     }, [edificacao])
-    
-    const submitForm = (e: SyntheticEvent) => {
-        e.preventDefault();
 
-        const target = e.target as typeof e.target & {
-            edificacao: { value: string };
-            ponto: { value: string };
-            amostragem: { value: string };
-        };
+    async function submitForm(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
+        const formData = new FormData(event.currentTarget);
         const data = {
-            edificacao: target.edificacao.value,
-            ponto: target.ponto.value,
-            amostragem: parseInt(target.amostragem.value),
+            amostragem: Number(formData.get("amostragem")),
+            ponto: Number(formData.get("ponto")),
         };
-
-        fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/sequencias/", {
+        
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/sequencias/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Erro ao criar sequencia");
-                }
-            })
-            .then(() => {
-                window.location.href = "/admin/sequencias_coletas";
-            })
-            .catch((err) => {
-                alert(err);
-            });
+        
+        if (!response.ok) {
+            console.log("Erro ao criar sequencia");
+        }
+            
+        window.location.href = "/admin/sequencias_coletas";    
     };
 
-    
     return (
         <>
             <>
