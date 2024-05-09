@@ -8,7 +8,7 @@ export type Ponto = {
     edificacao: Edificacao;
     status: boolean;
     status_message: string;
-    amontante?: string;
+    amontante?: Ponto;
 };
 
 export type Sequencia = {
