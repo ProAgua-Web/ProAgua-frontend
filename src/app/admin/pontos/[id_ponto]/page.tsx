@@ -27,6 +27,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 tipo: Number(formData.get("tipo")),
                 codigo_edificacao: formData.get("edificacao"),
                 amontante: formData.get("amontante"),
+                imagem: formData.get("imagem"),
             }),
         })
 
@@ -134,6 +135,18 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                             })}
                         </select></>)
                 }
+
+                <label htmlFor="foto">Imagem:</label>
+                {ponto?.imagem
+                    ? <img
+                        id="imagePreview"
+                        alt="Imagem Preview"
+                        src={`${process.env.NEXT_PUBLIC_API_URL}/${ponto?.imagem}`}
+                        className="mb-4 max-h-48 w-full rounded-lg border border-neutral-300 bg-neutral-200 object-cover"
+                    />
+                    : <span className="text-neutral-500 text-sm">Sem imagem</span>
+                }
+
 
                 <label>QR code:</label>
                 <QRCode data={process.env.NEXT_PUBLIC_BASE_URL + "/pontos/" + params.id_ponto} width={150} />
