@@ -1,52 +1,85 @@
 "use client"
 
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Pontos() {
-    // TODO: adicionar campo para adição de imagem
-
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
     const [pontos, setPontos] = useState<Ponto[]>([]);
 
-    const submitForm = (e: React.SyntheticEvent) => {
-        e.preventDefault();
+    const [file, setFile] = useState<File | null>();
+    const [preview, setPreview] = useState<string>();
 
-        const target = e.target as typeof e.target & {
-            edificacao: { value: string };
-            ambiente: { value: string };
-            tombo: { value: string };
-            tipo: { value: string };
-            amontante: { value: string };
-        };
+    const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFile(event.target.files?.[0]);
+    };
+
+
+    async function submitForm(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+    
+        const formData = new FormData(event.currentTarget);
 
         const data = {
-            codigo_edificacao: target.edificacao.value,
-            ambiente: target.ambiente.value,
-            tombo: target.tombo.value,
-            tipo: parseInt(target.tipo.value),
-            amontante: parseInt(target.amontante.value),
+            codigo_edificacao: formData.get("edificacao"),
+            ambiente: formData.get("ambiente"),
+            tombo: formData.get("tombo"),
+            tipo: Number(formData.get("tipo")),
+            amontante: Number(formData.get("amontante")),
         };
 
-        fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/", {
+        
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Erro ao criar ponto");
-                }
-            })
-            .then(() => {
-                window.location.href = "/admin/pontos";
-            })
-            .catch((err) => {
-                alert(err);
-            });
+        });
+
+        if (response.status === 200) {
+            alert("Ponto de coleta criado com sucesso!");
+            const responseData = await response.json();
+            const id = responseData.id;
+
+            if (file != undefined && file != null) {
+                let formData = new FormData();
+                formData.append("imagem", file);
+                await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos/${id}/imagem`,
+                    {
+                        method: "POST",
+                        body: formData,
+                    },
+                ).then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao adicionar imagem");
+                    } else {
+                        alert("Ponto de coleta criado com sucesso!");
+                        window.location.href = "/admin/pontos";
+                    }
+
+                })
+                .catch((err) => {
+                    alert(err);
+                });
+        }
+        }
+
     };
+
+    // Carregar imagem de preview
+    useEffect(() => {
+        if (!file) {
+            setPreview(undefined);
+            return;
+        }
+
+        const fileURL = URL.createObjectURL(file);
+        setPreview(fileURL);
+
+        return () => URL.revokeObjectURL(fileURL);
+    }, [file]);
 
     useEffect(() => {
         (async () => {
@@ -121,6 +154,21 @@ export default function Pontos() {
                     return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo -1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan"  && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo: ""}</option>
                 })}
                 </select>
+
+                <label htmlFor="foto">
+                    Foto:
+                </label>
+
+                {preview && (
+                    <img
+                        id="imagePreview"
+                        alt="Imagem Preview"
+                        src={preview}
+                        className="mb-4 max-h-48 w-full rounded-lg border border-neutral-300 bg-neutral-200 object-cover"
+                    />
+                )}
+
+                <input type="file" id="foto" name="foto" onChange={selectImage} />
 
                 <div className="rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-center">
                     <input id="criar" type="submit" value="Criar" />

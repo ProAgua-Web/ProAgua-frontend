@@ -9,6 +9,7 @@ export type Ponto = {
     status: boolean;
     status_message: string;
     amontante?: Ponto;
+    imagem?: string;
 };
 
 export type Sequencia = {
