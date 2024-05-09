@@ -1,4 +1,4 @@
-import { Ponto, TIPOS_PONTOS} from "@/utils/types";
+import { Ponto, TIPOS_PONTOS } from "@/utils/types";
 
 
 export default function CardPonto(props: { ponto: Ponto }) {
@@ -23,5 +23,18 @@ export default function CardPonto(props: { ponto: Ponto }) {
         </a>
       </div>
     )
+  );
+}
+
+
+export function AddCard({ cod_edificacao }: { cod_edificacao?: string }) {
+  return (
+    <a href={`/admin/pontos/criar${cod_edificacao ? `/${cod_edificacao}` : ''}`}>
+      <div
+        className="relative px-2 py-4 flex aspect-square w-[260px] flex-col items-center justify-center rounded-md border border-neutral-300 bg-white hover:bg-slate-50 hover:text-green-500 text-center cursor-pointer"
+      >
+        <h2 className="text-center text-3xl select-none">+</h2>
+      </div>
+    </a>
   );
 }
