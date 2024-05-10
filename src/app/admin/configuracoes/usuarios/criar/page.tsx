@@ -4,8 +4,12 @@ import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
 
+    const [submiting, setSubmiting] = useState<boolean>(false);
+
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        setSubmiting(true);
 
         const formData = new FormData(event.currentTarget);
 
@@ -38,6 +42,8 @@ export default function Page() {
         } else {
             alert("Erro ao criar usuário");
         }
+
+        setSubmiting(false);
     }
 
     return (
@@ -99,8 +105,8 @@ export default function Page() {
                     required
                 />
 
-                <div className="rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-center">
-                    <input id="criar" type="submit" value="Criar" />
+                <div className="w-full">
+                    <input id="criar" type="submit" className={"w-full rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500 text-white font-semibold"} value={`${submiting ? "Criando..." : "Criar"}`} disabled={submiting} />
                 </div>
             </form>
         </>
