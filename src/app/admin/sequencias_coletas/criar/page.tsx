@@ -43,11 +43,14 @@ export default function Page() {
             body: JSON.stringify(data),
         })
 
-        if (!response.ok) {
-            console.log("Erro ao criar sequencia");
+        if (response.status === 200) {
+            alert("Sequencia de coleta criada com sucesso!");
+            const responseData = await response.json();
+            const id = responseData.id;
+            window.location.href = `/admin/sequencias_coletas`;
+        } else {
+            alert("Erro ao criar Sequencia de coleta");
         }
-
-        window.location.href = "/admin/sequencias_coletas";
     };
 
     return (

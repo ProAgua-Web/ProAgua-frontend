@@ -31,7 +31,6 @@ export default function Page({ params }: { params: {
             data: new Date(String(formData.get("data"))),
             ordem: formData.get("ordem"),
         };
-        console.log(data);
 
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/", {
             method: "POST",
@@ -40,9 +39,15 @@ export default function Page({ params }: { params: {
             },
             body: JSON.stringify(data),
         });
-        console.log(response);
-        window.location.href = `/admin/sequencias_coletas/${sequencia_id}`;
-        event.preventDefault();
+
+        if (response.status === 200) {
+            alert("Sequência de coleta criada com sucesso!");
+            const responseData = await response.json();
+            const id = responseData.id;
+            window.location.href = `/admin/sequencias_coletas/${sequencia_id}`;
+        } else {
+           alert("Erro ao criar Sequência de coleta");
+        }
     };
 
     return (

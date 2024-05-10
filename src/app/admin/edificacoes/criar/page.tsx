@@ -4,7 +4,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 
 export default function CriarEdificacao() {
     // TODO: Criar campo para múltplas imagens
-    
+
     const [file, setFile] = useState<File | null>();
     const [preview, setPreview] = useState<string>();
 
@@ -16,13 +16,6 @@ export default function CriarEdificacao() {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        
-        // const target = event.target as typeof event.target & {
-        //     codigo: { value: string };
-        //     nome: { value: string };
-        //     campus: { value: string };
-        //     cronograma: { value: string };
-        // };
 
         const data = {
             codigo: formData.get("codigo"),
@@ -38,20 +31,30 @@ export default function CriarEdificacao() {
             },
             body: JSON.stringify(data),
         })
-            
-        if (file != undefined && file != null) {
-            let formData = new FormData();
-            formData.append("imagem", file);
-            await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/${data.codigo}/imagem`,
-                {
-                    method: "POST",
-                    body: formData,
-                },
-            );
+
+        if (response.status === 200) {
+            if (file != undefined && file != null) {
+                let formData = new FormData();
+                formData.append("imagem", file);
+                await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/${data.codigo}/imagem`,
+                    {
+                        method: "POST",
+                        body: formData,
+                    },
+                ).then((response) => {
+                    if (!response.ok) {
+                        alert("Erro ao adicionar imagem");
+                    } else {
+                        alert("Edificação criada com sucesso!");
+                        window.location.href = "/admin/edificacoes";
+                    }
+                }
+                );
+            }
+        } else {
+            alert("Erro ao criar edificação");
         }
-        
-        window.location.href = "/admin/edificacoes";
     };
 
     // Carregar imagem de preview

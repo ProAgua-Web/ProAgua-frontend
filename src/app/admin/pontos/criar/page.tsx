@@ -38,7 +38,6 @@ export default function Pontos() {
         });
 
         if (response.status === 200) {
-            alert("Ponto de coleta criado com sucesso!");
             const responseData = await response.json();
             const id = responseData.id;
 
@@ -53,7 +52,7 @@ export default function Pontos() {
                     },
                 ).then((response) => {
                     if (!response.ok) {
-                        throw new Error("Erro ao adicionar imagem");
+                        alert("Erro ao adicionar imagem");
                     } else {
                         alert("Ponto de coleta criado com sucesso!");
                         window.location.href = "/admin/pontos";
@@ -64,6 +63,8 @@ export default function Pontos() {
                     alert(err);
                 });
         }
+        } else {
+            alert("Erro ao criar ponto de coleta");
         }
 
     };

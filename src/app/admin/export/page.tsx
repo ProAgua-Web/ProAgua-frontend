@@ -34,6 +34,7 @@ export default function Page() {
         (async () => {
             const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos`);
             const pontos = await resp.json();
+            console.log(pontos);
             setPontos(pontos.items);
         })();
     }, []);
