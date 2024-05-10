@@ -9,6 +9,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
 
     const [file, setFile] = useState<File | null>();
     const [preview, setPreview] = useState<string>();
+    const [submiting, setSubmiting] = useState<boolean>(false);
 
     const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFile(event.target.files?.[0]);
@@ -17,6 +18,8 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        setSubmiting(true);
 
         const formData = new FormData(event.currentTarget);
 
@@ -62,11 +65,15 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                     .catch((err) => {
                         alert(err);
                     });
+            } else {
+                alert("Ponto de coleta criado com sucesso!");
+                window.location.href = "/admin/pontos";
             }
         } else {
             alert("Erro ao criar ponto de coleta");
         }
 
+        setSubmiting(false);
     };
 
     // Carregar imagem de preview
@@ -180,8 +187,8 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
 
                 <input type="file" id="foto" name="foto" onChange={selectImage} />
 
-                <div className="rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-center">
-                    <input id="criar" type="submit" value="Criar" />
+                <div className="w-full">
+                <input id="criar" type="submit" className={"w-full rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500 text-white font-semibold"}value={`${submiting ? "Criando..." : "Criar"}`} disabled={submiting}/>
                 </div>
             </form>
         </>

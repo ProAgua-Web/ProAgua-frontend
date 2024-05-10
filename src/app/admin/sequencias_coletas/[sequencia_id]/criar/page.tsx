@@ -2,11 +2,13 @@
 
 import { TIPOS_PONTOS } from "@/utils/types"
 import { useSequencia, usePontos, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 
-export default function Page({ params }: { params: {
-    sequencia_id: number
-}}) {
+export default function Page({ params }: {
+    params: {
+        sequencia_id: number
+    }
+}) {
     const { sequencia_id } = params;
     const sequencia = useSequencia(sequencia_id);
     const pontos = usePontos(
@@ -15,9 +17,15 @@ export default function Page({ params }: { params: {
 
     const usuarios = useUsuarios();
 
+    const [submiting, setSubmiting] = useState<boolean>(false);
+
     async function submitForm(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        setSubmiting(true);
+
         const formData = new FormData(event.currentTarget);
-    
+
         const data = {
             sequencia_id: sequencia_id,
             ponto_id: Number(formData.get("ponto")),
@@ -46,15 +54,17 @@ export default function Page({ params }: { params: {
             const id = responseData.id;
             window.location.href = `/admin/sequencias_coletas/${sequencia_id}`;
         } else {
-           alert("Erro ao criar Sequência de coleta");
+            alert("Erro ao criar Sequência de coleta");
         }
+
+        setSubmiting(false);
     };
 
     return (
         <>
             <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar nova coleta</h1>
             <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
-                <label htmlFor="ponto">Ponto de Coleta:</label>                        
+                <label htmlFor="ponto">Ponto de Coleta:</label>
                 <select
                     name="ponto"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
@@ -100,7 +110,7 @@ export default function Page({ params }: { params: {
                     />
                     <label htmlFor="coliformes">Coliformes Totais</label>
                 </div>
-                
+
                 <div className="flex gap-2">
                     <input
                         type="checkbox"
@@ -140,7 +150,7 @@ export default function Page({ params }: { params: {
                 </div>
 
                 <label htmlFor="responsaveis">Responsáveis:</label>
-                <select 
+                <select
                     name="responsaveis"
                     id="responsaveis"
                     className="rounded-lg border border-neutral-400 px-6 py-4"

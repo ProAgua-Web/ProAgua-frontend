@@ -10,6 +10,8 @@ export default function Pontos() {
     const [file, setFile] = useState<File | null>();
     const [preview, setPreview] = useState<string>();
 
+    const [submiting, setSubmiting] = useState<boolean>(false);
+
     const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFile(event.target.files?.[0]);
     };
@@ -17,7 +19,9 @@ export default function Pontos() {
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-    
+
+        setSubmiting(true);
+
         const formData = new FormData(event.currentTarget);
 
         const data = {
@@ -28,7 +32,7 @@ export default function Pontos() {
             amontante: Number(formData.get("amontante")),
         };
 
-        
+
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/", {
             method: "POST",
             headers: {
@@ -59,14 +63,18 @@ export default function Pontos() {
                     }
 
                 })
-                .catch((err) => {
-                    alert(err);
-                });
-        }
+                    .catch((err) => {
+                        alert(err);
+                    });
+            } else {
+                alert("Ponto de coleta criado com sucesso!");
+                window.location.href = "/admin/pontos";
+            }
         } else {
             alert("Erro ao criar ponto de coleta");
         }
 
+        setSubmiting(false);
     };
 
     // Carregar imagem de preview
@@ -104,7 +112,7 @@ export default function Pontos() {
             <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
 
                 <label htmlFor="">Edificação:</label>
-                <select 
+                <select
                     id="edificacao"
                     name="edificacao"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
@@ -150,10 +158,10 @@ export default function Pontos() {
                     name="amontante"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
                 >
-                <option value="">-</option>
-                {pontos.map((ponto: Ponto) => {
-                    return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo -1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan"  && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo: ""}</option>
-                })}
+                    <option value="">-</option>
+                    {pontos.map((ponto: Ponto) => {
+                        return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
+                    })}
                 </select>
 
                 <label htmlFor="foto">
