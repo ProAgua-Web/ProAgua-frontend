@@ -64,6 +64,7 @@ export type Usuario = {
     is_staff: boolean;
     is_active: boolean;
     date_joined: Date;
+    password: string;
 }
 
 export const TIPOS_PONTOS = [

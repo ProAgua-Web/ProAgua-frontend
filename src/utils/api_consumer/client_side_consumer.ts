@@ -87,3 +87,18 @@ export function useUsuarios() {
 
     return usuarios;
 }
+
+export function useUsuario(username: string) {
+    const [usuario, setUsuario] = useState<Usuario | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/usuarios/' + username);
+            const sequencia = await response.json();
+
+            setUsuario(sequencia);
+        })();
+    }, [username]);
+
+    return usuario;
+}
