@@ -1,13 +1,8 @@
 import { Usuario } from "@/utils/types";
+import { getUsuarios } from "@/utils/api_consumer/server_side_consumer";
 
-export default function Configuracoes() {
-    const users: Usuario[] = [
-        {username: "Solange (admin)"},
-        {username: "Thiago"},
-        {username: "Yan"},
-        {username: "Matheus"},
-        {username: "Juhan"},
-    ];
+export default async function Configuracoes() {
+    const usuarios: Usuario[] = await getUsuarios();
 
     return (
         <>
@@ -17,10 +12,10 @@ export default function Configuracoes() {
             <h2 className="text-2xl font-semibold mt-8 text-neutral-700">Usuários</h2>
             <div className="w-full bg-white shadow-lg rounded border border-neutral-300 p-4">
                 <ul>
-                    {users.map(user => (
+                    {usuarios.map(usuario => (
                         <li className="flex justify-between p-4 pr-0 border-b border-neutral-300 last:border-b-0">
-                            {user.username}
-                            <a href="#" className="px-4 py-2 border border-blue-500 rounded text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-600">Editar</a>
+                            {usuario.username}
+                            <a href={`/admin/configuracoes/usuarios/${usuario.username}`} className="px-4 py-2 border border-blue-500 rounded text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-600">Editar</a>
                         </li>
                     ))}
                 </ul>

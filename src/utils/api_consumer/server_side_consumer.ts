@@ -49,3 +49,9 @@ export async function updateEdificacao(edificacao: EdificacaoIn) {
             // alert(err);
         });
 }
+
+export async function getUsuarios() {
+    let resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios`, {cache: "no-cache"});
+    const usuarios = (await resp.json()).items;
+    return usuarios;
+}
