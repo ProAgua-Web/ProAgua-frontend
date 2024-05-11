@@ -11,6 +11,13 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     const [pontos, setPontos] = useState<Ponto[]>([]);
     const ponto = usePonto(parseInt(params.id_ponto));
     const [editable, setEditable] = useState<boolean>(false);
+    let [currentAmontante, setCurrentAmontante] = useState<string>(ponto?.amontante?.id?.toString() || '');
+
+    useEffect(() => {
+        if (ponto?.amontante) {
+            setCurrentAmontante(ponto.amontante.id.toString());
+        }
+    }, [ponto]);
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -26,12 +33,17 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 ambiente: formData.get("ambiente"),
                 tipo: Number(formData.get("tipo")),
                 codigo_edificacao: formData.get("edificacao"),
-                amontante: formData.get("amontante"),
+                amontante: formData.get("amontante") == "" ? null : formData.get("amontante"),
                 imagem: formData.get("imagem"),
             }),
         })
 
         window.location.href = "/admin/pontos";
+    }
+
+    function updateAmontante() {
+        const amontante = document.getElementById("amontante") as HTMLSelectElement;
+        setCurrentAmontante(amontante.value);
     }
 
     useEffect(() => {
@@ -121,19 +133,34 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
 
                 {
                     pontos.length > 0 && (
-                        <><label htmlFor="amontante">Amontante:</label><select
-                            id="amontante"
-                            name="amontante"
-                            className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                            defaultValue={pontos.length > 0 ? ponto?.amontante?.id : undefined}
-                            // value={ponto?.amontante?.id}
-                            disabled={!editable}
-                        >
-                            <option value="">-</option>
-                            {pontos.map((ponto: Ponto) => {
-                                return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>;
-                            })}
-                        </select></>)
+                        <>
+                            <label htmlFor="amontante">Amontante:</label>
+                            <div className="flex">
+
+                                <select
+                                    id="amontante"
+                                    name="amontante"
+                                    className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                                    defaultValue={pontos.length > 0 ? ponto?.amontante?.id : undefined}
+                                    disabled={!editable}
+                                    onChange={updateAmontante}
+                                >
+                                    <option value="">-</option>
+                                    {pontos.map((ponto: Ponto) => {
+                                        return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>;
+                                    })}
+                                </select>
+
+                                <a className="flex justify-center" href={currentAmontante ? "/admin/pontos/" + currentAmontante : "#"} target={currentAmontante ? "_blank" : "_self"}>
+                                    <svg className={currentAmontante ? `w-6 mx-4 fill-primary-600` : `w-6 mx-4 fill-neutral-500`}
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 576 512">
+                                        <path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
+                                    </svg>
+                                </a>
+
+                            </div>
+                        </>)
                 }
 
                 <label htmlFor="foto">Imagem:</label>
