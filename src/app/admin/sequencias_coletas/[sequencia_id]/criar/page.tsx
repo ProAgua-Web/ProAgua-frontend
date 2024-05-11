@@ -62,14 +62,23 @@ export default function Page({ params }: {
             <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar nova coleta</h1>
             <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
                 <label htmlFor="ponto">Ponto de Coleta:</label>
-                <select
-                    name="ponto"
-                    className="rounded-lg border border-neutral-400 px-6 py-4"
-                >
-                    {/* <!-- Os pontos serão adicionados aqui --> */}
-                    <option>-</option>
-                    {pontos.map(ponto => <option value={ponto.id} key={"ponto " + ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente}</option>)}
-                </select>
+                <div className="flex">
+                    <select
+                        name="ponto"
+                        className="w-full rounded-lg border border-neutral-400 px-6 py-4"
+                    >
+                        <option>-</option>
+                        {pontos.map(ponto => <option value={ponto.id} key={"ponto " + ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente}</option>)}
+                    </select>
+
+                    <a className="flex justify-center" href="/admin/pontos/criar" target="_blank">
+                        <svg className="w-6 mx-2 fill-primary-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 448 512">
+                            <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                        </svg>
+                    </a>
+                </div>
 
                 <label htmlFor="temperatura">Temperatura:</label>
                 <input

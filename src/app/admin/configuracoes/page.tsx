@@ -12,7 +12,7 @@ export default async function Configuracoes() {
             <div className="w-full bg-white shadow-lg rounded border border-neutral-300 p-4">
                 <ul>
                     {usuarios.map(usuario => (
-                        <li className="flex justify-between p-4 pr-0 border-b border-neutral-300 last:border-b-0">
+                        <li key={usuario.username} className="flex justify-between p-4 pr-0 border-b border-neutral-300 last:border-b-0">
                             {usuario.username}
                             <a href={`/admin/configuracoes/usuarios/${usuario.username}`} className="px-4 py-2 border border-blue-500 rounded text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-600">Editar</a>
                         </li>

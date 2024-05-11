@@ -16,15 +16,15 @@ export default function TablePontos(props: {pontos: Ponto[]}) {
                     </tr>
                 </thead>    
                 <tbody>
-                    {pontos.map(ponto => {
+                    {pontos.map((ponto, index) => {
                         return (
-                            <tr className="bg-sky-200 even:bg-sky-50">
-                                <td className="px-4 py-2">{ponto.id}</td>
-                                <td className="px-4 py-2">{ponto.edificacao.nome} | Campus: {ponto.edificacao.campus}</td>
-                                <td className="px-4 py-2">{ponto.tipo}</td>
-                                <td className="px-4 py-2">{ponto.tombo}</td>
-                                <td className="px-4 py-2">{ponto.status ? "Em conformidade" : "Não conforme"}</td>
-                                <td className="px-4 py-2"><a href={`pontos/${ponto.id}`}>Detalhes</a></td>
+                            <tr  key={"tr" + index} className="bg-sky-200 even:bg-sky-50">
+                                <td key={"td_id" + index} className="px-4 py-2">{ponto.id}</td>
+                                <td key={"td_edificacao" + index}className="px-4 py-2">{ponto.edificacao.nome} | Campus: {ponto.edificacao.campus}</td>
+                                <td key={"td_tipo" + index} className="px-4 py-2">{ponto.tipo}</td>
+                                <td key={"td_tombo" + index} className="px-4 py-2">{ponto.tombo}</td>
+                                <td key={"td_status" + index} className="px-4 py-2">{ponto.status ? "Em conformidade" : "Não conforme"}</td>
+                                <td key={"td_detalhes" + index} className="px-4 py-2"><a href={`pontos/${ponto.id}`}>Detalhes</a></td>
                         </tr>
                         )
                     })}
