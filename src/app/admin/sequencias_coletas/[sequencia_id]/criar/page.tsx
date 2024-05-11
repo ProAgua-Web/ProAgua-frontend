@@ -1,7 +1,7 @@
 'use client'
 
-import { TIPOS_PONTOS } from "@/utils/types"
-import { useSequencia, usePontos, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
+import { Ponto, TIPOS_PONTOS } from "@/utils/types"
+import { useSequencia, useUsuarios, usePontosAmontante } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useState } from "react";
 
 export default function Page({ params }: {
@@ -11,10 +11,8 @@ export default function Page({ params }: {
 }) {
     const { sequencia_id } = params;
     const sequencia = useSequencia(sequencia_id);
-    const pontos = usePontos(
-        sequencia ? sequencia.ponto_url : null
-    );
-
+    const pontos: Ponto[] = usePontosAmontante(sequencia?.ponto ? sequencia.ponto : null);
+    console.log(pontos);
     const usuarios = useUsuarios();
 
     const [submiting, setSubmiting] = useState<boolean>(false);

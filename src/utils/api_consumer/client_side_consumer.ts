@@ -58,6 +58,33 @@ export function usePontos(codigo_edificacao: string | null = null, id_sequencia:
     return pontos;
 }
 
+export function usePontosAmontante(ponto: Ponto | null) {
+    const [pontos, setPontos] = useState<Ponto[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            let tempPontos: Ponto[] = [];
+
+            const fetchPontosAmontante = async (ponto: Ponto) => {
+                tempPontos = [...tempPontos, ponto];
+
+                if (ponto.amontante) {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos/${ponto.amontante.id}`);
+                    const pontoAmontante: Ponto = await response.json();
+                    await fetchPontosAmontante(pontoAmontante);
+                }
+            };
+
+            if (ponto) {
+                await fetchPontosAmontante(ponto);
+                setPontos(tempPontos);
+            }
+        })();
+    }, [ponto]);
+
+    return pontos;
+}
+
 export function useSequencia(id_sequencia: number) {
     const [sequencia, setSequencia] = useState<Sequencia | null>(null);
 
