@@ -7,20 +7,9 @@ export default function Page({ params }: { params: { username: string } }) {
     const usuario = useUsuario(params.username);
     const [editable, setEditable] = useState<Boolean>(false);
 
-    console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/${params.username}`)
-    
-   
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        
-        console.log({
-            username: formData.get('username'),
-            first_name: formData.get('first_name'),
-            last_name: formData.get('last_name'),
-            email: formData.get('email'),
-        })
-    
         
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/${params.username}`, {
             method: 'PUT',

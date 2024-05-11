@@ -12,7 +12,6 @@ export default function Page({ params }: {
     const { sequencia_id } = params;
     const sequencia = useSequencia(sequencia_id);
     const pontos: Ponto[] = usePontosAmontante(sequencia?.ponto ? sequencia.ponto : null);
-    console.log(pontos);
     const usuarios = useUsuarios();
 
     const [submiting, setSubmiting] = useState<boolean>(false);
