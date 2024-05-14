@@ -50,13 +50,13 @@ export default function CriarEdificacao() {
                         alert("Erro ao adicionar imagem");
                     } else {
                         alert("Edificação criada com sucesso!");
-                        window.location.href = "/admin/edificacoes";
+                        window.location.href = "/admin/pontos";
                     }
                 }
                 );
             } else {
                 alert("Edificação criada com sucesso!");
-                window.location.href = "/admin/edificacoes";
+                window.location.href = "/admin/pontos";
             }
         } else {
             alert("Erro ao criar edificação");

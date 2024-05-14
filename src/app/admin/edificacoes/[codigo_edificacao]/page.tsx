@@ -20,7 +20,7 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
             })
         });
 
-        window.location.href = "/admin/edificacoes";
+        window.location.href = "/admin/pontos";
     }
 
     return (

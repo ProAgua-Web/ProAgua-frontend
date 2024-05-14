@@ -1,7 +1,7 @@
 import { Edificacao, EdificacaoIn, Ponto } from "@/utils/types";
 
-export async function getEdificacoes() {
-    let resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes`, {cache: "no-cache"});
+export async function getEdificacoes(limit:number = 100) {
+    let resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?limit=${limit}`, {cache: "no-cache"});
     const edificacoes: Edificacao[] = (await resp.json()).items;
     return edificacoes;
 }
