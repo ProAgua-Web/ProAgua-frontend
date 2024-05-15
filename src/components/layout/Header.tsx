@@ -9,12 +9,12 @@ export default function (props: {
     <header>
       <div
         id="header-bar"
-        className="h-[clamp(50px, 8vh, 100px)] fixed z-20 flex w-full items-center bg-primary-500 text-white-100 shadow-lg"
+        className="h-[clamp(50px,8vh,100px)] fixed z-20 flex w-full items-center bg-primary-500 text-white-100 shadow-lg"
       >
         <button
           id="menu-button"
           onClick={props.expand}
-          className="h-20 w-20 bg-primary-500 hover:bg-primary-600"
+          className="h-[clamp(50px,8vh,100px)] w-[clamp(50px,8vh,100px)] bg-primary-500 hover:bg-primary-600"
         >
           -
         </button>

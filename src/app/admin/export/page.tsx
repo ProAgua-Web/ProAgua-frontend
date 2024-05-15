@@ -149,139 +149,183 @@ export default function Page() {
     }
 
     return (
-        <>
-            <div className="w-full min-w-fit">
-                <div className="w-full mb-12">
-                    <h1 className="text-2xl mb-4 font-bold text-neutral-600">Filtrar dados</h1>
+        <div className="ml-[-120px]">
+            <h1 className="ml-[-26px] w-full text-center text-2xl mb-4 font-bold text-neutral-600">Tabela de visualização</h1>
+
+            <div className="w-md min-w-fit flex mb-14">
+                <TableColetas
+                    coletas={coletas}
+                />
+                <div className="max-h-[calc(100vh-clamp(50px,8vh,100px)-2rem)] mb-12 overflow-y-scroll fixed top-[calc(clamp(50px,8vh,100px)+1rem)] right-4 z-[1000] bg-white shadow-xl border border-neutral-300 rounded-xl">
                     <form
                         method="GET"
                         onSubmit={submitForm}
-                        className="w-full flex flex-wrap gap-4 items-end flex-row px-8 py-6 border border-neutral-300 shadow-lg rounded-lg"
+                        className="w-[320px] flex flex-wrap gap-4 items-end flex-col px-8 py-6 "
                     >
+                        <h1 className="w-full text-center text-2xl mb-4 font-bold text-neutral-600">Filtrar dados</h1>
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-full">
                             <label htmlFor="codigo_edificacao">Código da edificação</label>
-                            {/* Um select com todas as opções de código de edificação */}
-                            <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="codigo_edificacao" id="codigo_edificacao" onChange={e => setFilters({ ...filters, codigo_edificacao: e.target.value })}>
+                            <select className="p-4 bg-white border border-neutral-300 rounded-lg"
+                                id="codigo_edificacao"
+                                name="codigo_edificacao"
+                                onChange={e => setFilters({ ...filters, codigo_edificacao: e.target.value })}>
                                 <option value="">-</option>
-                                
+
                                 {edificacoes && edificacoes.map((edificacao: Edificacao) => (
-                                    <option key={edificacao.codigo} value={edificacao.codigo}>{edificacao.codigo}</option>
+                                    <option key={edificacao.codigo} value={edificacao.codigo} className="">{edificacao.codigo} - {edificacao.nome}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="ponto_id">Ponto de coleta</label>
+
+                            <select className="p-4 bg-white border border-neutral-300 rounded-lg"
+                                id="ponto_id"
+                                name="ponto_id"
+                                onChange={e => setFilters({ ...filters, ponto_id: e.target.value })}>
+                                <option value="">-</option>
+
+                                {pontos && pontos.map((ponto: Ponto) => (
+                                    <option key={ponto.id} value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
                                 ))}
                             </select>
                         </div>
 
                         <div className="flex flex-col">
-                            <label htmlFor="ponto_id">Ponto de coleta</label> 
+                            <label htmlFor="">Intervalo de Data</label>
 
-                            <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="ponto_id" id="ponto_id" onChange={e => setFilters({ ...filters, ponto_id: e.target.value })}>
-                                <option value="">-</option>
-                                
-                                {pontos && pontos.map((ponto: Ponto) => (
-                                    // <option key={ponto.id} value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} - {ponto.ambiente} - {ponto.tombo}</option>
-                                    <option key={ponto.id} value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
-                                ))}
-                            </select>       
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label htmlFor="start-data">Data inicial</label>
-                            <input
-                                type="date"
-                                name="data_minima"
-                                id="start-data"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.data_minima}
-                                onChange={e => setFilters({ ...filters, data_minima: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label htmlFor="end-data">Data final</label>
-                            <input
-                                type="date"
-                                name="data_maxima"
-                                id="end-data"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.data_maxima}
-                                onChange={e => setFilters({ ...filters, data_maxima: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label htmlFor="min-temp">Temperatura mínima</label>
-                            <input
-                                type="number"
-                                name="temp_minima"
-                                id="min-temp"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.temperatura_minima}
-                                onChange={e => setFilters({ ...filters, temperatura_minima: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label htmlFor="max-temp">Temperatura máxima</label>
-                            <input
-                                type="number"
-                                name="temp_maxima"
-                                id="max-temp"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.temperatura_maxima}
-                                onChange={e => setFilters({ ...filters, temperatura_maxima: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label htmlFor="min-cloro">Cloro residual livre mínimo</label>
-                            <input
-                                type="number"
-                                name="cloro_residual_livre_minimo"
-                                id="min-cloro"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.cloro_residual_livre_minimo}
-                                onChange={e => setFilters({ ...filters, cloro_residual_livre_minimo: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label htmlFor="max-cloro">Cloro residual livre máximo</label>
-                            <input
-                                type="number"
-                                name="cloro_residual_livre_maximo"
-                                id="max-cloro"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.cloro_residual_livre_maximo}
-                                onChange={e => setFilters({ ...filters, cloro_residual_livre_maximo: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label htmlFor="min-turbidez">Turbidez mínima</label>
-                            <input
-                                type="number"
-                                name="turbidez_minima"
-                                id="min-turbidez"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.turbidez_minima}
-                                onChange={e => setFilters({ ...filters, turbidez_minima: e.target.value })}
-                            />
+                            <div>
+                                <input
+                                    type="date"
+                                    name="data_minima"
+                                    id="start-data"
+                                    className="w-1/2 p-4 bg-white border border-r-0 border-neutral-300 rounded-lg rounded-r-none"
+                                    value={filters.data_minima}
+                                    onChange={e => setFilters({ ...filters, data_minima: e.target.value })}
+                                />
+                                <input
+                                    type="date"
+                                    name="data_maxima"
+                                    id="end-data"
+                                    className="w-1/2 p-4 bg-white border border-neutral-300 rounded-lg rounded-l-none"
+                                    value={filters.data_maxima}
+                                    onChange={e => setFilters({ ...filters, data_maxima: e.target.value })}
+                                />
+                            </div>
 
                         </div>
 
                         <div className="flex flex-col">
-                            <label htmlFor="max-turbidez">Turbidez máxima</label>
-                            <input
-                                type="number"
-                                name="turbidez_maxima"
-                                id="max-turbidez"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.turbidez_maxima}
-                                onChange={e => setFilters({ ...filters, turbidez_maxima: e.target.value })}
-                            />
+                            <label htmlFor="">Temperatura (°C)</label>
+                            <div>
+                                <input
+                                    type="number"
+                                    name="temp_minima"
+                                    id="min-temp"
+                                    className="w-1/2 p-4 bg-white border border-r-0 border-neutral-300 rounded-lg rounded-r-none"
+                                    value={filters.temperatura_minima}
+                                    step={0.1}
+                                    placeholder="min"
+                                    onChange={e => setFilters({ ...filters, temperatura_minima: e.target.value })}
+                                />
+                                <input
+                                    type="number"
+                                    name="temp_maxima"
+                                    id="max-temp"
+                                    className="w-1/2 p-4 bg-white border border-neutral-300 rounded-lg rounded-l-none"
+                                    value={filters.temperatura_maxima}
+                                    step={0.1}
+                                    placeholder="max"
+                                    onChange={e => setFilters({ ...filters, temperatura_maxima: e.target.value })}
+                                />
+
+                            </div>
                         </div>
 
                         <div className="flex flex-col">
+                            <label htmlFor="">Cloro residual livre (mg/L)</label>
+                            <div>
+                                <input
+                                    type="number"
+                                    name="cloro_residual_livre_minimo"
+                                    id="min-cloro"
+                                    className="w-1/2 p-4 bg-white border border-r-0 border-neutral-300 rounded-lg rounded-r-none"
+                                    value={filters.cloro_residual_livre_minimo}
+                                    step={0.1}
+                                    placeholder="min"
+                                    onChange={e => setFilters({ ...filters, cloro_residual_livre_minimo: e.target.value })}
+                                />
+                                <input
+                                    type="number"
+                                    name="cloro_residual_livre_maximo"
+                                    id="max-cloro"
+                                    className="w-1/2 p-4 bg-white border border-neutral-300 rounded-lg rounded-l-none"
+                                    value={filters.cloro_residual_livre_maximo}
+                                    step={0.1}
+                                    placeholder="max"
+                                    onChange={e => setFilters({ ...filters, cloro_residual_livre_maximo: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="">Turbidez (uT)</label>
+
+                            <div>
+                                <input
+                                    type="number"
+                                    name="turbidez_minima"
+                                    id="min-turbidez"
+                                    className="w-1/2 p-4 bg-white border border-r-0 border-neutral-300 rounded-lg rounded-r-none"
+                                    value={filters.turbidez_minima}
+                                    step={0.1}
+                                    placeholder="min"
+                                    onChange={e => setFilters({ ...filters, turbidez_minima: e.target.value })}
+                                />
+                                <input
+                                    type="number"
+                                    name="turbidez_maxima"
+                                    id="max-turbidez"
+                                    className="w-1/2 p-4 bg-white border border-neutral-300 rounded-lg rounded-l-none"
+                                    value={filters.turbidez_maxima}
+                                    step={0.1}
+                                    placeholder="max"
+                                    onChange={e => setFilters({ ...filters, turbidez_maxima: e.target.value })}
+                                />
+                            </div>
+
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="">Cor aparente</label>
+                            <div>
+                                <input
+                                    type="number"
+                                    name="cor_minima"
+                                    id="min-cor"
+                                    className="w-1/2 p-4 bg-white border border-r-0 border-neutral-300 rounded-lg rounded-r-none"
+                                    value={filters.cor_minima}
+                                    step={0.1}
+                                    placeholder="min"
+                                    onChange={e => setFilters({ ...filters, cor_minima: e.target.value })}
+                                />
+                                <input
+                                    type="number"
+                                    name="cor_maxima"
+                                    id="max-cor"
+                                    className="w-1/2 p-4 bg-white border border-neutral-300 rounded-lg rounded-l-none"
+                                    value={filters.cor_maxima}
+                                    step={0.1}
+                                    placeholder="max"
+                                    onChange={e => setFilters({ ...filters, cor_maxima: e.target.value })}
+                                />
+
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col w-full">
                             <label htmlFor="coliformes_totais">Presença de Coliformes totais</label>
 
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="coliformes_totais" id="coliformes_totais" onChange={e => setFilters({ ...filters, coliformes_totais: e.target.value })}>
@@ -292,7 +336,7 @@ export default function Page() {
 
                         </div>
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-full">
                             <label htmlFor="escherichia">Presença de Escherichia coli</label>
 
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="escherichia" id="escherichia" onChange={e => setFilters({ ...filters, escherichia: e.target.value })}>
@@ -302,43 +346,15 @@ export default function Page() {
                             </select>
                         </div>
 
-                        <div className="flex flex-col">
-                            <label htmlFor="min-cor">Cor aparente mínima</label>
-                            <input
-                                type="number"
-                                name="cor_minima"
-                                id="min-cor"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.cor_minima}
-                                onChange={e => setFilters({ ...filters, cor_minima: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label htmlFor="max-cor">Cor aparente máxima</label>
-                            <input
-                                type="number"
-                                name="cor_maxima"
-                                id="max-cor"
-                                className="p-4 bg-white border border-neutral-300 rounded-lg"
-                                value={filters.cor_maxima}
-                                onChange={e => setFilters({ ...filters, cor_maxima: e.target.value })}
-                            />
-                        </div>
-
                         <input
                             type="submit"
                             value="Exportar"
-                            className="bg-blue-500 p-4 h-fit ml-auto rounded-lg hover:bg-blue-600 text-white font-semibold"
+                            className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500 p-4 h-fit w-[320px] rounded-lg hover:bg-blue-600 text-white font-semibold border border-blue-600 shadow-lg"
                         />
                     </form>
                 </div>
-                <h1 className="text-2xl mb-4 font-bold text-neutral-600">Tabela de visualização</h1>
-                <TableColetas
-                    coletas={coletas}
-                />
             </div>
-        </>
+        </div>
 
     )
 
