@@ -151,7 +151,7 @@ export default function Page() {
 
     return (
         <div className="ml-[-120px]">
-            <h1 className="ml-[-26px] w-full text-center text-2xl mb-4 font-bold text-neutral-600">Tabela de visualização</h1>
+            <h1 className="w-full text-center text-2xl mb-4 font-bold text-neutral-600">Tabela de visualização</h1>
 
             <div className="w-[calc(100%-100px)] min-w-fit flex mb-14">
                 <TableColetas
