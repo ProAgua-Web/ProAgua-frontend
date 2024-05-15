@@ -13,7 +13,7 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
 
     return (
         <>
-            <div className="w-[calc(100%-100px)] overflow-x-auto ">
+            <div className="w-full overflow-x-auto ">
                 <table className="border border-slate-500 mb-8 last:mb-0">
                     <thead>
                         <tr className="bg-slate-300 text-neutral-800">
