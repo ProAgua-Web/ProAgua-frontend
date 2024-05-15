@@ -26,7 +26,7 @@ export default function RootLayout({
 
         <Navbar collapse={() => {}} collapsed={collapsed} />
 
-        <main className={`relative mr-auto flex w-[clamp(320px,90vw-2rem,1200px)] flex-col items-center gap-4 p-8 pt-[calc(clamp(50px,8vh,100px)+2rem)] ${!collapsed ? 'ml-96' : 'ml-auto'}`}>
+        <main className="relative m-auto flex w-[clamp(320px,90vw-2rem,1200px)] flex-col items-center gap-4 p-8 pt-[calc(clamp(50px,8vh,100px)+2rem)]">
           {children}
         </main>
       </body>
