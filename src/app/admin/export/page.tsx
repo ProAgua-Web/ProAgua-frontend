@@ -21,6 +21,7 @@ export default function Page() {
     const [coletas, setColetas] = useState<any[]>([]);
     const [edificacoes, setEdificacoes] = useState<any[]>([]);
     const [pontos, setPontos] = useState<any[]>([]);
+    const filteredPontos = filters.codigo_edificacao ? pontos.filter(ponto => ponto.edificacao.codigo == filters.codigo_edificacao) : pontos;
 
     useEffect(() => {
         (async () => {
@@ -169,7 +170,9 @@ export default function Page() {
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg"
                                 id="codigo_edificacao"
                                 name="codigo_edificacao"
-                                onChange={e => setFilters({ ...filters, codigo_edificacao: e.target.value })}>
+                                onChange={async e => {
+                                    setFilters({ ...filters, codigo_edificacao: e.target.value })
+                                }}>
                                 <option value="">-</option>
 
                                 {edificacoes && edificacoes.map((edificacao: Edificacao) => (
@@ -187,7 +190,7 @@ export default function Page() {
                                 onChange={e => setFilters({ ...filters, ponto_id: e.target.value })}>
                                 <option value="">-</option>
 
-                                {pontos && pontos.map((ponto: Ponto) => (
+                                {filteredPontos && filteredPontos.map((ponto: Ponto) => (
                                     <option key={ponto.id} value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
                                 ))}
                             </select>
