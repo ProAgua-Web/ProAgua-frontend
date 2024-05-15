@@ -19,6 +19,8 @@ export default function Page({ params }: {
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        console.log("submiting");
+
         setSubmiting(true);
 
         const formData = new FormData(event.currentTarget);
@@ -29,8 +31,8 @@ export default function Page({ params }: {
             temperatura: Number(formData.get("temperatura")),
             cloro_residual_livre: Number(formData.get("cloro_residual_livre")),
             turbidez: Number(formData.get("turbidez")),
-            coliformes_totais: formData.get("coliformes_totais") == "on",
-            escherichia: formData.get("escherichia") == "on",
+            coliformes_totais: formData.get("coliformes_totais") !== null,
+            escherichia: formData.get("escherichia") !== null,
             cor: Number(formData.get("cor")),
             responsavel: [Number(formData.get("responsaveis"))],
             data: new Date(String(formData.get("data"))),
