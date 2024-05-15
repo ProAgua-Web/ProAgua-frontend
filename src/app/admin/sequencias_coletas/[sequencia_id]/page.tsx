@@ -1,3 +1,5 @@
+"use client"
+
 import TableColetas from "@/components/coletas/TabelaColetas";
 import { type Sequencia, type Coleta, TIPOS_PONTOS } from "@/utils/types";
 import { API_BASE_URL } from "@/utils/config";
