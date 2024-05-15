@@ -69,12 +69,11 @@ export default function Page({ params }: {
                         name="ponto"
                         className="w-full rounded-lg border border-neutral-400 px-6 py-4"
                     >
-                        <option>-</option>
                         {pontos.map(ponto => <option value={ponto.id} key={"ponto " + ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente}</option>)}
                     </select>
 
                     <a className="flex justify-center" href="/admin/pontos/criar" target="_blank">
-                        <svg className="w-6 mx-2 fill-primary-600"
+                        <svg className="w-6 mx-4 fill-primary-600"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 448 512">
                             <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
@@ -88,6 +87,7 @@ export default function Page({ params }: {
                     id="temperatura"
                     name="temperatura"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
+                    step={0.1}
                     required
                 />
 
@@ -97,6 +97,7 @@ export default function Page({ params }: {
                     id="cloro_residual_livre"
                     name="cloro_residual_livre"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
+                    step={0.1}
                     required
                 />
 
@@ -106,6 +107,17 @@ export default function Page({ params }: {
                     id="turbidez"
                     name="turbidez"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
+                    step={0.1}
+                    required
+                />
+
+                <label htmlFor="cor">Cor:</label>
+                <input
+                    type="number"
+                    id="cor"
+                    name="cor"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
+                    step={0.1}
                     required
                 />
 
@@ -128,15 +140,6 @@ export default function Page({ params }: {
                     />
                     <label htmlFor="escherichia">Escherichia</label>
                 </div>
-
-                <label htmlFor="cor">Cor:</label>
-                <input
-                    type="number"
-                    id="cor"
-                    name="cor"
-                    className="rounded-lg border border-neutral-400 px-6 py-4"
-                    required
-                />
 
                 <div className="flex gap-4">
                     <label htmlFor="data" className="flex self-center">Data e hora:</label>
