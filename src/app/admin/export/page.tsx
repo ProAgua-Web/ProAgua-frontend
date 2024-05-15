@@ -171,12 +171,12 @@ export default function Page() {
                                 id="codigo_edificacao"
                                 name="codigo_edificacao"
                                 onChange={async e => {
-                                    setFilters({ ...filters, codigo_edificacao: e.target.value })
+                                    setFilters({ ...filters, codigo_edificacao: e.target.value, ponto_id: ''})
                                 }}>
                                 <option value="">-</option>
 
                                 {edificacoes && edificacoes.map((edificacao: Edificacao) => (
-                                    <option key={edificacao.codigo} value={edificacao.codigo} className="">{edificacao.codigo} - {edificacao.nome}</option>
+                                    <option key={edificacao.codigo} value={edificacao.codigo} className="">{edificacao.codigo} - {edificacao.nome.length < 30 ? edificacao.nome : edificacao.nome.slice(0, 30).trim() + "..."}</option>
                                 ))}
                             </select>
                         </div>
