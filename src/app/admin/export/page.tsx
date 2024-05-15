@@ -157,7 +157,7 @@ export default function Page() {
                 <TableColetas
                     coletas={coletas}
                 />
-                <div className="max-h-[calc(100vh-clamp(50px,8vh,100px)-2rem)] mb-12 overflow-y-scroll fixed top-[calc(clamp(50px,8vh,100px)+1rem)] right-4 z-[1000] bg-white shadow-xl border border-neutral-300 rounded-xl">
+                <div className="max-h-[calc(100vh-clamp(50px,8vh,100px)-2rem)] w-[320px] mb-12 overflow-y-scroll fixed top-[calc(clamp(50px,8vh,100px)+1rem)] right-4 z-[1000] bg-white shadow-xl border border-neutral-300 rounded-xl">
                     <form
                         method="GET"
                         onSubmit={submitForm}
