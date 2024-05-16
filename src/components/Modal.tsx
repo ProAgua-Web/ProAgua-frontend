@@ -3,18 +3,21 @@ import { useRef } from "react";
 export default function Modal(props: { 
     visible: boolean,
     close: () => void,
-    submit: () => void,
     children: React.ReactNode,
     title: string
 }) {
     var backdrop = useRef(null);
 
     return props.visible && (
-        <div ref={backdrop} className="bg-black bg-opacity-20 w-full h-[calc(100vh-4rem)] fixed top-16 left-0" onMouseDown={(e) => {
+        <div 
+            ref={backdrop} 
+            className="bg-black bg-opacity-20 w-full h-[calc(100vh-4rem)] fixed top-16 left-0 "
+            onMouseDown={(e) => {
                 if (e.target == backdrop.current)
                     props.close();
-            }}>
-            <div className="flex flex-col max-sm:w-full max-sm:max-h-full w-[600px] h-full max-h-[600px] min-h-[400px] absolute bg-white shadow-xl border border-neutral-400 p-4 rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            }}
+        >
+            <div className="flex h-fit max-sm:h-full flex-col max-sm:w-full max-sm:max-h-full w-[600px] min-h-[400px] absolute bg-white shadow-xl border border-neutral-400 p-4 rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
 
                 <button
                     type="button"
@@ -26,7 +29,7 @@ export default function Modal(props: {
                 
                 <h2 className="mt-2 mb-4 text-xl font-semibold w-full text-center">{ props.title }</h2>
                 <hr />
-                <div className="mt-4 h-full">
+                <div className="py-4 h-full">
                     { props.children }
                 </div>
             </div>
