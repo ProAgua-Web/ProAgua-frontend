@@ -29,17 +29,6 @@ export default function Modal(props: {
                 <div className="mt-4 h-full">
                     { props.children }
                 </div>
-                <hr />
-                
-                <div className="mt-4">
-                    <button 
-                        className="w-full px-4 py-2 rounded border border-green-600 bg-green-500 hover:bg-green-600 hover:border-green-700 text-white font-semibold"
-                        onClick={props.submit}
-                    >
-                        Adicionar
-                    </button>
-                </div>
-                
             </div>
         </div>
     )
