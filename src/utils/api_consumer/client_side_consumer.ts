@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Edificacao, Ponto, Sequencia, Usuario } from "@/utils/types";
+import { Coleta, Edificacao, Ponto, Sequencia, Usuario } from "@/utils/types";
 
 export function useEdificacao(codigo_edificacao: string) {
     const [edificacao, setEdificacao] = useState<Edificacao>();
@@ -98,6 +98,21 @@ export function useSequencia(id_sequencia: number) {
     }, [id_sequencia]);
 
     return sequencia;
+}
+
+export function useColetaBySequencia(id_sequencia: number) {
+    const [coletas, setColetas] = useState<Coleta[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia + '/coletas');
+            const coletas = await response.json();
+
+            setColetas(coletas);
+        })();
+    }, [id_sequencia]);
+
+    return coletas;
 }
 
 export function useUsuarios() {

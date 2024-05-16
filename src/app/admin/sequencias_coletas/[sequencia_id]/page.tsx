@@ -3,6 +3,7 @@
 import TableColetas from "@/components/coletas/TabelaColetas";
 import { type Sequencia, type Coleta, TIPOS_PONTOS } from "@/utils/types";
 import { API_BASE_URL } from "@/utils/config";
+import { useColetaBySequencia, useSequencia } from "@/utils/api_consumer/client_side_consumer";
 
 function groupColetas(coletas: Coleta[]) {
     let groups = [];
@@ -23,7 +24,7 @@ function groupColetas(coletas: Coleta[]) {
     return groups;
 }
 
-export default async function Sequencia({ params }: { params : {sequencia_id: number} }) {
+export default function Sequencia({ params }: { params : {sequencia_id: number} }) {
     // TODO: Filtrar pontos
     // Primeiro você deve selecionar em qual edificação o ponto está / onde a sequencia deve começar
 
@@ -38,12 +39,8 @@ export default async function Sequencia({ params }: { params : {sequencia_id: nu
     
     const { sequencia_id } = params;
 
-    let resp = await fetch(API_BASE_URL + '/api/v1/sequencias/' + sequencia_id);
-    const sequencia: Sequencia | null = await resp.json();
-
-    resp = await fetch(`${API_BASE_URL}/api/v1/sequencias/${sequencia_id}/coletas`, { cache: 'no-store'})
-    const coletas: Coleta[] = await resp.json();
-
+    const sequencia: Sequencia | null = useSequencia(sequencia_id);
+    const coletas: Coleta[] = useColetaBySequencia(sequencia_id);
     const groups: Coleta[][] = groupColetas(coletas);
     
     return (
@@ -75,7 +72,7 @@ export default async function Sequencia({ params }: { params : {sequencia_id: nu
                         const ponto = group[0].ponto;
 
                         return (
-                            <>
+                            <div className="mb-4">
                                 <div className="p-4 border border-b-0 w-full border-slate-400 bg-primary-500 text-white font-semibold">
                                     <p>Ponto: {TIPOS_PONTOS[ponto.tipo - 1]}</p>
                                     <p>Ambiente: {ponto.ambiente}</p>
@@ -85,7 +82,7 @@ export default async function Sequencia({ params }: { params : {sequencia_id: nu
                                 </div>
 
                                 <TableColetas coletas={group} />
-                            </>
+                            </div>
                         )
                     })}
                 </div>
