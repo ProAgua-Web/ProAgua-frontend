@@ -34,7 +34,7 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                     <tbody>
                         {coletas.map(coleta => {
                             return (
-                                <tr className="bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
+                                <tr key={"tr" + coleta.id} className="bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
                                     onClick={() => {
                                         window.location.href = `/admin/coletas/${coleta.id}`;
                                     }}>
@@ -52,7 +52,7 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                                     <td className="px-2 py-3">{coleta.cor}</td>
                                     <td className="px-2 py-3 text-nowrap">{formatDate(coleta.data)}</td>
                                     <td className="px-2 py-3" title={String(coleta.status_messages)}>
-                                        <span className="flex gap-2">
+                                        <span className="w-full flex justify-center">
                                             {coleta.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem" />}
                                         </span>
                                     </td>
