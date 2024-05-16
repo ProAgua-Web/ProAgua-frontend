@@ -6,8 +6,7 @@ export default function ImageUploadModal(props: {
     submit: (image: File | null, description: string) => void
 }) {
     const [file, setFile] = useState<File | null>(null);
-    const [description, setDescription] = useState<string>('');
-
+    const descriptionInputRef = useRef<HTMLInputElement|null>(null);
     const selectImage = (files: FileList) => {
         setFile(files?.[0]);
     };  
@@ -79,9 +78,7 @@ export default function ImageUploadModal(props: {
                     type="text"
                     placeholder="Ex.: Fachada do laboratório de engenharias"
                     className="px-4 py-2 border border-neutral-400 rounded"
-                    onChange={(event) => {
-                        setDescription(event.target.value);
-                    }}
+                    ref={descriptionInputRef}
                 />
             </div>
 
@@ -91,7 +88,9 @@ export default function ImageUploadModal(props: {
                 <button 
                     className="w-full px-4 py-2 rounded border border-green-600 bg-green-500 hover:bg-green-600 hover:border-green-700 text-white font-semibold"
                     onClick={() => {
+                        const description = descriptionInputRef.current?.value || "";
                         props.submit(file, description);
+
                         props.close();
                     }}
                 >
