@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "./Modal";
 
 export default function ImageUploadModal(props: {
@@ -90,6 +90,12 @@ export default function ImageUploadModal(props: {
                     onClick={() => {
                         const description = descriptionInputRef.current?.value || "";
                         props.submit(file, description);
+
+                        setFile(null);
+                        
+                        if (descriptionInputRef.current) {
+                            descriptionInputRef.current.value = "";
+                        }
 
                         props.close();
                     }}
