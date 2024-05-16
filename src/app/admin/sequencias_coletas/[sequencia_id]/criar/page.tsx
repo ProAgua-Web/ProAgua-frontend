@@ -47,12 +47,12 @@ export default function Page({ params }: {
         });
 
         if (response.status === 200) {
-            alert("Sequência de coleta criada com sucesso!");
+            alert("Coleta criada com sucesso!");
             const responseData = await response.json();
             const id = responseData.id;
             window.location.href = `/admin/sequencias_coletas/${sequencia_id}`;
         } else {
-            alert("Erro ao criar Sequência de coleta");
+            alert("Erro ao criar coleta");
         }
 
         setSubmiting(false);
