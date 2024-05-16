@@ -19,7 +19,6 @@ export default function Page({ params }: {
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        console.log("submiting");
 
         setSubmiting(true);
 
@@ -27,15 +26,15 @@ export default function Page({ params }: {
 
         const data = {
             sequencia_id: sequencia_id,
-            ponto_id: Number(formData.get("ponto")),
-            temperatura: Number(formData.get("temperatura")),
-            cloro_residual_livre: Number(formData.get("cloro_residual_livre")),
-            turbidez: Number(formData.get("turbidez")),
-            coliformes_totais: formData.get("coliformes_totais") !== null,
-            escherichia: formData.get("escherichia") !== null,
-            cor: Number(formData.get("cor")),
-            responsavel: [Number(formData.get("responsaveis"))],
-            data: new Date(String(formData.get("data"))),
+            ponto_id: formData.get("ponto"),
+            temperatura: formData.get("temperatura"),
+            cloro_residual_livre: formData.get("cloro_residual_livre"),
+            turbidez: formData.get("turbidez"),
+            coliformes_totais: formData.has("coliformes_totais"),
+            escherichia: formData.has("escherichia"),
+            cor: formData.get("cor"),
+            data: formData.get("data") + "T" + formData.get("hora"),
+            responsavel: formData.getAll("responsaveis"),
             ordem: formData.get("ordem"),
         };
 
@@ -148,6 +147,7 @@ export default function Page({ params }: {
                         id="data"
                         name="data"
                         className="rounded-lg border border-neutral-400 px-6 py-4 flex-grow"
+                        defaultValue={new Date().toISOString().split("T")[0]}
                         required
                     />
 
@@ -156,6 +156,7 @@ export default function Page({ params }: {
                         id="hora"
                         name="hora"
                         className="rounded-lg border border-neutral-400 px-6 py-4"
+                        defaultValue={new Date().toISOString().split("T")[1].split(".")[0].slice(0, -3)}
                         required
                     />
                 </div>
@@ -182,8 +183,8 @@ export default function Page({ params }: {
                     <option value="Recoleta">Recoleta</option>
                 </select>
 
-                <div className="rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-center">
-                    <input id="criar" type="submit" value="Criar" />
+                <div className="w-full">
+                    <input id="criar" type="submit" className={"w-full rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500 text-white font-semibold"} value={`${submiting ? "Criando..." : "Criar"}`} disabled={submiting} />
                 </div>
             </form>
         </>
