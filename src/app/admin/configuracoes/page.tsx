@@ -9,6 +9,7 @@ export default function Configuracoes() {
     const parametroReferencia = useParametrosReferencia();
 
     const [editable, setEditable] = useState(false);
+    const [submiting, setSubmiting] = useState(false);
 
     function setDefaultValues() {
         if (parametroReferencia) {
@@ -30,6 +31,9 @@ export default function Configuracoes() {
 
     async function submitForm(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        setSubmiting(true);
+
         const formData = new FormData(event.currentTarget);
 
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/parametros_referencia/", {
@@ -52,17 +56,13 @@ export default function Configuracoes() {
             }),
         });
 
-        console.log("temperatura: " + formData.get("min_temperatura") + " " + formData.get("max_temperatura") + "\n"
-            + "cloro: " + formData.get("min_cloro_residual_livre") + " " + formData.get("max_cloro_residual_livre") + "\n"
-            + "turbidez: " + formData.get("min_turbidez") + " " + formData.get("max_turbidez")
-            + "coliformes: " + false + " " + "escherichia" + " " + false + "\n");
-
         if (response.status === 200) {
             alert("Parâmetros de referência atualizados com sucesso");
         } else {
             alert("Erro ao atualizar parâmetros de referência");
         }
 
+        setSubmiting(false);
         setEditable(false);
 
     }
@@ -134,14 +134,15 @@ export default function Configuracoes() {
                         <input
                             id="editar"
                             type="submit"
-                            className={`w-44 rounded-lg border ${editable ? 'bg-green-500 hover:bg-green-600' : 'bg-rose-500 hover:bg-rose-600'} px-6 py-4 text-center font-semibold text-white`}
+                            className={`w-44 rounded-lg border ${editable ? 'bg-green-500 hover:bg-green-600' : 'bg-rose-500 hover:bg-rose-600'}  disabled:bg-green-900 px-6 py-4 text-center font-semibold text-white`}
                             onClick={event => {
                                 if (!editable) {
                                     event.preventDefault();
                                     setEditable(true);
                                 }
                             }}
-                            value={editable ? "Salvar" : "Habilitar edição"}
+                            value={editable ? submiting? "Editando..." : "Salvar" : "Habilitar edição"}
+                            disabled={submiting}
                         />
 
                         {editable && (
