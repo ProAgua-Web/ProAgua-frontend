@@ -43,7 +43,7 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
 
 export default async function Pontos() {
   const edificacoes: Edificacao[] = await getEdificacoes(10000);
-  const pontos: Ponto[] = await getPontos();
+  const pontos: Ponto[] = await getPontos(10000);
   const groups = groupBy<Ponto>(pontos, (ponto: Ponto) => {
     return ponto.edificacao.codigo;
   });

@@ -12,8 +12,8 @@ export async function getEdificacao(codigo_edificacao: string) {
     return edificacao;
 }
 
-export async function getPontos() {
-    let resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos`, {cache: "no-cache"});
+export async function getPontos(limit:number = 100) {
+    let resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=${limit}`, {cache: "no-cache"});
     const pontos: Ponto[] = (await resp.json()).items;
     return pontos;
 }
