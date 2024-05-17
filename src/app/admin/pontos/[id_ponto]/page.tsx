@@ -165,7 +165,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                 >
                                     <option value="">-</option>
                                     {filteredPontos.map((ponto: Ponto) => {
-                                        return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>;
+                                        return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>;
                                     })}
                                 </select>
 

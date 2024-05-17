@@ -32,7 +32,7 @@ export default async function Coletas() {
                                     <tr className="bg-sky-100 even:bg-sky-200">
                                         <td className="text-sm pl-12 px-2 py-3">{sequencia.ponto?.edificacao.codigo}</td>
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
-                                        <td className="text-sm px-2 py-3">{TIPOS_PONTOS[sequencia.ponto?.tipo - 1]}</td>
+                                        <td className="text-sm px-2 py-3">{TIPOS_PONTOS[sequencia.ponto?.tipo]}</td>
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
                                         <td className="text-sm px-2 py-3">{sequencia.amostragem}</td>
                                         <td className="text-sm pr-8 px-2 py-3"><a className="textext-smt-sm text-blue-800 underline" href={"/admin/sequencias_coletas/" + sequencia.id}>Acessar</a></td>
