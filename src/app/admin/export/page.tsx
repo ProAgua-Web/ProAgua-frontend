@@ -191,7 +191,7 @@ export default function Page() {
                                 <option value="">-</option>
 
                                 {filteredPontos && filteredPontos.map((ponto: Ponto) => (
-                                    <option key={ponto.id} value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
+                                    <option key={ponto.id} value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
                                 ))}
                             </select>
                         </div>

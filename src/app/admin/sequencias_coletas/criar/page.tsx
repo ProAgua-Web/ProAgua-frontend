@@ -107,7 +107,7 @@ export default function Page() {
                     <option>-</option>
                     {edificacao && pontos && pontos.map(ponto => {
                         return (
-                            <option value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} - {ponto.ambiente}</option>
+                            <option value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} - {ponto.ambiente}</option>
                         )
                     })}
                 </select>

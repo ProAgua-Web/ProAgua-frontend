@@ -74,7 +74,7 @@ export default function Sequencia({ params }: { params : {sequencia_id: number} 
                         return (
                             <div className="mb-4">
                                 <div className="p-4 border border-b-0 w-full border-slate-400 bg-primary-500 text-white font-semibold">
-                                    <p>Ponto: {TIPOS_PONTOS[ponto.tipo - 1]}</p>
+                                    <p>Ponto: {TIPOS_PONTOS[ponto.tipo]}</p>
                                     <p>Ambiente: {ponto.ambiente}</p>
                                     {ponto.tipo == 1 && (
                                         <p>Tombo: {ponto.tombo}</p>

@@ -10,21 +10,13 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     const edificacoes = useEdificacoes();
     const [pontos, setPontos] = useState<Ponto[]>([]);
     const ponto = usePonto(parseInt(params.id_ponto));
+
+    const [currentAmontante, setCurrentAmontante] = useState<string>(ponto?.amontante?.id?.toString() || '');
+    const [currentEdificacao, setCurrentEdificacao] = useState<string>(ponto?.edificacao.codigo || '');
+    const [currentTipo, setCurrentTipo] = useState<string>(ponto?.tipo.toString() || '1');
+    const filteredPontos = pontos.filter(p => p.tipo > Number(currentTipo));
+    
     const [editable, setEditable] = useState<boolean>(false);
-    let [currentAmontante, setCurrentAmontante] = useState<string>(ponto?.amontante?.id?.toString() || '');
-    let [currentEdificacao, setCurrentEdificacao] = useState<string>(ponto?.edificacao.codigo || '');
-
-    useEffect(() => {
-        if (ponto?.amontante) {
-            setCurrentAmontante(ponto.amontante.id.toString());
-        }
-    }, [ponto]);
-
-    useEffect(() => {
-        if (ponto?.edificacao) {
-            setCurrentEdificacao(ponto.edificacao.codigo);
-        }
-    }, [ponto]);
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -144,6 +136,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     id="tipo"
                     name="tipo"
                     className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    onChange={currentTipo => setCurrentTipo(currentTipo.target.value)}
                     defaultValue={ponto?.tipo}
                     disabled={!editable}
                 >
@@ -171,7 +164,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                     onChange={updateAmontante}
                                 >
                                     <option value="">-</option>
-                                    {pontos.map((ponto: Ponto) => {
+                                    {filteredPontos.map((ponto: Ponto) => {
                                         return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>;
                                     })}
                                 </select>

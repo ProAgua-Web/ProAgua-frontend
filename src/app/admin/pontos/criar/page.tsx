@@ -7,12 +7,14 @@ export default function Pontos() {
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
     const [pontos, setPontos] = useState<Ponto[]>([]);
 
+    const [currentAmontante, setCurrentAmontante] = useState<string>('');
+    const [currentEdificacao, setCurrentEdificacao] = useState<string>('');
+    const [currentTipo, setCurrentTipo] = useState<string>('1');
+    const filteredPontos = pontos.filter(ponto => ponto.tipo > Number(currentTipo));
+
     const [file, setFile] = useState<File | null>();
     const [preview, setPreview] = useState<string>();
-
     const [submiting, setSubmiting] = useState<boolean>(false);
-    let [currentAmontante, setCurrentAmontante] = useState<string>('');
-    let [currentEdificacao, setCurrentEdificacao] = useState<string>('');
 
     const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFile(event.target.files?.[0]);
@@ -112,7 +114,7 @@ export default function Pontos() {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos");
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos?limit=10000");
             setPontos((await response.json()).items);
         })();
     }, []);
@@ -177,12 +179,14 @@ export default function Pontos() {
                     id="tipo"
                     name="tipo"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
+                    onChange={(e) => setCurrentTipo(e.target.value)}
                 >
                     <option value="1">Bebedouro</option>
                     <option value="2">RPS - Reservatório predial superior</option>
                     <option value="3">RPI - Reservatório predial inferior</option>
                     <option value="4">RDS - Reservatório de destribuição superior</option>
                     <option value="5">RDI - Reservatório de destribuição inferior</option>
+                    <option value="6">CAERN</option>
                 </select>
 
                 <label htmlFor="">Ponto a montante:</label>
@@ -195,8 +199,8 @@ export default function Pontos() {
                         onChange={updateAmontante}
                     >
                         <option value="">-</option>
-                        {pontos.map((ponto: Ponto) => {
-                            return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo - 1]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
+                        {filteredPontos.map((ponto: Ponto) => {
+                            return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
                         })}
                     </select>
 

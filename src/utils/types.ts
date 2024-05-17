@@ -68,6 +68,7 @@ export type Usuario = {
 }
 
 export const TIPOS_PONTOS = [
+    null,
     "Bebedouro",
     "RPS (Reservatório predial superior)",
     "RPI (Reservatório predial inferior)",

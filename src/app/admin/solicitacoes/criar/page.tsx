@@ -31,7 +31,7 @@ export default function Page() {
                 <select className="w-full border border-neutral-300 rounded px-4 py-2">
                     <option>-</option>
                     {pontos.map(ponto => (
-                        <option value={ponto.id}> {TIPOS_PONTOS[ponto.tipo - 1]}, {ponto.ambiente} </option>
+                        <option value={ponto.id}> {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente} </option>
                     ))}
                 </select>
                 
