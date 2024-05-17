@@ -85,6 +85,21 @@ export function usePontosAmontante(ponto: Ponto | null) {
     return pontos;
 }
 
+export function useSequencias() {
+    const [sequencias, setSequencias] = useState<Sequencia[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/');
+            const sequencias = await response.json();
+
+            setSequencias(sequencias.items);
+        })();
+    }, []);
+
+    return sequencias;
+}
+
 export function useSequencia(id_sequencia: number) {
     const [sequencia, setSequencia] = useState<Sequencia | null>(null);
 
@@ -99,6 +114,8 @@ export function useSequencia(id_sequencia: number) {
 
     return sequencia;
 }
+
+
 
 export function useColetaBySequencia(id_sequencia: number) {
     const [coletas, setColetas] = useState<Coleta[]>([]);

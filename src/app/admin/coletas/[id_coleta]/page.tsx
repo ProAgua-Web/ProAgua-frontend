@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { Coleta, Ponto, TIPOS_PONTOS } from "@/utils/types"
-import { useColeta, usePontos, usePontosAmontante, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
+import { Coleta, Ponto, Sequencia, TIPOS_PONTOS } from "@/utils/types"
+import { useColeta, usePontos, usePontosAmontante, useSequencias, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
 import { useSequencia } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, use, useEffect, useState } from "react";
 
@@ -12,10 +12,10 @@ export default function Page({ params }: {
 }) {
     const { id_coleta } = params;
     const coleta: Coleta | null = useColeta(id_coleta);
-    const sequencia = useSequencia(coleta?.sequencia_id ?? 0);
+    const sequencias = useSequencias();
     const pontos: Ponto[] = usePontos();
     const [currentPontoId, setCurrentPontoId] = useState<number>();
-
+    const [currentSequenciaId, setCurrentSequenciaId] = useState<number>(-1);
     const responsaveis = useUsuarios();
 
     const [editable, setEditable] = useState<boolean>(false);
@@ -26,25 +26,29 @@ export default function Page({ params }: {
         if (pontos.length > 0) {
             if (coleta) {
                 setCurrentPontoId(coleta.ponto.id);
+                setCurrentSequenciaId(coleta.sequencia_id);
                 const date = new Date(coleta.data);
             }
         }
     }, [pontos]);
 
+
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        setSubmiting(true);
 
         const formData = new FormData(event.currentTarget);
 
         const data = {
-            sequencia_id: sequencia?.id,
-            ponto_id: formData.get("ponto"),
-            temperatura: formData.get("temperatura"),
-            cloro_residual_livre: formData.get("cloro_residual_livre"),
-            turbidez: formData.get("turbidez"),
+            sequencia_id: Number(currentSequenciaId),
+            ponto_id: Number(formData.get("ponto")),
+            temperatura: Number(formData.get("temperatura")),
+            cloro_residual_livre: Number(formData.get("cloro_residual_livre")),
+            turbidez: Number(formData.get("turbidez")),
             coliformes_totais: formData.has("coliformes_totais"),
             escherichia: formData.has("escherichia"),
-            cor: formData.get("cor"),
+            cor: Number(formData.get("cor")),
             data: formData.get("data") + "T" + formData.get("hora"),
             responsavel: formData.getAll("responsaveis"),
             ordem: formData.get("ordem"),
@@ -60,10 +64,12 @@ export default function Page({ params }: {
 
         if (response.status === 200) {
             alert("Coleta atualizada com sucesso!");
-            window.location.href = `/admin/sequencias_coletas/${sequencia?.id}`;
+            window.location.href = `/admin/sequencias_coletas/${currentSequenciaId}`;
         } else {
             alert("Erro ao atualizar coleta!");
         }
+
+        setSubmiting(false);
     }
 
     return (
@@ -75,11 +81,28 @@ export default function Page({ params }: {
                 currentPontoId && coleta && (
                     <form onSubmit={submitForm} method="PUT"
                         className="w-full flex flex-col gap-4">
+
+                        <label htmlFor="sequencia">Sequência:</label>
+                        <select
+                            name="sequencia"
+                            id="sequencia"
+                            className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                            disabled={!editable}
+                            defaultValue={coleta.sequencia_id}
+                            onChange={(e) => setCurrentSequenciaId(parseInt(e.currentTarget.value))}
+                            required
+                        >
+                            {sequencias.map((sequencia: Sequencia) => {
+                                return <option value={sequencia.id} >{sequencia.id} - Amostragem {sequencia.amostragem} - Ponto {TIPOS_PONTOS[sequencia.ponto?.tipo || 0]}</option>
+                            })}
+                        </select>
+
                         <label htmlFor="ponto">Ponto de Coleta:</label>
                         <div className="flex">
                             <select
                                 name="ponto"
-                                className="w-full rounded-lg border border-neutral-400 px-6 py-4"
+                                className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                                disabled={!editable}
                                 defaultValue={currentPontoId}
                                 onChange={(e) => setCurrentPontoId(parseInt(e.currentTarget.value))}
                             >
@@ -109,8 +132,9 @@ export default function Page({ params }: {
                             type="number"
                             id="temperatura"
                             name="temperatura"
-                            className="rounded-lg border border-neutral-400 px-6 py-4"
+                            className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                             step={0.1}
+                            disabled={!editable}
                             defaultValue={coleta.temperatura}
                             required
                         />
@@ -120,8 +144,9 @@ export default function Page({ params }: {
                             type="number"
                             id="cloro_residual_livre"
                             name="cloro_residual_livre"
-                            className="rounded-lg border border-neutral-400 px-6 py-4"
+                            className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                             step={0.1}
+                            disabled={!editable}
                             defaultValue={coleta.cloro_residual_livre}
                             required
                         />
@@ -131,8 +156,9 @@ export default function Page({ params }: {
                             type="number"
                             id="turbidez"
                             name="turbidez"
-                            className="rounded-lg border border-neutral-400 px-6 py-4"
+                            className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                             step={0.1}
+                            disabled={!editable}
                             defaultValue={coleta.turbidez}
                             required
                         />
@@ -142,8 +168,9 @@ export default function Page({ params }: {
                             type="number"
                             id="cor"
                             name="cor"
-                            className="rounded-lg border border-neutral-400 px-6 py-4"
+                            className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                             step={0.1}
+                            disabled={!editable}
                             defaultValue={coleta.cor}
                             required
                         />
@@ -154,6 +181,7 @@ export default function Page({ params }: {
                                 id="coliformes_totais"
                                 name="coliformes_totais"
                                 className="w-6 h-6 rounded-lg border border-neutral-400 px-6 py-4"
+                                disabled={!editable}
                                 defaultChecked={coleta.coliformes_totais}
                             />
                             <label htmlFor="coliformes">Coliformes Totais</label>
@@ -164,7 +192,8 @@ export default function Page({ params }: {
                                 type="checkbox"
                                 id="escherichia"
                                 name="escherichia"
-                                className="w-6 h-6 rounded-lg border border-neutral-400 px-6 py-4"
+                                className="w-6 h-6 rounded-lg border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                                disabled={!editable}
                                 defaultChecked={coleta.escherichia}
                             />
                             <label htmlFor="escherichia">Escherichia</label>
@@ -176,7 +205,8 @@ export default function Page({ params }: {
                                 type="date"
                                 id="data"
                                 name="data"
-                                className="rounded-lg border border-neutral-400 px-6 py-4 flex-grow"
+                                className="rounded-lg border border-neutral-200 px-6 py-4 flex-grow disabled:bg-neutral-200 disabled:text-neutral-500   "
+                                disabled={!editable}
                                 defaultValue={coleta.data.split("T")[0]}
                                 required
                             />
@@ -185,7 +215,8 @@ export default function Page({ params }: {
                                 type="time"
                                 id="hora"
                                 name="hora"
-                                className="rounded-lg border border-neutral-400 px-6 py-4"
+                                className="rounded-lg border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                                disabled={!editable}
                                 defaultValue={
                                     (() => {
                                         const date = new Date(coleta.data);
@@ -201,7 +232,8 @@ export default function Page({ params }: {
                         <select
                             name="responsaveis"
                             id="responsaveis"
-                            className="rounded-lg border border-neutral-400 px-6 py-4"
+                            className="rounded-lg border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                            disabled={!editable}
                             multiple
                         >
                             {responsaveis.map((usuario) => {
@@ -221,7 +253,8 @@ export default function Page({ params }: {
                         <select
                             name="ordem"
                             id="ordem"
-                            className="rounded-lg border border-neutral-400 px-6 py-4"
+                            className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                            disabled={!editable}
                             defaultValue={coleta.ordem == "C" ? "Coleta" : "Recoleta"}
                             required
                         >
@@ -238,7 +271,9 @@ export default function Page({ params }: {
                                     setEditable(true);
                                 }
                             }}
-                            value={editable ? "Salvar" : "Habilitar edição"}
+
+                            disabled={submiting}
+                            value={editable ? submiting ? "Salvando..." : "Salvar" : "Habilitar edição"}
                         />
 
                         <button
