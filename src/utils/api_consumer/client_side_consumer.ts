@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Coleta, Edificacao, Ponto, Sequencia, Usuario } from "@/utils/types";
+import { Coleta, Edificacao, ParametroReferencia, Ponto, Sequencia, Usuario } from "@/utils/types";
 
 export function useEdificacao(codigo_edificacao: string) {
     const [edificacao, setEdificacao] = useState<Edificacao>();
@@ -113,6 +113,21 @@ export function useColetaBySequencia(id_sequencia: number) {
     }, [id_sequencia]);
 
     return coletas;
+}
+
+export function useParametrosReferencia() {
+    const [parametrosReferencia, setParametrosReferencia] = useState<ParametroReferencia>();
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/parametros_referencia');
+            const parametrosReferencia = await response.json();
+
+            setParametrosReferencia(parametrosReferencia);
+        })();
+    }, []);
+
+    return parametrosReferencia;
 }
 
 export function useUsuarios() {
