@@ -106,7 +106,7 @@ export default function Pontos() {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes");
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes?limit=10000");
             setEdificacoes((await response.json()).items);
         })();
     }, []);

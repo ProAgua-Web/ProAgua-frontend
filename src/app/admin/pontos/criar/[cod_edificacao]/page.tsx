@@ -106,7 +106,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes");
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes?limit=10000");
             setEdificacoes((await response.json()).items);
         })();
     }, []);
@@ -137,6 +137,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                                     name="edificacao"
                                     className="w-full rounded-lg border border-neutral-400 px-6 py-4"
                                     onChange={updateEdificacao}
+                                    defaultValue={params.cod_edificacao}
                                 >
                                     <option value="">-</option>
                                     {edificacoes.map((edificacao: Edificacao) => {
