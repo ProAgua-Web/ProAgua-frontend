@@ -1,25 +1,43 @@
 "use client";
 
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
+import ImageUploadModal from "@/components/ImageUploadModal";
+import MultipleImageInput from "@/components/MultipleImageInput";
+
+type Image = {
+    file: File,
+    description: string
+};
 
 export default function CriarEdificacao() {
-    // TODO: Criar campo para múltplas imagens
-
-    const [file, setFile] = useState<File | null>();
-    const [preview, setPreview] = useState<string>();
+    // Page state variables
     const [submiting, setSubmiting] = useState<boolean>(false);
+    const [images, setImages] = useState<Image[]>([]);
+    
+    async function uploadImage(codigo_edificacao: string, image: Image) {
+        let formData = new FormData();
+        formData.append("file", image.file);
+        formData.append("description", image.description);
 
-    const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFile(event.target.files?.[0]);
-    };
+        let response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/${codigo_edificacao}/imagem`,
+            {
+                method: "POST",
+                body: formData,
+            },
+        )
+         
+        if (!response.ok) {
+            alert(`Erro ao adicionar imagem ${image.file.name}`);
+        }
+    }
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
         setSubmiting(true);
-
+        
+        // Create "edificação" without image 
         const formData = new FormData(event.currentTarget);
-
         const data = {
             codigo: formData.get("codigo"),
             nome: formData.get("nome"),
@@ -35,47 +53,23 @@ export default function CriarEdificacao() {
             body: JSON.stringify(data),
         })
 
-        if (response.status === 200) {
-            if (file != undefined && file != null) {
-                let formData = new FormData();
-                formData.append("imagem", file);
-                await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/${data.codigo}/imagem`,
-                    {
-                        method: "POST",
-                        body: formData,
-                    },
-                ).then((response) => {
-                    if (!response.ok) {
-                        alert("Erro ao adicionar imagem");
-                    } else {
-                        alert("Edificação criada com sucesso!");
-                        window.location.href = "/admin/pontos";
-                    }
-                }
-                );
-            } else {
-                alert("Edificação criada com sucesso!");
-                window.location.href = "/admin/pontos";
-            }
-        } else {
-            alert("Erro ao criar edificação");
-        }
-        setSubmiting(false);
-    };
-
-    // Carregar imagem de preview
-    useEffect(() => {
-        if (!file) {
-            setPreview(undefined);
+        if (response.status != 200) {
+            alert("Erro ao criar edificação!");
+            setSubmiting(false);
             return;
+        } else {
+            alert("Edificação criada.");
         }
 
-        const fileURL = URL.createObjectURL(file);
-        setPreview(fileURL);
-
-        return () => URL.revokeObjectURL(fileURL);
-    }, [file]);
+        // If the creation was well succeded, then upload the images
+        // and attach to the "edficação".
+        await Promise.all(images.map((image) => {
+            return uploadImage(data.codigo, image);
+        }));
+        
+        alert("Imagens criadas.");
+        window.location.href = "/admin/edificacoes";
+    };
 
     return (
         <>
@@ -126,23 +120,25 @@ export default function CriarEdificacao() {
                     required
                 />
 
+                <hr />
+
                 <label htmlFor="foto">
-                    Foto:
+                    Fotos:
                 </label>
-
-                {preview && (
-                    <img
-                        id="imagePreview"
-                        alt="Imagem Preview"
-                        src={preview}
-                        className="mb-4 max-h-48 w-full rounded-lg border border-neutral-300 bg-neutral-200 object-cover"
-                    />
-                )}
-
-                <input type="file" id="foto" name="foto" onChange={selectImage} />
+                <MultipleImageInput 
+                    images={images}
+                    setImages={setImages}
+                    disabled={false}
+                />
 
                 <div className="w-full">
-                    <input id="criar" type="submit" className={"w-full rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500 text-white font-semibold"}value={`${submiting ? "Criando..." : "Criar"}`} disabled={submiting}/>
+                    <input
+                        id="criar"
+                        type="submit"
+                        className="w-full rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500 text-white font-semibold"
+                        value={`${submiting ? "Criando..." : "Criar"}`}
+                        disabled={submiting}
+                    />
                 </div>
             </form>
         </>
