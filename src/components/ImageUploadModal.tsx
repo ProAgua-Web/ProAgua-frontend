@@ -25,7 +25,6 @@ export default function ImageUploadModal(props: {
                     }}
                     onDrop={(event) => {
                         event.preventDefault();
-                        console.log(event.dataTransfer?.files);
                         selectImage(event.dataTransfer?.files);
                     }} 
                 >
