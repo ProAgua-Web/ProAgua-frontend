@@ -15,7 +15,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     const [currentEdificacao, setCurrentEdificacao] = useState<string>(ponto?.edificacao.codigo || '');
     const [currentTipo, setCurrentTipo] = useState<string>(ponto?.tipo.toString() || '1');
     const filteredPontos = pontos.filter(p => p.tipo > Number(currentTipo));
-    
+
     const [editable, setEditable] = useState<boolean>(false);
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
@@ -132,21 +132,26 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 <label htmlFor="tipo">
                     Tipo:
                 </label>
-                <select
-                    id="tipo"
-                    name="tipo"
-                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    onChange={currentTipo => setCurrentTipo(currentTipo.target.value)}
-                    defaultValue={ponto?.tipo}
-                    disabled={!editable}
-                >
-                    <option value="1">Bebedouro</option>
-                    <option value="2">Reservatório predial superior</option>
-                    <option value="3">Reservatório predial inferior</option>
-                    <option value="4">Reservatório de distribuição superior</option>
-                    <option value="5">Reservatório de distribuição inferior</option>
-                    <option value="6">CAERN</option>
-                </select>
+
+
+                {pontos.length > 0 && (
+                    <select
+                        id="tipo"
+                        name="tipo"
+                        className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                        defaultValue={ponto?.tipo}
+                        onChange={currentTipo => setCurrentTipo(currentTipo.target.value)}
+                        disabled={!editable}
+                    >
+                        <option value="1">Bebedouro</option>
+                        <option value="2">Reservatório predial superior</option>
+                        <option value="3">Reservatório predial inferior</option>
+                        <option value="4">Reservatório de distribuição superior</option>
+                        <option value="5">Reservatório de distribuição inferior</option>
+                        <option value="6">CAERN</option>
+                    </select>)
+
+                }
 
 
                 {
