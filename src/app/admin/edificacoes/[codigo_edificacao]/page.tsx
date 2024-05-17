@@ -1,11 +1,20 @@
 "use client";
 
 import { useEdificacao } from "@/utils/api_consumer/client_side_consumer";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { Image } from "@/utils/types";
+import ImageUploadModal from "@/components/ImageUploadModal";
+import MultipleImageInput from "@/components/MultipleImageInput";
 
 export default function VisualizarEdificacao({ params }: { params: { codigo_edificacao: string } }) {
     const edificacao = useEdificacao(params.codigo_edificacao);
+    const [images, setImages] = useState([]);
     const [editable, setEditable] = useState<Boolean>(false);
+
+    useEffect(() => {
+        if (edificacao)
+            setImages(edificacao?.imagens);
+    }, [edificacao]);
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -72,15 +81,7 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
                 />
 
                 <label htmlFor="foto">Imagem:</label>
-                {edificacao?.imagem
-                    ? <img
-                        id="imagePreview"
-                        alt="Imagem Preview"
-                        src={`${process.env.NEXT_PUBLIC_API_URL}/${edificacao?.imagem}`}
-                        className="mb-4 max-h-48 w-full rounded-lg border border-neutral-300 bg-neutral-200 object-cover"
-                    />
-                    : <span className="text-neutral-500 text-sm">Sem imagem</span>
-                }
+                <MultipleImageInput images={images} setImages={setImages} />
 
                 <input
                     id="editar"
