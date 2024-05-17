@@ -115,6 +115,36 @@ export function useColetaBySequencia(id_sequencia: number) {
     return coletas;
 }
 
+export function useColeta(id_coleta: number) {
+    const [coleta, setColeta] = useState<Coleta | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/coletas/' + id_coleta);
+            const coleta = await response.json();
+
+            setColeta(coleta);
+        })();
+    }, [id_coleta]);
+
+    return coleta;
+}
+
+export function useColetas() {
+    const [coletas, setColetas] = useState<Coleta[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/coletas');
+            const coletas = await response.json();
+
+            setColetas(coletas);
+        })();
+    }, []);
+
+    return coletas;
+}
+
 export function useParametrosReferencia() {
     const [parametrosReferencia, setParametrosReferencia] = useState<ParametroReferencia>();
 
@@ -131,18 +161,18 @@ export function useParametrosReferencia() {
 }
 
 export function useUsuarios() {
-    const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+    const [responsaveis, setUsuarios] = useState<Usuario[]>([]);
 
     useEffect(() => {
         (async () => {
             const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/usuarios/');
-            const usuarios = (await response.json()).items;
+            const responsaveis = (await response.json()).items;
 
-            setUsuarios(usuarios);
+            setUsuarios(responsaveis);
         })();
     }, []);
 
-    return usuarios;
+    return responsaveis;
 }
 
 export function useUsuario(username: string) {

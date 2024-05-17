@@ -49,7 +49,9 @@ export type Coleta = {
     status: boolean,
     status_messages: string[],
     ponto: Ponto,
+    responsaveis_id: number[];
     responsaveis_url: string;
+    sequencia_id: number;
     sequencia_url: string;
     ponto_url: string;
 };
