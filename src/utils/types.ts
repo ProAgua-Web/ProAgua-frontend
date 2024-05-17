@@ -76,3 +76,8 @@ export const TIPOS_PONTOS = [
     "RDI (Reservatório de distribuição inferior)",
     "CAERN"
 ];
+
+export type Image = {
+    file: File | string,
+    description: string
+};
