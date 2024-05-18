@@ -3,7 +3,7 @@
 import Filters from "@/components/sequencias/Filters";
 import CardPonto, { AddCard } from "@/components/pontos/CardPontos";
 import { Edificacao, Ponto } from "@/utils/types";
-import { useEdificacoes, usePontos, toURLParams, usePonto } from "@/utils/api_consumer/client_side_consumer";
+import { useEdificacoes, toURLParams, usePonto } from "@/utils/api_consumer/client_side_consumer";
 
 import { useEffect, useState } from "react";
 import AbortController from 'abort-controller';
@@ -49,6 +49,13 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
 export default function Pontos() {
   const [filters, setFilters] = useState<any>({ q: "", campus: "" })
   const edificacoes: Edificacao[] = useEdificacoes();
+  const filteredEdificacoes = edificacoes.filter((edificacao) => {
+    const matchesQuery = edificacao.codigo.includes(filters.q) || edificacao.nome.includes(filters.q);
+    const matchesCampus = filters.campus === "BOTH" || edificacao.campus === filters.campus;
+    return matchesQuery && matchesCampus;
+  });
+
+
   const [pontos, setPontos] = useState<Ponto[]>([]);
 
   const [abortController, setAbortController] = useState(new AbortController());
@@ -57,12 +64,11 @@ export default function Pontos() {
     return ponto.edificacao.codigo;
   });
 
-  for (let edificacao of edificacoes) {
-    if (!groups[edificacao.codigo] &&
-      (edificacao.codigo.includes(filters.q) || edificacao.nome.includes(filters.q)) &&
-      (filters.campus === "BOTH" || filters.campus === edificacao.campus)
-    ) {
-      groups[edificacao.codigo] = { edificacao: edificacao, pontos: [] };
+  for (let edificacao of filteredEdificacoes) {
+    if (!groups[edificacao.codigo]) {
+      {
+        groups[edificacao.codigo] = { edificacao: edificacao, pontos: [] };
+      }
     }
   }
 
