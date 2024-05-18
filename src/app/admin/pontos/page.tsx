@@ -1,7 +1,12 @@
+"use client";
+
 import Filters from "@/components/sequencias/Filters";
 import CardPonto, { AddCard } from "@/components/pontos/CardPontos";
 import { Edificacao, Ponto } from "@/utils/types";
-import { getEdificacoes, getPontos } from "@/utils/api_consumer/server_side_consumer";
+import { useEdificacoes, usePontos, toURLParams, usePonto } from "@/utils/api_consumer/client_side_consumer";
+
+import { useEffect, useState } from "react";
+import AbortController from 'abort-controller';
 
 function groupBy<Type>(arr: Type[], key: (el: Type) => any) {
   var groups = Object();
@@ -41,24 +46,92 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
   )
 }
 
-export default async function Pontos() {
-  const edificacoes: Edificacao[] = await getEdificacoes(10000);
-  const pontos: Ponto[] = await getPontos(10000);
+export default function Pontos() {
+  const [filters, setFilters] = useState<any>({ q: "", campus: "" })
+  const edificacoes: Edificacao[] = useEdificacoes();
+  const [pontos, setPontos] = useState<Ponto[]>([]);
+
+  const [abortController, setAbortController] = useState(new AbortController());
+
   const groups = groupBy<Ponto>(pontos, (ponto: Ponto) => {
     return ponto.edificacao.codigo;
   });
 
   for (let edificacao of edificacoes) {
-    if (!groups[edificacao.codigo]) {
-      groups[edificacao.codigo] = {edificacao: edificacao, pontos: []};
+    if (!groups[edificacao.codigo] &&
+      (edificacao.codigo.includes(filters.q) || edificacao.nome.includes(filters.q)) &&
+      (filters.campus === "BOTH" || filters.campus === edificacao.campus)
+    ) {
+      groups[edificacao.codigo] = { edificacao: edificacao, pontos: [] };
     }
   }
+
+
+  useEffect(() => {
+    if (abortController) {
+      abortController.abort();
+    }
+
+    const newAbortController = new AbortController();
+    setAbortController(newAbortController);
+
+    const fetchData = async () => {
+      const _filters = { ...filters };
+      if (_filters.campus === "BOTH") {
+        delete _filters.campus;
+      }
+      const query = toURLParams(_filters);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000&${query}`, { signal: newAbortController.signal, cache: "no-cache" });
+
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const pontos = await res.json();
+      setPontos(pontos.items);
+    };
+
+    fetchData();
+
+    return () => {
+      newAbortController.abort();
+    };
+  }, [filters]);
 
   return (
     <>
       <h2 className="text-3xl text-[#525252]">Pontos de Coleta</h2>
       <div className="flex w-full flex-col items-center">
-        <Filters />
+        <div className="mb-4 flex w-full flex-col gap-4">
+          <div className="relative flex">
+            <i className="bi bi-search"></i>
+            <input
+              id="search-bar"
+              className="w-full rounded-md border border-[#ABABAB] bg-white px-5 py-3 text-[#525252]"
+              type="text"
+              name="search-query"
+              placeholder="Digite o termo de pesquisa"
+              onChange={(e) => {
+                setFilters({ ...filters, q: e.target.value });
+              }
+              }
+            />
+          </div>
+          <div className="flex flex-col-reverse gap-3 self-end">
+            <select
+              name="campus"
+              className="w-36 rounded-md border border-[#ABABAB] bg-white px-3 py-2 text-[#525252]"
+              onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
+            >
+              <option value="" disabled selected hidden>
+                Campus
+              </option>
+              <option value="BOTH">Leste/Oeste</option>
+              <option value="LE">Leste</option>
+              <option value="OE">Oeste</option>
+            </select>
+          </div>
+        </div>
         <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-full bg-gray-100 border border-gray-300 text-green-500 font-semibold rounded-md hover:bg-green-600 hover:text-white text-center">+ Adicionar edificação</a>
         <div className="flex flex-col w-full">
           {Object.values(groups).map((group, i) => {

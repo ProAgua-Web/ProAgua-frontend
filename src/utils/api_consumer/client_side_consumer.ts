@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { Coleta, Edificacao, ParametroReferencia, Ponto, Sequencia, Usuario } from "@/utils/types";
 
+export function toURLParams(data: Object) {
+    let params = [];
+
+    for (const [key, value] of Object.entries(data)) {
+        if (value) {
+            params.push(key + "=" + value);
+        }
+    }
+
+    return params.join('&');
+}
+
+
 export function useEdificacao(codigo_edificacao: string) {
     const [edificacao, setEdificacao] = useState<Edificacao>();
 
@@ -20,7 +33,7 @@ export function useEdificacoes() {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes");
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?limit=10000`, {cache: "no-cache"});
             setEdificacoes((await response.json()).items);
         })();
     }, []);
@@ -48,7 +61,7 @@ export function usePontos(codigo_edificacao: string | null = null, id_sequencia:
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/');
+            let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000`, {cache: "no-cache"});
             const pontos = (await response.json()).items;
 
             setPontos(pontos);
