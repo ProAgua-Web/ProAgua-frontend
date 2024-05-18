@@ -11,24 +11,6 @@ export default function Configuracoes() {
     const [editable, setEditable] = useState(false);
     const [submiting, setSubmiting] = useState(false);
 
-    function setDefaultValues() {
-        if (parametroReferencia) {
-            const minTemperaturaInput = document.getElementsByName("min_temperatura")[0] as HTMLInputElement;
-            const maxTemperaturaInput = document.getElementsByName("max_temperatura")[0] as HTMLInputElement;
-            const minCloroInput = document.getElementsByName("min_cloro_residual_livre")[0] as HTMLInputElement;
-            const maxCloroInput = document.getElementsByName("max_cloro_residual_livre")[0] as HTMLInputElement;
-            const minTurbidezInput = document.getElementsByName("min_turbidez")[0] as HTMLInputElement;
-            const maxTurbidezInput = document.getElementsByName("max_turbidez")[0] as HTMLInputElement;
-
-            minTemperaturaInput.value = parametroReferencia.min_temperatura.toString();
-            maxTemperaturaInput.value = parametroReferencia.max_temperatura.toString();
-            minCloroInput.value = parametroReferencia.min_cloro_residual_livre.toString();
-            maxCloroInput.value = parametroReferencia.max_cloro_residual_livre.toString();
-            minTurbidezInput.value = parametroReferencia.min_turbidez.toString();
-            maxTurbidezInput.value = parametroReferencia.max_turbidez.toString();
-        }
-    }
-
     async function submitForm(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -96,7 +78,7 @@ export default function Configuracoes() {
 
 
 
-                <form onSubmit={(e) => submitForm(e)} method="PUT"
+                <form onSubmit={(e) => submitForm(e)} onReset={() => setEditable(false)} method="PUT"
                     className="w-full bg-white shadow-lg rounded border border-neutral-300 p-4">
 
                     <div className="w-full flex items-center p-4 border-b border-neutral-300">
@@ -141,22 +123,18 @@ export default function Configuracoes() {
                                     setEditable(true);
                                 }
                             }}
-                            value={editable ? submiting? "Editando..." : "Salvar" : "Habilitar edição"}
+                            value={editable ? submiting ? "Editando..." : "Salvar" : "Habilitar edição"}
                             disabled={submiting}
                         />
 
                         {editable && (
                             <>
-                                <button
-                                    type="button"
-                                    className={`w-44 rounded-lg border bg-gray-500 px-6 py-4 text-center font-semibold text-white hover:bg-gray-600`}
-                                    onClick={() => {
-                                        setEditable(false)
-                                        setDefaultValues()
-                                    }}
+                                <input
+                                    type="reset"
+                                    className={`rounded-lg border bg-gray-500 px-6 py-4 text-center font-semibold text-white hover:bg-gray-600`}
+                                    value="Cancelar"
                                 >
-                                    Cancelar
-                                </button>
+                                </input>
                             </>
                         )}
 

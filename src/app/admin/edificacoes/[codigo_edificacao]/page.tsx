@@ -29,7 +29,13 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
             })
         });
 
-        window.location.href = "/admin/pontos";
+        if (response.status == 200) {
+            alert("Edificação atualizada com sucesso!");
+            window.location.href = "/admin/pontos";
+        } else {
+            alert("Erro ao atualizar edificação!");
+        }
+
     }
 
     return (
@@ -37,7 +43,9 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
             <h2 className="text-4xl text-neutral-700 font-bold mb-8">
                 {editable ? "Editar" : "Visualizar"} Edificação
             </h2>
-            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
+            <form onSubmit={(e) => submitForm(e)} onReset={() => {setEditable(false); }} method="PUT"
+                className="w-full flex flex-col gap-4"
+            >
                 <label htmlFor="codigo">Código:</label>
                 <input
                     type="text"
@@ -106,13 +114,12 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
 
                 {editable && (
                     <>
-                        <button
-                            type="button"
+                        <input
+                            type="reset"
                             className={`rounded-lg border bg-gray-500 px-6 py-4 text-center font-semibold text-white hover:bg-gray-600`}
-                            onClick={() => setEditable(false)}
+                            value="Cancelar"
                         >
-                            Cancelar
-                        </button>
+                        </input>
                     </>
                 )}
             </form>

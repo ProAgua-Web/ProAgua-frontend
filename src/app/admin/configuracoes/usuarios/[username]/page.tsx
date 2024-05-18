@@ -10,7 +10,7 @@ export default function Page({ params }: { params: { username: string } }) {
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        
+
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/${params.username}`, {
             method: 'PUT',
             body: JSON.stringify({
@@ -35,7 +35,9 @@ export default function Page({ params }: { params: { username: string } }) {
                 {editable ? "Editar" : "Visualizar"} Usuário
             </h2>
 
-            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
+            <form onSubmit={(e) => submitForm(e)} onReset={() => setEditable(false)} method="POST"
+            className="w-full flex flex-col gap-4" 
+            >
                 <label htmlFor="id">Id:</label>
                 <input
                     type="text"
@@ -109,13 +111,12 @@ export default function Page({ params }: { params: { username: string } }) {
 
                 {editable && (
                     <>
-                        <button
-                            type="button"
+                        <input
+                            type="reset"
                             className={`rounded-lg border bg-gray-500 px-6 py-4 text-center font-semibold text-white hover:bg-gray-600`}
-                            onClick={() => setEditable(false)}
+                            value="Cancelar"
                         >
-                            Cancelar
-                        </button>
+                        </input>
                     </>
                 )}
 

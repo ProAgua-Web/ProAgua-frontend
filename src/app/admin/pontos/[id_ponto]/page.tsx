@@ -63,7 +63,9 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 {editable ? "Editar" : "Visualizar"} Ponto
             </h2>
 
-            <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
+            <form onSubmit={(e) => submitForm(e)} onReset={()=> setEditable(false)} method="POST"
+                className="w-full flex flex-col gap-4"
+            >
 
                 <label htmlFor="id">Id:</label>
                 <input
@@ -224,13 +226,12 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
 
                 {editable && (
                     <>
-                        <button
-                            type="button"
+                        <input
+                            type="reset"
                             className={`rounded-lg border bg-gray-500 px-6 py-4 text-center font-semibold text-white hover:bg-gray-600`}
-                            onClick={() => setEditable(false)}
+                            value="Cancelar"
                         >
-                            Cancelar
-                        </button>
+                        </input>
                     </>
                 )}
             </form >

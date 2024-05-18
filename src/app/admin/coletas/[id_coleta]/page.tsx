@@ -79,7 +79,7 @@ export default function Page({ params }: {
             </h2>
             {
                 currentPontoId && coleta && (
-                    <form onSubmit={submitForm} method="PUT"
+                    <form onSubmit={submitForm} onReset={() => setEditable(false)} method="PUT"
                         className="w-full flex flex-col gap-4">
 
                         <label htmlFor="sequencia">Sequência:</label>
@@ -286,13 +286,12 @@ export default function Page({ params }: {
 
                         {editable && (
                             <>
-                                <button
-                                    type="button"
+                                <input
+                                    type="reset"
                                     className={`rounded-lg border bg-gray-500 px-6 py-4 text-center font-semibold text-white hover:bg-gray-600`}
-                                    onClick={() => setEditable(false)}
+                                    value="Cancelar"
                                 >
-                                    Cancelar
-                                </button>
+                                </input>
                             </>
                         )}
                     </form>

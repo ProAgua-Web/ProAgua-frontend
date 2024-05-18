@@ -123,7 +123,37 @@ export default function Pontos() {
               }
             />
           </div>
-          <div className="flex flex-col-reverse gap-3 self-end">
+          <div className="w-full flex justify-between gap-3 self-end">
+
+            <div className="flex gap-8">
+              <div className="flex flex-col justify-center items-center">
+                <input name="tipo" type="checkbox" value="1" 
+                className=""/>
+                <label>BEBEDOURO</label>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                <input name="tipo" type="checkbox" value="2" />
+                <label>RPS</label>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                <input name="tipo" type="checkbox" value="3" />
+                <label>RPI</label>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                <input name="tipo" type="checkbox" value="4" />
+                <label>RDS</label>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                <input name="tipo" type="checkbox" value="5" />
+                <label>RDI</label>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                <input name="tipo" type="checkbox" value="6" />
+                <label>CAERN</label>
+              </div>
+
+            </div>
+
             <select
               name="campus"
               className="w-36 rounded-md border border-[#ABABAB] bg-white px-3 py-2 text-[#525252]"
