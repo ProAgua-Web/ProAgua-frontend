@@ -54,6 +54,12 @@ export default function Pontos() {
     const matchesCampus = filters.campus === "BOTH" || edificacao.campus === filters.campus;
     return matchesQuery && matchesCampus;
   });
+  const [checkBebedouro, setCheckBebedouro] = useState<boolean>(true);
+  const [checkRPS, setCheckRPS] = useState<boolean>(true);
+  const [checkRPI, setCheckRPI] = useState<boolean>(true);
+  const [checkRDS, setCheckRDS] = useState<boolean>(true);
+  const [checkRDI, setCheckRDI] = useState<boolean>(true);
+  const [checkCAERN, setCheckCAERN] = useState<boolean>(true);
 
 
   const [pontos, setPontos] = useState<Ponto[]>([]);
@@ -86,8 +92,21 @@ export default function Pontos() {
       if (_filters.campus === "BOTH") {
         delete _filters.campus;
       }
-      const query = toURLParams(_filters);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000&${query}`, { signal: newAbortController.signal, cache: "no-cache" });
+
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000`
+      let query = toURLParams(_filters);
+
+      // http://localhost:8000/api/v1/pontos/?tipo=1&tipo=3&limit=10000&offset=0
+      if (checkBebedouro) query = query.concat("&tipo=1");
+      if (checkRPS) query = query.concat("&tipo=2");
+      if (checkRPI) query = query.concat("&tipo=3");
+      if (checkRDS) query = query.concat("&tipo=4");
+      if (checkRDI) query = query.concat("&tipo=5");
+      if (checkCAERN) query = query.concat("&tipo=6");
+
+      console.log(`${url}&${query}`);
+
+      const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache" });
 
       if (!res.ok) {
         throw new Error('Network response was not ok');
@@ -102,7 +121,7 @@ export default function Pontos() {
     return () => {
       newAbortController.abort();
     };
-  }, [filters]);
+  }, [filters, checkBebedouro, checkRPS, checkRPI, checkRDS, checkRDI, checkCAERN]);
 
   return (
     <>
@@ -126,32 +145,49 @@ export default function Pontos() {
           <div className="w-full flex justify-between gap-3 self-end">
 
             <div className="flex gap-8">
-              <div className="flex flex-col justify-center items-center">
-                <input name="tipo" type="checkbox" value="1" 
-                className=""/>
-                <label>BEBEDOURO</label>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <input name="tipo" type="checkbox" value="2" />
-                <label>RPS</label>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <input name="tipo" type="checkbox" value="3" />
-                <label>RPI</label>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <input name="tipo" type="checkbox" value="4" />
-                <label>RDS</label>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <input name="tipo" type="checkbox" value="5" />
-                <label>RDI</label>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <input name="tipo" type="checkbox" value="6" />
-                <label>CAERN</label>
-              </div>
+              <div className="flex flex-row justify-center items-center">
 
+                <label htmlFor="bebedouro" onClick={(e) => { setCheckBebedouro(!checkBebedouro); setFilters }}
+                  className={`cursor-pointer ${checkBebedouro ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
+                > Bebedouro</label>
+                <input id="bebedouro" name="tipo" type="checkbox" value="1" defaultChecked={checkBebedouro} hidden
+                  className="" />
+              </div>
+              <div className="flex flex-row justify-center items-center">
+                <label htmlFor="rps" onClick={(e) => { setCheckRPS(!checkRPS) }}
+                  className={`cursor-pointer ${checkRPS ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
+                > RPS</label>
+                <input id="rps" name="tipo" type="checkbox" value="2" defaultChecked={checkRPS} hidden
+                  className="" />
+              </div>
+              <div className="flex flex-row justify-center items-center">
+                <label htmlFor="rpi" onClick={(e) => { setCheckRPI(!checkRPI) }}
+                  className={`cursor-pointer ${checkRPI ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
+                > RPI</label>
+                <input id="rpi" name="tipo" type="checkbox" value="3" defaultChecked={checkRPI} hidden
+                  className="" />
+              </div>
+              <div className="flex flex-row justify-center items-center">
+                <label htmlFor="rds" onClick={(e) => { setCheckRDS(!checkRDS) }}
+                  className={`cursor-pointer ${checkRDS ? "text-primary-500" : "hover:text-primary-400"} `}
+                > RDS</label>
+                <input id="rds" name="tipo" type="checkbox" value="4" defaultChecked={checkRDS} hidden
+                  className="" />
+              </div>
+              <div className="flex flex-row justify-center items-center">
+                <label htmlFor="rdi" onClick={(e) => { setCheckRDI(!checkRDI) }}
+                  className={`cursor-pointer ${checkRDI ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
+                > RDI</label>
+                <input id="rdi" name="tipo" type="checkbox" value="5" defaultChecked={checkRDI} hidden
+                  className="" />
+              </div>
+              <div className="flex flex-row justify-center items-center">
+                <label htmlFor="caern" onClick={(e) => { setCheckCAERN(!checkCAERN) }}
+                  className={`cursor-pointer ${checkCAERN ? "text-primary-500" : "hover:text-primary-400"} `}
+                > CAERN</label>
+                <input id="caern" name="tipo" type="checkbox" value="6" defaultChecked={checkCAERN} hidden
+                  className="" />
+              </div>
             </div>
 
             <select
