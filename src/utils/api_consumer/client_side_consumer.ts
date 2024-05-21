@@ -175,6 +175,36 @@ export function useColetas() {
     return coletas;
 }
 
+export function useColetasByPonto(id_ponto: number) {
+    const [coletas, setColetas] = useState<Coleta[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto + '/coletas');
+            const coletas = await response.json();
+
+            setColetas(coletas);
+        })();
+    }, [id_ponto]);
+
+    return coletas;
+}
+
+export function useLastColetaByPonto(id_ponto: number) {
+    const [coleta, setColeta] = useState<Coleta | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto + '/coletas');
+            const coletas = await response.json();
+
+            setColeta(coletas[coletas.length - 1]);
+        })();
+    }, [id_ponto]);
+
+    return coleta;
+}
+
 export function useParametrosReferencia() {
     const [parametrosReferencia, setParametrosReferencia] = useState<ParametroReferencia>();
 
