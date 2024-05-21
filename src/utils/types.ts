@@ -17,6 +17,7 @@ export type Sequencia = {
     amostragem: number;
     ponto_url: string;
     ponto?: Ponto;
+    status: boolean;
 };
 
 export type Edificacao = {
