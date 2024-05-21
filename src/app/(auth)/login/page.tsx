@@ -10,36 +10,37 @@ export default function Login() {
     <main className="flex h-screen w-full items-center justify-center bg-[#f2f2f2]">
       <div
         id="login-container"
-        className="flex h-[80vh] w-[70vw] overflow-hidden rounded-md shadow-lg"
+        className="h-full lg:h-[80vh] w-full lg:w-[75vw] min-w-[500px] flex flex-col lg:flex-row overflow-hidden rounded-md shadow-lg"
       >
         <section
           id="login-aside-logo"
-          className={`flex w-1/2 select-none flex-col items-center justify-center gap-4 bg-primary-500 bg-login-background bg-right-bottom bg-no-repeat text-white`}
+          className={`h-1/5 lg:h-full lg:w-3/5 flex flex-row-reverse lg:flex-col items-center justify-center gap-4 bg-primary-500 lg:bg-login-background bg-right-bottom bg-no-repeat text-white select-none p-4`}
         >
           <Image
             src={Logo}
-            className="pointer-events-none h-64 w-full object-fill	"
+            className="pointer-events-none h-36 lg:h-64 w-36 lg:w-64 object-fill p-8 flex justify-start"
             alt="Logo do projeto"
           />
-          <span className="text-6xl">ProÁgua</span>
+          <span className="text-6xl text-center">ProÁgua</span>
         </section>
         <section
           id="login-form"
-          className="flex h-full w-auto flex-grow flex-col items-center justify-center gap-1 bg-white px-20 pt-24"
+          className="flex h-full w-auto flex-grow flex-col items-center justify-center gap-1 bg-white p-20"
         >
-          <h1 className="text-4xl font-medium">Login</h1>
+           {/* <span><Image src={Logo} alt="Logo do projeto"/></span>  */}
+          <h1 className="text-4xl font-medium flex items-center gap-2">Login</h1>
           <form className="flex h-full w-full flex-grow flex-col items-center justify-center gap-2">
-            <Input label="Email" type="email" name="email" value="" />
-            <Input label="Senha" type="password" name="password" value="" />
+            <Input label="Email" type="email" name="email" value="" required={true} />
+            <Input label="Senha" type="password" name="password" value="" required={true} />
             <a className="flex self-end text-[#1098F7]" href="">
               Esqueceu a senha?
             </a>
             {/* <Button label="Login" onClick={() => {}}></Button> */}
             <a
-              className="min-h-10 w-full rounded-md border bg-primary-500 p-3 text-white hover:bg-primary-600"
+              className="min-h-10 w-full flex justify-center rounded-md border bg-primary-500 p-3 text-white hover:bg-primary-600"
               href="/admin/dashboard"
             >
-              Login
+              Entrar
             </a>
           </form>
         </section>
