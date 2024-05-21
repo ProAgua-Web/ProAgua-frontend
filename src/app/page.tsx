@@ -69,7 +69,8 @@ export default function Home() {
           </h1>
           <div className="outlined-btn flex w-fit items-center justify-center rounded border border-white px-3 py-1">
             <i className="fa-solid fa-magnifying-glass"></i>
-            <a href="#pesquise">Procure por um ponto</a>
+            {/* <a href="#pesquise">Procure por um ponto</a> */}
+            <a href="/pontos">Procure por um ponto</a>
           </div>
         </section>
 
