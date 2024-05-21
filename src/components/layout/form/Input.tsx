@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface InputProps {
   label: string;
@@ -6,9 +6,19 @@ interface InputProps {
   name: string;
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required: boolean;
 }
 
 export default function Input(props: InputProps) {
+
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    if (props.onChange) {
+      props.onChange(e);
+    }
+  };
   return (
     <div className="flex w-full flex-col gap-1">
       <label className="w-full" htmlFor={props.name}>
@@ -18,8 +28,9 @@ export default function Input(props: InputProps) {
         className="w-full rounded-md border border-neutral-200 p-2"
         type={props.type}
         name={props.name}
-        value={props.value}
-        onChange={props.onChange}
+        value={inputValue}
+        onChange={handleInputChange}
+        required={props.required}
       />
     </div>
   );
