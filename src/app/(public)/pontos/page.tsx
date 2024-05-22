@@ -100,8 +100,6 @@ export default function Page() {
             if (checkRDI) query = query.concat("&tipo=5");
             if (checkCAERN) query = query.concat("&tipo=6");
 
-            console.log(`${url}&${query}`);
-
             const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache" });
 
             if (!res.ok) {

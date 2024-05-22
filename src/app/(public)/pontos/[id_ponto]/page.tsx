@@ -12,9 +12,6 @@ function PointDashboard(props: {coleta: Coleta}) {
 
     const referencia = useParametrosReferencia();
 
-    console.log(coleta)
-    console.log(referencia);
-
     const turbidezInterval = () => {
         if (referencia?.min_turbidez != null && coleta.turbidez < referencia.min_turbidez) {
             return false;
