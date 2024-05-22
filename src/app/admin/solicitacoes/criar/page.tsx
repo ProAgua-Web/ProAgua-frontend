@@ -1,13 +1,19 @@
 'use client'
 
-import { useEdificacoes, usePontos } from "@/utils/api_consumer/client_side_consumer"
+import MultipleImageInput from "@/components/MultipleImageInput";
+import { useEdificacoes, useEdificacao, usePontos } from "@/utils/api_consumer/client_side_consumer"
 import { TIPOS_PONTOS } from "@/utils/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
     const edificacoes = useEdificacoes();
     const pontos = usePontos();
     const [tipoSolicitacao, setTipoSolicitacao] = useState<string>('-');
+    const [codEdificacao, setCodEdificacao] = useState<string>("");
+    const edificacao = useEdificacao(codEdificacao || "");
+
+    const [images, setImages] = useState([]);
+
 
     interface solicitacao {
         objetivo: string,
@@ -45,10 +51,11 @@ export default function Page() {
 
     }
 
-    // onEffect(() => {
-    //     const objetivo = defaultValues[tipoSolicitacao];
-    // }, [tipoSolicitacao])
-
+    useEffect(() => {
+        if (edificacao){
+            setImages(edificacao?.imagens);
+        }
+    }, [edificacao]);
 
     return (
         <>
@@ -64,7 +71,8 @@ export default function Page() {
                 </select>
 
                 <label className="mt-4">Edificação</label>
-                <select className="w-full border border-neutral-300 rounded px-4 py-2">
+                <select onChange={(e) => setCodEdificacao(e.target.value)}
+                    className="w-full border border-neutral-300 rounded px-4 py-2">
                     <option>-</option>
                     {edificacoes.map(edificacao => (
                         <option value={edificacao.codigo}> {edificacao.codigo} - {edificacao.nome} </option>
@@ -88,7 +96,7 @@ export default function Page() {
                     className="w-full border border-neutral-300 rounded px-4 py-2" />
 
                 <label className="mt-4">Imagens:</label>
-
+                <MultipleImageInput images={images} setImages={setImages} />
                 <input className="w-full" type="file" name="" id="" accept="image/png, image/jpeg" />
 
                 <button className="text-white bg-blue-500 rounded px-4 py-2">Criar e salvar em PDF</button>
