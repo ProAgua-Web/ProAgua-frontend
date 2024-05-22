@@ -2,11 +2,14 @@ import { Sequencia, TIPOS_PONTOS } from "@/utils/types";
 import CardSequencia from "@/components/sequencias/CardSequencia";
 import Filters from "@/components/sequencias/Filters";
 import { API_BASE_URL } from "@/utils/config";
+import { toURLParams, useSequencias } from "@/utils/api_consumer/client_side_consumer";
+import { useEffect, useState } from "react";
 
-
-export default async function Coletas() {
-    let resp = await fetch(API_BASE_URL + '/api/v1/sequencias', {cache: 'no-cache'});
-    const sequencias: Sequencia[] = (await resp.json()).items;
+function formatDate(date: string) {
+    const d = new Date(date);
+    const hour = d.toLocaleTimeString().slice(0, 5).replace(':', 'h');
+    return `${d.toLocaleDateString()} ${hour}`;
+}
 
     return (
         <>
@@ -15,27 +18,33 @@ export default async function Coletas() {
                 <Filters />
 
                 <div className="w-full">
-                    <table className="w-full border border-gray-400 mb-8">
-                        <thead className="bg-neutral-800 text-white">
-                            <tr>
-                                <th className="pl-12 px-2 py-3 text-left">Cód. Edificação</th>
-                                <th className="px-2 py-3 text-left">Ambiente ponto</th>
-                                <th className="px-2 py-3 text-left">Ponto</th>
-                                <th className="px-2 py-3 text-left">Tombo</th>
-                                <th className="px-2 py-3 text-left">Amostragem</th>
-                                <th className="pr-8 px-2 py-3 text-left">Acessar</th>
+                    <table className="w-full border border-slate-500 mb-8 last:mb-0">
+                        <thead>
+                            <tr className="bg-primary-500 text-white">
+                                <th className="px-2 py-4">Amostragem</th>
+                                <th className="px-2 py-4 text-center">Cód. Edificação</th>
+                                <th className="px-2 py-4 text-center">Campus</th>
+                                <th className="px-2 py-4">Ponto</th>
+                                <th className="px-2 py-4">Ambiente ponto</th>
+                                <th className="px-2 py-4">Tombo</th>
+                                <th className="px-2 py-4">Ultima coleta</th>
                             </tr>
                         </thead>
                         <tbody>
                             {sequencias.map((sequencia: Sequencia, i) => {
                                 return (
-                                    <tr className="bg-sky-100 even:bg-sky-200">
-                                        <td className="text-sm pl-12 px-2 py-3">{sequencia.ponto?.edificacao.codigo}</td>
-                                        <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
-                                        <td className="text-sm px-2 py-3">{TIPOS_PONTOS[sequencia.ponto?.tipo]}</td>
-                                        <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
+                                    <tr className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
+                                        onClick={() => {
+                                            window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
+                                        }}
+                                    >
                                         <td className="text-sm px-2 py-3">{sequencia.amostragem}</td>
-                                        <td className="text-sm pr-8 px-2 py-3"><a className="textext-smt-sm text-blue-800 underline" href={"/admin/sequencias_coletas/" + sequencia.id}>Acessar</a></td>
+                                        <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.codigo}</td>
+                                        <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.campus == "OE" ? "Oeste" : "Leste"}</td>
+                                        <td className="text-sm px-2 py-3">{TIPOS_PONTOS[sequencia.ponto?.tipo]}</td>
+                                        <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
+                                        <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
+                                        <td className="px-2 py-3 text-nowrap">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
                                     </tr>
                                 )
                             })}
