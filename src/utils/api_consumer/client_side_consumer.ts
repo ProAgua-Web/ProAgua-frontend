@@ -41,11 +41,12 @@ export function useEdificacoes() {
     return edificacoes;
 }
 
-export function usePonto(id_ponto: number) {
+export function usePonto(id_ponto: number) {    
     const [ponto, setPonto] = useState<Ponto>();
 
     useEffect(() => {
         (async () => {
+            if (!id_ponto) return;
             const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto);
             const ponto = await response.json();
 
