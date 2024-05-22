@@ -19,9 +19,9 @@ export function useEdificacao(codigo_edificacao: string) {
 
     useEffect(() => {
         (async () => {
+            if (!codigo_edificacao) return;
             const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes/" + codigo_edificacao);
-            const data = await response.json();
-            setEdificacao(data);
+            setEdificacao((await response.json()));
         })()
     }, [codigo_edificacao]);
 
