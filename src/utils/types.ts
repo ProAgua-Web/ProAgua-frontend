@@ -19,6 +19,7 @@ export type Sequencia = {
     ponto?: Ponto;
     status: boolean;
     ultima_coleta?: string;
+    coletas: Coleta[];
 };
 
 export type Edificacao = {

@@ -88,15 +88,15 @@ export default function Coletas() {
                             onChange={(e) => {
                                 setFilters({ ...filters, q: e.target.value });
                             }
-                        }
-                        disabled
+                            }
+                            disabled
                         />
                     </div>
                     <div className="w-full flex justify-between gap-3 self-end">
 
                         <div className="flex gap-8">
                             <div className="flex flex-row justify-center items-center">
-{/* 
+                                {/* 
                                 <label htmlFor="bebedouro" onClick={(e) => { setCheckBebedouro(!checkBebedouro); setFilters }}
                                     className={`cursor-pointer ${checkBebedouro ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
                                 > Bebedouro</label>
@@ -172,12 +172,14 @@ export default function Coletas() {
                                 <th className="px-2 py-4">Ambiente ponto</th>
                                 <th className="px-2 py-4">Tombo</th>
                                 <th className="px-2 py-4">Ultima coleta</th>
+                                <th className="px-2 py-4">Qnt. de coletas</th>
                             </tr>
                         </thead>
                         <tbody>
                             {sequencias.map((sequencia: Sequencia, i) => {
                                 return (
-                                    <tr className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
+                                    <tr title={sequencia.ultima_coleta.status}
+                                        className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
                                         onClick={() => {
                                             window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
                                         }}
@@ -188,7 +190,8 @@ export default function Coletas() {
                                         <td className="text-sm px-2 py-3">{TIPOS_PONTOS[sequencia.ponto?.tipo]}</td>
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
-                                        <td className="px-2 py-3 text-nowrap">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
+                                        <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
+                                        <td className="text-sm px-2 py-3 text-center">{sequencia.coletas.length}</td>
                                     </tr>
                                 )
                             })}
