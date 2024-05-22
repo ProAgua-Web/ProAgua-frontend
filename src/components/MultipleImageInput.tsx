@@ -24,7 +24,7 @@ export default function MultipleImageInput(props: {
 
             <div>
                 <div className="w-full overflow-auto p-1 rounded border rounded-b-none border-neutral-400 bg-neutral-100 flex gap-2">
-                    {images.length > 0 ? 
+                    {images?.length > 0 ? 
                         images.map(image => {
                             let image_url;
 
