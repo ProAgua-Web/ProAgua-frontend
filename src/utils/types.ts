@@ -18,6 +18,7 @@ export type Sequencia = {
     ponto_url: string;
     ponto?: Ponto;
     status: boolean;
+    ultima_coleta?: string;
 };
 
 export type Edificacao = {
