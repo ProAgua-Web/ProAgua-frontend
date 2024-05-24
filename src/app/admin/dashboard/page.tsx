@@ -11,7 +11,7 @@ function SequenciaList(props: { sequencias: Sequencia[] }) {
                         className="group flex items-center justify-between p-4 border-b border-b-neutral-300 hover:bg-blue-100 last-of-type:border-b-0"
                     >
                         <span>
-                            Sequência {sequencia.id} - {sequencia.ponto.ambiente} - {sequencia.ponto.edificacao.nome}
+                            Sequência {sequencia.id} - {sequencia.ponto?.ambiente} - {sequencia.ponto?.edificacao.nome}
                         </span>
                         <p className="w-[300px] text-nowrap text-ellipsis overflow-hidden group-hover:text-wrap">
                             {sequencia.status_message}

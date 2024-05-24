@@ -18,6 +18,7 @@ export type Sequencia = {
     ponto_url: string;
     ponto?: Ponto;
     status: boolean;
+    status_message: string;
     ultima_coleta?: string;
     coletas: Coleta[];
 };

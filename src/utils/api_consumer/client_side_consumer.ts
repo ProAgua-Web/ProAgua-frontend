@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Coleta, Edificacao, ParametroReferencia, Ponto, Sequencia, Usuario } from "@/utils/types";
 
+const token = localStorage.getItem('token')
+// TODO: Add token to ALL fetch requests
+
 export function toURLParams(data: Object) {
     let params = [];
 
@@ -33,7 +36,7 @@ export function useEdificacoes() {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?limit=10000`, {cache: "no-cache"});
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?limit=10000`, { cache: "no-cache" });
             setEdificacoes((await response.json()).items);
         })();
     }, []);
@@ -41,13 +44,22 @@ export function useEdificacoes() {
     return edificacoes;
 }
 
-export function usePonto(id_ponto: number) {    
+export function usePonto(id_ponto: number) {
     const [ponto, setPonto] = useState<Ponto>();
+
+    const url = process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto;
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }
 
     useEffect(() => {
         (async () => {
             if (!id_ponto) return;
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto);
+            const response = await fetch(url, requestOptions);
             const ponto = await response.json();
 
             setPonto(ponto);
@@ -62,7 +74,7 @@ export function usePontos(codigo_edificacao: string | null = null, id_sequencia:
 
     useEffect(() => {
         (async () => {
-            let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000`, {cache: "no-cache"});
+            let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000`, { cache: "no-cache" });
             const pontos = (await response.json()).items;
 
             setPontos(pontos);
@@ -194,9 +206,18 @@ export function useColetasByPonto(id_ponto: number) {
 export function useLastColetaByPonto(id_ponto: number) {
     const [coleta, setColeta] = useState<Coleta | null>(null);
 
+    const url = process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto + '/coletas';
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }
+
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto + '/coletas');
+            const response = await fetch(url, requestOptions);
             const coletas = await response.json();
 
             setColeta(coletas[coletas.length - 1]);
@@ -209,9 +230,18 @@ export function useLastColetaByPonto(id_ponto: number) {
 export function useParametrosReferencia() {
     const [parametrosReferencia, setParametrosReferencia] = useState<ParametroReferencia>();
 
+    const url = process.env.NEXT_PUBLIC_API_URL + '/api/v1/parametros_referencia';
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }
+
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/parametros_referencia');
+            const response = await fetch(url, requestOptions);
             const parametrosReferencia = await response.json();
 
             setParametrosReferencia(parametrosReferencia);
