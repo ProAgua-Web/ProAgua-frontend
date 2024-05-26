@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Coleta, Edificacao, ParametroReferencia, Ponto, Sequencia, Usuario } from "@/utils/types";
+import { Coleta, Edificacao, ParametroReferencia, Ponto, Sequencia, Solicitacao, Usuario } from "@/utils/types";
 
-const token = localStorage.getItem('token')
+// const token = localStorage.getItem('token')
+const token = "eyJ"
 // TODO: Add token to ALL fetch requests
 
 export function toURLParams(data: Object) {
@@ -16,6 +17,11 @@ export function toURLParams(data: Object) {
     return params.join('&');
 }
 
+export function formatDate(date: string) {
+    const d = new Date(date);
+    const hour = d.toLocaleTimeString().slice(0, 5).replace(':', 'h');
+    return `${d.toLocaleDateString()} ${hour}`;
+}
 
 export function useEdificacao(codigo_edificacao: string) {
     const [edificacao, setEdificacao] = useState<Edificacao>();
@@ -280,3 +286,33 @@ export function useUsuario(username: string) {
 
     return usuario;
 }
+
+export function useSolicitacoes() {
+    const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/solicitacoes');
+            const data = await response.json();
+            setSolicitacoes(data.items);
+        })();
+    }, []);
+
+    return solicitacoes;
+}
+
+export function useSolicitacao(id_solicitacao: number) {
+    const [solicitacao, setSolicitacao] = useState<Solicitacao | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/solicitacoes/' + id_solicitacao);
+            const solicitacao = await response.json();
+
+            setSolicitacao(solicitacao);
+        })();
+    }, [id_solicitacao]);
+
+    return solicitacao;
+}
+    

@@ -28,7 +28,7 @@ export type Edificacao = {
     nome: string;
     campus: string;
     cronograma: number;
-    imagem?: string;
+    imagens: Image[];
     pontos_url: string;
 };
 
@@ -86,6 +86,24 @@ export type Usuario = {
     password: string;
 }
 
+export type Solicitacao = {
+    id: number;
+    ponto: Ponto;
+    data: string;
+    status: string;
+    tipo: string;
+    objetivo: string;
+    justificativa: string;
+    imagens: Image[];
+}
+
+
+export type Image = {
+    file: File | string,
+    description: string
+};
+
+
 export const TIPOS_PONTOS = [
     null,
     "Bebedouro",
@@ -96,7 +114,8 @@ export const TIPOS_PONTOS = [
     "CAERN"
 ];
 
-export type Image = {
-    file: File | string,
-    description: string
-};
+export const TIPOS_SOLICITACOES = [
+    "LIMPEZA_RESERVATORIO",
+    "INSTALACAO_PONTO",
+    "CONSERTO_RESERVATORIO"
+];
