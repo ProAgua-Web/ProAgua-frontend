@@ -3,7 +3,7 @@
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { useEdificacoes, useEdificacao, usePontos, usePonto } from "@/utils/api_consumer/client_side_consumer"
 import { TIPOS_PONTOS } from "@/utils/types";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
     const edificacoes = useEdificacoes();
@@ -17,6 +17,8 @@ export default function Page() {
 
     const [images, setImages] = useState([]);
 
+    const [submiting, setSubmiting] = useState(false);
+
 
     interface solicitacao {
         objetivo: string,
@@ -29,18 +31,18 @@ export default function Page() {
             objetivo: "Selecione um tipo de solicitação.",
             justificativa: "Selecione um tipo de solicitação."
         },
-        "limpeza_reservatorio": {
+        "Limpeza de reservatório": {
             "objetivo": "Contribuir para a preservação da potabilidade da água para consumo humano da UFERSA.",
             justificativa: "- Comprovação da necessidade de limpeza do reservatório de água, a partir de amostragem de água no âmbito do projeto “Qualidade da água para consumo humano: estudo no sistema da UFERSA-Mossoró” (cadastro na PROPPG: PIB10009-2019).\n\n" +
                 "- Preservação da potabilidade da água conforme previsto na NBR 5626/2020 (ABNT, 2020, p. 40)¹:\n" +
                 "[...] “Todas as partes acessíveis dos componentes que têm contato com a água devem ser limpas periodicamente.” [...]\n\n" +
                 "Obs.: Para limpeza de reservatório de água, recomenda-se o procedimento especificado no Anexo F da NBR 5626/2020."
         },
-        "instalacao_ponto": {
+        "Instalação de ponto de coleta": {
             objetivo: "Possibilitar a coleta de água a montante do reservatório superior.",
             justificativa: "Verificação no local com apoio do encanador, assim como, comprovação da necessidade de existência de ponto de coleta de água, a partir de amostragem de água no âmbito do projeto “Qualidade da água para consumo humano: estudo no sistema da UFERSA-Mossoró” (cadastro na PROPPG: PIB10009- 2019).\n"
         },
-        "conserto_tampa": {
+        "Conserto de reservatório": {
             objetivo: "Contribuir para a proteção sanitária e preservação da potabilidade da água para consumo humano na UFERSA.",
             justificativa: "Verificação no local e comprovação da necessidade de substituição ou conserto da tampa do reservatório de água inferior, a partir de amostragem de água no âmbito do projeto “Qualidade da água para consumo humano: estudo no sistema da UFERSA-Mossoró” (cadastro na PROPPG: PIB10009-2019).\n\n" +
                 "- Proteção sanitária e preservação da potabilidade de água conforme previsto na NBR 5626/2020 (ABNT, 2020, p. 14) ¹:\n" +
@@ -60,24 +62,63 @@ export default function Page() {
         }
     }, [edificacao]);
 
+    const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setSubmiting(true);
+
+        const formData = new FormData(event.currentTarget);
+
+        const body = {
+            ponto_id: idPonto,
+            tipo: tipoSolicitacao,
+            objetivo: formData.get('objetivo'),
+            justificativa: formData.get('justificativa'),
+            status: formData.get('status')
+        }
+
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/solicitacoes/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (response.ok) {
+            alert('Solicitação criada com sucesso!');
+            window.location.href = '/admin/solicitacoes';
+        } else {
+            alert('Erro ao criar solicitação.');
+        }
+        setSubmiting(false);
+    }
+
     return (
         <>
-            <h1 className="text-3xl font-bold mb-4">Criar solicitação</h1>
-            <form className="w-full flex flex-col gap-2">
-                <label>Tipo de solicitação</label>
-                <select className="w-full border border-neutral-300 rounded px-4 py-2"
-                    onChange={(e) => setTipoSolicitacao(e.target.value)}>
-                    <option value="">-</option>
-                    <option value="limpeza_reservatorio" >Solicitação de limpeza de reservatório</option>
-                    <option value="instalacao_ponto" >Solicitação de instalação de ponto de coleta</option>
-                    <option value="conserto_tampa" >Solicitação de conserto de tampa de reservatório</option>
+            <h2 className="text-4xl text-neutral-700 font-bold mb-8">Criar solicitação</h2>
+            <form onSubmit={submitForm} method="POST"
+                className="w-full flex flex-col gap-2">
+
+                <label htmlFor="tipo">Tipo de solicitação</label>
+                <select required
+                    name="tipo"
+                    onChange={(e) => setTipoSolicitacao(e.target.value)}
+                    className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                >
+                    <option>-</option>
+                    <option value="Limpeza de reservatório">Solicitação de limpeza de reservatório</option>
+                    <option value="Instalação de ponto de coleta">Solicitação de instalação de ponto de coleta</option>
+                    <option value="Conserto de reservatório">Solicitação de conserto de tampa de reservatório</option>
                 </select>
 
 
-                <label className="mt-4">Edificação</label>
+                <label className="edificacao">Edificação</label>
                 <div className="flex">
-                    <select onChange={(e) => setCodEdificacao(e.target.value)} defaultValue={"-"}
-                        className="w-full border border-neutral-300 rounded px-4 py-2">
+                    <select required
+                        name="edificacao"
+                        onChange={(e) => setCodEdificacao(e.target.value)} defaultValue={"-"}
+                        className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    >
                         <option value="-" disabled selected>-</option>
                         {edificacoes.map(edificacao => (
                             <option value={edificacao.codigo}> {edificacao.codigo} - {edificacao.nome} </option>
@@ -93,10 +134,13 @@ export default function Page() {
                     </a>
                 </div>
 
-                <label className="mt-4">Ponto</label>
+                <label >Ponto</label>
                 <div className="flex">
-                    <select onChange={(e) => setIdPonto(parseInt(e.target.value))}
-                        className="w-full border border-neutral-300 rounded px-4 py-2">
+                    <select required
+                        name="ponto"
+                        onChange={(e) => setIdPonto(parseInt(e.target.value))}
+                        className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    >
                         <option value="" disabled selected>-</option>
                         {filteredPontos.map(ponto => (
                             <option value={ponto.id}> {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente} </option>
@@ -112,22 +156,47 @@ export default function Page() {
                     </a>
                 </div>
 
-                <label className="mt-4">Objetivo do serviço solicitado</label>
-                <textarea rows={8} defaultValue={objDefaultValue[tipoSolicitacao]?.objetivo || ''}
+                <label htmlFor="objetivo">Objetivo do serviço solicitado</label>
+                <textarea
+                    name="objetivo"
+                    rows={8}
+                    defaultValue={objDefaultValue[tipoSolicitacao]?.objetivo || ''}
                     className="w-full border border-neutral-300 rounded px-4 py-2" />
 
-                <label className="mt-4">Justificativa da solicitação</label>
-                <textarea rows={10} defaultValue={objDefaultValue[tipoSolicitacao]?.justificativa || ''}
+                <label htmlFor="justificativa">Justificativa da solicitação</label>
+                <textarea
+                    name="justificativa"
+                    rows={10}
+                    defaultValue={objDefaultValue[tipoSolicitacao]?.justificativa || ''}
                     className="w-full border border-neutral-300 rounded px-4 py-2" />
 
-                <label className="mt-4">Imagens:</label>
+                <label htmlFor="imagens">Imagens:</label>
                 <MultipleImageInput images={images} setImages={setImages} />
-                <input className="w-full" type="file" name="" id="" accept="image/png, image/jpeg" />
 
-                <button className="text-white bg-blue-500 rounded px-4 py-2">Criar e salvar em PDF</button>
+                <label htmlFor="status">Status: </label>
+                <select required
+                    name="status"
+                    defaultValue="Pendente"
+                    className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                >
+                    <option>-</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Concluído">Concluído</option>
+                </select>
+
                 <input
-                    className="border text-white bg-green-500 rounded px-4 py-2" type="submit"
-                    value="Criar solicitação"
+                    type="submit"
+                    value={submiting ? 'Enviando...' : 'Criar solicitação'}
+                    className="border text-white bg-green-500 hover:bg-green-600 disabled:bg-green-800 rounded px-4 py-2"
+                    disabled={submiting}
+                />
+
+                <input
+                    type="submit"
+                    className="border text-white bg-primary-500 hover:bg-primary-600 disabled:bg-primary-800 rounded px-4 py-2"
+                    disabled={submiting}
+                    value="Criar e salvar em PDF"
                 />
             </form>
 
