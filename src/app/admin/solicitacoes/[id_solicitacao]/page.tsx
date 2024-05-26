@@ -167,7 +167,7 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
                             />
 
 
-                            <label htmlFor="status">Status</label>
+                            <label htmlFor="status">Status: </label>
                             <select required
                                 name="status"
                                 disabled={!editable}
@@ -180,7 +180,7 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
                                 <option value="Concluído">Concluído</option>
                             </select>
 
-                            <label className="mt-4">Imagens: </label>
+                            <label>Imagens: </label>
                             <MultipleImageInput images={images} setImages={setImages} />
                             <input
                                 id="editar"
