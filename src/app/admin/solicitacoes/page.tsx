@@ -1,14 +1,9 @@
+"use client";
+
+import { formatDate, useSolicitacoes } from "@/utils/api_consumer/client_side_consumer";
+
 export default function Solicitacoes() {
-    const solicitacoes = [
-        {
-            codigo: "S01",
-            ponto: {}
-        },
-        {
-            codigo: "S02",
-            ponto: {}
-        },
-    ];
+    const solicitacoes = useSolicitacoes();
 
     return (
         <>
@@ -16,10 +11,10 @@ export default function Solicitacoes() {
         <div className="w-full bg-white rounded border border-neutral-300 shadow-lg p-4">
             <ul>
                 
-                {solicitacoes.map(solicitacao => (
+                {solicitacoes.length > 0 && solicitacoes.map(solicitacao => (
                     <li className="flex justify-between p-2 items-center border-b border-neutral-300 last:border-b-0">
-                        Solicitação {solicitacao.codigo}
-                        <a className="px-4 py-2 rounded border border-blue-500 text-blue-500" href={ "/admin/solicitacoes/" + solicitacao.codigo }>Acessar</a>
+                        {solicitacao.id} - Solicitação {solicitacao.tipo} - {formatDate(solicitacao.data)} - {solicitacao.status}
+                        <a className="px-4 py-2 rounded border border-blue-500 text-blue-500" href={ "/admin/solicitacoes/" + solicitacao.id }>Acessar</a>
                     </li>
                 ))}
                 
