@@ -28,7 +28,7 @@ export default function Coletas() {
     const [pontos, setPontos] = useState<Ponto[]>([]);
     const [abortController, setAbortController] = useState(new AbortController());
 
-
+    const [filteredSequencias, setFilteredSequencias] = useState<Sequencia[]>(sequencias);
 
     useEffect(() => {
         if (abortController) {
@@ -44,16 +44,16 @@ export default function Coletas() {
                 delete _filters.campus;
             }
 
-            const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000`
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias?limit=10000`
             let query = toURLParams(_filters);
 
             // http://localhost:8000/api/v1/pontos/?tipo=1&tipo=3&limit=10000&offset=0
-            if (checkBebedouro) query = query.concat("&tipo=1");
-            if (checkRPS) query = query.concat("&tipo=2");
-            if (checkRPI) query = query.concat("&tipo=3");
-            if (checkRDS) query = query.concat("&tipo=4");
-            if (checkRDI) query = query.concat("&tipo=5");
-            if (checkCAERN) query = query.concat("&tipo=6");
+            // if (checkBebedouro) query = query.concat("&tipo=1");
+            // if (checkRPS) query = query.concat("&tipo=2");
+            // if (checkRPI) query = query.concat("&tipo=3");
+            // if (checkRDS) query = query.concat("&tipo=4");
+            // if (checkRDI) query = query.concat("&tipo=5");
+            // if (checkCAERN) query = query.concat("&tipo=6");
 
             const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache" });
 
@@ -61,8 +61,9 @@ export default function Coletas() {
                 throw new Error('Network response was not ok');
             }
 
-            const pontos = await res.json();
-            setPontos(pontos.items);
+            const sequencias = await res.json();
+
+            setFilteredSequencias(sequencias.items);
         };
 
         fetchData();
@@ -89,7 +90,6 @@ export default function Coletas() {
                                 setFilters({ ...filters, q: e.target.value });
                             }
                             }
-                            disabled
                         />
                     </div>
                     <div className="w-full flex justify-between gap-3 self-end">
@@ -149,7 +149,6 @@ export default function Coletas() {
                             name="campus"
                             className="w-36 rounded-md border border-[#ABABAB] bg-white px-3 py-2 text-[#525252]"
                             onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
-                            disabled
                         >
                             <option value="" disabled selected hidden>
                                 Campus
@@ -176,9 +175,9 @@ export default function Coletas() {
                             </tr>
                         </thead>
                         <tbody>
-                            {sequencias.map((sequencia: Sequencia, i) => {
+                            {filteredSequencias.map((sequencia: Sequencia, i) => {
                                 return (
-                                    <tr title={sequencia.ultima_coleta.status}
+                                    <tr title={sequencia?.ultima_coleta.status}
                                         className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
                                         onClick={() => {
                                             window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
