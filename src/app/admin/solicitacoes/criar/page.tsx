@@ -7,12 +7,13 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
     const edificacoes = useEdificacoes();
-    const pontos = usePontos();
-    const [tipoSolicitacao, setTipoSolicitacao] = useState<string>('-');
     const [codEdificacao, setCodEdificacao] = useState<string>("");
     const edificacao = useEdificacao(codEdificacao);
     const [idPonto, setIdPonto] = useState<number>(0);
+    const pontos = usePontos();
     const ponto = usePonto(idPonto);
+    const filteredPontos = pontos.filter(ponto => ponto.edificacao.codigo === codEdificacao);
+    const [tipoSolicitacao, setTipoSolicitacao] = useState<string>('-');
 
     const [images, setImages] = useState([]);
 
@@ -97,7 +98,7 @@ export default function Page() {
                     <select onChange={(e) => setIdPonto(parseInt(e.target.value))}
                         className="w-full border border-neutral-300 rounded px-4 py-2">
                         <option value="" disabled selected>-</option>
-                        {pontos.map(ponto => (
+                        {filteredPontos.map(ponto => (
                             <option value={ponto.id}> {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente} </option>
                         ))}
                     </select>
