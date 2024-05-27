@@ -58,9 +58,16 @@ export function delEdificacao(codigo_edificacao: string) {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
             }
         });
+
+        if (response.status === 200) {
+            alert("Edificação deletada com sucesso!");
+        } else if (response.status === 404) {
+            alert("Edificação não encontrada!");
+        } else if (response.status === 409) {
+            alert("Edificação não pode ser deletada pois possui pontos associados!");
+        }
     })()
 
 }
@@ -131,6 +138,26 @@ export function usePontosAmontante(ponto: Ponto | null) {
     }, [ponto]);
 
     return pontos;
+}
+
+export async function delPonto(id_ponto: number) {
+    if (!id_ponto) return;
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/" + id_ponto, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (response.status === 200) {
+        alert("Ponto deletado com sucesso!");
+    } else if (response.status === 404) {
+        alert("Ponto não encontrado!");
+    } else if (response.status === 409) {
+        alert("Ponto não pode ser deletado pois possui coletas ou sequência de coleta associadas!");
+    }
+
+    return response;
 }
 
 export function useSequencias() {

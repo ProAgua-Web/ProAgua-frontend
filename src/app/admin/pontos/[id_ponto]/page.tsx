@@ -4,7 +4,7 @@ import { FormEvent, use, useEffect, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
-import { useEdificacoes, usePonto } from "@/utils/api_consumer/client_side_consumer";
+import { delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
 
 export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {
     const edificacoes = useEdificacoes();
@@ -50,12 +50,12 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         setCurrentEdificacao(edificacao.value);
     }
 
-    useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos?limit=10000");
-            setPontos((await response.json()).items);
-        })();
-    }, []);
+    async function deletePonto() {
+        const response = await delPonto(parseInt(params.id_ponto));
+        if (response?.ok) {
+            window.location.href = "/admin/pontos";
+        }
+    }
 
     return (
         <>
@@ -220,6 +220,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     type="button"
                     className={`rounded-lg border bg-red-500 px-6 py-4 text-center font-semibold text-white hover:bg-red-600 disabled:bg-gray-400 disabled:text-gray-300 ${editable ? '' : 'hidden'}`}
                     disabled={!editable}
+                    onClick={deletePonto}
                 >
                     Excluir
                 </button>
