@@ -1,6 +1,6 @@
 "use client";
 
-import { useEdificacao } from "@/utils/api_consumer/client_side_consumer";
+import { delEdificacao, useEdificacao } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useEffect, useState } from "react";
 import { Image } from "@/utils/types";
 import ImageUploadModal from "@/components/ImageUploadModal";
@@ -36,6 +36,10 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
             alert("Erro ao atualizar edificação!");
         }
 
+    }
+
+    async function deleteEdificacao() {
+        delEdificacao(params.codigo_edificacao);
     }
 
     return (
@@ -108,6 +112,7 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
                     type="button"
                     className={`rounded-lg border bg-red-500 px-6 py-4 text-center font-semibold text-white hover:bg-red-600 disabled:bg-gray-400 disabled:text-gray-300 ${editable ? '' : 'hidden'}`}
                     disabled={!editable}
+                    onClick={deleteEdificacao}
                 >
                     Excluir
                 </button>

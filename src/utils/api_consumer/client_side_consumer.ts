@@ -50,6 +50,22 @@ export function useEdificacoes() {
     return edificacoes;
 }
 
+export function delEdificacao(codigo_edificacao: string) {
+
+    (async () => {
+        if (!codigo_edificacao) return;
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes/" + codigo_edificacao, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    })()
+
+}
+
+
 export function usePonto(id_ponto: number) {
     const [ponto, setPonto] = useState<Ponto>();
 
@@ -315,4 +331,3 @@ export function useSolicitacao(id_solicitacao: number) {
 
     return solicitacao;
 }
-    
