@@ -177,7 +177,7 @@ export default function Coletas() {
                         <tbody>
                             {filteredSequencias.map((sequencia: Sequencia, i) => {
                                 return (
-                                    <tr title={sequencia?.ultima_coleta.status}
+                                    <tr 
                                         className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
                                         onClick={() => {
                                             window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;

@@ -8,7 +8,7 @@ import { useEdificacoes, usePonto } from "@/utils/api_consumer/client_side_consu
 
 export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {
     const edificacoes = useEdificacoes();
-    const [pontos, setPontos] = useState<Ponto[]>([]);
+    const pontos = usePontos();
     const ponto = usePonto(parseInt(params.id_ponto));
 
     const [currentAmontante, setCurrentAmontante] = useState<string>(ponto?.amontante?.id?.toString() || '');
