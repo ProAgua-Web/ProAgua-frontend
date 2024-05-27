@@ -47,7 +47,7 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
 }
 
 export default function Pontos() {
-  const [filters, setFilters] = useState<any>({ q: "", campus: "" })
+  const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" })
   const edificacoes: Edificacao[] = useEdificacoes();
   const filteredEdificacoes = edificacoes.filter((edificacao) => {
     const matchesQuery = edificacao.codigo.includes(filters.q) || edificacao.nome.includes(filters.q);

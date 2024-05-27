@@ -17,7 +17,7 @@ function formatDate(date: string) {
 export default function Coletas() {
     const sequencias = useSequencias()
 
-    const [filters, setFilters] = useState<any>({ q: "", campus: "" });
+    const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" });
     const [checkBebedouro, setCheckBebedouro] = useState<boolean>(true);
     const [checkRPS, setCheckRPS] = useState<boolean>(true);
     const [checkRPI, setCheckRPI] = useState<boolean>(true);
