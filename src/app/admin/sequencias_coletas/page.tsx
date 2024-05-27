@@ -6,6 +6,9 @@ import Filters from "@/components/sequencias/Filters";
 import { API_BASE_URL } from "@/utils/config";
 import { toURLParams, useSequencias } from "@/utils/api_consumer/client_side_consumer";
 import { useEffect, useState } from "react";
+import Danger from "@/components/icons/DangerIcon";
+import OkIcon from "@/components/icons/OkIcon";
+import DangerIcon from "@/components/icons/DangerIcon";
 
 function formatDate(date: string) {
     const d = new Date(date);
@@ -18,12 +21,8 @@ export default function Coletas() {
     const sequencias = useSequencias()
 
     const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" });
-    const [checkBebedouro, setCheckBebedouro] = useState<boolean>(true);
-    const [checkRPS, setCheckRPS] = useState<boolean>(true);
-    const [checkRPI, setCheckRPI] = useState<boolean>(true);
-    const [checkRDS, setCheckRDS] = useState<boolean>(true);
-    const [checkRDI, setCheckRDI] = useState<boolean>(true);
-    const [checkCAERN, setCheckCAERN] = useState<boolean>(true);
+    const [checkPendentes, setCheckPendentes] = useState<boolean>(true);
+    const [checkConcluidas, setCheckConcluidas] = useState<boolean>(true);
 
     const [pontos, setPontos] = useState<Ponto[]>([]);
     const [abortController, setAbortController] = useState(new AbortController());
@@ -47,23 +46,21 @@ export default function Coletas() {
             const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias?limit=10000`
             let query = toURLParams(_filters);
 
-            // http://localhost:8000/api/v1/pontos/?tipo=1&tipo=3&limit=10000&offset=0
-            // if (checkBebedouro) query = query.concat("&tipo=1");
-            // if (checkRPS) query = query.concat("&tipo=2");
-            // if (checkRPI) query = query.concat("&tipo=3");
-            // if (checkRDS) query = query.concat("&tipo=4");
-            // if (checkRDI) query = query.concat("&tipo=5");
-            // if (checkCAERN) query = query.concat("&tipo=6");
-
             const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache" });
 
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            const sequencias = await res.json();
+            const response = await res.json();
+            let filtered = response.items;
+            filtered = filtered.filter((sequencia: Sequencia) => {
+                if (checkPendentes && checkConcluidas) return true;
+                if (!checkPendentes && !checkConcluidas) return false;
+                return (checkConcluidas && sequencia.status) || (checkPendentes && !sequencia.status);
+            });
 
-            setFilteredSequencias(sequencias.items);
+            setFilteredSequencias(filtered);
         };
 
         fetchData();
@@ -71,7 +68,7 @@ export default function Coletas() {
         return () => {
             newAbortController.abort();
         };
-    }, [filters, checkBebedouro, checkRPS, checkRPI, checkRDS, checkRDI, checkCAERN]);
+    }, [filters, checkPendentes, checkConcluidas]);
 
     return (
         <>
@@ -94,55 +91,28 @@ export default function Coletas() {
                     </div>
                     <div className="w-full flex justify-between gap-3 self-end">
 
-                        <div className="flex gap-8">
-                            <div className="flex flex-row justify-center items-center">
-                                {/* 
-                                <label htmlFor="bebedouro" onClick={(e) => { setCheckBebedouro(!checkBebedouro); setFilters }}
-                                    className={`cursor-pointer ${checkBebedouro ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                                > Bebedouro</label>
-                                <input id="bebedouro" name="tipo" type="checkbox" value="1" defaultChecked={checkBebedouro} hidden
+                        <div className="flex">
+                            <div className={`flex flex-row justify-center items-center p-4 bg-white border border-r-0 border-[#ABABAB] rounded-lg rounded-r-none cursor-pointer ${checkConcluidas ? "text-green-500" : "text-gray-400 bg-slate-100"} hover:bg-slate-100`}>
+                                <label htmlFor="concluidas"
+                                    onClick={(e) => { setCheckConcluidas(!checkConcluidas); setFilters }}
+                                    className="cursor-pointer select-none"
+                                > Concluídas</label>
+                                <input id="concluidas" name="concluidas" type="checkbox" value="0" defaultChecked={checkConcluidas} hidden
                                     className=""
                                     disabled />
                             </div>
-                            <div className="flex flex-row justify-center items-center">
-                                <label htmlFor="rps" onClick={(e) => { setCheckRPS(!checkRPS) }}
-                                    className={`cursor-pointer ${checkRPS ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                                > RPS</label>
-                                <input id="rps" name="tipo" type="checkbox" value="2" defaultChecked={checkRPS} hidden
-                                    className=""
-                                    disabled/>
+
+
+                            <div className={`flex flex-row justify-center items-center p-4 bg-white border border-[#ABABAB] rounded-lg rounded-l-none cursor-pointer ${checkPendentes ? "text-red-500" : "text-gray-400 bg-slate-50"} hover:bg-slate-100`}>
+
+                                <label htmlFor="pendentes"
+                                    onClick={(e) => { setCheckPendentes(!checkPendentes); setFilters }}
+                                    className="cursor-pointer select-none"
+                                > Pendentes </label>
+                                <input id="pendentes" name="pendentes" type="checkbox" value="1" defaultChecked={checkPendentes} hidden
+                                    disabled />
                             </div>
-                            <div className="flex flex-row justify-center items-center">
-                                <label htmlFor="rpi" onClick={(e) => { setCheckRPI(!checkRPI) }}
-                                    className={`cursor-pointer ${checkRPI ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                                > RPI</label>
-                                <input id="rpi" name="tipo" type="checkbox" value="3" defaultChecked={checkRPI} hidden
-                                    className=""
-                                    disabled/>
-                            </div>
-                            <div className="flex flex-row justify-center items-center">
-                                <label htmlFor="rds" onClick={(e) => { setCheckRDS(!checkRDS) }}
-                                    className={`cursor-pointer ${checkRDS ? "text-primary-500" : "hover:text-primary-400"} `}
-                                > RDS</label>
-                                <input id="rds" name="tipo" type="checkbox" value="4" defaultChecked={checkRDS} hidden
-                                    className=""
-                                    disabled/>
-                            </div>
-                            <div className="flex flex-row justify-center items-center">
-                                <label htmlFor="rdi" onClick={(e) => { setCheckRDI(!checkRDI) }}
-                                    className={`cursor-pointer ${checkRDI ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                                > RDI</label>
-                                <input id="rdi" name="tipo" type="checkbox" value="5" defaultChecked={checkRDI} hidden
-                                    className="" />
-                            </div>
-                            <div className="flex flex-row justify-center items-center">
-                                <label htmlFor="caern" onClick={(e) => { setCheckCAERN(!checkCAERN) }}
-                                    className={`cursor-pointer ${checkCAERN ? "text-primary-500" : "hover:text-primary-400"} `}
-                                > CAERN</label>
-                                <input id="caern" name="tipo" type="checkbox" value="6" defaultChecked={checkCAERN} hidden
-                                    className=""
-                                    disabled/> */}
-                            </div>
+
                         </div>
 
                         <select
@@ -172,12 +142,14 @@ export default function Coletas() {
                                 <th className="px-2 py-4">Tombo</th>
                                 <th className="px-2 py-4">Ultima coleta</th>
                                 <th className="px-2 py-4">Qnt. de coletas</th>
+                                <th className="px-2 py-4">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredSequencias.map((sequencia: Sequencia, i) => {
                                 return (
-                                    <tr 
+                                    <tr
+                                        title={sequencia.status ? "Concluída" : sequencia.status_message}
                                         className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
                                         onClick={() => {
                                             window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
@@ -191,6 +163,11 @@ export default function Coletas() {
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
                                         <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
                                         <td className="text-sm px-2 py-3 text-center">{sequencia.coletas.length}</td>
+                                        <td className="text-sm px-2 py-3 text-center">
+                                            <span className="w-full flex justify-center">
+                                                {sequencia.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem" />}
+                                            </span>
+                                        </td>
                                     </tr>
                                 )
                             })}
