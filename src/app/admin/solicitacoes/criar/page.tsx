@@ -62,6 +62,25 @@ export default function Page() {
         }
     }, [edificacao]);
 
+
+    async function uploadImage(id_solicitacao: string, image: Image) {
+        let formData = new FormData();
+        formData.append("file", image.file);
+        formData.append("description", image.description);
+
+        let response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/${id_solicitacao}/imagem`, {
+                method: "POST",
+                body: formData,
+            },
+        )
+
+        if (!response.ok) {
+            alert(`Erro ao adicionar imagem ${image.file.name}`);
+        }
+    }
+
+
     const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setSubmiting(true);
@@ -84,13 +103,24 @@ export default function Page() {
             body: JSON.stringify(body)
         });
 
-        if (response.ok) {
-            alert('Solicitação criada com sucesso!');
-            window.location.href = '/admin/solicitacoes';
-        } else {
+        if (response.status != 200) {
             alert('Erro ao criar solicitação.');
+            setSubmiting(false);
+            return;
+        } else {
+            alert('Solicitação criada com sucesso!');
         }
-        setSubmiting(false);
+
+        // If the creation was well succeded, then upload the images
+        // and attach to the "solicitacao".
+        const solicitacao = await response.json();
+
+        await Promise.all(images.map((image) => {
+            return uploadImage(solicitacao.id, image);
+        }));
+
+        alert('Imagens criadas.');
+        window.location.href = '/admin/solicitacoes';
     }
 
     return (

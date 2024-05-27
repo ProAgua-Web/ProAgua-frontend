@@ -59,6 +59,7 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
         if (solicitacao) {
             setCodEdificacao(solicitacao.ponto.edificacao.codigo);
             setidPonto(solicitacao.ponto.id);
+            setImages(solicitacao.imagens);
         }
     }, [solicitacao]);
 
