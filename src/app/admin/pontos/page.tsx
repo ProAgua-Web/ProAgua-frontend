@@ -123,7 +123,7 @@ export default function Pontos() {
 
   return (
     <>
-      <h2 className="text-3xl text-[#525252]">Pontos de Coleta</h2>
+      <h2 className="text-3xl text-[#525252]">Edificações e Pontos de Coleta</h2>
       <div className="flex w-full flex-col items-center">
         <div className="mb-4 flex w-full flex-col gap-4">
           <div className="relative flex">

@@ -14,14 +14,9 @@ export default function Navbar(props: {
       name: "Sequência Coletas",
     },
     {
-      href: "/admin/edificacoes/",
-      icon: <i className="bi bi-buildings-fill"></i>,
-      name: "Edificações",
-    },
-    {
       href: "/admin/pontos/",
       icon: <i className="bi bi-geo-alt-fill"></i>,
-      name: "Pontos de coleta",
+      name: "Edificações e Pontos de coleta",
     },
     {
       href: "/admin/solicitacoes/",

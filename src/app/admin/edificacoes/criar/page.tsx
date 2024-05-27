@@ -68,7 +68,7 @@ export default function CriarEdificacao() {
         }));
         
         alert("Imagens criadas.");
-        window.location.href = "/admin/edificacoes";
+        window.location.href = "/admin/pontos";
     };
 
     return (
