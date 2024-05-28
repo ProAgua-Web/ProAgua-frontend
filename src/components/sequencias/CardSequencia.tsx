@@ -15,7 +15,7 @@ export default function CardSequencia(props: { sequencia: Sequencia }) {
           {sequencia.ponto?.tipo === 1 ? "Bebedouro" : "RPS"}
         </p>
         <p className="text-sm">{sequencia.ponto?.ambiente}</p>
-        <h5>Amostragem {sequencia.amostragem.toString()}</h5>
+        <h5>Ciclo de Amostragem {sequencia.amostragem.toString()}</h5>
         <a
           href={`sequencias_coletas/${sequencia.id}`}
           className="filled-button rounded-md bg-primary-500 p-3 text-xs font-semibold text-white"

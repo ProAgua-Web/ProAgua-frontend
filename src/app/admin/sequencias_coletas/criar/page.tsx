@@ -120,7 +120,7 @@ export default function Page() {
 
                 </div>
 
-                <label htmlFor="" >Amostragem:</label>
+                <label htmlFor="" >Ciclo de amostragem:</label>
                 <input
                     type="number"
                     id="amostragem"

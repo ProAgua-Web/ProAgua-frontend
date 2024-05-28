@@ -140,7 +140,7 @@ export default function Coletas() {
                     <table className="w-full border border-slate-500 mb-8 last:mb-0">
                         <thead>
                             <tr className="bg-primary-500 text-white">
-                                <th className="px-2 py-4">Amostragem</th>
+                                <th className="px-2 py-4">Ciclo de Amostragem</th>
                                 <th className="px-2 py-4 text-center">Cód. Edificação</th>
                                 <th className="px-2 py-4 text-center">Campus</th>
                                 <th className="px-2 py-4">Ponto</th>

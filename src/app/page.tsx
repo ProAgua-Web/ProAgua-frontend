@@ -125,7 +125,7 @@ export default function Home() {
           <p className="word-wrap w-[60vw] text-balance text-justify">
             A metodologia utilizada para monitorar a qualidade da água foi
             construída levando em conta, dentre outros, a diretriz nacional do
-            plano de amostragem da vigilância da qualidade da água para consumo
+            plano de ciclo de amostragem da vigilância da qualidade da água para consumo
             humano e especificidades do sistema de distribuição da água da
             UFERSA, incluindo seus sistemas prediais de água fria.
           </p>
