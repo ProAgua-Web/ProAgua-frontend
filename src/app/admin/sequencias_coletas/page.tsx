@@ -192,11 +192,17 @@ export default function Coletas() {
                 </div> */}
 
                 <a
-                    className="floating-bt max-w-fit mt-4 rounded-md bg-primary-500 p-4 text-white hover:bg-primary-600"
+                    className="w-[320px] h-fit fixed bottom-4 left-1/2 transform -translate-x-1/2 mt-4 p-4 bg-primary-500 hover:bg-primary-600 text-white text-center rounded-lg shadow-lg"
                     href="sequencias_coletas/criar"
                 >
                     <i className="bi bi-plus-lg"></i> Adicionar sequência
                 </a>
+
+                {/* <input
+                            type="submit"
+                            value="Exportar"
+                            className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500 p-4 h-fit w-[320px] rounded-lg hover:bg-blue-600 text-white font-semibold border border-blue-600 shadow-lg"
+                        /> */}
             </div>
         </>
     );
