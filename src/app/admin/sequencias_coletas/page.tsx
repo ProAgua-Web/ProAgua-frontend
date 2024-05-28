@@ -21,8 +21,8 @@ export default function Coletas() {
     const sequencias = useSequencias()
 
     const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" });
-    const [checkPendentes, setCheckPendentes] = useState<boolean>(true);
-    const [checkConcluidas, setCheckConcluidas] = useState<boolean>(true);
+    const [checkPendentes, setCheckPendentes] = useState<boolean>(false);
+    const [checkConcluidas, setCheckConcluidas] = useState<boolean>(false);
 
     const [pontos, setPontos] = useState<Ponto[]>([]);
     const [abortController, setAbortController] = useState(new AbortController());
@@ -55,10 +55,15 @@ export default function Coletas() {
             const response = await res.json();
             let filtered = response.items;
             filtered = filtered.filter((sequencia: Sequencia) => {
-                if (checkPendentes && checkConcluidas) return true;
-                if (!checkPendentes && !checkConcluidas) return false;
-                return (checkConcluidas && sequencia.status) || (checkPendentes && !sequencia.status);
+                if (checkConcluidas && checkPendentes) {
+                    return true;
+                }
+                return !(checkConcluidas && !sequencia.status) && !(checkPendentes && sequencia.status);
             });
+            // if (checkPendentes && checkConcluidas) return true;
+            // if (!checkPendentes && !checkConcluidas) return false;
+            // return (checkConcluidas && sequencia.status) || (checkPendentes && !sequencia.status);
+
 
             setFilteredSequencias(filtered);
         };
@@ -92,10 +97,11 @@ export default function Coletas() {
                     <div className="w-full flex justify-between gap-3 self-end">
 
                         <div className="flex">
-                            <div className={`flex flex-row justify-center items-center p-4 bg-white border border-r-0 border-[#ABABAB] rounded-lg rounded-r-none cursor-pointer ${checkConcluidas ? "text-green-500" : "text-gray-400 bg-slate-100"} hover:bg-slate-100`}>
+                            <div
+                                onClick={(e) => { setCheckConcluidas(!checkConcluidas); setFilters }}
+                                className={`flex flex-row justify-center items-center p-4 bg-white border border-r-0 border-[#ABABAB] rounded-lg rounded-r-none cursor-pointer ${checkConcluidas ? "text-green-500" : "text-gray-400 bg-slate-100"} hover:bg-slate-100`}>
                                 <label htmlFor="concluidas"
-                                    onClick={(e) => { setCheckConcluidas(!checkConcluidas); setFilters }}
-                                    className="cursor-pointer select-none"
+                                    className="w-full h-full cursor-pointer select-none"
                                 > Concluídas</label>
                                 <input id="concluidas" name="concluidas" type="checkbox" value="0" defaultChecked={checkConcluidas} hidden
                                     className=""
@@ -103,10 +109,10 @@ export default function Coletas() {
                             </div>
 
 
-                            <div className={`flex flex-row justify-center items-center p-4 bg-white border border-[#ABABAB] rounded-lg rounded-l-none cursor-pointer ${checkPendentes ? "text-red-500" : "text-gray-400 bg-slate-50"} hover:bg-slate-100`}>
-
+                            <div
+                                onClick={(e) => { setCheckPendentes(!checkPendentes); setFilters }}
+                                className={`flex flex-row justify-center items-center p-4 bg-white border border-[#ABABAB] rounded-lg rounded-l-none cursor-pointer ${checkPendentes ? "text-red-500" : "text-gray-400 bg-slate-100"} hover:bg-slate-100`}>
                                 <label htmlFor="pendentes"
-                                    onClick={(e) => { setCheckPendentes(!checkPendentes); setFilters }}
                                     className="cursor-pointer select-none"
                                 > Pendentes </label>
                                 <input id="pendentes" name="pendentes" type="checkbox" value="1" defaultChecked={checkPendentes} hidden
@@ -175,7 +181,7 @@ export default function Coletas() {
                     </table>
                 </div>
 
-                <div id="paginator" className="pagination flex">
+                {/* <div id="paginator" className="pagination flex">
                     <button id="pagination-prev" className="hidden">
                         &lt; Anterior
                     </button>
@@ -183,10 +189,10 @@ export default function Coletas() {
                     <button id="pagination-next" className="hidden">
                         Próxima &gt;
                     </button>
-                </div>
+                </div> */}
 
                 <a
-                    className="floating-bt max-w-fit rounded-md bg-primary-500 p-4 text-white hover:bg-primary-600"
+                    className="floating-bt max-w-fit mt-4 rounded-md bg-primary-500 p-4 text-white hover:bg-primary-600"
                     href="sequencias_coletas/criar"
                 >
                     <i className="bi bi-plus-lg"></i> Adicionar sequência
