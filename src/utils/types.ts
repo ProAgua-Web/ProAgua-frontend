@@ -9,6 +9,7 @@ export type Ponto = {
     status: boolean;
     status_message: string;
     amontante?: Ponto;
+    associados: number[];
     imagem?: string;
 };
 

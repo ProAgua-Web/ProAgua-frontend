@@ -14,7 +14,8 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     const [currentAmontante, setCurrentAmontante] = useState<string>(ponto?.amontante?.id?.toString() || '');
     const [currentEdificacao, setCurrentEdificacao] = useState<string>(ponto?.edificacao.codigo || '');
     const [currentTipo, setCurrentTipo] = useState<string>(ponto?.tipo.toString() || '1');
-    const filteredPontos = pontos.filter(p => p.tipo > Number(currentTipo));
+    const pontosAmontantes = pontos.filter(p => p.tipo > Number(currentTipo));
+    const pontosAssociados = pontos.filter(p => p.tipo == Number(currentTipo) && p.id != parseInt(params.id_ponto));
 
     const [editable, setEditable] = useState<boolean>(false);
 
@@ -34,10 +35,18 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 codigo_edificacao: formData.get("edificacao"),
                 amontante: formData.get("amontante") == "" ? null : formData.get("amontante"),
                 imagem: formData.get("imagem"),
+                associados: formData.getAll("associados"),
             }),
         })
 
-        window.location.href = "/admin/pontos";
+        if (response.ok) {
+            alert("Ponto atualizado com sucesso!");
+            window.location.href = "/admin/pontos";
+        }
+        else {
+            alert("Erro ao atualizar ponto!");
+        }
+
     }
 
     function updateAmontante() {
@@ -60,7 +69,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     useEffect(() => {
         setCurrentTipo(ponto?.tipo.toString() || '1');
     }, [ponto, editable]);
-    
+
     return (
         <>
             <h2 className="text-4xl text-neutral-700 font-bold mb-8">
@@ -164,6 +173,37 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 )}
 
                 {
+                    currentTipo != "1" && (
+                        <>
+                            <label htmlFor="associados"> Reservatórios Associados: </label>
+                            <select
+                                id="associados"
+                                name="associados"
+                                className="w-full rounded-lg border border-neutral-400 px-6 py-4"
+                                multiple
+                                disabled={!editable}
+                            >
+                                <option value="" disabled>-</option>
+                                {pontosAssociados.map((point: Ponto) => {
+                                    return (
+                                        <option
+                                            value={point.id}
+                                            key={"associado-" + point.id}
+                                            selected={ponto?.associados.includes(point.id)}
+                                        >
+                                            {point.id} - {TIPOS_PONTOS[point.tipo]}
+                                            {point.ambiente && point.ambiente.trim() != "-" && point.ambiente.trim() != "nan" && point.ambiente.trim() != "" ? "- " + point.ambiente : ""}
+                                            {point.tombo && point.tombo.trim() != "-" && point.tombo.trim() != "nan" && point.tombo.trim() ? "- " + point.tombo : ""}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                        </>
+                    )
+
+                }
+
+                {
                     pontos.length > 0 && (
                         <>
                             <label htmlFor="amontante">Amontante:</label>
@@ -178,8 +218,14 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                     onChange={updateAmontante}
                                 >
                                     <option value="">-</option>
-                                    {filteredPontos.map((ponto: Ponto) => {
-                                        return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>;
+                                    {pontosAmontantes.map((ponto: Ponto) => {
+                                        return (
+                                            <option className="" value={ponto.id}>
+                                                {TIPOS_PONTOS[ponto.tipo]}
+                                                {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
+                                                {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
+                                            </option>
+                                        );
                                     })}
                                 </select>
 

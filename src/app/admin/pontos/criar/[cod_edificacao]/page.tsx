@@ -1,16 +1,19 @@
 "use client"
 
+import { usePontos } from "@/utils/api_consumer/client_side_consumer";
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Pontos({ params }: { params: { cod_edificacao: string } }) {
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
-    const [pontos, setPontos] = useState<Ponto[]>([]);
+    const pontos = usePontos();
+    console.log(pontos);
 
     const [currentAmontante, setCurrentAmontante] = useState<string>('');
     const [currentEdificacao, setCurrentEdificacao] = useState<string>('');
     const [currentTipo, setCurrentTipo] = useState<string>('1');
-    const filteredPontos = pontos.filter(ponto => ponto.tipo > Number(currentTipo));
+    const pontosAmontantes = pontos.filter(ponto => ponto.tipo > Number(currentTipo));
+    const pontosAssociados = pontos.filter(ponto => ponto.tipo == Number(currentTipo));
 
     const [file, setFile] = useState<File | null>();
     const [preview, setPreview] = useState<string>();
@@ -44,6 +47,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
             tombo: formData.get("tombo"),
             tipo: Number(formData.get("tipo")),
             amontante: Number(formData.get("amontante")),
+            associados: formData.getAll("associados").map(Number),
         };
 
 
@@ -111,13 +115,6 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
         })();
     }, []);
 
-
-    useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos?limit=10000");
-            setPontos((await response.json()).items);
-        })();
-    }, []);
 
     return (
         <>
@@ -207,6 +204,33 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                     )
                 }
 
+
+                {
+                    currentTipo != "1" && (
+                        <>
+                            <label htmlFor="associados"> Reservatórios Associados: </label>
+                            <select
+                                id="associados"
+                                name="associados"
+                                className="w-full rounded-lg border border-neutral-400 px-6 py-4"
+                                multiple
+                            >
+                                <option value="" disabled>-</option>
+                                {pontosAssociados.map((ponto: Ponto) => {
+                                    return (
+                                        <option className="" value={ponto.id}>
+                                            {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
+                                            {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
+                                            {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                        </>
+                    )
+
+                }
+
                 <label htmlFor="">Ponto a montante:</label>
                 <div className="flex">
 
@@ -217,8 +241,14 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                         onChange={updateAmontante}
                     >
                         <option value="">-</option>
-                        {filteredPontos.map((ponto: Ponto) => {
-                            return <option className="" value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
+                        {pontosAmontantes.map((ponto: Ponto) => {
+                            return (
+                                <option className="" value={ponto.id}>
+                                    {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
+                                    {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
+                                    {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
+                                </option>
+                            )
                         })}
                     </select>
 
