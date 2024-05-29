@@ -178,14 +178,6 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                     className="rounded-lg border border-neutral-400 px-6 py-4"
                 />
 
-                <label htmlFor="">Tombo:</label>
-                <input
-                    type="text"
-                    id="tombo"
-                    name="tombo"
-                    className="rounded-lg border border-neutral-400 px-6 py-4"
-                />
-
                 <label htmlFor="">Tipo:</label>
                 <select
                     id="tipo"
@@ -200,6 +192,20 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                     <option value="5">RDI - Reservatório de destribuição inferior</option>
                     <option value="6">CAERN</option>
                 </select>
+
+                {
+                    currentTipo == "1" && (
+                        <>
+                            <label htmlFor="">Tombo:</label>
+                            <input
+                                type="text"
+                                id="tombo"
+                                name="tombo"
+                                className="rounded-lg border border-neutral-400 px-6 py-4"
+                            />
+                        </>
+                    )
+                }
 
                 <label htmlFor="">Ponto a montante:</label>
                 <div className="flex">

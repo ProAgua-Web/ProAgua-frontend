@@ -57,13 +57,17 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         }
     }
 
+    useEffect(() => {
+        setCurrentTipo(ponto?.tipo.toString() || '1');
+    }, [ponto, editable]);
+    
     return (
         <>
             <h2 className="text-4xl text-neutral-700 font-bold mb-8">
                 {editable ? "Editar" : "Visualizar"} Ponto
             </h2>
 
-            <form onSubmit={(e) => submitForm(e)} onReset={()=> setEditable(false)} method="POST"
+            <form onSubmit={(e) => submitForm(e)} onReset={() => setEditable(false)} method="POST"
                 className="w-full flex flex-col gap-4"
             >
 
@@ -75,26 +79,6 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     defaultValue={params.id_ponto}
                     disabled
-                />
-
-                <label htmlFor="ambiente">Ambiente:</label>
-                <input
-                    type="text"
-                    id="ambiente"
-                    name="ambiente"
-                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    defaultValue={ponto?.ambiente}
-                    disabled={!editable}
-                />
-
-                <label htmlFor="tombo">tombo:</label>
-                <input
-                    type="text"
-                    id="tombo"
-                    name="tombo"
-                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    defaultValue={ponto?.tombo}
-                    disabled={!editable}
                 />
 
                 {
@@ -131,30 +115,53 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     )
                 }
 
-                <label htmlFor="tipo">
-                    Tipo:
-                </label>
-
+                <label htmlFor="ambiente">Ambiente:</label>
+                <input
+                    type="text"
+                    id="ambiente"
+                    name="ambiente"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    defaultValue={ponto?.ambiente}
+                    disabled={!editable}
+                />
 
                 {pontos.length > 0 && (
-                    <select
-                        id="tipo"
-                        name="tipo"
-                        className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                        defaultValue={ponto?.tipo}
-                        onChange={currentTipo => setCurrentTipo(currentTipo.target.value)}
-                        disabled={!editable}
-                    >
-                        <option value="1">Bebedouro</option>
-                        <option value="2">Reservatório predial superior</option>
-                        <option value="3">Reservatório predial inferior</option>
-                        <option value="4">Reservatório de distribuição superior</option>
-                        <option value="5">Reservatório de distribuição inferior</option>
-                        <option value="6">CAERN</option>
-                    </select>)
+                    <>
+                        <label htmlFor="tipo">
+                            Tipo:
+                        </label>
 
-                }
+                        <select
+                            id="tipo"
+                            name="tipo"
+                            className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                            defaultValue={ponto?.tipo}
+                            onChange={currentTipo => setCurrentTipo(currentTipo.target.value)}
+                            disabled={!editable}
+                        >
+                            <option value="1">Bebedouro</option>
+                            <option value="2">Reservatório predial superior</option>
+                            <option value="3">Reservatório predial inferior</option>
+                            <option value="4">Reservatório de distribuição superior</option>
+                            <option value="5">Reservatório de distribuição inferior</option>
+                            <option value="6">CAERN</option>
+                        </select>
+                    </>
+                )}
 
+                {currentTipo && currentTipo == "1" && (
+                    <>
+                        <label htmlFor="tombo">Tombo:</label>
+                        <input
+                            type="text"
+                            id="tombo"
+                            name="tombo"
+                            className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                            defaultValue={ponto?.tombo}
+                            disabled={!editable}
+                        />
+                    </>
+                )}
 
                 {
                     pontos.length > 0 && (
