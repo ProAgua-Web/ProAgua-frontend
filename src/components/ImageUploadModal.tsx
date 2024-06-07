@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import Modal from "./Modal";
 
 export default function ImageUploadModal(props: {
-    visible: boolean, close: () => void,
+    visible: boolean,
+    close: () => void,
     submit: (image: File | null, description: string) => void
 }) {
     const [file, setFile] = useState<File | null>(null);
