@@ -36,7 +36,13 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
     }
 
     async function deleteEdificacao() {
-        delEdificacao(params.codigo_edificacao);
+        const response = await consumerEdficacao.delete(params.codigo_edificacao);
+        if (response.status == 200) {
+            alert("Edificação deletada!");
+            window.location.href = "/admin/pontos";
+        } else {
+            alert("Erro ao deletar edificação!");
+        }
     }
 
     return (
@@ -90,7 +96,7 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
                 />
 
                 <label htmlFor="foto">Imagem:</label>
-                <MultipleImageInput images={images} setImages={setImages} />
+                <MultipleImageInput images={images} setImages={setImages} disabled={!editable}/>
 
                 <input
                     id="editar"
