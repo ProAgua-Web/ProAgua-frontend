@@ -83,7 +83,9 @@ export default function MultipleImageInput(props: {
                 <button 
                     type="button"
                     onClick={() => setModalVisible(true)}
-                    className="w-full bg-neutral-200 rounded border-t-0 border rounded-t-none border-neutral-400 hover:bg-neutral-300 px-4 py-2"
+                    // className="w-full bg-neutral-200 rounded border-t-0 border rounded-t-none border-neutral-400 hover:bg-neutral-300 px-4 py-2 disabled:text-neutral-400"
+                    className="w-full bg-primary-500 text-white rounded border-t-0 border rounded-t-none border-primary-600 hover:bg-primary-400 px-4 py-2 disabled:text-neutral-400 disabled:bg-neutral-200 disabled:border-neutral-400"
+                    disabled={props.disabled}
                 >
                     Adicionar imagem
                 </button>
