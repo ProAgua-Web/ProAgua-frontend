@@ -1,9 +1,119 @@
 import { useEffect, useState } from "react";
-import { Coleta, Edificacao, ParametroReferencia, Ponto, Sequencia, Solicitacao, Usuario } from "@/utils/types";
+import { Coleta, Edificacao, ParametroReferencia, Ponto, PontoIn, Sequencia, SequenciaIn, Solicitacao, Usuario } from "@/utils/types";
+import { getCookie } from "../cookies";
 
-// const token = localStorage.getItem('token')
-const token = "eyJ"
-// TODO: Add token to ALL fetch requests
+export class APIConsumer<Tin, Tout> {
+    baseUrl: string;
+
+    constructor(baseUrl: string) {
+        this.baseUrl = baseUrl;
+    }
+
+    async get(id: string, cache: RequestCache = "no-cache") {
+        const response = await fetch(this.baseUrl + id, {
+            cache: cache,
+            credentials: "include"
+        });
+
+        const data: Tout = await response.json()
+        return data;
+    }
+
+    async list(cache: RequestCache = "no-cache", query: any = undefined) {
+        let searchParams = "";
+        
+        if (query) {
+            searchParams = new URLSearchParams(query).toString();
+            searchParams = '?' + searchParams;
+        }
+
+        const response = await fetch(this.baseUrl + searchParams, {
+            cache: cache,
+            credentials: "include"
+        });
+
+        const data: Tout[] = (await response.json()).items;
+        return data;
+    }
+
+    async post(data: Tin) {
+        // Set request headers
+        const headers: HeadersInit =  {
+            "Content-Type": "application/json",
+        };
+
+        // Try to get the csrftoken in the cookies
+        const csrfToken = getCookie("csrftoken");
+
+        if (csrfToken) {
+            headers["X-CSRFToken"] = csrfToken;
+        }
+
+        // Send request
+        const response = await fetch(this.baseUrl, {
+            method: "POST",
+            headers: headers,
+            credentials: "include",
+            body: JSON.stringify(data)
+        })
+
+        return response;
+    }
+
+    async delete(id: string) {
+        // Set request headers
+        const headers: HeadersInit =  {
+        };
+
+        // Try to get the csrftoken in the cookies
+        const csrfToken = getCookie("csrftoken");
+
+        if (csrfToken) {
+            headers["X-CSRFToken"] = csrfToken;
+        }
+
+        // Send request
+        const response = await fetch(this.baseUrl + id, {
+            method: "DELETE",
+            headers: headers,
+            credentials: "include"
+        })
+
+        return response;
+    }
+
+    async put(id: string, data: Tin) {
+        // Set request headers
+        const headers: HeadersInit =  {
+            "Content-Type": "application/json",
+        };
+
+        // Try to get the csrftoken in the cookies
+        const csrfToken = getCookie("csrftoken");
+
+        if (csrfToken) {
+            headers["X-CSRFToken"] = csrfToken;
+        }
+
+        // Send request
+        const response = await fetch(this.baseUrl + id, {
+            method: "PUT",
+            headers: headers,
+            credentials: "include",
+            body: JSON.stringify(data),
+        })
+
+        return response;
+    }
+}
+
+export const consumerEdficacao = new APIConsumer<Edificacao, Edificacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/`);
+export const consumerPonto = new APIConsumer<PontoIn, Ponto>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos/`);
+export const consumerColeta = new APIConsumer<Coleta, Coleta>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/coletas/`);
+export const consumerSolicitacao = new APIConsumer<Solicitacao, Solicitacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/`);
+export const consumerSequencia = new APIConsumer<SequenciaIn, Sequencia>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias/`);
+export const consumerUsuario = new APIConsumer<Usuario, Usuario>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/`);
+
 
 export function toURLParams(data: Object) {
     let params = [];
