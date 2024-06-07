@@ -135,41 +135,29 @@ export function formatDate(date: string) {
 
 export function useEdificacao(codigo_edificacao: string) {
     const [edificacao, setEdificacao] = useState<Edificacao>();
-
     useEffect(() => {
-        (async () => {
-            if (!codigo_edificacao) return;
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes/" + codigo_edificacao);
-            setEdificacao((await response.json()));
-        })()
-    }, [codigo_edificacao]);
-
-    return edificacao;
+        consumerEdficacao.get(codigo_edificacao)
+            .then(data => setEdificacao(data))
+            .catch(err => alert("Ocorreu um erro durante a requisição."))
+    }, [codigo_edificacao])
+    return edificacao
 }
 
 export function useEdificacoes() {
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
-
     useEffect(() => {
-        (async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?limit=10000`, { cache: "no-cache" });
-            setEdificacoes((await response.json()).items);
-        })();
-    }, []);
-
-    return edificacoes;
+        consumerEdficacao.list()
+            .then(data => setEdificacoes(data))
+            .catch(err => alert("Ocorreu um erro durante a requisição."))
+    }, [])
+    return edificacoes
 }
 
 export function delEdificacao(codigo_edificacao: string) {
 
     (async () => {
         if (!codigo_edificacao) return;
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes/" + codigo_edificacao, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
+        const response = await consumerEdficacao.delete(codigo_edificacao);
 
         if (response.status === 200) {
             alert("Edificação deletada com sucesso!");
@@ -182,45 +170,24 @@ export function delEdificacao(codigo_edificacao: string) {
 
 }
 
-
 export function usePonto(id_ponto: number) {
     const [ponto, setPonto] = useState<Ponto>();
-
-    const url = process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto;
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    }
-
     useEffect(() => {
-        (async () => {
-            if (!id_ponto) return;
-            const response = await fetch(url, requestOptions);
-            const ponto = await response.json();
-
-            setPonto(ponto);
-        })();
-    }, [id_ponto]);
-
-    return ponto;
+        consumerPonto.get(id_ponto.toString())
+            .then(data => setPonto(data))
+            .catch(err => alert("Ocorreu um erro durante a requisição."))
+    }, [id_ponto])
+    return ponto
 }
 
 export function usePontos(codigo_edificacao: string | null = null, id_sequencia: number | null = null) {
     const [pontos, setPontos] = useState<Ponto[]>([]);
-
     useEffect(() => {
-        (async () => {
-            let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000`, { cache: "no-cache" });
-            const pontos = (await response.json()).items;
-
-            setPontos(pontos);
-        })();
-    }, [codigo_edificacao, id_sequencia]);
-
-    return pontos;
+        consumerPonto.list('no-cache', {limit: 10000})
+            .then(data => setPontos(data))
+            .catch(err => alert("Ocorreu um erro durante a requisição."))
+    }, [])
+    return pontos
 }
 
 export function usePontosAmontante(ponto: Ponto | null) {
@@ -252,12 +219,7 @@ export function usePontosAmontante(ponto: Ponto | null) {
 
 export async function delPonto(id_ponto: number) {
     if (!id_ponto) return;
-    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/" + id_ponto, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
+    const response = await consumerPonto.delete(id_ponto.toString());
 
     if (response.status === 200) {
         alert("Ponto deletado com sucesso!");
@@ -274,12 +236,8 @@ export function useSequencias() {
     const [sequencias, setSequencias] = useState<Sequencia[]>([]);
 
     useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/');
-            const sequencias = await response.json();
-
-            setSequencias(sequencias.items);
-        })();
+        consumerSequencia.list()
+            .then(data => setSequencias(data))    
     }, []);
 
     return sequencias;
@@ -290,7 +248,17 @@ export function useSequencia(id_sequencia: number) {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia);
+            const csrftoken = await getCookie('csrftoken');
+            if (csrftoken === null) {
+                throw "Não há csrf token"
+            }
+
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia, {
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                },
+                credentials: "include"
+            });
             const sequencia = await response.json();
 
             setSequencia(sequencia);
@@ -300,16 +268,17 @@ export function useSequencia(id_sequencia: number) {
     return sequencia;
 }
 
-
-
+// TODO: refatorar função
 export function useColetaBySequencia(id_sequencia: number) {
     const [coletas, setColetas] = useState<Coleta[]>([]);
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia + '/coletas');
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia + '/coletas', {
+                    'credentials': 'include'
+                }
+            );
             const coletas = await response.json();
-
             setColetas(coletas);
         })();
     }, [id_sequencia]);
@@ -321,12 +290,8 @@ export function useColeta(id_coleta: number) {
     const [coleta, setColeta] = useState<Coleta | null>(null);
 
     useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/coletas/' + id_coleta);
-            const coleta = await response.json();
-
-            setColeta(coleta);
-        })();
+        consumerColeta.get(id_coleta.toString())
+            .then(data => setColeta(data));
     }, [id_coleta]);
 
     return coleta;
@@ -336,12 +301,8 @@ export function useColetas() {
     const [coletas, setColetas] = useState<Coleta[]>([]);
 
     useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/coletas');
-            const coletas = await response.json();
-
-            setColetas(coletas);
-        })();
+        consumerColeta.list()
+            .then(data => setColetas(data));
     }, []);
 
     return coletas;
@@ -370,7 +331,7 @@ export function useLastColetaByPonto(id_ponto: number) {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            // 'Authorization': `Bearer ${token}`
         }
     }
 
@@ -394,7 +355,7 @@ export function useParametrosReferencia() {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            // 'Authorization': `Bearer ${token}`
         }
     }
 
@@ -415,9 +376,7 @@ export function useUsuarios() {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/usuarios/');
-            const responsaveis = (await response.json()).items;
-
+            const responsaveis = await consumerUsuario.list();
             setUsuarios(responsaveis);
         })();
     }, []);
@@ -429,12 +388,8 @@ export function useUsuario(username: string) {
     const [usuario, setUsuario] = useState<Usuario | null>(null);
 
     useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/usuarios/' + username);
-            const sequencia = await response.json();
-
-            setUsuario(sequencia);
-        })();
+        consumerUsuario.get(username)
+            .then(data => setUsuario(data))    
     }, [username]);
 
     return usuario;
@@ -444,11 +399,8 @@ export function useSolicitacoes() {
     const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
 
     useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/solicitacoes');
-            const data = await response.json();
-            setSolicitacoes(data.items);
-        })();
+            consumerSolicitacao.list()
+                .then(data => setSolicitacoes(data));
     }, []);
 
     return solicitacoes;
@@ -458,12 +410,8 @@ export function useSolicitacao(id_solicitacao: number) {
     const [solicitacao, setSolicitacao] = useState<Solicitacao | null>(null);
 
     useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/solicitacoes/' + id_solicitacao);
-            const solicitacao = await response.json();
-
-            setSolicitacao(solicitacao);
-        })();
+        consumerSolicitacao.get(id_solicitacao.toString())
+            .then(data => setSolicitacao(data));
     }, [id_solicitacao]);
 
     return solicitacao;
