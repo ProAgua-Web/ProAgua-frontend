@@ -5,6 +5,7 @@ export default function Modal(props: {
     close: () => void,
     children: React.ReactNode,
     title: string
+    className?: string
 }) {
     var backdrop = useRef(null);
 
@@ -17,7 +18,7 @@ export default function Modal(props: {
                     props.close();
             }}
         >
-            <div className="flex h-fit max-sm:h-full flex-col max-sm:w-full max-sm:max-h-full w-[600px] min-h-[400px] absolute bg-white shadow-xl border border-neutral-400 p-4 rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div className={"flex h-fit max-sm:h-full flex-col max-sm:w-full max-sm:max-h-full w-[600px] min-h-[400px] absolute bg-white shadow-xl border border-neutral-400 p-4 rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 " + (props.className || '')}>
 
                 <button
                     type="button"

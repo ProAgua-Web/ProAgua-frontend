@@ -1,28 +1,50 @@
 import { useState } from "react";
 import ImageUploadModal from "./ImageUploadModal";
-import { Image } from "@/utils/types";
+import { ImageIn, ImageOut } from "@/utils/types";
+import Modal from "./Modal";
+
+function ConfirmImageDeletionModal(props: {
+    visible: boolean,
+    close: () => void
+}) {
+    return (
+        <Modal
+            className="min-h-0 w-fit max-sm:h-fit max-sm:w-fit"
+            title="Deseja confirmar a exclusão da imagem?"
+            close={ props.close }
+            visible={ props.visible }
+        >
+            <div className="flex w-full  gap-2">
+                <button
+                    className="w-full px-4 py-2 rounded bg-neutral-500 hover:bg-neutral-600 border border-neutral-600 hover:boder-red-700 text-white font-semibold"
+                    onClick={ props.close }
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    className="w-full px-4 py-2 rounded bg-red-500 hover:bg-red-600 border border-red-600 hover:boder-red-700 text-white font-semibold"
+                    onClick={ props.close }
+                >
+                    Confirmar
+                </button>
+            </div>
+        </Modal>
+    )
+}
 
 export default function MultipleImageInput(props: { 
-    images: Image[], 
+    images: Image[],
     setImages: (images: Image[]) => void, 
     disabled: boolean
 }) {
     const { images } = props;
     const [ modalVisible, setModalVisible ] = useState<boolean>(false);
+    const [ deletionModalVisible, setDeletionModalVisible] = useState<boolean>(false);
 
     return (
         <>
-            <ImageUploadModal
-                visible={modalVisible}
-                close={() => setModalVisible(false)}
-                submit={(file: File | null, description: string) => {
-                    if (file != null) {
-                        props.setImages([...images, {file, description}]);
-                    }
-                }}
-            />
-
-            <div>
+        <div className={ `group ${props.disabled && "cursor-not-allowed"}` } data-disabled={props.disabled}>
                 <div className="w-full overflow-auto p-1 rounded border rounded-b-none border-neutral-400 bg-neutral-100 flex gap-2">
                     {images?.length > 0 ? 
                         images.map(image => {
@@ -35,7 +57,15 @@ export default function MultipleImageInput(props: {
                             }
 
                             return (
-                                <div className="block w-fit flex-shrink-0 hover:bg-blue-300 p-2 border border-transparent hover:border-blue-300 rounded">
+                                <div className="group/image cursor-pointer relative block w-fit flex-shrink-0 hover:bg-blue-300 p-2 border border-transparent hover:border-blue-300 rounded">
+                                    <button
+                                        className="hidden group-hover/image:block rounded-full p-0 w-6 h-6 text-center align-middle bg-white border border-neutral-600 text-neutral-600 hover:bg-red-500 hover:text-white absolute top-0 right-0 font-semibold disabled:"
+                                        type="button"
+                                        onClick={ () => setDeletionModalVisible(true) }
+                                        disabled={ props.disabled }
+                                    >
+                                        x
+                                    </button> 
                                     <img
                                         id="imagePreview"
                                         alt="Imagem Preview"
@@ -58,6 +88,21 @@ export default function MultipleImageInput(props: {
                     Adicionar imagem
                 </button>
             </div>
+
+            <ImageUploadModal
+                visible={modalVisible}
+                close={() => setModalVisible(false)}
+                submit={(file: File | null, description: string) => {
+                    if (file != null) {
+                        props.setImages([...images, {file, description}]);
+                    }
+                }}
+            />
+
+            <ConfirmImageDeletionModal
+                visible={deletionModalVisible}
+                close={ () => setDeletionModalVisible(false) }
+            />
         </>
 
     )
