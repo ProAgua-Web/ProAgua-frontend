@@ -1,42 +1,51 @@
 "use client";
 
-import { useEdificacao, useEdificacoes, usePontos } from "@/utils/api_consumer/client_side_consumer";
-import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
+import { consumerEdficacao, consumerPonto, consumerSequencia, consumerSolicitacao, useEdificacao, useEdificacoes, usePontos } from "@/utils/api_consumer/client_side_consumer";
+import { Edificacao, Ponto, Sequencia, SequenciaIn, Solicitacao, TIPOS_PONTOS } from "@/utils/types";
 import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
 
-export default function Page() {
+export default function CriarSequencia() {
+    const [edificacoes, setEdificacoes] = useState<Edificacao[]>([])
+    const [edificacao, setEdificacao] = useState<Edificacao>();
+    const [pontos, setPontos] = useState<Ponto[]>([]);
+    
     const [codEdificacao, setCodEdificacao] = useState<string>("");
-    const edificacoes = useEdificacoes();
-    const edificacao = useEdificacao(codEdificacao);
     const [idPonto, setIdPonto] = useState<number | null>();
-    const pontos = usePontos(codEdificacao);
+    const [submiting, setSubmiting] = useState<boolean>(false);
+
     const filteredPontos = pontos?.filter(ponto => ponto.edificacao.codigo === codEdificacao);
 
-    const [submiting, setSubmiting] = useState<boolean>(false);
+    useEffect(() => {
+        consumerEdficacao.list()
+            .then(data => setEdificacoes(data))
+            .catch(err => alert('Houve um erro durante consulta a API.'));
+
+        consumerPonto.list()
+            .then(data => setPontos(data))
+            .catch(err => alert('Houve um erro durante consulta a API.'));
+    }, [])
+    
+    useEffect(() => {
+        consumerEdficacao.get(codEdificacao)
+            .then(data => setEdificacao(data))
+            .catch(err => alert('Houve um erro durante consulta a API.'));
+    }, [codEdificacao])
+
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
         setSubmiting(true);
 
         const formData = new FormData(event.currentTarget);
-        const data = {
+        const data: SequenciaIn = {
             amostragem: Number(formData.get("amostragem")),
             ponto: Number(formData.get("ponto")),
         };
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/sequencias/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
+        const response = await consumerSequencia.post(data);
 
         if (response.status === 200) {
             alert("Sequencia de coleta criada com sucesso!");
-            const responseData = await response.json();
-            const id = responseData.id;
             window.location.href = `/admin/sequencias_coletas`;
         } else {
             alert("Erro ao criar Sequencia de coleta");

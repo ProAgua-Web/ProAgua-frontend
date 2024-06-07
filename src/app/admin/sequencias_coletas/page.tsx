@@ -1,24 +1,13 @@
 "use client";
 
 import { Ponto, Sequencia, TIPOS_PONTOS } from "@/utils/types";
-import CardSequencia from "@/components/sequencias/CardSequencia";
-import Filters from "@/components/sequencias/Filters";
-import { API_BASE_URL } from "@/utils/config";
-import { toURLParams, useSequencias } from "@/utils/api_consumer/client_side_consumer";
+import { consumerSequencia, formatDate, toURLParams } from "@/utils/api_consumer/client_side_consumer";
 import { useEffect, useState } from "react";
-import Danger from "@/components/icons/DangerIcon";
 import OkIcon from "@/components/icons/OkIcon";
 import DangerIcon from "@/components/icons/DangerIcon";
 
-function formatDate(date: string) {
-    const d = new Date(date);
-    const hour = d.toLocaleTimeString().slice(0, 5).replace(':', 'h');
-    return `${d.toLocaleDateString()} ${hour}`;
-}
-
-
 export default function Coletas() {
-    const sequencias = useSequencias()
+    const [sequencias, setSequencias] = useState<Sequencia[]>([]);
 
     const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" });
     const [checkPendentes, setCheckPendentes] = useState<boolean>(false);
@@ -29,6 +18,12 @@ export default function Coletas() {
 
     const [filteredSequencias, setFilteredSequencias] = useState<Sequencia[]>(sequencias);
 
+    useEffect(() => {
+        consumerSequencia.list()
+            .then(data => setSequencias(data))
+            .catch(err => alert('Houve um erro durante consulta a API.'));
+    }, [])
+    
     useEffect(() => {
         if (abortController) {
             abortController.abort();
@@ -46,7 +41,7 @@ export default function Coletas() {
             const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias?limit=10000`
             let query = toURLParams(_filters);
 
-            const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache" });
+            const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache" , 'credentials': 'include'});
 
             if (!res.ok) {
                 throw new Error('Network response was not ok');
@@ -60,19 +55,11 @@ export default function Coletas() {
                 }
                 return !(checkConcluidas && !sequencia.status) && !(checkPendentes && sequencia.status);
             });
-            // if (checkPendentes && checkConcluidas) return true;
-            // if (!checkPendentes && !checkConcluidas) return false;
-            // return (checkConcluidas && sequencia.status) || (checkPendentes && !sequencia.status);
-
 
             setFilteredSequencias(filtered);
         };
 
         fetchData();
-
-        return () => {
-            newAbortController.abort();
-        };
     }, [filters, checkPendentes, checkConcluidas]);
 
     return (

@@ -3,7 +3,7 @@
 import Filters from "@/components/sequencias/Filters";
 import CardPonto, { AddCard } from "@/components/pontos/CardPontos";
 import { Edificacao, Ponto } from "@/utils/types";
-import { useEdificacoes, toURLParams, usePonto } from "@/utils/api_consumer/client_side_consumer";
+import { useEdificacoes, toURLParams, usePonto, consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
 
 import { useEffect, useState } from "react";
 import AbortController from 'abort-controller';
@@ -48,7 +48,14 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
 
 export default function Pontos() {
   const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" })
-  const edificacoes: Edificacao[] = useEdificacoes();
+  const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
+  useEffect(() => {
+    consumerEdficacao.list()
+      .then(data => {
+        setEdificacoes(data)
+      })
+  }, [])
+
   const filteredEdificacoes = edificacoes.filter((edificacao) => {
     const matchesQuery = edificacao.codigo.includes(filters.q) || edificacao.nome.includes(filters.q);
     const matchesCampus = filters.campus === "BOTH" || edificacao.campus === filters.campus;
@@ -104,7 +111,8 @@ export default function Pontos() {
       if (checkRDI) query = query.concat("&tipo=5");
       if (checkCAERN) query = query.concat("&tipo=6");
 
-      const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache" });
+      // TODO: fazer uso do consumer
+      const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache", credentials: 'include' });
 
       if (!res.ok) {
         throw new Error('Network response was not ok');
@@ -115,10 +123,6 @@ export default function Pontos() {
     };
 
     fetchData();
-
-    return () => {
-      newAbortController.abort();
-    };
   }, [filters, checkBebedouro, checkRPS, checkRPI, checkRDS, checkRDI, checkCAERN]);
 
   return (

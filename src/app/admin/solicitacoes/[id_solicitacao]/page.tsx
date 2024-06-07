@@ -27,22 +27,15 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
 
         const formData = new FormData(event.currentTarget);
 
-        const body = {
+        const data = {
             ponto_id: formData.get('ponto'),
             tipo: formData.get('tipo'),
             objetivo: formData.get('objetivo'),
             justificativa: formData.get('justificativa'),
             status: formData.get('status'),
-            // imagens: images
         }
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/solicitacoes/" + id_solicitacao, {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
-        });
+        const response = await consumerSolicitacao.put(id_solicitacao, data);
 
         if (response.ok) {
             alert("Solicitação atualizada com sucesso!");

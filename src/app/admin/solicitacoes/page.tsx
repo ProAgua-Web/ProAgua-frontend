@@ -1,9 +1,16 @@
 "use client";
 
-import { formatDate, useSolicitacoes } from "@/utils/api_consumer/client_side_consumer";
+import { useEffect, useState } from "react";
+import { Solicitacao } from "@/utils/types";
+import { consumerSolicitacao, formatDate } from "@/utils/api_consumer/client_side_consumer";
 
 export default function Solicitacoes() {
-    const solicitacoes = useSolicitacoes();
+    const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
+    useEffect(() => {
+        consumerSolicitacao.list()
+            .then(data => setSolicitacoes(data))
+            .catch(err => alert("Ocorreu um erro durante a requisição."))
+    }, [])
 
     return (
         <>

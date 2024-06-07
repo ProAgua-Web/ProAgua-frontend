@@ -1,9 +1,8 @@
 "use client";
 
-import { delEdificacao, useEdificacao } from "@/utils/api_consumer/client_side_consumer";
+import { consumerEdficacao, useEdificacao } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useEffect, useState } from "react";
 import { Image } from "@/utils/types";
-import ImageUploadModal from "@/components/ImageUploadModal";
 import MultipleImageInput from "@/components/MultipleImageInput";
 
 export default function VisualizarEdificacao({ params }: { params: { codigo_edificacao: string } }) {
@@ -19,15 +18,13 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/${params.codigo_edificacao}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                codigo: formData.get('codigo'),
-                nome: formData.get('nome'),
-                campus: formData.get('campus'),
-                cronograma: Number(formData.get('cronograma'))
-            })
-        });
+        const data = {
+            codigo: formData.get('codigo'),
+            nome: formData.get('nome'),
+            campus: formData.get('campus'),
+            cronograma: Number(formData.get('cronograma'))
+        };
+        const response = await consumerEdficacao.put(params.codigo_edificacao, data)
 
         if (response.status == 200) {
             alert("Edificação atualizada com sucesso!");

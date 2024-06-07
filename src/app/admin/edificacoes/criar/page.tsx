@@ -3,6 +3,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import ImageUploadModal from "@/components/ImageUploadModal";
 import MultipleImageInput from "@/components/MultipleImageInput";
+import { consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
 
 type Image = {
     file: File,
@@ -14,6 +15,7 @@ export default function CriarEdificacao() {
     const [submiting, setSubmiting] = useState<boolean>(false);
     const [images, setImages] = useState<Image[]>([]);
     
+    // TODO: usar classe consumer para criação de imagens
     async function uploadImage(codigo_edificacao: string, image: Image) {
         let formData = new FormData();
         formData.append("file", image.file);
@@ -45,13 +47,7 @@ export default function CriarEdificacao() {
             cronograma: formData.get("cronograma"),
         };
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
+        const response = await consumerEdficacao.post(data);
 
         if (response.status != 200) {
             alert("Erro ao criar edificação!");

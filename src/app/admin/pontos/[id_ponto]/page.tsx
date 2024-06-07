@@ -4,7 +4,7 @@ import { FormEvent, use, useEffect, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
-import { delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
+import { consumerPonto, delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
 
 export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {
     const edificacoes = useEdificacoes();
@@ -23,20 +23,14 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/" + params.id_ponto, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                tombo: formData.get("tombo"),
-                ambiente: formData.get("ambiente"),
-                tipo: Number(formData.get("tipo")),
-                codigo_edificacao: formData.get("edificacao"),
-                amontante: formData.get("amontante") == "" ? null : formData.get("amontante"),
-                imagem: formData.get("imagem"),
-                associados: formData.getAll("associados"),
-            }),
+        const response = await consumerPonto.put(params.id_ponto, {
+            tombo: formData.get("tombo")?.toString(),
+            ambiente: String(formData.get("ambiente")),
+            tipo: Number(formData.get("tipo")),
+            codigo_edificacao: String(formData.get("edificacao")),
+            amontante: formData.get("amontante") == "" ? null : String(formData.get("amontante")),
+            imagem: String(formData.get("imagem")),
+            associados: formData.getAll("associados"),
         })
 
         if (response.ok) {
@@ -47,16 +41,6 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
             alert("Erro ao atualizar ponto!");
         }
 
-    }
-
-    function updateAmontante() {
-        const amontante = document.getElementById("amontante") as HTMLSelectElement;
-        setCurrentAmontante(amontante.value);
-    }
-
-    function updateEdificacao() {
-        const edificacao = document.getElementById("edificacao") as HTMLSelectElement;
-        setCurrentEdificacao(edificacao.value);
     }
 
     async function deletePonto() {
@@ -100,7 +84,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                     id="edificacao"
                                     name="edificacao"
                                     className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                                    onChange={updateEdificacao}
+                                    onChange={ e => setCurrentEdificacao(e.target.value) }
                                     defaultValue={ponto?.edificacao.codigo}
                                     disabled={!editable}
                                 >
@@ -215,7 +199,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                     className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                                     defaultValue={pontos.length > 0 ? ponto?.amontante?.id : undefined}
                                     disabled={!editable}
-                                    onChange={updateAmontante}
+                                    onChange={ e => {setCurrentAmontante(e.target.value);}}
                                 >
                                     <option value="">-</option>
                                     {pontosAmontantes.map((ponto: Ponto) => {

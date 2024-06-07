@@ -1,6 +1,6 @@
 "use client"
 
-import { useUsuario } from "@/utils/api_consumer/client_side_consumer"
+import { consumerUsuario, useUsuario } from "@/utils/api_consumer/client_side_consumer"
 import { FormEvent, useState } from "react";
 
 export default function Page({ params }: { params: { username: string } }) {
@@ -10,16 +10,13 @@ export default function Page({ params }: { params: { username: string } }) {
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/${params.username}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                username: formData.get('username'),
-                first_name: formData.get('first_name'),
-                last_name: formData.get('last_name'),
-                email: formData.get('email'),
-            })
-        });
+        const data = {
+            username: formData.get('username'),
+            first_name: formData.get('first_name'),
+            last_name: formData.get('last_name'),
+            email: formData.get('email'),
+        };
+        const response = await consumerUsuario.put(params.username, data);
 
         if (response.status === 200) {
             alert("Usuário editado com sucesso!");

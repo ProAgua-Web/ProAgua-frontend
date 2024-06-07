@@ -1,11 +1,11 @@
 'use client'
 
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { useEdificacoes, useEdificacao, usePontos, usePonto } from "@/utils/api_consumer/client_side_consumer"
+import { useEdificacoes, useEdificacao, usePontos, usePonto, useSolicitacao, consumerSolicitacao } from "@/utils/api_consumer/client_side_consumer"
 import { TIPOS_PONTOS } from "@/utils/types";
 import { FormEvent, useEffect, useState } from "react";
 
-export default function Page() {
+export default function CriarSolicitacao() {
     const edificacoes = useEdificacoes();
     const [codEdificacao, setCodEdificacao] = useState<string>("");
     const edificacao = useEdificacao(codEdificacao);
@@ -87,7 +87,7 @@ export default function Page() {
 
         const formData = new FormData(event.currentTarget);
 
-        const body = {
+        const data = {
             ponto_id: idPonto,
             tipo: tipoSolicitacao,
             objetivo: formData.get('objetivo'),
@@ -95,13 +95,7 @@ export default function Page() {
             status: formData.get('status')
         }
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/solicitacoes/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
-        });
+        const response = await consumerSolicitacao.post(data);
 
         if (response.status != 200) {
             alert('Erro ao criar solicitação.');
@@ -232,8 +226,4 @@ export default function Page() {
 
         </>
     )
-}
-
-function onEffect(arg0: () => void, arg1: string[]) {
-    throw new Error("Function not implemented.");
 }

@@ -1,9 +1,8 @@
 "use client";
 
 import { Coleta, Ponto, Sequencia, TIPOS_PONTOS } from "@/utils/types"
-import { useColeta, usePontos, usePontosAmontante, useSequencias, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
-import { useSequencia } from "@/utils/api_consumer/client_side_consumer";
-import { FormEvent, use, useEffect, useState } from "react";
+import { consumerColeta, useColeta, usePontos, usePontosAmontante, useSequencias, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Page({ params }: {
     params: {
@@ -20,7 +19,6 @@ export default function Page({ params }: {
 
     const [editable, setEditable] = useState<boolean>(false);
     const [submiting, setSubmiting] = useState<boolean>(false);
-
 
     useEffect(() => {
         if (pontos.length > 0) {
@@ -54,14 +52,8 @@ export default function Page({ params }: {
             ordem: formData.get("ordem"),
         };
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/" + id_coleta, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-
+        const response = await consumerColeta.put(id_coleta.toString(), data);
+  
         if (response.status === 200) {
             alert("Coleta atualizada com sucesso!");
             window.location.href = `/admin/sequencias_coletas/${currentSequenciaId}`;
