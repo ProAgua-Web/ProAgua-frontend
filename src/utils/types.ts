@@ -1,4 +1,14 @@
 
+export type PontoIn = {
+    tombo?: string,
+    ambiente?: string,
+    tipo?: number,
+    codigo_edificacao?: string,
+    amontante?: string,
+    imagem?: string,
+    associados?: number[],
+}
+
 export type Ponto = {
     id: number;
     tombo: string;
@@ -11,6 +21,11 @@ export type Ponto = {
     amontante?: Ponto;
     associados: number[];
     imagem?: string;
+};
+
+export type SequenciaIn = {
+    amostragem: number,
+    ponto: number
 };
 
 export type Sequencia = {
@@ -29,7 +44,7 @@ export type Edificacao = {
     nome: string;
     campus: string;
     cronograma: number;
-    imagens: Image[];
+    imagens: ImageOut[];
     pontos_url: string;
 };
 
@@ -95,15 +110,18 @@ export type Solicitacao = {
     tipo: string;
     objetivo: string;
     justificativa: string;
-    imagens: Image[];
+    imagens: ImageOut[];
 }
 
-
-export type Image = {
-    file: File | string,
+export type ImageIn = {
+    file: File,
     description: string
 };
 
+export type ImageOut = {
+    src: string,
+    description: string
+};
 
 export const TIPOS_PONTOS = [
     null,
