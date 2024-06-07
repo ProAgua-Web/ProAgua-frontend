@@ -1,7 +1,7 @@
 "use client";
 
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { useEdificacao, useEdificacoes, usePonto, usePontos, useSolicitacao } from "@/utils/api_consumer/client_side_consumer";
+import { consumerSolicitacao, useEdificacao, useEdificacoes, usePonto, usePontos, useSolicitacao } from "@/utils/api_consumer/client_side_consumer";
 import { Edificacao } from "@/utils/types";
 import { useEffect, useState } from "react";
 
@@ -12,7 +12,6 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
     const pontos = usePontos();
     const [idPonto, setidPonto] = useState(solicitacao?.ponto.id ?? 0);
     const [codEdificacao, setCodEdificacao] = useState<string>("");
-    const ponto = usePonto(idPonto);
     const edificacao = useEdificacao(codEdificacao);
     const filteredPontos = pontos.filter(ponto => ponto.edificacao.codigo === edificacao?.codigo);
 
@@ -48,6 +47,16 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
         setEditable(false);
     }
 
+    async function deleteSolicitacao() {
+        const response = await consumerSolicitacao.delete(id_solicitacao);
+        
+        if (response.ok) {
+            alert("Solicitação deletada.");
+            window.location.href = "/admin/solicitacoes";
+        } else {
+            alert("Erro ao deletar solicitação!");
+        }
+    }
     useEffect(() => {
         if (solicitacao) {
             setCodEdificacao(solicitacao.ponto.edificacao.codigo);
@@ -195,6 +204,7 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
                                 type="button"
                                 className={`rounded-lg border bg-red-500 px-6 py-4 text-center font-semibold text-white hover:bg-red-600 disabled:bg-gray-400 disabled:text-gray-300 ${editable ? '' : 'hidden'}`}
                                 disabled={!editable}
+                                onClick={deleteSolicitacao}
                             >
                                 Excluir
                             </button>
