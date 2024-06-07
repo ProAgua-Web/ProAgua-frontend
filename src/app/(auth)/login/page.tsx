@@ -3,16 +3,29 @@ import Logo from "/public/Logo.svg";
 
 import Input from "@/components/layout/form/Input";
 import Image from "next/image";
-import Button from "@/components/layout/form/Button";
 import { FormEvent, useState } from "react";
+
+async function getCSRFToken() {
+  const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/csrf", {
+    method: 'GET',
+    credentials: 'include'
+  });
+  
+  const data = await resp.json()
+
+  return data["csrftoken"]
+}
 
 export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   
   async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsSubmitting(true);
     const formData = new FormData(event.currentTarget);
+
+    setIsSubmitting(true);
+
+    const csrftoken = await getCSRFToken();
     const data = {
       username: formData.get("email"),
       password: formData.get("password"),
@@ -22,7 +35,9 @@ export default function Login() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
       },
+      credentials: "include",
       body: JSON.stringify(data),
     });
 
@@ -38,7 +53,7 @@ export default function Login() {
       let token = responseData.access_token;
       localStorage.setItem("token", token);
 
-      window.location.href = "/admin/dashboard";
+      window.location.href = "/admin/pontos";
     }
     
   }
