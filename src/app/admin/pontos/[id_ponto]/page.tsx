@@ -175,7 +175,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                             key={"associado-" + point.id}
                                             selected={ponto?.associados.includes(point.id)}
                                         >
-                                            {point.id} - {TIPOS_PONTOS[point.tipo]}
+                                            {point.id} - {point.edificacao.codigo} - {point.edificacao.nome} - {TIPOS_PONTOS[point.tipo]}
                                             {point.ambiente && point.ambiente.trim() != "-" && point.ambiente.trim() != "nan" && point.ambiente.trim() != "" ? "- " + point.ambiente : ""}
                                             {point.tombo && point.tombo.trim() != "-" && point.tombo.trim() != "nan" && point.tombo.trim() ? "- " + point.tombo : ""}
                                         </option>

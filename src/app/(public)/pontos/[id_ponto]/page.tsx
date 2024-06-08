@@ -2,7 +2,7 @@
 
 import Header from "@/components/layout/Header";
 import { useLastColetaByPonto, usePonto, useParametrosReferencia } from "@/utils/api_consumer/client_side_consumer";
-import { Coleta } from "@/utils/types";
+import { Coleta, TIPOS_PONTOS } from "@/utils/types";
 import { use } from "react";
 import Image from "next/image";
 
@@ -55,7 +55,7 @@ function PointDashboard(props: { coleta: Coleta }) {
                     <h1 className="text-lg font-bold">Coliformes totais</h1>
                     <p className="p-2 text-md">
                         {coleta.coliformes_totais ? "PRESENÇA" : "AUSÊNCIA"} em 100 mL <br />
-                        {coleta.coliformes_totais ? "Em conformidade" : "Não conformidade"}
+                        {coleta.coliformes_totais ? "Não conformidade" : "Em conformidade"}
                     </p>
                     <span className="text-sm text-gray-700">VMP<sup>(1)</sup>: {coleta.coliformes_totais ? "Presença" : "Ausência"} em 100 mL</span>
                 </div>
@@ -66,10 +66,10 @@ function PointDashboard(props: { coleta: Coleta }) {
 
             <div className={`w-full flex justify-between items-center rounded-lg p-6 shadow ${coleta.escherichia ? bg_color_not_ok : bg_color_ok}`}>
                 <div>
-                    <h1 className="text-lg font-bold">Escherichia coli</h1>
+                    <h1 className="text-lg font-bold"><i>Escherichia coli</i></h1>
                     <p className="p-2 text-md">
                         {coleta.escherichia ? "PRESENÇA" : "AUSÊNCIA"} em 100 mL <br />
-                        {coleta.escherichia ? "Em conformidade" : "Não conformidade"}
+                        {coleta.escherichia ? "Não conformidade" : "Em conformidade"}
                     </p>
                     <span className="text-sm text-gray-700">VMP<sup>(1)</sup>: {coleta.escherichia ? "Presença" : "Ausência"} em 100 mL</span>
                 </div>
@@ -106,18 +106,29 @@ function PointDashboard(props: { coleta: Coleta }) {
                     className="h-24 w-24" />
             </div>
 
-            <div className={`w-full flex justify-between items-center rounded-lg p-6 shadow ${temperaturaInterval() ? bg_color_ok : bg_color_alert}`}>
+            <div className={`w-full flex justify-between items-center rounded-lg p-6 shadow ${!temperaturaInterval() && coleta.ponto.tipo == 1 ? bg_color_alert : "bg-slate-100"}`}>
                 <div>
                     <h1 className="text-lg font-bold">Temperatura</h1>
                     <p className="p-2 text-md">
                         {coleta.temperatura} ºC <br />
-                        {temperaturaInterval() ? "Em conformidade" : "Alerta"}
+                        {temperaturaInterval() ? "Em conformidade" : coleta.ponto.tipo == 1 ? "Alerta" : ""}
                     </p>
-                    <span className="text-sm text-gray-700">Ref. assumida<sup>(2)</sup> {referencia?.min_temperatura} a {referencia?.max_temperatura} °C</span>
+
+                    {coleta.ponto.tipo == 1 && (
+                        <span className="text-sm text-gray-700">Ref. assumida<sup>(2)</sup> {referencia?.min_temperatura} a {referencia?.max_temperatura} °C</span>
+                    )}
+
                 </div>
-                <Image src={temperaturaInterval() ? Conformidade : Alert}
-                    alt="Temperatura"
-                    className="h-24 w-24" />
+
+                {coleta.ponto.tipo == 1 && (
+
+                    <Image src={temperaturaInterval() ? Conformidade : Alert}
+                        alt="Temperatura"
+                        className="h-24 w-24" />
+
+                )
+
+                }
             </div>
         </div>
     )
@@ -139,7 +150,8 @@ export default function Page(props: {
                     <span className="text-md text-gray-700">UFERSA Campus Mossoró</span>
                     <h1 className="text-2xl font-semibold">{ponto?.edificacao.nome}</h1>
                     <p className="text-lg text-black">
-                        Ponto de Coleta - {ponto?.ambiente}<br />
+                        Ponto de Coleta - {ponto?.tipo == 2 ? "Torneira - " + TIPOS_PONTOS[ponto?.tipo ?? 0] : TIPOS_PONTOS[ponto?.tipo ?? 0]}<br />
+                        Local - {ponto?.ambiente}<br />
                         {coleta && coleta.data ? `Última coleta em ${new Date(coleta.data).toLocaleDateString()}` : "Sem coleta registrada"}
                     </p>
                     <div className="mt-8">
