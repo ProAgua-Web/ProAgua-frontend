@@ -416,3 +416,8 @@ export function useSolicitacao(id_solicitacao: number) {
 
     return solicitacao;
 }
+
+export function downloadSolictacao(id_solicitacao: number) {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/${id_solicitacao}/document`;
+    window.open(url, '_blank');
+}

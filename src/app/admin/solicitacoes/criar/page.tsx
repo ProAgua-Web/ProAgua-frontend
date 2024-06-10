@@ -211,17 +211,11 @@ export default function CriarSolicitacao() {
 
                 <input
                     type="submit"
-                    value={submiting ? 'Enviando...' : 'Criar solicitação'}
-                    className="border text-white bg-green-500 hover:bg-green-600 disabled:bg-green-800 rounded px-4 py-2"
+                    value={submiting ? 'Enviando...' : '+ Criar Solicitação'}
+                    className="w-full flex justify-center items-center px-6 py-4 bg-green-500 border border-green-600 rounded text-white font-semibold hover:bg-green-600 disabled:bg-green-800"
                     disabled={submiting}
                 />
 
-                <input
-                    type="submit"
-                    className="border text-white bg-primary-500 hover:bg-primary-600 disabled:bg-primary-800 rounded px-4 py-2"
-                    disabled={submiting}
-                    value="Criar e salvar em PDF"
-                />
             </form>
 
         </>

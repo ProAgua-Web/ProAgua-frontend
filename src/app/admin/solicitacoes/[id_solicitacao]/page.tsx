@@ -1,7 +1,8 @@
 "use client";
 
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { consumerSolicitacao, useEdificacao, useEdificacoes, usePonto, usePontos, useSolicitacao } from "@/utils/api_consumer/client_side_consumer";
+import { consumerSolicitacao, useEdificacao, useEdificacoes, usePonto, usePontos, useSolicitacao, downloadSolictacao} from "@/utils/api_consumer/client_side_consumer";
+import { API_BASE_URL } from "@/utils/config";
 import { Edificacao } from "@/utils/types";
 import { useEffect, useState } from "react";
 
@@ -220,7 +221,8 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
                                 </>
                             )}
                         </form>
-                        <button className="text-white bg-primary-800 rounded px-4 py-2">Salvar em PDF</button>
+                        <button onClick={() => downloadSolictacao(parseInt(id_solicitacao))}
+                            className="w-full rounded-lg border bg-primary-500 px-6 py-4 text-center font-semibold text-white hover:bg-primary-700">Baixar documento</button>
                     </>
                 )
             }
