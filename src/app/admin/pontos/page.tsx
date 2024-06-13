@@ -8,6 +8,7 @@ import { useEdificacoes, toURLParams, usePonto, consumerEdficacao } from "@/util
 import { useEffect, useState } from "react";
 import AbortController from 'abort-controller';
 
+
 function groupBy<Type>(arr: Type[], key: (el: Type) => any) {
   var groups = Object();
 
@@ -25,20 +26,30 @@ function groupBy<Type>(arr: Type[], key: (el: Type) => any) {
   return groups;
 }
 
-function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[] } }) {
+function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[], collapsed?: boolean } }) {
   const { group } = props;
+  const [collapsed, setCollapsed] = useState<boolean>(props.collapsed);
+
+  useEffect(() => {
+    setCollapsed(props.collapsed);
+  }, [props.collapsed]);
+
   return (
-    <div className="mb-8 rounded bg-gradient-to-b from-gray-100 to-gray-50 border border-gray-300">
+    <div className="mb-2 rounded bg-gradient-to-b from-gray-100 to-gray-50 border border-gray-300">
       <div className="flex justify-between p-4 py-2">
-        <h3 className="text-xl font-semibold text-black">{group.edificacao.codigo} - {group.edificacao.nome}</h3>
+        <button
+          className="w-full text-xl text-start font-semibold text-black"
+          onClick={() => setCollapsed(!collapsed)}>
+          {group.edificacao.codigo} - {group.edificacao.nome}
+        </button>
         <a href={`/admin/edificacoes/${group.edificacao.codigo}`} className="hover:text-primary-600">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
           </svg></a>
       </div>
-      <div className="p-4 flex gap-4 flex-wrap">
+      <div className={`p-4 flex gap-4 flex-wrap ${collapsed ? 'hidden' : ''}`}>
         {group.pontos.map((item, i) => (
-          <CardPonto ponto={item} key={"ponto-" + i} />
+          <CardPonto ponto={item} key={"ponto-" + i} publicCard={false} />
         ))}
         <AddCard cod_edificacao={group.edificacao.codigo} />
       </div>
@@ -49,6 +60,9 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
 export default function Pontos() {
   const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" })
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
+
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+
   useEffect(() => {
     consumerEdficacao.list()
       .then(data => {
@@ -128,13 +142,14 @@ export default function Pontos() {
   return (
     <>
       <h2 className="text-3xl text-[#525252]">Edificações e Pontos de Coleta</h2>
+
       <div className="flex w-full flex-col items-center">
         <div className="mb-4 flex w-full flex-col gap-4">
           <div className="relative flex">
             <i className="bi bi-search"></i>
             <input
               id="search-bar"
-              className="w-full rounded-md border border-[#ABABAB] bg-white px-5 py-3 text-[#525252]"
+              className="w-full rounded-md border bg-white px-5 py-3 text-[#525252]"
               type="text"
               name="search-query"
               placeholder="Digite o termo de pesquisa"
@@ -147,8 +162,21 @@ export default function Pontos() {
           <div className="w-full flex justify-between gap-3 self-end">
 
             <div className="flex gap-8">
-              <div className="flex flex-row justify-center items-center">
 
+              <select
+                name="campus"
+                className="w-36 rounded-md border bg-white px-3 py-2 text-[#525252]"
+                onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
+              >
+                <option value="" disabled selected hidden>
+                  Campus
+                </option>
+                <option value="BOTH">Leste/Oeste</option>
+                <option value="LE">Leste</option>
+                <option value="OE">Oeste</option>
+              </select>
+
+              <div className="flex flex-row justify-center items-center">
                 <label htmlFor="bebedouro" onClick={(e) => { setCheckBebedouro(!checkBebedouro); setFilters }}
                   className={`cursor-pointer ${checkBebedouro ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
                 > Bebedouro</label>
@@ -192,25 +220,25 @@ export default function Pontos() {
               </div>
             </div>
 
-            <select
-              name="campus"
-              className="w-36 rounded-md border border-[#ABABAB] bg-white px-3 py-2 text-[#525252]"
-              onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
-            >
-              <option value="" disabled selected hidden>
-                Campus
-              </option>
-              <option value="BOTH">Leste/Oeste</option>
-              <option value="LE">Leste</option>
-              <option value="OE">Oeste</option>
-            </select>
+            <button
+              onClick={() => setCollapsed(!collapsed)}
+              className={`self-end px-4 py-2 mb-2 border rounded-md hover:bg-slate-50`}>
+
+              {collapsed ?
+                <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20" height="20"><path d="M1,6H23a1,1,0,0,0,0-2H1A1,1,0,0,0,1,6Z" /><path d="M23,9H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" /><path d="M23,19H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" /><path d="M23,14H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" /></svg>
+                :
+                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20"><path d="M19,1H5C2.24,1,0,3.24,0,6v12c0,2.76,2.24,5,5,5h14c2.76,0,5-2.24,5-5V6c0-2.76-2.24-5-5-5ZM5,3h14c1.65,0,3,1.35,3,3v2H2v-2c0-1.65,1.35-3,3-3Zm14,18H5c-1.65,0-3-1.35-3-3V10H22v8c0,1.65-1.35,3-3,3Z" /></svg>
+              }
+            </button>
           </div>
         </div>
-        <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-full bg-gray-100 border border-gray-300 text-green-500 font-semibold rounded-md hover:bg-green-600 hover:text-white text-center">+ Adicionar edificação</a>
         <div className="flex flex-col w-full">
+
+          <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-full bg-gray-100 border border-gray-300 text-green-500 font-semibold rounded-md hover:bg-green-600 hover:text-white text-center">+ Adicionar edificação</a>
+
           {Object.values(groups).map((group, i) => {
             return (
-              <CardEdificacao group={group} key={"edificacao-" + i} />
+              <CardEdificacao group={group} key={"edificacao-" + i} collapsed={collapsed} />
             )
           }
           )}
