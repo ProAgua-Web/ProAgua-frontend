@@ -2,7 +2,7 @@
 
 import { ParametroReferencia, Usuario } from "@/utils/types";
 import { useState } from "react";
-import { useParametrosReferencia, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
+import { consumerParametrosReferencia, useParametrosReferencia, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
 
 export default function Configuracoes() {
     const usuarios: Usuario[] = useUsuarios();
@@ -17,26 +17,20 @@ export default function Configuracoes() {
         setSubmiting(true);
 
         const formData = new FormData(event.currentTarget);
+        const data = {
+            min_temperatura: Number(formData.get("min_temperatura")),
+            max_temperatura: Number(formData.get("max_temperatura")),
+            min_cloro_residual_livre: Number(formData.get("min_cloro_residual_livre")),
+            max_cloro_residual_livre: Number(formData.get("max_cloro_residual_livre")),
+            min_turbidez: Number(formData.get("min_turbidez")),
+            max_turbidez: Number(formData.get("max_turbidez")),
+            // min_cor: formData.get("min_cor"),
+            // max_cor: formData.get("max_cor"),
+            coliformes_totais: false,
+            escherichia: false,
+        };
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/parametros_referencia/", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-
-            body: JSON.stringify({
-                min_temperatura: Number(formData.get("min_temperatura")),
-                max_temperatura: Number(formData.get("max_temperatura")),
-                min_cloro_residual_livre: Number(formData.get("min_cloro_residual_livre")),
-                max_cloro_residual_livre: Number(formData.get("max_cloro_residual_livre")),
-                min_turbidez: Number(formData.get("min_turbidez")),
-                max_turbidez: Number(formData.get("max_turbidez")),
-                // min_cor: formData.get("min_cor"),
-                // max_cor: formData.get("max_cor"),
-                coliformes_totais: false,
-                escherichia: false,
-            }),
-        });
+        const response = await consumerParametrosReferencia.put("", data);
 
         if (response.status === 200) {
             alert("Parâmetros de referência atualizados com sucesso");

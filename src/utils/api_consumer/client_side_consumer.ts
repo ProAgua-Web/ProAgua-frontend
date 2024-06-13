@@ -113,6 +113,7 @@ export const consumerColeta = new APIConsumer<Coleta, Coleta>(`${process.env.NEX
 export const consumerSolicitacao = new APIConsumer<Solicitacao, Solicitacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/`);
 export const consumerSequencia = new APIConsumer<SequenciaIn, Sequencia>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias/`);
 export const consumerUsuario = new APIConsumer<Usuario, Usuario>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/`);
+export const consumerParametrosReferencia = new APIConsumer<ParametroReferencia, ParametroReferencia>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/parametros_referencia/`);
 
 
 export function toURLParams(data: Object) {
