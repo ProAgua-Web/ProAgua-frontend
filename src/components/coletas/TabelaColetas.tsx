@@ -32,7 +32,7 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {coletas.map(coleta => {
+                        {coletas && coletas.length > 0 ? coletas.map(coleta => {
                             return (
                                 <tr key={"tr" + coleta.id} className="bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
                                     onClick={() => {
@@ -58,7 +58,8 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                                     </td>
                                 </tr>
                             )
-                        })}
+                        }) : <tr><td colSpan={12} className="px-2 py-3 text-center">Nenhuma coleta encontrada</td></tr>
+                        }
                     </tbody>
                 </table>
             </div>
