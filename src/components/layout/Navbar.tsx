@@ -11,7 +11,7 @@ export default function Navbar(props: {
     {
       href: "/admin/pontos/",
       icon: <i className="bi bi-geo-alt-fill"></i>,
-      name: "Edificações e Pontos de coleta",
+      name: "Pontos de coleta",
     },
     {
       href: "/admin/solicitacoes/",
