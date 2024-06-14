@@ -131,7 +131,7 @@ export default function CriarSolicitacao() {
         }));
 
         alert('Imagens criadas.');
-        // window.location.href = '/admin/solicitacoes';
+        window.location.href = '/admin/solicitacoes';
     }
 
     return (
