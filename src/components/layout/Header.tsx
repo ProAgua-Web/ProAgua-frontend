@@ -5,6 +5,14 @@ export default function (props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
   collapsed?: Boolean;
 }) {
+
+  async function logout() {
+      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/logout`, {
+        credentials: 'include'
+      });
+      window.location.reload();
+  }
+
   return (
     <header>
       <div
@@ -32,6 +40,8 @@ export default function (props: {
             </a>
           </div>
         </div>
+
+        <button onClick={ logout } className="h-[clamp(50px,8vh,100px)] w-[clamp(50px,8vh,100px)] bg-primary-500 hover:bg-primary-600">Sair</button>
       </div>
     </header>
   );
