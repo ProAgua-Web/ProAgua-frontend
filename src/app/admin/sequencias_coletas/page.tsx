@@ -23,7 +23,7 @@ export default function Coletas() {
             .then(data => setSequencias(data))
             .catch(err => alert('Houve um erro durante consulta a API.'));
     }, [])
-    
+
     useEffect(() => {
         if (abortController) {
             abortController.abort();
@@ -41,7 +41,7 @@ export default function Coletas() {
             const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias?limit=10000`
             let query = toURLParams(_filters);
 
-            const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache" , 'credentials': 'include'});
+            const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache", 'credentials': 'include' });
 
             if (!res.ok) {
                 throw new Error('Network response was not ok');
@@ -67,11 +67,11 @@ export default function Coletas() {
             <h2 className="text-3xl text-[#525252]">Sequência de Coletas</h2>
             <div className="flex w-full flex-col items-center">
                 <div className="mb-4 flex w-full flex-col gap-4">
-                    <div className="relative flex">
-                        <i className="bi bi-search"></i>
+                    <div className="relative flex gap-2">
+                        {/* <i className="bi bi-search"></i> */}
                         <input
                             id="search-bar"
-                            className="w-full rounded-md border border-[#ABABAB] bg-white px-5 py-3 text-[#525252] disabled:bg-neutral-200"
+                            className="w-full rounded-md border bg-white px-5 py-3 text-[#525252]"
                             type="text"
                             name="search-query"
                             placeholder="Digite o termo de pesquisa"
@@ -80,13 +80,26 @@ export default function Coletas() {
                             }
                             }
                         />
+
+                        <select
+                            name="campus"
+                            className="w-36 rounded-md border bg-white px-3 py-2 text-[#525252]"
+                            onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
+                        >
+                            <option value="" disabled selected hidden>
+                                Campus
+                            </option>
+                            <option value="BOTH">Leste/Oeste</option>
+                            <option value="LE">Leste</option>
+                            <option value="OE">Oeste</option>
+                        </select>
                     </div>
                     <div className="w-full flex justify-between gap-3 self-end">
 
                         <div className="flex">
                             <div
                                 onClick={(e) => { setCheckConcluidas(!checkConcluidas); setFilters }}
-                                className={`flex flex-row justify-center items-center p-4 bg-white border border-r-0 border-[#ABABAB] rounded-lg rounded-r-none cursor-pointer ${checkConcluidas ? "text-green-500" : "text-gray-400 bg-slate-100"} hover:bg-slate-100`}>
+                                className={`flex flex-row justify-center items-center px-3 py-2 bg-white border border-r-0 rounded-lg rounded-r-none cursor-pointer ${checkConcluidas ? "text-green-500" : "text-gray-400 bg-slate-100"} hover:bg-slate-100`}>
                                 <label htmlFor="concluidas"
                                     className="w-full h-full cursor-pointer select-none"
                                 > Concluídas</label>
@@ -98,7 +111,7 @@ export default function Coletas() {
 
                             <div
                                 onClick={(e) => { setCheckPendentes(!checkPendentes); setFilters }}
-                                className={`flex flex-row justify-center items-center p-4 bg-white border border-[#ABABAB] rounded-lg rounded-l-none cursor-pointer ${checkPendentes ? "text-red-500" : "text-gray-400 bg-slate-100"} hover:bg-slate-100`}>
+                                className={`flex flex-row justify-center items-center px-3 py-2 bg-white border rounded-lg rounded-l-none cursor-pointer ${checkPendentes ? "text-red-500" : "text-gray-400 bg-slate-100"} hover:bg-slate-100`}>
                                 <label htmlFor="pendentes"
                                     className="cursor-pointer select-none"
                                 > Pendentes </label>
@@ -107,19 +120,6 @@ export default function Coletas() {
                             </div>
 
                         </div>
-
-                        <select
-                            name="campus"
-                            className="w-36 rounded-md border border-[#ABABAB] bg-white px-3 py-2 text-[#525252]"
-                            onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
-                        >
-                            <option value="" disabled selected hidden>
-                                Campus
-                            </option>
-                            <option value="BOTH">Leste/Oeste</option>
-                            <option value="LE">Leste</option>
-                            <option value="OE">Oeste</option>
-                        </select>
                     </div>
                 </div>
 
@@ -179,10 +179,10 @@ export default function Coletas() {
                 </div> */}
 
                 <a
-                    className="w-[320px] h-fit fixed bottom-4 left-1/2 transform -translate-x-1/2 mt-4 p-4 bg-primary-500 hover:bg-primary-600 text-white text-center rounded-lg shadow-lg"
                     href="sequencias_coletas/criar"
+                    className="w-[320px] h-fit fixed bottom-4 left-1/2 transform -translate-x-1/2 mt-4 p-4 flex justify-center items-center px-6 py-4 bg-green-500 hover:bg-green-600 border border-green-600 rounded text-white font-semibold"
                 >
-                    <i className="bi bi-plus-lg"></i> Adicionar sequência
+                    + Criar Sequência de Coleta
                 </a>
 
                 {/* <input
