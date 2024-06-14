@@ -25,6 +25,7 @@ export class APIConsumer<Tin, Tout> {
         if (query) {
             searchParams = new URLSearchParams(query).toString();
             searchParams = '?' + searchParams;
+            searchParams+= '&limit=10000';
         }
 
         const response = await fetch(this.baseUrl + searchParams, {

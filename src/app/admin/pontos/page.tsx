@@ -58,23 +58,32 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
 }
 
 export default function Pontos() {
-  const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" })
+  const [filters, setFilters] = useState<any>({ q: "", campus: "" })
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
   useEffect(() => {
-    consumerEdficacao.list()
-      .then(data => {
-        setEdificacoes(data)
-      })
-  }, [])
+    // TODO: fazer uso do consumer
+    // consumerEdficacao.list()
+    //   .then(data => {
+    //     setEdificacoes(data)
+    //   })
 
-  const filteredEdificacoes = edificacoes.filter((edificacao) => {
-    const matchesQuery = edificacao.codigo.includes(filters.q) || edificacao.nome.includes(filters.q);
-    const matchesCampus = filters.campus === "BOTH" || edificacao.campus === filters.campus;
-    return matchesQuery && matchesCampus;
-  });
+    const query = toURLParams(filters);
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?${query}`, { cache: "no-cache", credentials: 'include' })
+        .then(res => res.json())
+        .then(data => {
+          setEdificacoes(data.items); // Ensure data.items is an array or fallback to an empty array
+        })
+    }, [filters]);
+
+  // const filteredEdificacoes = edificacoes.filter((edificacao) => {
+  //   const matchesQuery = edificacao.codigo.includes(filters.q) || edificacao.nome.includes(filters.q);
+  //   const matchesCampus = filters.campus === "BOTH" || edificacao.campus === filters.campus;
+  //   return matchesQuery && matchesCampus;
+  // });
+  const filteredEdificacoes = edificacoes;
   const [checkBebedouro, setCheckBebedouro] = useState<boolean>(true);
   const [checkRPS, setCheckRPS] = useState<boolean>(true);
   const [checkRPI, setCheckRPI] = useState<boolean>(true);
@@ -114,7 +123,7 @@ export default function Pontos() {
         delete _filters.campus;
       }
 
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000`
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos`
       let query = toURLParams(_filters);
 
       // http://localhost:8000/api/v1/pontos/?tipo=1&tipo=3&limit=10000&offset=0
@@ -126,7 +135,7 @@ export default function Pontos() {
       if (checkCAERN) query = query.concat("&tipo=6");
 
       // TODO: fazer uso do consumer
-      const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache", credentials: 'include' });
+      const res = await fetch(`${url}?${query}`, { signal: newAbortController.signal, cache: "no-cache", credentials: 'include' });
 
       if (!res.ok) {
         throw new Error('Network response was not ok');
@@ -167,7 +176,7 @@ export default function Pontos() {
               <option value="" disabled selected hidden>
                 Campus
               </option>
-              <option value="BOTH">Leste/Oeste</option>
+              <option value="">Leste/Oeste</option>
               <option value="LE">Leste</option>
               <option value="OE">Oeste</option>
             </select>
