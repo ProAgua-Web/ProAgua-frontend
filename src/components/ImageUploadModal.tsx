@@ -87,6 +87,7 @@ export default function ImageUploadModal(props: {
             <div className="mt-4">
                 <button 
                     className="w-full px-4 py-2 rounded border border-green-600 bg-green-500 hover:bg-green-600 hover:border-green-700 text-white font-semibold"
+                    type="button"
                     onClick={() => {
                         const description = descriptionInputRef.current?.value || "";
                         props.submit(file, description);
