@@ -145,8 +145,8 @@ export default function Pontos() {
 
       <div className="flex w-full flex-col items-center">
         <div className="mb-4 flex w-full flex-col gap-4">
-          <div className="relative flex">
-            <i className="bi bi-search"></i>
+          <div className="relative flex space-between gap-2">
+            {/* <i className="bi bi-search"></i> */}
             <input
               id="search-bar"
               className="w-full rounded-md border bg-white px-5 py-3 text-[#525252]"
@@ -158,23 +158,23 @@ export default function Pontos() {
               }
               }
             />
+
+            <select
+              name="campus"
+              className="w-36 rounded-md border bg-white px-3 py-2 text-[#525252]"
+              onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
+            >
+              <option value="" disabled selected hidden>
+                Campus
+              </option>
+              <option value="BOTH">Leste/Oeste</option>
+              <option value="LE">Leste</option>
+              <option value="OE">Oeste</option>
+            </select>
           </div>
           <div className="w-full flex justify-between gap-3 self-end">
 
             <div className="flex gap-8">
-
-              <select
-                name="campus"
-                className="w-36 rounded-md border bg-white px-3 py-2 text-[#525252]"
-                onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
-              >
-                <option value="" disabled selected hidden>
-                  Campus
-                </option>
-                <option value="BOTH">Leste/Oeste</option>
-                <option value="LE">Leste</option>
-                <option value="OE">Oeste</option>
-              </select>
 
               <div className="flex flex-row justify-center items-center">
                 <label htmlFor="bebedouro" onClick={(e) => { setCheckBebedouro(!checkBebedouro); setFilters }}
