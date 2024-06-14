@@ -1,10 +1,10 @@
 'use client'
 
-import { Ponto, TIPOS_PONTOS } from "@/utils/types"
-import { useSequencia, useUsuarios, usePontosAmontante } from "@/utils/api_consumer/client_side_consumer";
+import { Coleta, Ponto, TIPOS_PONTOS } from "@/utils/types"
+import { useSequencia, useUsuarios, usePontosAmontante, consumerColeta } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useEffect, useState } from "react";
 
-export default function Page({ params }: {
+export default function CriarColeta({ params }: {
     params: {
         sequencia_id: number
     }
@@ -25,13 +25,11 @@ export default function Page({ params }: {
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
-
         setSubmiting(true);
 
         const formData = new FormData(event.currentTarget);
 
-        const data = {
+        const data: Coleta = {
             sequencia_id: sequencia_id,
             ponto_id: formData.get("ponto"),
             temperatura: formData.get("temperatura"),
@@ -44,14 +42,8 @@ export default function Page({ params }: {
             responsavel: formData.getAll("responsaveis"),
             ordem: formData.get("ordem"),
         };
-
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
+        
+        const response = await consumerColeta.post(data);
 
         if (response.status === 200) {
             alert("Coleta criada com sucesso!");
