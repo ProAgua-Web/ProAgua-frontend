@@ -44,7 +44,7 @@ export type Edificacao = {
     nome: string;
     campus: string;
     cronograma: number;
-    imagens: ImageOut[];
+    imagens: Image[];
     pontos_url: string;
 };
 
@@ -113,12 +113,20 @@ export type Solicitacao = {
     imagens: ImageOut[];
 }
 
+export type Image = {
+    id?: number,
+    file?: File | null,
+    description: string,
+    src?: string | null
+};
+
 export type ImageIn = {
     file: File,
     description: string
 };
 
 export type ImageOut = {
+    id: number,
     src: string,
     description: string
 };

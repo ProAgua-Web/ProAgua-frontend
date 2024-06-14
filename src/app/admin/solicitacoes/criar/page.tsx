@@ -2,7 +2,8 @@
 
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { useEdificacoes, useEdificacao, usePontos, usePonto, useSolicitacao, consumerSolicitacao } from "@/utils/api_consumer/client_side_consumer"
-import { TIPOS_PONTOS } from "@/utils/types";
+import { getCookie } from "@/utils/cookies";
+import { TIPOS_PONTOS, Image} from "@/utils/types";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function CriarSolicitacao() {
@@ -15,7 +16,7 @@ export default function CriarSolicitacao() {
     const filteredPontos = pontos.filter(ponto => ponto.edificacao.codigo === codEdificacao);
     const [tipoSolicitacao, setTipoSolicitacao] = useState<string>('-');
 
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState<Image[]>([]);
 
     const [submiting, setSubmiting] = useState(false);
 
@@ -57,20 +58,36 @@ export default function CriarSolicitacao() {
     }
 
     useEffect(() => {
-        if (edificacao) {
-            setImages(edificacao?.imagens);
+        if (edificacao?.imagens) {
+            setImages(edificacao.imagens);
         }
     }, [edificacao]);
 
 
-    async function uploadImage(id_solicitacao: string, image: Image) {
+    async function uploadImage(id: number, image: Image) {
+        // Set request headers
+        const headers: HeadersInit = {
+        };
+
+        // Try to get the csrftoken in the cookies
+        const csrfToken = getCookie("csrftoken");
+
+        if (csrfToken) {
+            headers["X-CSRFToken"] = csrfToken;
+        }
+
         let formData = new FormData();
-        formData.append("file", image.file);
         formData.append("description", image.description);
 
+        if (image.file) formData.append("file", image.file);
+        if (image.src) formData.append("src", image.src);
+
         let response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/${id_solicitacao}/imagem`, {
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/${id}/imagem`,
+            {
                 method: "POST",
+                headers: headers,
+                credentials: "include",
                 body: formData,
             },
         )
@@ -96,7 +113,7 @@ export default function CriarSolicitacao() {
         }
 
         const response = await consumerSolicitacao.post(data);
-
+   
         if (response.status != 200) {
             alert('Erro ao criar solicitação.');
             setSubmiting(false);
@@ -114,7 +131,7 @@ export default function CriarSolicitacao() {
         }));
 
         alert('Imagens criadas.');
-        window.location.href = '/admin/solicitacoes';
+        // window.location.href = '/admin/solicitacoes';
     }
 
     return (
