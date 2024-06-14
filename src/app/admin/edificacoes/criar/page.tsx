@@ -4,6 +4,7 @@ import React, { FormEvent, useEffect, useRef, useState } from "react";
 import ImageUploadModal from "@/components/ImageUploadModal";
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
+import { getCookie } from "@/utils/cookies";
 
 type Image = {
     file: File,
@@ -16,15 +17,28 @@ export default function CriarEdificacao() {
     const [images, setImages] = useState<Image[]>([]);
     
     // TODO: usar classe consumer para criação de imagens
-    async function uploadImage(codigo_edificacao: string, image: Image) {
-        let formData = new FormData();
-        formData.append("file", image.file);
-        formData.append("description", image.description);
+    async function uploadImage(codigo_edificacao: string, image: Image) {        
+        // Set request headers
+        const headers: HeadersInit =  {
+        };
 
+        // Try to get the csrftoken in the cookies
+        const csrfToken = getCookie("csrftoken");
+
+        if (csrfToken) {
+            headers["X-CSRFToken"] = csrfToken;
+        }
+        
+        let formData = new FormData();
+        formData.append("description", image.description);
+        formData.append("file", image.file);
+        
         let response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/${codigo_edificacao}/imagem`,
             {
                 method: "POST",
+                headers: headers,
+                credentials: "include",
                 body: formData,
             },
         )
