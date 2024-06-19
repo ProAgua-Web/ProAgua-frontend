@@ -22,12 +22,6 @@ export default function Pontos() {
         setFile(event.target.files?.[0]);
     };
 
-
-    function updateAmontante() {
-        const amontante = document.getElementById("amontante") as HTMLSelectElement;
-        setCurrentAmontante(amontante.value);
-    }
-
     function updateEdificacao() {
         const edificacao = document.getElementById("edificacao") as HTMLSelectElement;
         setCurrentEdificacao(edificacao.value);
