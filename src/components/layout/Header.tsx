@@ -1,7 +1,7 @@
 import ProAguaLogo from "/public/ProAguaLogo.svg";
 import Image from "next/image";
 
-export default function (props: {
+export default function Header(props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
   collapsed?: Boolean;
 }) {
