@@ -85,7 +85,7 @@ export default function Page({ params }: {
                             required
                         >
                             {sequencias.map((sequencia: Sequencia) => {
-                                return <option value={sequencia.id} >{sequencia.id} - Ciclo de Amostragem {sequencia.amostragem} - Ponto {TIPOS_PONTOS[sequencia.ponto?.tipo || 0]}</option>
+                                return <option value={sequencia.id} key={ sequencia.id } >{sequencia.id} - Ciclo de Amostragem {sequencia.amostragem} - Ponto {TIPOS_PONTOS[sequencia.ponto?.tipo || 0]}</option>
                             })}
                         </select>
 

@@ -19,7 +19,7 @@ export default function Solicitacoes() {
                 <ul>
 
                     {solicitacoes.length > 0 && solicitacoes.map(solicitacao => (
-                        <li className="flex justify-between p-2 items-center border-b border-neutral-300 last:border-b-0">
+                        <li key={solicitacao.id} className="flex justify-between p-2 items-center border-b border-neutral-300 last:border-b-0">
                             {solicitacao.id} - Solicitação {solicitacao.tipo} - {formatDate(solicitacao.data)} - {solicitacao.status}
                             <a className="px-4 py-2 rounded border border-blue-500 text-blue-500" href={"/admin/solicitacoes/" + solicitacao.id}>Acessar</a>
                         </li>

@@ -71,7 +71,7 @@ export default function CriarSequencia() {
                         }}
                     >
                         <option>-</option>
-                        {edificacoes.map(edificacao => <option value={edificacao.codigo}>{edificacao.codigo} - {edificacao.nome}</option>)}
+                        {edificacoes.map(edificacao => <option value={edificacao.codigo} key={edificacao.codigo}>{edificacao.codigo} - {edificacao.nome}</option>)}
 
                     </select >
 
@@ -106,7 +106,7 @@ export default function CriarSequencia() {
                         <option>-</option>
                         {edificacao && pontos && filteredPontos.map(ponto => {
                             return (
-                                <option value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} - {ponto.ambiente}</option>
+                                <option value={ponto.id} key={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} - {ponto.ambiente}</option>
                             )
                         })}
                     </select>

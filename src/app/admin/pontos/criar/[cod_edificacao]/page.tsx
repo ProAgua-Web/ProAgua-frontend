@@ -218,7 +218,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                                 <option value="" disabled>-</option>
                                 {pontosAssociados.map((ponto: Ponto) => {
                                     return (
-                                        <option className="" value={ponto.id}>
+                                        <option className="" value={ponto.id} key={ponto.id}>
                                             {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
                                             {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
                                             {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
@@ -243,7 +243,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                         <option value="">-</option>
                         {pontosAmontantes.map((ponto: Ponto) => {
                             return (
-                                <option className="" value={ponto.id}>
+                                <option className="" value={ponto.id} key={ponto.id}>
                                     {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
                                     {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
                                     {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}

@@ -89,7 +89,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                     disabled={!editable}
                                 >
                                     {edificacoes.map((edificacao: Edificacao) => {
-                                        return <option value={edificacao.codigo} >{edificacao.codigo} - {edificacao.nome}</option>
+                                        return <option value={edificacao.codigo} key={edificacao.codigo} >{edificacao.codigo} - {edificacao.nome}</option>
                                     })}
                                 </select >
 
@@ -204,7 +204,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                     <option value="">-</option>
                                     {pontosAmontantes.map((ponto: Ponto) => {
                                         return (
-                                            <option className="" value={ponto.id}>
+                                            <option className="" value={ponto.id} key={ponto.id}>
                                                 {TIPOS_PONTOS[ponto.tipo]}
                                                 {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
                                                 {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}

@@ -162,7 +162,7 @@ export default function CriarSolicitacao() {
                     >
                         <option value="-" disabled selected>-</option>
                         {edificacoes.map(edificacao => (
-                            <option value={edificacao.codigo}> {edificacao.codigo} - {edificacao.nome} </option>
+                            <option value={edificacao.codigo} key={edificacao.codigo}> {edificacao.codigo} - {edificacao.nome} </option>
                         ))}
                     </select>
                     <a className="flex justify-center" href={edificacao ? "/admin/edificacoes/" + codEdificacao : "#"} target={edificacao ? "_blank" : "_self"}>
@@ -184,7 +184,7 @@ export default function CriarSolicitacao() {
                     >
                         <option value="" disabled selected>-</option>
                         {filteredPontos.map(ponto => (
-                            <option value={ponto.id}> {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente} </option>
+                            <option value={ponto.id} key={ponto.id}> {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente} </option>
                         ))}
                     </select>
 
