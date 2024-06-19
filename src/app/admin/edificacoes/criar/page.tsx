@@ -74,7 +74,7 @@ export default function CriarEdificacao() {
         // If the creation was well succeded, then upload the images
         // and attach to the "edficação".
         await Promise.all(images.map((image) => {
-            return uploadImage(data.codigo, image);
+            return uploadImage(String(data.codigo), image);
         }));
         
         alert("Imagens criadas.");
