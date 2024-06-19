@@ -18,13 +18,14 @@ function ConfirmImageDeletionModal(props: {
                 <button
                     className="w-full px-4 py-2 rounded bg-neutral-500 hover:bg-neutral-600 border border-neutral-600 hover:boder-red-700 text-white font-semibold"
                     onClick={ props.close }
+                    type="button"
                 >
                     Cancelar
                 </button>
 
                 <button
                     className="w-full px-4 py-2 rounded bg-red-500 hover:bg-red-600 border border-red-600 hover:boder-red-700 text-white font-semibold"
-                    onClick={ props.close }
+                    type="button"
                 >
                     Confirmar
                 </button>
