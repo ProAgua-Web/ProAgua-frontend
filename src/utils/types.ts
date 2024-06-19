@@ -116,6 +116,14 @@ export type Usuario = {
     password: string;
 }
 
+export type SolicitacaoIn = {
+    ponto_id: number;
+    tipo: string;
+    objetivo: string | null;
+    justificativa: string | null;
+    status: string
+}
+
 export type Solicitacao = {
     id: number;
     ponto: Ponto;
