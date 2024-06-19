@@ -2,16 +2,14 @@
 
 import Header from "@/components/layout/Header";
 import CardPonto from "@/components/pontos/CardPontos";
-import TablePontos from "@/components/pontos/TabelaColetas";
-import { toURLParams, useEdificacoes, usePontos } from "@/utils/api_consumer/client_side_consumer";
-import { API_BASE_URL } from "@/utils/config"
+import { toURLParams, useEdificacoes } from "@/utils/api_consumer/client_side_consumer";
 import { Edificacao, Ponto } from "@/utils/types";
 import { useEffect, useState } from "react";
 
 function groupBy<Type>(arr: Type[], key: (el: Type) => any) {
     var groups = Object();
 
-    arr.forEach(element => {
+    arr.forEach((element: any) => {
         let groupName = key(element);
         let group = groups[groupName] || {
             edificacao: element.edificacao,
@@ -35,11 +33,16 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
             </div>
             <div className="p-4 flex gap-4 flex-wrap">
                 {group.pontos.map((item, i) => (
-                    <CardPonto ponto={item} key={"ponto-" + i} />
+                    <CardPonto ponto={item} key={"ponto-" + i} publicCard={false} />
                 ))}
             </div>
         </div>
     )
+}
+
+
+interface Groups {
+    [x: string]: {edificacao: Edificacao, pontos: Ponto[]}
 }
 
 
@@ -63,7 +66,8 @@ export default function Page() {
 
     const [abortController, setAbortController] = useState(new AbortController());
 
-    const groups = groupBy<Ponto>(pontos, (ponto: Ponto) => {
+    // {edificacao: Edificacao, pontos: Ponto[]}
+    const groups: Groups = groupBy<Ponto>(pontos, (ponto: Ponto) => {
         return ponto.edificacao.codigo;
     });
 
