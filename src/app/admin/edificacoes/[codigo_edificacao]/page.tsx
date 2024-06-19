@@ -2,17 +2,19 @@
 
 import { consumerEdficacao, useEdificacao } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useEffect, useState } from "react";
-import { Image } from "@/utils/types";
 import MultipleImageInput from "@/components/MultipleImageInput";
+import { ImageIn, ImageOut } from "@/utils/types";
 
 export default function VisualizarEdificacao({ params }: { params: { codigo_edificacao: string } }) {
     const edificacao = useEdificacao(params.codigo_edificacao);
-    const [images, setImages] = useState([]);
+    const [existingImages, setExistingImages] = useState<ImageOut[]>([]);
+    const [images, setImages] = useState<ImageIn[]>([]);
     const [editable, setEditable] = useState<Boolean>(false);
 
     useEffect(() => {
-        if (edificacao)
-            setImages(edificacao?.imagens);
+        if (edificacao?.imagens) {
+            setExistingImages(edificacao.imagens);
+        }
     }, [edificacao]);
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
@@ -96,7 +98,12 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
                 />
 
                 <label htmlFor="foto">Imagem:</label>
-                <MultipleImageInput images={images} setImages={setImages} disabled={!editable}/>
+                <MultipleImageInput
+                    images={images}
+                    setImages={setImages}
+                    existingImages={existingImages}
+                    disabled={!editable}
+                />
 
                 <input
                     id="editar"
