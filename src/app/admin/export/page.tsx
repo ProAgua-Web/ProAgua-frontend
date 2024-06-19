@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import TableColetas from "@/components/coletas/TabelaColetas";
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
+import { consumerColeta, consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
 
 function toURLParams(data: Object) {
     let params = [];
@@ -24,19 +25,11 @@ export default function Page() {
     const filteredPontos = filters.codigo_edificacao ? pontos.filter(ponto => ponto.edificacao.codigo == filters.codigo_edificacao) : pontos;
 
     useEffect(() => {
-        (async () => {
-            const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes`);
-            const edificacoes = await resp.json();
-            setEdificacoes(edificacoes.items);
-        })();
-    }, []);
-
-    useEffect(() => {
-        (async () => {
-            const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos`);
-            const pontos = await resp.json();
-            setPontos(pontos.items);
-        })();
+        consumerEdficacao.list()
+            .then(data => setEdificacoes(data));
+        
+        consumerPonto.list()
+            .then(data => setPontos(data));
     }, []);
 
     useEffect(() => {
