@@ -18,10 +18,28 @@ function toURLParams(data: Object) {
 }
 
 export default function Page() {
-    const [filters, setFilters] = useState<any>({ data_minima: '', data_maxima: '', temperatura_minima: '', temperatura_maxima: '', cloro_residual_livre_minimo: '', cloro_residual_livre_maximo: '', turbidez_minima: '', turbidez_maxima: '', cor_minima: '', cor_maxima: '', coliformes_totais: false, escherichia: false, codigo_edificacao: '', ponto_id: '' });
+    const [filters, setFilters] = useState<any>({
+        data_minima: '',
+        data_maxima: '',
+        temperatura_minima: '',
+        temperatura_maxima: '',
+        cloro_residual_livre_minimo: '',
+        cloro_residual_livre_maximo: '',
+        turbidez_minima: '',
+        turbidez_maxima: '',
+        cor_minima: '',
+        cor_maxima: '',
+        coliformes_totais: false,
+        escherichia: false,
+        codigo_edificacao: '',
+        ponto_id: ''
+    });
+
     const [coletas, setColetas] = useState<any[]>([]);
     const [edificacoes, setEdificacoes] = useState<any[]>([]);
     const [pontos, setPontos] = useState<any[]>([]);
+
+    // Filtrar pontos por edificação (no navegador)
     const filteredPontos = filters.codigo_edificacao ? pontos.filter(ponto => ponto.edificacao.codigo == filters.codigo_edificacao) : pontos;
 
     useEffect(() => {
@@ -34,61 +52,28 @@ export default function Page() {
 
     useEffect(() => {
         (async () => {
-            const _filters = { ...filters };
-            if (_filters.data_minima != '') {
-                _filters.data_minima = (new Date(_filters.data_minima)).toISOString().split('T')[0];
-            }
+            const q = {
+                data_minima: filters.data_minima ? (new Date(filters.data_minima)).toISOString().split('T')[0] : undefined,
+                data_maxima: filters.data_maxima ? (new Date(filters.data_maxima)).toISOString().split('T')[0] : undefined,
 
-            if (_filters.data_maxima != '') {
-                _filters.data_maxima = (new Date(_filters.data_maxima)).toISOString().split('T')[0];
-            }
+                temperatura_minima: filters.temperatura_minima ? parseFloat(filters.temperatura_minima) : undefined,
+                temperatura_maxima: filters.temperatura_maxima ? parseFloat(filters.temperatura_maxima) : undefined,
 
-            if (_filters.temperatura_minima != '') {
-                _filters.temperatura_minima = parseFloat(_filters.temperatura_minima);
-            }
+                cloro_residual_livre_minimo: filters.cloro_residual_livre_minimo ? parseFloat(filters.cloro_residual_livre_minimo) : undefined,
+                cloro_residual_livre_maximo: filters.cloro_residual_livre_maximo ? parseFloat(filters.cloro_residual_livre_maximo) : undefined,
 
-            if (_filters.temperatura_maxima != '') {
-                _filters.temperatura_maxima = parseFloat(_filters.temperatura_maxima);
-            }
+                turbidez_minima: filters.turbidez_minima ? parseFloat(filters.turbidez_minima) : undefined,
+                turbidez_maxima: filters.turbidez_maxima ? parseFloat(filters.turbidez_maxima) : undefined,
 
-            if (_filters.cloro_residual_livre_minimo != '') {
-                _filters.cloro_residual_livre_minimo = parseFloat(_filters.cloro_residual_livre_minimo);
-            }
+                cor_minima: filters.cor_minima ? parseFloat(filters.cor_minima) : undefined,
+                cor_maxima: filters.cor_maxima ? parseFloat(filters.cor_maxima) : undefined,
+                
+                escherichia: filters.escherichia !== 'both' ? filters.escherichia : undefined,
+                coliformes_totais: filters.coliformes_totais !== 'both' ? filters.coliformes_totais : undefined,
+            };
 
-            if (_filters.cloro_residual_livre_maximo != '') {
-                _filters.cloro_residual_livre_maximo = parseFloat(_filters.cloro_residual_livre_maximo);
-            }
-
-            if (_filters.turbidez_minima != '') {
-                _filters.turbidez_minima = parseFloat(_filters.turbidez_minima);
-            }
-
-            if (_filters.turbidez_maxima != '') {
-                _filters.turbidez_maxima = parseFloat(_filters.turbidez_maxima);
-            }
-
-            if (_filters.cor_minima != '') {
-                _filters.cor_minima = parseFloat(_filters.cor_minima);
-            }
-
-            if (_filters.cor_maxima != '') {
-                _filters.cor_maxima = parseFloat(_filters.cor_maxima);
-            }
-
-            if (_filters.escherichia === 'both') {
-                _filters.escherichia = null;
-            }
-
-            if (_filters.coliformes_totais === 'both') {
-                _filters.coliformes_totais = null;
-            }
-
-            const query = toURLParams(_filters);
-
-            // const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/coletas?` + query);
-            // const coletas = await resp.json();
-            // TODO: corrigir isso
-            const coletas = await consumerColeta.list();
+            console.log("Query:", q);
+            const coletas = await consumerColeta.list('no-cache', q);
             console.log("Coletas:", coletas);
             setColetas(coletas);
         })();

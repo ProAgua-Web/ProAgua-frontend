@@ -23,9 +23,11 @@ export class APIConsumer<Tin, Tout> {
         let searchParams = "";
         
         if (query) {
+            query["limit"] = 10000
+            // Remove undefined fields
+            Object.keys(query).forEach(key => query[key] === undefined && delete query[key])
             searchParams = new URLSearchParams(query).toString();
             searchParams = '?' + searchParams;
-            searchParams+= '&limit=10000';
         }
 
         const response = await fetch(this.baseUrl + searchParams, {
