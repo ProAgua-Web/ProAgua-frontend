@@ -146,7 +146,7 @@ export default function Pontos() {
       if (checkCAERN) query = query.concat("&tipo=6");
 
       // TODO: fazer uso do consumer
-      const res = await fetch(`${url}&${query}`, { cache: "no-cache", credentials: 'include' });
+      const res = await fetch(`${url}?${query}`, { cache: "no-cache", credentials: 'include' });
 
       if (!res.ok) {
         throw new Error('Network response was not ok');
