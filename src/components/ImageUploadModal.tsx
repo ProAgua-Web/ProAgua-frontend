@@ -4,7 +4,7 @@ import Modal from "./Modal";
 export default function ImageUploadModal(props: {
     visible: boolean,
     close: () => void,
-    submit: (image: File | string| null, description: string) => void
+    submit: (image: File | null, description: string) => void
 }) {
     const [file, setFile] = useState<File | null>(null);
     const descriptionInputRef = useRef<HTMLInputElement|null>(null);

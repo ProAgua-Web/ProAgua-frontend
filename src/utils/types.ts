@@ -44,7 +44,7 @@ export type Edificacao = {
     nome: string;
     campus: string;
     cronograma: number;
-    imagens: Image[];
+    imagens: ImageOut[];
     pontos_url: string;
 };
 
