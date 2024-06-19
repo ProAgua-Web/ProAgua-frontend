@@ -1,6 +1,6 @@
 'use client'
 
-import { Coleta, Ponto, TIPOS_PONTOS } from "@/utils/types"
+import { Coleta, ColetaIn, Ponto, TIPOS_PONTOS } from "@/utils/types"
 import { useSequencia, useUsuarios, usePontosAmontante, consumerColeta } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -29,18 +29,18 @@ export default function CriarColeta({ params }: {
 
         const formData = new FormData(event.currentTarget);
 
-        const data: Coleta = {
+        const data: ColetaIn = {
             sequencia_id: sequencia_id,
-            ponto_id: formData.get("ponto"),
-            temperatura: formData.get("temperatura"),
-            cloro_residual_livre: formData.get("cloro_residual_livre"),
-            turbidez: formData.get("turbidez"),
+            ponto_id: Number(formData.get("ponto")),
+            temperatura: Number(formData.get("temperatura")),
+            cloro_residual_livre: Number(formData.get("cloro_residual_livre")),
+            turbidez: Number(formData.get("turbidez")),
             coliformes_totais: formData.has("coliformes_totais"),
             escherichia: formData.has("escherichia"),
-            cor: formData.get("cor"),
+            cor: Number(formData.get("cor")),
             data: formData.get("data") + "T" + formData.get("hora"),
-            responsavel: formData.getAll("responsaveis"),
-            ordem: formData.get("ordem"),
+            responsavel: formData.getAll("responsaveis").map(e => Number(e)),
+            ordem: String(formData.get("ordem")),
         };
         
         const response = await consumerColeta.post(data);
