@@ -4,7 +4,7 @@ import { consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consume
 import { Edificacao, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
 import React, { FormEvent, useEffect, useState } from "react";
 
-export default function Pontos({ params }: { params: { cod_edificacao: string } }) {
+export default function CriarPonto({ params }: { params: { cod_edificacao: string } }) {
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
     const pontos = usePontos();
 
@@ -29,14 +29,19 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
 
         const formData = new FormData(event.currentTarget);
 
+        let amontante = formData.get("amontante");
+        
         const data: PontoIn = {
             codigo_edificacao: (formData.get("edificacao") as string),
             ambiente: (formData.get("ambiente") as string),
-            tombo: (formData.get("tombo") as string),
+            tombo: (formData.get("tombo") as string | null),
             tipo: Number(formData.get("tipo")),
-            amontante: (formData.get("amontante") as string),
+            amontante: (amontante ? Number(amontante) : null),
             associados: formData.getAll("associados").map(Number),
+            imagem: null,
         };
+
+        console.log("Ponto:", data);
 
         const response = await consumerPonto.post(data);
 
@@ -219,7 +224,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                         <option value="">-</option>
                         {pontosAmontantes.map((ponto: Ponto) => {
                             return (
-                                <option className="" value={ponto.id} key={ponto.id}>
+                                <option value={ponto.id} key={ponto.id}>
                                     {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
                                     {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
                                     {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}

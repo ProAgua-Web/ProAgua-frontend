@@ -24,11 +24,11 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         const formData = new FormData(event.currentTarget);
 
         const data: PontoIn = {
-            tombo: formData.get("tombo")?.toString(),
+            tombo: String(formData.get("tombo")),
             ambiente: String(formData.get("ambiente")),
             tipo: Number(formData.get("tipo")),
             codigo_edificacao: String(formData.get("edificacao")),
-            amontante: formData.get("amontante") == "" ? undefined : String(formData.get("amontante")),
+            amontante: formData.get("amontante") ? Number(formData.get("amontante")) : null,
             imagem: String(formData.get("imagem")),
             associados: (formData.getAll("associados") as unknown as number[]),
         }

@@ -1,12 +1,12 @@
 
 export type PontoIn = {
-    tombo?: string,
-    ambiente?: string,
-    tipo?: number,
+    ambiente: string | null,
+    tipo: number | null,
     codigo_edificacao?: string,
-    amontante?: string,
-    imagem?: string,
-    associados?: number[],
+    amontante: number | null,
+    tombo: string | null,
+    imagem: string | null,
+    associados: number[] | null,
 }
 
 export type Ponto = {
