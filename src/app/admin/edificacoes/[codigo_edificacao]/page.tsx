@@ -3,7 +3,7 @@
 import { consumerEdficacao, useEdificacao } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useEffect, useState } from "react";
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { ImageIn, ImageOut } from "@/utils/types";
+import { EdificacaoIn, ImageIn, ImageOut } from "@/utils/types";
 
 export default function VisualizarEdificacao({ params }: { params: { codigo_edificacao: string } }) {
     const edificacao = useEdificacao(params.codigo_edificacao);
@@ -20,10 +20,10 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const data = {
-            codigo: formData.get('codigo'),
-            nome: formData.get('nome'),
-            campus: formData.get('campus'),
+        const data: EdificacaoIn = {
+            codigo: String(formData.get('codigo')),
+            nome: String(formData.get('nome')),
+            campus: String(formData.get('campus')),
             cronograma: Number(formData.get('cronograma'))
         };
         const response = await consumerEdficacao.put(params.codigo_edificacao, data)

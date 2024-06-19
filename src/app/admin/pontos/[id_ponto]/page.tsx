@@ -3,7 +3,7 @@
 import { FormEvent, use, useEffect, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
-import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
+import { Edificacao, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
 import { consumerPonto, delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
 
 export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {
@@ -23,15 +23,16 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
 
-        const response = await consumerPonto.put(params.id_ponto, {
+        const data: PontoIn = {
             tombo: formData.get("tombo")?.toString(),
             ambiente: String(formData.get("ambiente")),
             tipo: Number(formData.get("tipo")),
             codigo_edificacao: String(formData.get("edificacao")),
-            amontante: formData.get("amontante") == "" ? null : String(formData.get("amontante")),
+            amontante: formData.get("amontante") == "" ? undefined : String(formData.get("amontante")),
             imagem: String(formData.get("imagem")),
-            associados: formData.getAll("associados"),
-        })
+            associados: (formData.getAll("associados") as unknown as number[]),
+        }
+        const response = await consumerPonto.put(params.id_ponto, data)
 
         if (response.ok) {
             alert("Ponto atualizado com sucesso!");

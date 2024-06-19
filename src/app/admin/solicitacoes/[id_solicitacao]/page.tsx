@@ -2,7 +2,7 @@
 
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { consumerSolicitacao, useEdificacao, useEdificacoes, usePontos, useSolicitacao, downloadSolictacao} from "@/utils/api_consumer/client_side_consumer";
-import { ImageIn, ImageOut } from "@/utils/types";
+import { ImageIn, ImageOut, SolicitacaoIn } from "@/utils/types";
 import { useEffect, useState } from "react";
 
 export default function Page({ params }: { params: { id_solicitacao: string } }) {
@@ -27,12 +27,12 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
 
         const formData = new FormData(event.currentTarget);
 
-        const data = {
-            ponto_id: formData.get('ponto'),
-            tipo: formData.get('tipo'),
-            objetivo: formData.get('objetivo'),
-            justificativa: formData.get('justificativa'),
-            status: formData.get('status'),
+        const data: SolicitacaoIn = {
+            ponto_id: Number(formData.get('ponto')),
+            tipo: (formData.get('tipo') as string),
+            objetivo: (formData.get('objetivo') as string | null),
+            justificativa: (formData.get('justificativa') as string | null),
+            status: (formData.get('status') as string),
         }
 
         const response = await consumerSolicitacao.put(id_solicitacao, data);

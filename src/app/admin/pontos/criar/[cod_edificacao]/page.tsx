@@ -1,7 +1,7 @@
 "use client"
 
 import { consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
-import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
+import { Edificacao, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
 import React, { FormEvent, useEffect, useState } from "react";
 
 export default function Pontos({ params }: { params: { cod_edificacao: string } }) {
@@ -29,12 +29,12 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
 
         const formData = new FormData(event.currentTarget);
 
-        const data = {
-            codigo_edificacao: formData.get("edificacao"),
-            ambiente: formData.get("ambiente"),
-            tombo: formData.get("tombo"),
+        const data: PontoIn = {
+            codigo_edificacao: (formData.get("edificacao") as string),
+            ambiente: (formData.get("ambiente") as string),
+            tombo: (formData.get("tombo") as string),
             tipo: Number(formData.get("tipo")),
-            amontante: Number(formData.get("amontante")),
+            amontante: (formData.get("amontante") as string),
             associados: formData.getAll("associados").map(Number),
         };
 

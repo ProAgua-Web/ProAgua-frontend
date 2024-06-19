@@ -1,6 +1,6 @@
 "use client";
 
-import { Coleta, Ponto, Sequencia, TIPOS_PONTOS } from "@/utils/types"
+import { Coleta, ColetaIn, Ponto, Sequencia, TIPOS_PONTOS } from "@/utils/types"
 import { consumerColeta, useColeta, usePontos, usePontosAmontante, useSequencias, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -38,7 +38,7 @@ export default function Page({ params }: {
 
         const formData = new FormData(event.currentTarget);
 
-        const data = {
+        const data: ColetaIn = {
             sequencia_id: Number(currentSequenciaId),
             ponto_id: Number(formData.get("ponto")),
             temperatura: Number(formData.get("temperatura")),
@@ -48,8 +48,8 @@ export default function Page({ params }: {
             escherichia: formData.has("escherichia"),
             cor: Number(formData.get("cor")),
             data: formData.get("data") + "T" + formData.get("hora"),
-            responsavel: formData.getAll("responsaveis"),
-            ordem: formData.get("ordem"),
+            responsavel: (formData.getAll("responsaveis") as unknown as number[]),
+            ordem: String(formData.get("ordem")),
         };
 
         const response = await consumerColeta.put(id_coleta.toString(), data);

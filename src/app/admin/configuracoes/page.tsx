@@ -17,15 +17,13 @@ export default function Configuracoes() {
         setSubmiting(true);
 
         const formData = new FormData(event.currentTarget);
-        const data = {
+        const data: ParametroReferencia = {
             min_temperatura: Number(formData.get("min_temperatura")),
             max_temperatura: Number(formData.get("max_temperatura")),
             min_cloro_residual_livre: Number(formData.get("min_cloro_residual_livre")),
             max_cloro_residual_livre: Number(formData.get("max_cloro_residual_livre")),
             min_turbidez: Number(formData.get("min_turbidez")),
             max_turbidez: Number(formData.get("max_turbidez")),
-            // min_cor: formData.get("min_cor"),
-            // max_cor: formData.get("max_cor"),
             coliformes_totais: false,
             escherichia: false,
         };

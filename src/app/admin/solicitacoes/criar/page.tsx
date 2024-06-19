@@ -3,7 +3,7 @@
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { useEdificacoes, useEdificacao, usePontos, usePonto, consumerSolicitacao } from "@/utils/api_consumer/client_side_consumer"
 import { getCookie } from "@/utils/cookies";
-import { ImageIn, TIPOS_PONTOS } from "@/utils/types";
+import { ImageIn, SolicitacaoIn, TIPOS_PONTOS } from "@/utils/types";
 import { useEffect, useState } from "react";
 
 export default function CriarSolicitacao() {
@@ -103,12 +103,12 @@ export default function CriarSolicitacao() {
 
         const formData = new FormData(event.currentTarget);
 
-        const data = {
+        const data: SolicitacaoIn = {
             ponto_id: idPonto,
             tipo: tipoSolicitacao,
-            objetivo: formData.get('objetivo'),
-            justificativa: formData.get('justificativa'),
-            status: formData.get('status')
+            objetivo: (formData.get('objetivo') as string | null),
+            justificativa: (formData.get('justificativa') as string | null),
+            status: (formData.get('status') as string)
         }
 
         const response = await consumerSolicitacao.post(data);

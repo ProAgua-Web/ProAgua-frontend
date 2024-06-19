@@ -5,6 +5,7 @@ import ImageUploadModal from "@/components/ImageUploadModal";
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
 import { getCookie } from "@/utils/cookies";
+import { EdificacaoIn } from "@/utils/types";
 
 type Image = {
     file: File,
@@ -54,11 +55,11 @@ export default function CriarEdificacao() {
         
         // Create "edificação" without image 
         const formData = new FormData(event.currentTarget);
-        const data = {
-            codigo: formData.get("codigo"),
-            nome: formData.get("nome"),
-            campus: formData.get("campus"),
-            cronograma: formData.get("cronograma"),
+        const data: EdificacaoIn = {
+            codigo: String(formData.get("codigo")),
+            nome: String(formData.get("nome")),
+            campus: String(formData.get("campus")),
+            cronograma: Number(formData.get("cronograma")),
         };
 
         const response = await consumerEdficacao.post(data);

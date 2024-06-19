@@ -1,6 +1,7 @@
 "use client"
 
 import { consumerUsuario, useUsuario } from "@/utils/api_consumer/client_side_consumer"
+import { Usuario, UsuarioIn } from "@/utils/types";
 import { FormEvent, useState } from "react";
 
 export default function Page({ params }: { params: { username: string } }) {
@@ -10,11 +11,12 @@ export default function Page({ params }: { params: { username: string } }) {
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const data = {
-            username: formData.get('username'),
-            first_name: formData.get('first_name'),
-            last_name: formData.get('last_name'),
-            email: formData.get('email'),
+        const data: UsuarioIn = {
+            username: String(formData.get('username')),
+            first_name: String(formData.get('first_name')),
+            last_name: String(formData.get('last_name')),
+            email: String(formData.get('email')),
+            password: ""
         };
         const response = await consumerUsuario.put(params.username, data);
 
