@@ -1,10 +1,10 @@
 'use client'
 
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { useEdificacoes, useEdificacao, usePontos, usePonto, useSolicitacao, consumerSolicitacao } from "@/utils/api_consumer/client_side_consumer"
+import { useEdificacoes, useEdificacao, usePontos, usePonto, consumerSolicitacao } from "@/utils/api_consumer/client_side_consumer"
 import { getCookie } from "@/utils/cookies";
-import { TIPOS_PONTOS, Image} from "@/utils/types";
-import { FormEvent, useEffect, useState } from "react";
+import { ImageIn, TIPOS_PONTOS } from "@/utils/types";
+import { useEffect, useState } from "react";
 
 export default function CriarSolicitacao() {
     const edificacoes = useEdificacoes();
@@ -16,7 +16,7 @@ export default function CriarSolicitacao() {
     const filteredPontos = pontos.filter(ponto => ponto.edificacao.codigo === codEdificacao);
     const [tipoSolicitacao, setTipoSolicitacao] = useState<string>('-');
 
-    const [images, setImages] = useState<Image[]>([]);
+    const [images, setImages] = useState<ImageIn[]>([]);
 
     const [submiting, setSubmiting] = useState(false);
 
@@ -59,12 +59,12 @@ export default function CriarSolicitacao() {
 
     useEffect(() => {
         if (edificacao?.imagens) {
-            setImages(edificacao.imagens);
+            // setImages(edificacao?.imagens);
         }
     }, [edificacao]);
 
 
-    async function uploadImage(id: number, image: Image) {
+    async function uploadImage(id_solicitacao: string, image: ImageIn) {
         // Set request headers
         const headers: HeadersInit = {
         };
@@ -80,10 +80,9 @@ export default function CriarSolicitacao() {
         formData.append("description", image.description);
 
         if (image.file) formData.append("file", image.file);
-        if (image.src) formData.append("src", image.src);
 
         let response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/${id}/imagem`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/${id_solicitacao}/imagem`,
             {
                 method: "POST",
                 headers: headers,
@@ -212,7 +211,7 @@ export default function CriarSolicitacao() {
                     className="w-full border border-neutral-300 rounded px-4 py-2" />
 
                 <label htmlFor="imagens">Imagens:</label>
-                <MultipleImageInput images={images} setImages={setImages} />
+                <MultipleImageInput images={images} setImages={setImages} disabled={false} />
 
                 <label htmlFor="status">Status: </label>
                 <select required

@@ -1,9 +1,8 @@
 "use client";
 
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { consumerSolicitacao, useEdificacao, useEdificacoes, usePonto, usePontos, useSolicitacao, downloadSolictacao} from "@/utils/api_consumer/client_side_consumer";
-import { API_BASE_URL } from "@/utils/config";
-import { Edificacao } from "@/utils/types";
+import { consumerSolicitacao, useEdificacao, useEdificacoes, usePontos, useSolicitacao, downloadSolictacao} from "@/utils/api_consumer/client_side_consumer";
+import { ImageIn, ImageOut } from "@/utils/types";
 import { useEffect, useState } from "react";
 
 export default function Page({ params }: { params: { id_solicitacao: string } }) {
@@ -16,7 +15,8 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
     const edificacao = useEdificacao(codEdificacao);
     const filteredPontos = pontos.filter(ponto => ponto.edificacao.codigo === edificacao?.codigo);
 
-    const [images, setImages] = useState([]);
+    const [existingImages, setExistingImages] = useState<ImageOut[]>([]);
+    const [images, setImages] = useState<ImageIn[]>([]);
 
     const [editable, setEditable] = useState(false);
     const [submiting, setSubmiting] = useState(false);
@@ -62,13 +62,13 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
         if (solicitacao) {
             setCodEdificacao(solicitacao.ponto.edificacao.codigo);
             setidPonto(solicitacao.ponto.id);
-            setImages(solicitacao.imagens);
+            setExistingImages(solicitacao.imagens);
         }
     }, [solicitacao]);
 
     useEffect(() => {
-        if (edificacao) {
-            setImages(edificacao?.imagens);
+        if (edificacao?.imagens) {
+            setExistingImages(edificacao?.imagens);
         }
     }, [edificacao]);
 
@@ -185,7 +185,12 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
                             </select>
 
                             <label>Imagens: </label>
-                            <MultipleImageInput images={images} setImages={setImages} />
+                            <MultipleImageInput 
+                                images={images}
+                                setImages={setImages}
+                                existingImages={existingImages}
+                                disabled={false}
+                            />
                             <input
                                 id="editar"
                                 type="submit"
