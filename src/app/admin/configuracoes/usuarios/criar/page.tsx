@@ -1,5 +1,7 @@
 "use client"
 
+import { consumerUsuario } from "@/utils/api_consumer/client_side_consumer";
+import { UsuarioIn } from "@/utils/types";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
@@ -13,12 +15,12 @@ export default function Page() {
 
         const formData = new FormData(event.currentTarget);
 
-        const data = {
-            username: formData.get("username"),
-            first_name: formData.get("first_name"),
-            last_name: formData.get("last_name"),
-            email: formData.get("email"),
-            password: formData.get("password"),
+        const data: UsuarioIn = {
+            username: String(formData.get("username")),
+            first_name: String(formData.get("first_name")),
+            last_name: String(formData.get("last_name")),
+            email: String(formData.get("email")),
+            password: String(formData.get("password")),
         };
 
         if (formData.get("password") !== formData.get("password_confirmation")) {
@@ -26,13 +28,7 @@ export default function Page() {
             return
         }
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/usuarios/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
+        const response = await consumerUsuario.post(data);
 
         if (response.status === 200) {
             alert("Usuário criado com sucesso!");
