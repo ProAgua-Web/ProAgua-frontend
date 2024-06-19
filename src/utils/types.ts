@@ -97,10 +97,8 @@ export type ParametroReferencia = {
     max_cloro_residual_livre: number;
     min_turbidez: number;
     max_turbidez: number;
-    min_cor: number;
-    max_cor: number;
-    coliformes_totais: boolean;
-    coliformes_fecais: boolean;
+    coliformes_totais: boolean
+    escherichia: boolean
 }
 
 export type Usuario = {
