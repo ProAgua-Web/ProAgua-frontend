@@ -2,12 +2,11 @@
 
 import { consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
-import { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 export default function Pontos({ params }: { params: { cod_edificacao: string } }) {
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
     const pontos = usePontos();
-    console.log(pontos);
 
     const [currentAmontante, setCurrentAmontante] = useState<string>('');
     const [currentEdificacao, setCurrentEdificacao] = useState<string>('');
@@ -19,20 +18,9 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
     const [preview, setPreview] = useState<string>();
     const [submiting, setSubmiting] = useState<boolean>(false);
 
-    function updateAmontante() {
-        const amontante = document.getElementById("amontante") as HTMLSelectElement;
-        setCurrentAmontante(amontante.value);
-    }
-
-    function updateEdificacao() {
-        const edificacao = document.getElementById("edificacao") as HTMLSelectElement;
-        setCurrentEdificacao(edificacao.value);
-    }
-
     const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFile(event.target.files?.[0]);
     };
-
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -110,9 +98,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
     return (
         <>
             <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar ponto de coleta</h1>
-
             <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
-
                 {
                     edificacoes.length > 0 && (
                         <>
@@ -124,12 +110,12 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                                     id="edificacao"
                                     name="edificacao"
                                     className="w-full rounded-lg border border-neutral-400 px-6 py-4"
-                                    onChange={updateEdificacao}
+                                    onChange={ e => setCurrentEdificacao(e.target.value) }
                                     defaultValue={params.cod_edificacao}
                                 >
                                     <option value="">-</option>
                                     {edificacoes.map((edificacao: Edificacao) => {
-                                        return <option value={edificacao.codigo} >{edificacao.codigo} - {edificacao.nome}</option>
+                                        return <option value={edificacao.codigo} key={edificacao.codigo} >{edificacao.codigo} - {edificacao.nome}</option>
                                     })}
                                 </select >
 
@@ -195,7 +181,6 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                     )
                 }
 
-
                 {
                     currentTipo != "1" && (
                         <>
@@ -229,7 +214,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
                         id="amontante"
                         name="amontante"
                         className="w-full rounded-lg border border-neutral-400 px-6 py-4"
-                        onChange={updateAmontante}
+                        onChange={ (e) => setCurrentAmontante(e.target.value) }
                     >
                         <option value="">-</option>
                         {pontosAmontantes.map((ponto: Ponto) => {
