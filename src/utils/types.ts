@@ -101,6 +101,14 @@ export type ParametroReferencia = {
     escherichia: boolean
 }
 
+export type UsuarioIn = {
+    username: string;
+    first_name: string;
+    last_name: string;
+    password: string;
+    email: string;
+};
+
 export type Usuario = {
     id: number;
     is_superuser: boolean;
