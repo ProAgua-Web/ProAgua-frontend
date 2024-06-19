@@ -1,10 +1,18 @@
+'use client'
+
 import Filters from "@/components/sequencias/Filters";
 import { Edificacao } from "@/utils/types";
-import { getEdificacoes } from "@/utils/api_consumer/server_side_consumer";
+import { consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
+import { useEffect, useState } from "react";
 
-export default async function Edificacoes() {
-  const edificacoes = await getEdificacoes();
-  
+export default function Edificacoes() {
+  const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
+
+  useEffect(() => {
+    consumerEdficacao.list()
+      .then(data => setEdificacoes(data));
+  }, []);
+
   return (
     <>
       <Filters />
