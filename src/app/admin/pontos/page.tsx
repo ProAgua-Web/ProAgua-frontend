@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import AbortController from 'abort-controller';
 
 
-function groupBy<Type>(arr: Type[], key: (el: Type) => any) {
+function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
   var groups = Object();
 
   arr.forEach(element => {
@@ -26,7 +26,8 @@ function groupBy<Type>(arr: Type[], key: (el: Type) => any) {
   return groups;
 }
 
-function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[], collapsed?: boolean } }) {
+function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[]}, collapsed: boolean }) {
+
   const { group } = props;
   const [collapsed, setCollapsed] = useState<boolean>(props.collapsed);
 
@@ -43,7 +44,7 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
           {group.edificacao.codigo} - {group.edificacao.nome}
         </button>
         <a href={`/admin/edificacoes/${group.edificacao.codigo}`} className="hover:text-primary-600">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
           </svg></a>
       </div>
@@ -55,6 +56,16 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
       </div>
     </div>
   )
+}
+
+type GroupPonto = {
+  edificacao: Edificacao,
+  pontos: Ponto[]
+};
+
+
+interface Groups {
+  [x: string]: {edificacao: Edificacao, pontos: Ponto[]}
 }
 
 export default function Pontos() {
@@ -96,7 +107,7 @@ export default function Pontos() {
 
   const [abortController, setAbortController] = useState(new AbortController());
 
-  const groups = groupBy<Ponto>(pontos, (ponto: Ponto) => {
+  const groups: Groups = groupBy(pontos, (ponto: Ponto) => {
     return ponto.edificacao.codigo;
   });
 
@@ -135,7 +146,7 @@ export default function Pontos() {
       if (checkCAERN) query = query.concat("&tipo=6");
 
       // TODO: fazer uso do consumer
-      const res = await fetch(`${url}?${query}`, { signal: newAbortController.signal, cache: "no-cache", credentials: 'include' });
+      const res = await fetch(`${url}&${query}`, { cache: "no-cache", credentials: 'include' });
 
       if (!res.ok) {
         throw new Error('Network response was not ok');
