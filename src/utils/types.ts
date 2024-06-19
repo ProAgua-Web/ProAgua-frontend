@@ -76,6 +76,20 @@ export type Coleta = {
     ponto_url: string;
 };
 
+export type ColetaIn = {
+    ponto_id: number;
+    temperatura: number;
+    cloro_residual_livre: number;
+    turbidez: number;
+    coliformes_totais: boolean;
+    escherichia: boolean;
+    cor: number;
+    data: string;
+    ordem: string;
+    responsavel: number[];
+    sequencia_id: number;
+};
+
 export type ParametroReferencia = {
     min_temperatura: number;
     max_temperatura: number;
