@@ -85,8 +85,11 @@ export default function Page() {
 
             const query = toURLParams(_filters);
 
-            const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/coletas?` + query);
-            const coletas = await resp.json();
+            // const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/coletas?` + query);
+            // const coletas = await resp.json();
+            // TODO: corrigir isso
+            const coletas = await consumerColeta.list();
+            console.log("Coletas:", coletas);
             setColetas(coletas);
         })();
     }, [filters]);
@@ -134,8 +137,11 @@ export default function Page() {
             _filters.cor_maxima = parseFloat(_filters.cor_maxima);
         }
 
+        // TODO: corrigir esses filtros aqui
         const query = toURLParams(_filters);
-        const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/excel?" + query);
+        const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/excel?" + query, {
+            'credentials': 'include'
+        });
         const blob = await resp.blob();
 
         var file = window.URL.createObjectURL(blob);
@@ -183,9 +189,7 @@ export default function Page() {
                                 onChange={e => setFilters({ ...filters, ponto_id: e.target.value })}>
                                 <option value="">-</option>
 
-                                {filteredPontos && filteredPontos.map((ponto: Ponto) => (
-                                    <option key={ponto.id} value={ponto.id}>{TIPOS_PONTOS[ponto.tipo]} {ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""} {ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}</option>
-                                ))}
+                                {filteredPontos && filteredPontos.map((ponto: Ponto) => <option key={ponto.id} value={ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]} {ponto.ambiente && '- ' + ponto.ambiente} {ponto.tombo && '- ' + ponto.tombo}</option>)}
                             </select>
                         </div>
 
