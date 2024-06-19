@@ -1,6 +1,6 @@
 "use client"
 
-import { usePontos } from "@/utils/api_consumer/client_side_consumer";
+import { consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -50,14 +50,7 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
             associados: formData.getAll("associados").map(Number),
         };
 
-
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/pontos/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
+        const response = await consumerPonto.post(data);
 
         if (response.status === 200) {
             const responseData = await response.json();
@@ -109,10 +102,8 @@ export default function Pontos({ params }: { params: { cod_edificacao: string } 
     }, [file]);
 
     useEffect(() => {
-        (async () => {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/edificacoes?limit=10000");
-            setEdificacoes((await response.json()).items);
-        })();
+        consumerEdficacao.list('no-cache', {limit: 10000})
+            .then(data => setEdificacoes(data));
     }, []);
 
 
