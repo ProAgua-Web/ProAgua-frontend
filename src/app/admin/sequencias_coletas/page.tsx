@@ -140,9 +140,11 @@ export default function Coletas() {
                         </thead>
                         <tbody>
                             {filteredSequencias.map((sequencia: Sequencia, i) => {
+                                const tipo = sequencia.ponto && TIPOS_PONTOS[sequencia.ponto?.tipo];
                                 return (
                                     <tr
                                         title={sequencia.status ? "Concluída" : sequencia.status_message}
+                                        key={sequencia.id}
                                         className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
                                         onClick={() => {
                                             window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
@@ -151,7 +153,7 @@ export default function Coletas() {
                                         <td className="text-sm px-2 py-3">{sequencia.amostragem}</td>
                                         <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.codigo}</td>
                                         <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.campus == "OE" ? "Oeste" : "Leste"}</td>
-                                        <td className="text-sm px-2 py-3">{TIPOS_PONTOS[sequencia.ponto?.tipo]}</td>
+                                        <td className="text-sm px-2 py-3">{tipo}</td>
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
                                         <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
