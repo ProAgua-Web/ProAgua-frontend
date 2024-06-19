@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Coleta, Edificacao, ParametroReferencia, Ponto, PontoIn, Sequencia, SequenciaIn, Solicitacao, Usuario } from "@/utils/types";
+import { Coleta, ColetaIn, Edificacao, EdificacaoIn, ParametroReferencia, Ponto, PontoIn, Sequencia, SequenciaIn, Solicitacao, SolicitacaoIn, Usuario, UsuarioIn } from "@/utils/types";
 import { getCookie } from "../cookies";
 
 export class APIConsumer<Tin, Tout> {
@@ -108,12 +108,12 @@ export class APIConsumer<Tin, Tout> {
     }
 }
 
-export const consumerEdficacao = new APIConsumer<Edificacao, Edificacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/`);
+export const consumerEdficacao = new APIConsumer<EdificacaoIn, Edificacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/`);
 export const consumerPonto = new APIConsumer<PontoIn, Ponto>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos/`);
-export const consumerColeta = new APIConsumer<Coleta, Coleta>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/coletas/`);
-export const consumerSolicitacao = new APIConsumer<Solicitacao, Solicitacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/`);
+export const consumerColeta = new APIConsumer<ColetaIn, Coleta>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/coletas/`);
+export const consumerSolicitacao = new APIConsumer<SolicitacaoIn, Solicitacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/`);
 export const consumerSequencia = new APIConsumer<SequenciaIn, Sequencia>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias/`);
-export const consumerUsuario = new APIConsumer<Usuario, Usuario>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/`);
+export const consumerUsuario = new APIConsumer<UsuarioIn, Usuario>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/`);
 export const consumerParametrosReferencia = new APIConsumer<ParametroReferencia, ParametroReferencia>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/parametros_referencia/`);
 
 
