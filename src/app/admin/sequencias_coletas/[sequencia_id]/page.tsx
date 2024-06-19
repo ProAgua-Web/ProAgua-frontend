@@ -2,7 +2,6 @@
 
 import TableColetas from "@/components/coletas/TabelaColetas";
 import { type Sequencia, type Coleta, TIPOS_PONTOS } from "@/utils/types";
-import { API_BASE_URL } from "@/utils/config";
 import { useColetaBySequencia, useSequencia } from "@/utils/api_consumer/client_side_consumer";
 
 function groupColetas(coletas: Coleta[]) {
@@ -38,7 +37,6 @@ export default function Sequencia({ params }: { params: { sequencia_id: number }
     // suas coletas serão identicas
 
     const { sequencia_id } = params;
-
     const sequencia: Sequencia | null = useSequencia(sequencia_id);
     const coletas: Coleta[] = useColetaBySequencia(sequencia_id);
     const groups: Coleta[][] = groupColetas(coletas);
@@ -59,7 +57,7 @@ export default function Sequencia({ params }: { params: { sequencia_id: number }
                     </div>
                     <div className="flex justify-between p-4 py-2">
                         <a href={`/admin/edificacoes/${sequencia?.ponto?.edificacao.codigo}`} className="hover:text-primary-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                             </svg></a>
                     </div>
@@ -73,7 +71,7 @@ export default function Sequencia({ params }: { params: { sequencia_id: number }
                         const ponto = group[0].ponto;
 
                         return (
-                            <div className="mb-4">
+                            <div className="mb-4" key={ponto.id}>
                                 <div className="w-full p-4 flex border border-b-0 border-slate-400 bg-primary-500 text-white font-semibold">
                                     <div className="w-full">
                                         <p>Ponto: {TIPOS_PONTOS[ponto.tipo]}</p>
@@ -83,7 +81,7 @@ export default function Sequencia({ params }: { params: { sequencia_id: number }
                                         )}
                                     </div>
                                     <a href={`/admin/pontos/${ponto.id}`} className="hover:text-primary-800">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                         </svg>
                                     </a>
