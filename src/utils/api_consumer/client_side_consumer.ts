@@ -41,17 +41,18 @@ export class APIConsumer<Tin, Tout> {
         return data;
     }
 
-    async post(data: Tin) {
-        // Set request headers
-        const headers: HeadersInit =  {
-            "Content-Type": "application/json",
-        };
-
+    async post(data: Tin, headers = new Headers({"Content-Type": "application/json"})) {
         // Try to get the csrftoken in the cookies
         const csrfToken = getCookie("csrftoken");
 
         if (csrfToken) {
-            headers["X-CSRFToken"] = csrfToken;
+            headers.set("X-CSRFToken", csrfToken);
+        }
+
+        let body: any = data;
+        
+        if (headers.get("Content-Type") === "application/json") {
+            body = JSON.stringify(data);
         }
 
         // Send request
@@ -59,7 +60,7 @@ export class APIConsumer<Tin, Tout> {
             method: "POST",
             headers: headers,
             credentials: "include",
-            body: JSON.stringify(data)
+            body: body
         })
 
         return response;
