@@ -1,6 +1,6 @@
 "use client";
 
-import { consumerEdficacao, useEdificacao } from "@/utils/api_consumer/client_side_consumer";
+import { APIConsumer, apiUrl, consumerEdficacao, useEdificacao } from "@/utils/api_consumer/client_side_consumer";
 import { FormEvent, useEffect, useState } from "react";
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { EdificacaoIn, ImageIn, ImageOut } from "@/utils/types";
@@ -35,6 +35,22 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
             alert("Erro ao atualizar edificação!");
         }
 
+        if (images.length > 0) {
+            await Promise.all(images.map(image => uploadImage(image)));
+        }
+    }
+
+    async function uploadImage(image: ImageIn) {
+        let formData = new FormData();
+        formData.append("description", image.description);
+        formData.append("file", image.file);
+        
+        const consumer = new APIConsumer(`${apiUrl}/api/v1/edificacoes/${edificacao?.codigo}/imagem`);
+        const response = await consumer.post(formData, new Headers());
+       
+        if (!response.ok) {
+            throw `Erro ao adicionar imagem ${image.file.name}`;
+        }
     }
 
     async function deleteEdificacao() {
