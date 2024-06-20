@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Coleta, ColetaIn, Edificacao, EdificacaoIn, ParametroReferencia, Ponto, PontoIn, Sequencia, SequenciaIn, Solicitacao, SolicitacaoIn, Usuario, UsuarioIn } from "@/utils/types";
 import { getCookie } from "../cookies";
 
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export class APIConsumer<Tin, Tout> {
     baseUrl: string;
 
@@ -110,13 +112,13 @@ export class APIConsumer<Tin, Tout> {
     }
 }
 
-export const consumerEdficacao = new APIConsumer<EdificacaoIn, Edificacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/`);
-export const consumerPonto = new APIConsumer<PontoIn, Ponto>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos/`);
-export const consumerColeta = new APIConsumer<ColetaIn, Coleta>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/coletas/`);
-export const consumerSolicitacao = new APIConsumer<SolicitacaoIn, Solicitacao>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/`);
-export const consumerSequencia = new APIConsumer<SequenciaIn, Sequencia>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias/`);
-export const consumerUsuario = new APIConsumer<UsuarioIn, Usuario>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/usuarios/`);
-export const consumerParametrosReferencia = new APIConsumer<ParametroReferencia, ParametroReferencia>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/parametros_referencia/`);
+export const consumerEdficacao = new APIConsumer<EdificacaoIn, Edificacao>(`${apiUrl}/api/v1/edificacoes/`);
+export const consumerPonto = new APIConsumer<PontoIn, Ponto>(`${apiUrl}/api/v1/pontos/`);
+export const consumerColeta = new APIConsumer<ColetaIn, Coleta>(`${apiUrl}/api/v1/coletas/`);
+export const consumerSolicitacao = new APIConsumer<SolicitacaoIn, Solicitacao>(`${apiUrl}/api/v1/solicitacoes/`);
+export const consumerSequencia = new APIConsumer<SequenciaIn, Sequencia>(`${apiUrl}/api/v1/sequencias/`);
+export const consumerUsuario = new APIConsumer<UsuarioIn, Usuario>(`${apiUrl}/api/v1/usuarios/`);
+export const consumerParametrosReferencia = new APIConsumer<ParametroReferencia, ParametroReferencia>(`${apiUrl}/api/v1/parametros_referencia/`);
 
 
 export function toURLParams(data: Object) {
