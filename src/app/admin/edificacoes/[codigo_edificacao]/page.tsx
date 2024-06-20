@@ -17,6 +17,25 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
         }
     }, [edificacao]);
 
+    async function removeExistingImage(url: string) {
+        const image = existingImages.find((e) => apiUrl + e.src === url);
+
+        if (!image) {
+            throw "Não foi possível excluir a imagem";
+        }
+
+        // Send request to delete image
+        const consumer = new APIConsumer(`${apiUrl}/api/v1/edificacoes/${edificacao?.codigo}/imagem/`);
+        const response = await consumer.delete(String(image?.id));
+
+        if (!response.ok) {
+            throw "Não foi possível excluir a imagem";
+        }
+
+        // Remove image from array
+        setExistingImages(existingImages.filter(image => apiUrl + image.src != url));
+    }
+
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -118,6 +137,7 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
                     images={images}
                     setImages={setImages}
                     existingImages={existingImages}
+                    removeExistingImage={removeExistingImage}
                     disabled={!editable}
                 />
 
