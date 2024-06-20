@@ -76,7 +76,6 @@ function ImageSlot(props: {
 type MultipleImageInputProps = {   
     existingImages?: ImageOut[];
     removeExistingImage?: (url: string) => void;
-    updateExistingImage?: (url: string, description: string) => void;
     images: ImageIn[];
     setImages: (image: ImageIn[]) => void;
     disabled?: boolean;
@@ -84,8 +83,7 @@ type MultipleImageInputProps = {
 
 export default function MultipleImageInput({
     existingImages=[],
-    removeExistingImage = (url: string) => {console.log("Deleting " + url)},
-    updateExistingImage = () => {},
+    removeExistingImage = (url: string) => {},
     images,
     setImages,
     disabled=false
@@ -106,14 +104,13 @@ export default function MultipleImageInput({
     };
 
     const removeImage = (index: number) => {
-
         setImages(images.splice(index, 1));
     };
 
     let imageSlots = existingImages.map(image => {
         const imageUrl = process.env.NEXT_PUBLIC_API_URL + image.src;
 
-        return <ImageSlot 
+        return <ImageSlot
             key={ imageUrl }
             imageUrl={ imageUrl }
             imageDescription={ image.description }
