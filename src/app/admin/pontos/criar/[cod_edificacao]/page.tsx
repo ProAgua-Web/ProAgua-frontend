@@ -1,7 +1,8 @@
 "use client"
 
-import { consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
-import { Edificacao, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
+import MultipleImageInput from "@/components/MultipleImageInput";
+import { APIConsumer, apiUrl, consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
+import { Edificacao, ImageIn, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
 import React, { FormEvent, useEffect, useState } from "react";
 
 export default function CriarPonto({ params }: { params: { cod_edificacao: string } }) {
@@ -13,14 +14,21 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
     const [currentTipo, setCurrentTipo] = useState<string>('1');
     const pontosAmontantes = pontos.filter(ponto => ponto.tipo > Number(currentTipo));
     const pontosAssociados = pontos.filter(ponto => ponto.tipo == Number(currentTipo));
-
-    const [file, setFile] = useState<File | null>();
-    const [preview, setPreview] = useState<string>();
+    const [images, setImages] = useState<ImageIn[]>([]);
     const [submiting, setSubmiting] = useState<boolean>(false);
 
-    const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFile(event.target.files?.[0]);
-    };
+    async function uploadImage(id_ponto: string, image: ImageIn) {
+        let formData = new FormData();
+        formData.append("description", image.description);
+        formData.append("file", image.file);
+        
+        const consumer = new APIConsumer(`${apiUrl}/api/v1/pontos/${id_ponto}/imagem`,);
+        const response = await consumer.post(formData, new Headers());
+       
+        if (!response.ok) {
+            throw `Erro ao adicionar imagem ${image.file.name}`;
+        }
+    }
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -49,50 +57,18 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
             const responseData = await response.json();
             const id = responseData.id;
 
-            if (file != undefined && file != null) {
-                let formData = new FormData();
-                formData.append("imagem", file);
-                await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos/${id}/imagem`,
-                    {
-                        method: "POST",
-                        body: formData,
-                    },
-                ).then((response) => {
-                    if (!response.ok) {
-                        alert("Erro ao adicionar imagem");
-                    } else {
-                        alert("Ponto de coleta criado com sucesso!");
-                        window.location.href = "/admin/pontos";
-                    }
-
-                })
-                    .catch((err) => {
-                        alert(err);
-                    });
-            } else {
-                alert("Ponto de coleta criado com sucesso!");
-                window.location.href = "/admin/pontos";
+            if (images.length > 0) {
+                await Promise.all(images.map((image) => uploadImage(id, image)));
             }
+
+            alert("Ponto de coleta criado com sucesso!");
+            window.location.href = "/admin/pontos";
         } else {
-            alert("Erro ao criar ponto de coleta");
+            throw "Erro ao criar ponto de coleta";
         }
 
         setSubmiting(false);
     };
-
-    // Carregar imagem de preview
-    useEffect(() => {
-        if (!file) {
-            setPreview(undefined);
-            return;
-        }
-
-        const fileURL = URL.createObjectURL(file);
-        setPreview(fileURL);
-
-        return () => URL.revokeObjectURL(fileURL);
-    }, [file]);
 
     useEffect(() => {
         consumerEdficacao.list('no-cache', {limit: 10000})
@@ -146,8 +122,6 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                     )
 
                 }
-
-
 
                 <label htmlFor="">Ambiente:</label>
                 <input
@@ -255,16 +229,10 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                     Foto:
                 </label>
 
-                {preview && (
-                    <img
-                        id="imagePreview"
-                        alt="Imagem Preview"
-                        src={preview}
-                        className="mb-4 max-h-48 w-full rounded-lg border border-neutral-300 bg-neutral-200 object-cover"
-                    />
-                )}
-
-                <input type="file" id="foto" name="foto" onChange={selectImage} />
+                <MultipleImageInput
+                    images={images}
+                    setImages={setImages}
+                />
 
                 <div className="w-full">
                     <input id="criar" type="submit" className={"w-full rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500 text-white font-semibold"} value={`${submiting ? "Criando..." : "Criar"}`} disabled={submiting} />

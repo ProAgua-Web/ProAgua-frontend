@@ -3,8 +3,9 @@
 import { FormEvent, use, useEffect, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
-import { Edificacao, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
-import { consumerPonto, delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
+import { Edificacao, ImageIn, ImageOut, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
+import { APIConsumer, apiUrl, consumerPonto, delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
+import MultipleImageInput from "@/components/MultipleImageInput";
 
 export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {
     const edificacoes = useEdificacoes();
@@ -16,8 +17,29 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     const [currentTipo, setCurrentTipo] = useState<string>(ponto?.tipo.toString() || '1');
     const pontosAmontantes = pontos.filter(p => p.tipo > Number(currentTipo));
     const pontosAssociados = pontos.filter(p => p.tipo == Number(currentTipo) && p.id != parseInt(params.id_ponto));
-
+    
+    const [existingImages, setExistingImages] = useState<ImageOut[]>([])
+    const [images, setImages] = useState<ImageIn[]>([])
     const [editable, setEditable] = useState<boolean>(false);
+    
+    async function removeExistingImage(url: string) {
+        const image = existingImages.find((e) => apiUrl + e.src === url);
+
+        if (!image) {
+            throw "Não foi possível excluir a imagem";
+        }
+
+        // Send request to delete image
+        const consumer = new APIConsumer(`${apiUrl}/api/v1/pontos/${ponto?.id}/imagem/`);
+        const response = await consumer.delete(String(image?.id));
+
+        if (!response.ok) {
+            throw "Não foi possível excluir a imagem";
+        }
+
+        // Remove image from array
+        setExistingImages(existingImages.filter(image => apiUrl + image.src != url));
+    }
 
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -33,15 +55,32 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
             associados: (formData.getAll("associados") as unknown as number[]),
         }
         const response = await consumerPonto.put(params.id_ponto, data)
-
+        
+        if (images.length > 0) {
+            await Promise.all(images.map(uploadImage));
+        }
+        
         if (response.ok) {
             alert("Ponto atualizado com sucesso!");
             window.location.href = "/admin/pontos";
         }
         else {
-            alert("Erro ao atualizar ponto!");
+            throw "Erro ao atualizar ponto!";
         }
 
+    }
+
+    async function uploadImage(image: ImageIn) {
+        let formData = new FormData();
+        formData.append("description", image.description);
+        formData.append("file", image.file);
+        
+        const consumer = new APIConsumer(`${apiUrl}/api/v1/pontos/${ponto?.id}/imagem`);
+        const response = await consumer.post(formData, new Headers());
+       
+        if (!response.ok) {
+            throw `Erro ao adicionar imagem ${image.file.name}`;
+        }
     }
 
     async function deletePonto() {
@@ -54,6 +93,12 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     useEffect(() => {
         setCurrentTipo(ponto?.tipo.toString() || '1');
     }, [ponto, editable]);
+
+    useEffect(() => {
+        if (ponto?.imagens) {
+            setExistingImages(ponto.imagens);
+        }
+    }, [ponto]);
 
     return (
         <>
@@ -227,16 +272,13 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 }
 
                 <label htmlFor="foto">Imagem:</label>
-                {ponto?.imagem
-                    ? <img
-                        id="imagePreview"
-                        alt="Imagem Preview"
-                        src={`${process.env.NEXT_PUBLIC_API_URL}/${ponto?.imagem}`}
-                        className="mb-4 max-h-48 w-full rounded-lg border border-neutral-300 bg-neutral-200 object-cover"
-                    />
-                    : <span className="text-neutral-500 text-sm">Sem imagem</span>
-                }
-
+                <MultipleImageInput 
+                    images={images}
+                    setImages={setImages}
+                    existingImages={existingImages}
+                    removeExistingImage={removeExistingImage}
+                    disabled={!editable}
+                />
 
                 <label>QR code:</label>
                 <QRCode data={process.env.NEXT_PUBLIC_BASE_URL + "/pontos/" + params.id_ponto} width={150} />

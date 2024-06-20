@@ -20,7 +20,7 @@ export type Ponto = {
     status_message: string;
     amontante?: Ponto;
     associados: number[];
-    imagem?: string;
+    imagens: ImageOut[];
 };
 
 export type SequenciaIn = {
