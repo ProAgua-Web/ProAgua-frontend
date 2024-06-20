@@ -1,10 +1,8 @@
 "use client";
 
-import React, { FormEvent, useEffect, useRef, useState } from "react";
-import ImageUploadModal from "@/components/ImageUploadModal";
+import React, { FormEvent, useState } from "react";
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
-import { getCookie } from "@/utils/cookies";
+import { APIConsumer, apiUrl, consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
 import { EdificacaoIn } from "@/utils/types";
 
 type Image = {
@@ -17,35 +15,16 @@ export default function CriarEdificacao() {
     const [submiting, setSubmiting] = useState<boolean>(false);
     const [images, setImages] = useState<Image[]>([]);
     
-    // TODO: usar classe consumer para criação de imagens
     async function uploadImage(codigo_edificacao: string, image: Image) {        
-        // Set request headers
-        const headers: HeadersInit =  {
-        };
-
-        // Try to get the csrftoken in the cookies
-        const csrfToken = getCookie("csrftoken");
-
-        if (csrfToken) {
-            headers["X-CSRFToken"] = csrfToken;
-        }
-        
         let formData = new FormData();
         formData.append("description", image.description);
         formData.append("file", image.file);
         
-        let response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes/${codigo_edificacao}/imagem`,
-            {
-                method: "POST",
-                headers: headers,
-                credentials: "include",
-                body: formData,
-            },
-        )
-         
+        const consumer = new APIConsumer(`${apiUrl}/api/v1/edificacoes/${codigo_edificacao}/imagem`);
+        const response = await consumer.post(formData, new Headers());
+       
         if (!response.ok) {
-            alert(`Erro ao adicionar imagem ${image.file.name}`);
+            throw `Erro ao adicionar imagem ${image.file.name}`;
         }
     }
 
