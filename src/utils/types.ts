@@ -154,7 +154,7 @@ export type ImageIn = {
 };
 
 export type ImageOut = {
-    id: number,
+    id: string,
     src: string,
     description: string
 };
