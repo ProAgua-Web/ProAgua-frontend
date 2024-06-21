@@ -8,7 +8,7 @@ import DangerIcon from "@/components/icons/DangerIcon";
 
 export default function Coletas() {
     const [sequencias, setSequencias] = useState<Sequencia[]>([]);
-
+    const [loading, setLoading] = useState<boolean>(true);
     const [filters, setFilters] = useState<any>({ q: "", campus: "BOTH" });
     const [checkPendentes, setCheckPendentes] = useState<boolean>(false);
     const [checkConcluidas, setCheckConcluidas] = useState<boolean>(false);
@@ -25,6 +25,7 @@ export default function Coletas() {
 
         const newAbortController = new AbortController();
         setAbortController(newAbortController);
+        setLoading(true);
 
         const fetchData = async () => {
             const _filters = { ...filters };
@@ -51,6 +52,7 @@ export default function Coletas() {
             });
 
             setFilteredSequencias(filtered);
+            setLoading(false);
         };
 
         fetchData();
@@ -118,50 +120,58 @@ export default function Coletas() {
                 </div>
 
                 <div className="w-full">
-                    <table className="w-full border border-slate-500 mb-8 last:mb-0">
-                        <thead>
-                            <tr className="bg-primary-500 text-white">
-                                <th className="px-2 py-4">Ciclo de Amostragem</th>
-                                <th className="px-2 py-4 text-center">Cód. Edificação</th>
-                                <th className="px-2 py-4 text-center">Campus</th>
-                                <th className="px-2 py-4">Ponto</th>
-                                <th className="px-2 py-4">Ambiente ponto</th>
-                                <th className="px-2 py-4">Tombo</th>
-                                <th className="px-2 py-4">Ultima coleta</th>
-                                <th className="px-2 py-4">Qnt. de coletas</th>
-                                <th className="px-2 py-4">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredSequencias.map((sequencia: Sequencia, i) => {
-                                const tipo = sequencia.ponto && TIPOS_PONTOS[sequencia.ponto?.tipo];
-                                return (
-                                    <tr
-                                        title={sequencia.status ? "Concluída" : sequencia.status_message}
-                                        key={sequencia.id}
-                                        className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
-                                        onClick={() => {
-                                            window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
-                                        }}
-                                    >
-                                        <td className="text-sm px-2 py-3">{sequencia.amostragem}</td>
-                                        <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.codigo}</td>
-                                        <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.campus == "OE" ? "Oeste" : "Leste"}</td>
-                                        <td className="text-sm px-2 py-3">{tipo}</td>
-                                        <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
-                                        <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
-                                        <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
-                                        <td className="text-sm px-2 py-3 text-center">{sequencia.quantidade_coletas}</td>
-                                        <td className="text-sm px-2 py-3 text-center">
-                                            <span className="w-full flex justify-center">
-                                                {sequencia.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem" />}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                    {loading 
+                        ?
+                        <div className="w-full bg-neutral-50 rounded p-4 flex justify-center align-middle border border-neutral-300">
+                            <span className="w-8 h-8 block border-4 rounded-full border-neutral-200 border-t-primary-500 animate-spin mr-2"></span>
+                            <span className="text-neutral-700 block h-full align-middle text-center">Carregando...</span>
+                        </div>
+                        :
+                        <table className="w-full border border-slate-500 mb-8 last:mb-0">
+                            <thead>
+                                <tr className="bg-primary-500 text-white">
+                                    <th className="px-2 py-4">Ciclo de Amostragem</th>
+                                    <th className="px-2 py-4 text-center">Cód. Edificação</th>
+                                    <th className="px-2 py-4 text-center">Campus</th>
+                                    <th className="px-2 py-4">Ponto</th>
+                                    <th className="px-2 py-4">Ambiente ponto</th>
+                                    <th className="px-2 py-4">Tombo</th>
+                                    <th className="px-2 py-4">Ultima coleta</th>
+                                    <th className="px-2 py-4">Qnt. de coletas</th>
+                                    <th className="px-2 py-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredSequencias.map((sequencia: Sequencia, i) => {
+                                    const tipo = sequencia.ponto && TIPOS_PONTOS[sequencia.ponto?.tipo];
+                                    return (
+                                        <tr
+                                            title={sequencia.status ? "Concluída" : sequencia.status_message}
+                                            key={sequencia.id}
+                                            className="w-full bg-slate-200 even:bg-slate-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
+                                            onClick={() => {
+                                                window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
+                                            }}
+                                        >
+                                            <td className="text-sm px-2 py-3">{sequencia.amostragem}</td>
+                                            <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.codigo}</td>
+                                            <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.campus == "OE" ? "Oeste" : "Leste"}</td>
+                                            <td className="text-sm px-2 py-3">{tipo}</td>
+                                            <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
+                                            <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
+                                            <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
+                                            <td className="text-sm px-2 py-3 text-center">{sequencia.quantidade_coletas}</td>
+                                            <td className="text-sm px-2 py-3 text-center">
+                                                <span className="w-full flex justify-center">
+                                                    {sequencia.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem" />}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    }
                 </div>
 
                 {/* <div id="paginator" className="pagination flex">
