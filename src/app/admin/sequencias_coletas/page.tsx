@@ -151,7 +151,7 @@ export default function Coletas() {
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
                                         <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
                                         <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
-                                        <td className="text-sm px-2 py-3 text-center">{sequencia.coletas.length}</td>
+                                        <td className="text-sm px-2 py-3 text-center">{sequencia.quantidade_coletas}</td>
                                         <td className="text-sm px-2 py-3 text-center">
                                             <span className="w-full flex justify-center">
                                                 {sequencia.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem" />}

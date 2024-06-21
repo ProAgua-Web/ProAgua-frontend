@@ -36,7 +36,7 @@ export type Sequencia = {
     status: boolean;
     status_message: string;
     ultima_coleta?: string;
-    coletas: Coleta[];
+    quantidade_coletas: number;
 };
 
 export type Edificacao = {
