@@ -1,7 +1,7 @@
 "use client";
 
 import { Ponto, Sequencia, TIPOS_PONTOS } from "@/utils/types";
-import { consumerSequencia, formatDate, toURLParams } from "@/utils/api_consumer/client_side_consumer";
+import { apiUrl, formatDate, toURLParams } from "@/utils/api_consumer/client_side_consumer";
 import { useEffect, useState } from "react";
 import OkIcon from "@/components/icons/OkIcon";
 import DangerIcon from "@/components/icons/DangerIcon";
@@ -19,12 +19,6 @@ export default function Coletas() {
     const [filteredSequencias, setFilteredSequencias] = useState<Sequencia[]>(sequencias);
 
     useEffect(() => {
-        consumerSequencia.list()
-            .then(data => setSequencias(data))
-            .catch(err => alert('Houve um erro durante consulta a API.'));
-    }, [])
-
-    useEffect(() => {
         if (abortController) {
             abortController.abort();
         }
@@ -38,7 +32,7 @@ export default function Coletas() {
                 delete _filters.campus;
             }
 
-            const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/sequencias?limit=10000`
+            const url = `${apiUrl}/api/v1/sequencias?limit=10000`
             let query = toURLParams(_filters);
 
             const res = await fetch(`${url}&${query}`, { signal: newAbortController.signal, cache: "no-cache", 'credentials': 'include' });
