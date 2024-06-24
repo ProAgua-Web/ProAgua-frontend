@@ -339,7 +339,9 @@ export function useLastColetaByPonto(id_ponto: number) {
         headers: {
             'Content-Type': 'application/json',
             // 'Authorization': `Bearer ${token}`
-        }
+        },
+        credentials: "include"
+
     }
 
     useEffect(() => {
@@ -362,8 +364,8 @@ export function useParametrosReferencia() {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            // 'Authorization': `Bearer ${token}`
-        }
+        },
+        credentials: "include"
     }
 
     useEffect(() => {
