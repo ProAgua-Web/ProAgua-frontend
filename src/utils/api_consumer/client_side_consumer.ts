@@ -23,7 +23,7 @@ export class APIConsumer<Tin, Tout> {
 
     async list(cache: RequestCache = "no-cache", query: any = undefined) {
         let searchParams = "";
-        
+
         if (query) {
             query["limit"] = 10000
             // Remove undefined fields
@@ -41,7 +41,7 @@ export class APIConsumer<Tin, Tout> {
         return data;
     }
 
-    async post(data: Tin, headers = new Headers({"Content-Type": "application/json"})) {
+    async post(data: Tin, headers = new Headers({ "Content-Type": "application/json" })) {
         // Try to get the csrftoken in the cookies
         const csrfToken = getCookie("csrftoken");
 
@@ -50,7 +50,7 @@ export class APIConsumer<Tin, Tout> {
         }
 
         let body: any = data;
-        
+
         if (headers.get("Content-Type") === "application/json") {
             body = JSON.stringify(data);
         }
@@ -68,7 +68,7 @@ export class APIConsumer<Tin, Tout> {
 
     async delete(id: string) {
         // Set request headers
-        const headers: HeadersInit =  {
+        const headers: HeadersInit = {
         };
 
         // Try to get the csrftoken in the cookies
@@ -90,7 +90,7 @@ export class APIConsumer<Tin, Tout> {
 
     async put(id: string, data: Tin) {
         // Set request headers
-        const headers: HeadersInit =  {
+        const headers: HeadersInit = {
             "Content-Type": "application/json",
         };
 
@@ -190,7 +190,7 @@ export function usePonto(id_ponto: number) {
 export function usePontos(codigo_edificacao: string | null = null, id_sequencia: number | null = null) {
     const [pontos, setPontos] = useState<Ponto[]>([]);
     useEffect(() => {
-        consumerPonto.list('no-cache', {limit: 10000})
+        consumerPonto.list('no-cache', { limit: 10000 })
             .then(data => setPontos(data))
             .catch(err => alert("Ocorreu um erro durante a requisição."))
     }, [])
@@ -244,7 +244,7 @@ export function useSequencias() {
 
     useEffect(() => {
         consumerSequencia.list()
-            .then(data => setSequencias(data))    
+            .then(data => setSequencias(data))
     }, []);
 
     return sequencias;
@@ -282,8 +282,8 @@ export function useColetaBySequencia(id_sequencia: number) {
     useEffect(() => {
         (async () => {
             const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia + '/coletas', {
-                    'credentials': 'include'
-                }
+                'credentials': 'include'
+            }
             );
             const coletas = await response.json();
             setColetas(coletas);
@@ -334,19 +334,20 @@ export function useLastColetaByPonto(id_ponto: number) {
     const [coleta, setColeta] = useState<Coleta | null>(null);
 
     const url = process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto + '/coletas';
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            // 'Authorization': `Bearer ${token}`
-        },
-        credentials: "include"
-
-    }
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(url, requestOptions);
+            const response = await fetch(url,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'Authorization': `Bearer ${token}`
+                    },
+                    credentials: "include"
+
+                }
+            );
             const coletas = await response.json();
 
             setColeta(coletas[coletas.length - 1]);
@@ -360,17 +361,21 @@ export function useParametrosReferencia() {
     const [parametrosReferencia, setParametrosReferencia] = useState<ParametroReferencia>();
 
     const url = process.env.NEXT_PUBLIC_API_URL + '/api/v1/parametros_referencia';
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: "include"
-    }
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(url, requestOptions);
+            const response = await fetch(url,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'Authorization': `Bearer ${token}`
+                    },
+                    credentials: "include"
+
+                }
+
+            );
             const parametrosReferencia = await response.json();
 
             setParametrosReferencia(parametrosReferencia);
@@ -398,7 +403,7 @@ export function useUsuario(username: string) {
 
     useEffect(() => {
         consumerUsuario.get(username)
-            .then(data => setUsuario(data))    
+            .then(data => setUsuario(data))
     }, [username]);
 
     return usuario;
@@ -408,8 +413,8 @@ export function useSolicitacoes() {
     const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
 
     useEffect(() => {
-            consumerSolicitacao.list()
-                .then(data => setSolicitacoes(data));
+        consumerSolicitacao.list()
+            .then(data => setSolicitacoes(data));
     }, []);
 
     return solicitacoes;
