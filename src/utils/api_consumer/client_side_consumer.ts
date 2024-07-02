@@ -145,7 +145,6 @@ export function useEdificacao(codigo_edificacao: string) {
     useEffect(() => {
         consumerEdficacao.get(codigo_edificacao)
             .then(data => setEdificacao(data))
-            .catch(err => alert("Ocorreu um erro durante a requisição."))
     }, [codigo_edificacao])
     return edificacao
 }
@@ -155,7 +154,6 @@ export function useEdificacoes() {
     useEffect(() => {
         consumerEdficacao.list()
             .then(data => setEdificacoes(data))
-            .catch(err => alert("Ocorreu um erro durante a requisição."))
     }, [])
     return edificacoes
 }
@@ -182,7 +180,6 @@ export function usePonto(id_ponto: number) {
     useEffect(() => {
         consumerPonto.get(id_ponto.toString())
             .then(data => setPonto(data))
-            .catch(err => alert("Ocorreu um erro durante a requisição."))
     }, [id_ponto])
     return ponto
 }
@@ -192,7 +189,6 @@ export function usePontos(codigo_edificacao: string | null = null, id_sequencia:
     useEffect(() => {
         consumerPonto.list('no-cache', { limit: 10000 })
             .then(data => setPontos(data))
-            .catch(err => alert("Ocorreu um erro durante a requisição."))
     }, [])
     return pontos
 }

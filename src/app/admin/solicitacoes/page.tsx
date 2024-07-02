@@ -9,7 +9,6 @@ export default function Solicitacoes() {
     useEffect(() => {
         consumerSolicitacao.list()
             .then(data => setSolicitacoes(data))
-            .catch(err => alert("Ocorreu um erro durante a requisição."))
     }, [])
 
     return (
