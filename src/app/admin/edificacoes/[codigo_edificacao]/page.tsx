@@ -43,7 +43,8 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
             codigo: String(formData.get('codigo')),
             nome: String(formData.get('nome')),
             campus: String(formData.get('campus')),
-            cronograma: Number(formData.get('cronograma'))
+            cronograma: Number(formData.get('cronograma')),
+            informacoes_gerais: String(formData.get('informacoes_gerais'))
         };
         const response = await consumerEdficacao.put(params.codigo_edificacao, data)
 
@@ -63,10 +64,10 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
         let formData = new FormData();
         formData.append("description", image.description);
         formData.append("file", image.file);
-        
+
         const consumer = new APIConsumer(`${apiUrl}/api/v1/edificacoes/${edificacao?.codigo}/imagem`);
         const response = await consumer.post(formData, new Headers());
-       
+
         if (!response.ok) {
             throw `Erro ao adicionar imagem ${image.file.name}`;
         }
@@ -87,7 +88,7 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
             <h2 className="text-4xl text-neutral-700 font-bold mb-8">
                 {editable ? "Editar" : "Visualizar"} Edificação
             </h2>
-            <form onSubmit={(e) => submitForm(e)} onReset={() => {setEditable(false); }} method="PUT"
+            <form onSubmit={(e) => submitForm(e)} onReset={() => { setEditable(false); }} method="PUT"
                 className="w-full flex flex-col gap-4"
             >
                 <label htmlFor="codigo">Código:</label>
@@ -131,6 +132,20 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
                     defaultValue={edificacao?.cronograma}
                     disabled={!editable}
                 />
+
+                <label htmlFor="informacoes_gerais">
+                    Informações gerais:
+                </label>
+                <textarea
+                    id="informacoes_gerais"
+                    name="informacoes_gerais"
+                    className="rounded-lg border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    rows={4}
+                    placeholder="Informações gerais sobre a edificação..."
+                    defaultValue={edificacao?.informacoes_gerais}
+                    disabled={!editable}
+                >
+                </textarea>
 
                 <label htmlFor="foto">Imagem:</label>
                 <MultipleImageInput

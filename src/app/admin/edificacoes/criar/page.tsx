@@ -14,15 +14,15 @@ export default function CriarEdificacao() {
     // Page state variables
     const [submiting, setSubmiting] = useState<boolean>(false);
     const [images, setImages] = useState<Image[]>([]);
-    
-    async function uploadImage(codigo_edificacao: string, image: Image) {        
+
+    async function uploadImage(codigo_edificacao: string, image: Image) {
         let formData = new FormData();
         formData.append("description", image.description);
         formData.append("file", image.file);
-        
+
         const consumer = new APIConsumer(`${apiUrl}/api/v1/edificacoes/${codigo_edificacao}/imagem`);
         const response = await consumer.post(formData, new Headers());
-       
+
         if (!response.ok) {
             throw `Erro ao adicionar imagem ${image.file.name}`;
         }
@@ -31,7 +31,7 @@ export default function CriarEdificacao() {
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setSubmiting(true);
-        
+
         // Create "edificação" without image 
         const formData = new FormData(event.currentTarget);
         const data: EdificacaoIn = {
@@ -39,6 +39,7 @@ export default function CriarEdificacao() {
             nome: String(formData.get("nome")),
             campus: String(formData.get("campus")),
             cronograma: Number(formData.get("cronograma")),
+            informacoes_gerais: String(formData.get("informacoes_gerais"))
         };
 
         const response = await consumerEdficacao.post(data);
@@ -56,7 +57,7 @@ export default function CriarEdificacao() {
         await Promise.all(images.map((image) => {
             return uploadImage(String(data.codigo), image);
         }));
-        
+
         alert("Imagens criadas.");
         window.location.href = "/admin/pontos";
     };
@@ -110,12 +111,23 @@ export default function CriarEdificacao() {
                     required
                 />
 
+                <label htmlFor="informacoes_gerais">
+                    Informações gerais:
+                </label>
+                <textarea
+                    id="informacoes_gerais"
+                    name="informacoes_gerais"
+                    className="rounded-lg border border-neutral-200 px-6 py-4"
+                    rows={4}
+                    placeholder="Informações gerais sobre a edificação...">
+                </textarea>
+
                 <hr />
 
                 <label htmlFor="foto">
                     Fotos:
                 </label>
-                <MultipleImageInput 
+                <MultipleImageInput
                     images={images}
                     setImages={setImages}
                     disabled={false}

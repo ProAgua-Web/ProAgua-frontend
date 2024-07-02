@@ -46,6 +46,7 @@ export type Edificacao = {
     cronograma: number;
     imagens: ImageOut[];
     pontos_url: string;
+    informacoes_gerais?: string;
 };
 
 export type EdificacaoIn = {
@@ -53,6 +54,7 @@ export type EdificacaoIn = {
     nome: string;
     campus: string;
     cronograma: number;
+    informacoes_gerais?: string;
 };
 
 
