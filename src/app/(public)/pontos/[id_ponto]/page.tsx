@@ -159,7 +159,7 @@ export default function Page(props: {
                 </div>
                 {coleta && (<p>
                     (1): Valores máximos permitidos de acordo com o Anexo XX da Portaria de Consolidação GM/MS nº 5, de 28 de setembro de 2017 alterado pela Portaria GM/MS nº 888, de 04 de maio de 2021 e pela Portaria GM/MS nº 2472, de 28 de setembro de 2021.<br /><br />
-                    (2): Referência adotada com base na Portaria INMETRO n.º 394, de 25 de agosto de 2014, para &quot equipamento elétrico para consumo de água com refrigeração &quot . Observa-se que: (a) a medição de temperatura executada não segue as condições de ensaio previstas nesta Portaria; (b) o valor de referência poderá ser distinto do adotado no presente projeto, a depender das especificações constantes no manual de instruções do equipamento.
+                    (2): Referência adotada com base na Portaria INMETRO n.º 394, de 25 de agosto de 2014, para &quot;equipamento elétrico para consumo de água com refrigeração&quot;. Observa-se que: (a) a medição de temperatura executada não segue as condições de ensaio previstas nesta Portaria; (b) o valor de referência poderá ser distinto do adotado no presente projeto, a depender das especificações constantes no manual de instruções do equipamento.
                 </p>)}
             </div>
 
