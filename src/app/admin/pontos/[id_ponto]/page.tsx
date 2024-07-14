@@ -205,7 +205,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 {
                     currentTipo != "1" && (
                         <>
-                            <label htmlFor="associados"> Reservatórios Associados: </label>
+                            <label htmlFor="associados"> Reservatórios Interligados: </label>
                             <select
                                 id="associados"
                                 name="associados"
@@ -236,7 +236,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 {
                     pontos.length > 0 && (
                         <>
-                            <label htmlFor="amontante">Amontante:</label>
+                            <label htmlFor="amontante">Amontante (Abastece):</label>
                             <div className="flex">
 
                                 <select

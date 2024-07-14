@@ -134,7 +134,7 @@ export default function VisualizarEdificacao({ params }: { params: { codigo_edif
                 />
 
                 <label htmlFor="informacoes_gerais">
-                    Informações gerais:
+                    Informações gerais dos reservatórios:
                 </label>
                 <textarea
                     id="informacoes_gerais"
