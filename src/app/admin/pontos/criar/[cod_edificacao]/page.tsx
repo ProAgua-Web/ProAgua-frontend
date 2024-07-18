@@ -2,7 +2,7 @@
 
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { APIConsumer, apiUrl, consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
-import { Edificacao, ImageIn, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
+import { Edificacao, ImageIn, Ponto, PontoInicialIn, TIPOS_PONTOS } from "@/utils/types";
 import React, { FormEvent, useEffect, useState } from "react";
 
 export default function CriarPonto({ params }: { params: { cod_edificacao: string } }) {
@@ -13,7 +13,6 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
     const [currentEdificacao, setCurrentEdificacao] = useState<string>('');
     const [currentTipo, setCurrentTipo] = useState<string>('1');
     const pontosAmontantes = pontos.filter(ponto => ponto.tipo > Number(currentTipo));
-    const pontosAssociados = pontos.filter(ponto => ponto.tipo == Number(currentTipo));
     const [images, setImages] = useState<ImageIn[]>([]);
     const [submiting, setSubmiting] = useState<boolean>(false);
 
@@ -21,10 +20,10 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
         let formData = new FormData();
         formData.append("description", image.description);
         formData.append("file", image.file);
-        
+
         const consumer = new APIConsumer(`${apiUrl}/api/v1/pontos/${id_ponto}/imagem`,);
         const response = await consumer.post(formData, new Headers());
-       
+
         if (!response.ok) {
             throw `Erro ao adicionar imagem ${image.file.name}`;
         }
@@ -45,7 +44,6 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
             localizacao: (formData.get("localizacao") as string),
             tombo: (formData.get("tombo") as string | null),
             amontante: (amontante ? Number(amontante) : null),
-            associados: formData.getAll("associados").map(Number),
             imagem: null,
         };
 
@@ -71,14 +69,14 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
     };
 
     useEffect(() => {
-        consumerEdficacao.list('no-cache', {limit: 10000})
+        consumerEdficacao.list('no-cache', { limit: 10000 })
             .then(data => setEdificacoes(data));
     }, []);
 
 
     return (
         <>
-            <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar ponto de coleta</h1>
+            <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar Ponto de Coleta</h1>
             <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
                 {
                     edificacoes.length > 0 && (
@@ -91,7 +89,7 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                                     id="edificacao"
                                     name="edificacao"
                                     className="w-full rounded-lg border border-neutral-400 px-6 py-4"
-                                    onChange={ e => setCurrentEdificacao(e.target.value) }
+                                    onChange={e => setCurrentEdificacao(e.target.value)}
                                     defaultValue={params.cod_edificacao}
                                 >
                                     <option value="">-</option>
@@ -196,6 +194,13 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
 
                 </div>
 
+                <label htmlFor="observacao">Observação:</label>
+                <textarea
+                    id="observacao"
+                    name="observacao"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
+                ></textarea>
+
                 <label htmlFor="foto">
                     Foto:
                 </label>
@@ -204,6 +209,8 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                     images={images}
                     setImages={setImages}
                 />
+
+
 
                 <div className="w-full">
                     <input id="criar" type="submit" className={"w-full rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500 text-white font-semibold"} value={`${submiting ? "Criando..." : "Criar"}`} disabled={submiting} />
