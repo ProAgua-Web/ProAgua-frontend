@@ -44,7 +44,7 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
             localizacao: (formData.get("localizacao") as string),
             tombo: (formData.get("tombo") as string | null),
             amontante: (amontante ? Number(amontante) : null),
-            imagem: null,
+            // imagem: null,
         };
 
         console.log("Ponto:", data);

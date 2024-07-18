@@ -40,7 +40,6 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         setExistingImages(existingImages.filter(image => apiUrl + image.src != url));
     }
 
-    // TODO: Testar a função de atualizar ponto
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -52,7 +51,13 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
             tombo: String(formData.get("tombo")),
             amontante: formData.get("amontante") ? Number(formData.get("amontante")) : null,
             // imagem: String(formData.get("imagem")),
+            quantidade: null,
+            capacidade: null,
+            material: null,
+            fonte_informacao: null,
+            observacao: null,
         }
+        
         const response = await consumerPonto.put(params.id_ponto, data)
 
         if (images.length > 0) {
@@ -188,7 +193,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                             id="tombo"
                             name="tombo"
                             className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                            defaultValue={ponto?.tombo}
+                            defaultValue={ponto?.tombo || ""}
                             disabled={!editable}
                         />
                     </>
@@ -200,7 +205,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     id="localizacao"
                     name="localizacao"
                     className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    defaultValue={ponto?.localizacao}
+                    defaultValue={ponto?.localizacao || ""}
                     disabled={!editable}
                 />
 

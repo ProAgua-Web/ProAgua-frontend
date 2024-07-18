@@ -44,10 +44,8 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
             tombo: (formData.get("tombo") as string | null),
             tipo: Number(formData.get("tipo")),
             amontante: (amontante ? Number(amontante) : null),
-            imagem: null,
+            // imagem: null,
         };
-
-        console.log("Ponto:", data);
 
         const response = await consumerPonto.post(data);
 

@@ -5,6 +5,13 @@ export type PontoIn = {
     tipo: number | null,
     amontante: number | null,
     tombo: string | null,
+
+    quantidade?: number | null,
+    capacidade?: number | null,
+    material?: string | null,
+    fonte_informacao?: string | null,
+    observacao?: string | null,
+
     // imagem: string | null,
 }
 
@@ -19,22 +26,44 @@ export type PontoInicialIn = {
 
 export type ReservatorioIn = {
     codigo_edificacao: string,
-    quantidade: number, // unico, duplo, triplo
-    capacidade: number, // em (L)
-    material: string, // polietileno, alvenaria, fibra de vidro
-    localizacao_amontante: string // torneira na tubulação de entrada ao RPS, na fachada de trás do prédio
-    fonte_informacao: string, // Técnico reponsável
-    observacao: string,
-    imagem: string,
+    tipo: number,
+    localizacao: string | null,
+    quantidade: number | null, // unico, duplo, triplo
+    capacidade: number | null, // em (L)
+    material: string | null, // polietileno, alvenaria, fibra de vidro
+    fonte_informacao: string | null, // Técnico reponsável
+    observacao: string | null,
+    // imagem: string,
+    amontante: number | null,
 }
 
 export type Ponto = {
     id: number;
-    tombo: string;
-    localizacao: string;
-    edificacao_url: string;
-    tipo: number;
     edificacao: Edificacao;
+    tipo: number;
+    localizacao?: string | null;
+    observacao?: string | null;
+    tombo?: string | null;
+    
+    quantidade?: number | null;
+    capacidade?: number | null;
+    material?: string | null;
+    fonte_informacao?: string | null;
+
+    status: boolean;
+    status_message: string;
+    amontante?: Ponto;
+    imagens: ImageOut[];
+};
+
+export type Reservatorio = {
+    id: number;
+    edificacao: Edificacao;
+    tipo: number;
+    localizacao: string;
+    quantidade: number;
+    capacidade: number;
+    material: string;
     status: boolean;
     status_message: string;
     amontante?: Ponto;
