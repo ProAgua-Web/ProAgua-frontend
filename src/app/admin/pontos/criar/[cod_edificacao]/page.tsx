@@ -11,7 +11,7 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
 
     const [currentAmontante, setCurrentAmontante] = useState<string>('');
     const [currentEdificacao, setCurrentEdificacao] = useState<string>('');
-    const [currentTipo, setCurrentTipo] = useState<string>('1');
+    const [currentTipo, setCurrentTipo] = useState<string>('0');
     const pontosAmontantes = pontos.filter(ponto => ponto.tipo > Number(currentTipo));
     const [images, setImages] = useState<ImageIn[]>([]);
     const [submiting, setSubmiting] = useState<boolean>(false);
@@ -46,8 +46,6 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
             amontante: (amontante ? Number(amontante) : null),
             // imagem: null,
         };
-
-        console.log("Ponto:", data);
 
         const response = await consumerPonto.post(data);
 
@@ -149,6 +147,7 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                                 type="text"
                                 id="tombo"
                                 name="tombo"
+                                placeholder="Insira o identificador do bebedouro"
                                 className="rounded-lg border border-neutral-400 px-6 py-4"
                             />
                         </>
@@ -198,6 +197,7 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                 <textarea
                     id="observacao"
                     name="observacao"
+                    placeholder="Informações adicionais..."
                     className="rounded-lg border border-neutral-400 px-6 py-4"
                 ></textarea>
 
