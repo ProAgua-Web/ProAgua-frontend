@@ -1,27 +1,43 @@
 
 export type PontoIn = {
-    ambiente: string | null,
-    tipo: number | null,
     codigo_edificacao?: string,
     localizacao: string | null,
     tipo: number | null,
     amontante: number | null,
     tombo: string | null,
-    imagem: string | null,
-    associados: number[] | null,
+    // imagem: string | null,
+}
+
+export type PontoInicialIn = {
+    codigo_edificacao: string,
+    tipo: number,
+    localizacao: string | null,
+    tombo: string | null,
+    // imagem: string | null,
+    amontante: number | null,
+}
+
+export type ReservatorioIn = {
+    codigo_edificacao: string,
+    quantidade: number, // unico, duplo, triplo
+    capacidade: number, // em (L)
+    material: string, // polietileno, alvenaria, fibra de vidro
+    localizacao_amontante: string // torneira na tubulação de entrada ao RPS, na fachada de trás do prédio
+    fonte_informacao: string, // Técnico reponsável
+    observacao: string,
+    imagem: string,
 }
 
 export type Ponto = {
     id: number;
     tombo: string;
-    ambiente: string;
+    localizacao: string;
     edificacao_url: string;
     tipo: number;
     edificacao: Edificacao;
     status: boolean;
     status_message: string;
     amontante?: Ponto;
-    associados: number[];
     imagens: ImageOut[];
 };
 
@@ -164,8 +180,8 @@ export type ImageOut = {
 };
 
 export const TIPOS_PONTOS = [
-    null,
     "Bebedouro",
+    "Torneira",
     "RPS (Reservatório predial superior)",
     "RPI (Reservatório predial inferior)",
     "RDS (Reservatório de distribuição superior)",

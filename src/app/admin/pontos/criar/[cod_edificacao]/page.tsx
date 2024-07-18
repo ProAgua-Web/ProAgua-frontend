@@ -38,9 +38,10 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
         const formData = new FormData(event.currentTarget);
 
         let amontante = formData.get("amontante");
-        
-        const data: PontoIn = {
+
+        const data: PontoInicialIn = {
             codigo_edificacao: (formData.get("edificacao") as string),
+            tipo: Number(formData.get("tipo")),
             localizacao: (formData.get("localizacao") as string),
             tombo: (formData.get("tombo") as string | null),
             amontante: (amontante ? Number(amontante) : null),
@@ -129,12 +130,8 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                     className="rounded-lg border border-neutral-400 px-6 py-4"
                     onChange={currentTipo => setCurrentTipo(currentTipo.target.value)}
                 >
-                    <option value="1">Bebedouro</option>
-                    <option value="2">RPS - Reservatório predial superior</option>
-                    <option value="3">RPI - Reservatório predial inferior</option>
-                    <option value="4">RDS - Reservatório de destribuição superior</option>
-                    <option value="5">RDI - Reservatório de destribuição inferior</option>
-                    <option value="6">CAERN</option>
+                    <option value="0">Bebedouro</option>
+                    <option value="1">Torneira</option>
                 </select>
 
                 <label htmlFor="">Localizacão:</label>
@@ -147,7 +144,7 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                 />
 
                 {
-                    currentTipo == "1" && (
+                    currentTipo == "0" && (
                         <>
                             <label htmlFor="">Tombo:</label>
                             <input
@@ -160,40 +157,14 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                     )
                 }
 
-                {
-                    currentTipo != "1" && (
-                        <>
-                            <label htmlFor="associados"> Reservatórios Associados: </label>
-                            <select
-                                id="associados"
-                                name="associados"
-                                className="w-full rounded-lg border border-neutral-400 px-6 py-4"
-                                multiple
-                            >
-                                <option value="" disabled>-</option>
-                                {pontosAssociados.map((ponto: Ponto) => {
-                                    return (
-                                        <option className="" value={ponto.id} key={ponto.id}>
-                                            {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
-                                            {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
-                                            {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                        </>
-                    )
-
-                }
-
-                <label htmlFor="">Ponto a montante:</label>
+                <label htmlFor="">Ponto a montante (Abastece):</label>
                 <div className="flex">
 
                     <select
                         id="amontante"
                         name="amontante"
                         className="w-full rounded-lg border border-neutral-400 px-6 py-4"
-                        onChange={ (e) => setCurrentAmontante(e.target.value) }
+                        onChange={(e) => setCurrentAmontante(e.target.value)}
                     >
                         <option value="">-</option>
                         {pontosAmontantes.map((ponto: Ponto) => {

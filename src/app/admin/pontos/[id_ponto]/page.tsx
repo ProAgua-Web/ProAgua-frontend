@@ -14,14 +14,13 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
 
     const [currentAmontante, setCurrentAmontante] = useState<string>(ponto?.amontante?.id?.toString() || '');
     const [currentEdificacao, setCurrentEdificacao] = useState<string>(ponto?.edificacao.codigo || '');
-    const [currentTipo, setCurrentTipo] = useState<string>(ponto?.tipo.toString() || '1');
+    const [currentTipo, setCurrentTipo] = useState<string>(ponto?.tipo.toString() || '-1');
     const pontosAmontantes = pontos.filter(p => p.tipo > Number(currentTipo));
-    const pontosAssociados = pontos.filter(p => p.tipo == Number(currentTipo) && p.id != parseInt(params.id_ponto));
-    
+
     const [existingImages, setExistingImages] = useState<ImageOut[]>([])
     const [images, setImages] = useState<ImageIn[]>([])
     const [editable, setEditable] = useState<boolean>(false);
-    
+
     async function removeExistingImage(url: string) {
         const image = existingImages.find((e) => apiUrl + e.src === url);
 
@@ -41,30 +40,28 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         setExistingImages(existingImages.filter(image => apiUrl + image.src != url));
     }
 
+    // TODO: Testar a função de atualizar ponto
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
 
         const data: PontoIn = {
-            tombo: String(formData.get("tombo")),
-            ambiente: String(formData.get("ambiente")),
-            tipo: Number(formData.get("tipo")),
             codigo_edificacao: String(formData.get("edificacao")),
+            tipo: Number(formData.get("tipo")),
             localizacao: String(formData.get("localizacao")),
             tombo: String(formData.get("tombo")),
             amontante: formData.get("amontante") ? Number(formData.get("amontante")) : null,
-            imagem: String(formData.get("imagem")),
-            associados: (formData.getAll("associados") as unknown as number[]),
+            // imagem: String(formData.get("imagem")),
         }
         const response = await consumerPonto.put(params.id_ponto, data)
-        
+
         if (images.length > 0) {
             await Promise.all(images.map(uploadImage));
         }
-        
+
         if (response.ok) {
             alert("Ponto atualizado com sucesso!");
-            window.location.href = "/admin/pontos";
+            // window.location.href = "/admin/pontos";
         }
         else {
             throw "Erro ao atualizar ponto!";
@@ -76,10 +73,10 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         let formData = new FormData();
         formData.append("description", image.description);
         formData.append("file", image.file);
-        
+
         const consumer = new APIConsumer(`${apiUrl}/api/v1/pontos/${ponto?.id}/imagem`);
         const response = await consumer.post(formData, new Headers());
-       
+
         if (!response.ok) {
             throw `Erro ao adicionar imagem ${image.file.name}`;
         }
@@ -93,8 +90,14 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     }
 
     useEffect(() => {
-        setCurrentTipo(ponto?.tipo.toString() || '1');
+        if (currentTipo == "-1") {
+            setCurrentTipo(ponto?.tipo.toString() || '0');
+        }
     }, [ponto, editable]);
+
+    useEffect(() => {
+        console.log(currentTipo);
+    }, [currentTipo]);
 
     useEffect(() => {
         if (ponto?.imagens) {
@@ -132,7 +135,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                     id="edificacao"
                                     name="edificacao"
                                     className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                                    onChange={ e => setCurrentEdificacao(e.target.value) }
+                                    onChange={e => setCurrentEdificacao(e.target.value)}
                                     defaultValue={ponto?.edificacao.codigo}
                                     disabled={!editable}
                                 >
@@ -167,20 +170,17 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                             name="tipo"
                             className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                             defaultValue={ponto?.tipo}
-                            onChange={currentTipo => setCurrentTipo(currentTipo.target.value)}
+                            onChange={e => setCurrentTipo(e.target.value)}
                             disabled={!editable}
                         >
-                            <option value="1">Bebedouro</option>
-                            <option value="2">Reservatório predial superior</option>
-                            <option value="3">Reservatório predial inferior</option>
-                            <option value="4">Reservatório de distribuição superior</option>
-                            <option value="5">Reservatório de distribuição inferior</option>
-                            <option value="6">CAERN</option>
+                            <option value="0">Bebedouro</option>
+                            <option value="1">Torneira</option>
                         </select>
                     </>
                 )}
 
-                {currentTipo && currentTipo == "1" && (
+
+                {currentTipo == "0" && (
                     <>
                         <label htmlFor="tombo">Tombo:</label>
                         <input
@@ -207,7 +207,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 {
                     pontos.length > 0 && (
                         <>
-                            <label htmlFor="amontante">Amontante (Abastece):</label>
+                            <label htmlFor="amontante">Ponto a montante (Abastece):</label>
                             <div className="flex">
 
                                 <select
@@ -216,14 +216,14 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                     className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                                     defaultValue={pontos.length > 0 ? ponto?.amontante?.id : undefined}
                                     disabled={!editable}
-                                    onChange={ e => {setCurrentAmontante(e.target.value);}}
+                                    onChange={e => { setCurrentAmontante(e.target.value); }}
                                 >
                                     <option value="">-</option>
                                     {pontosAmontantes.map((ponto: Ponto) => {
                                         return (
                                             <option className="" value={ponto.id} key={ponto.id}>
                                                 {TIPOS_PONTOS[ponto.tipo]}
-                                                {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
+                                                {ponto.localizacao && ponto.localizacao.trim() != "-" && ponto.localizacao.trim() != "nan" && ponto.localizacao.trim() != "" ? "- " + ponto.localizacao : ""}
                                                 {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
                                             </option>
                                         );
@@ -243,7 +243,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                 }
 
                 <label htmlFor="foto">Imagem:</label>
-                <MultipleImageInput 
+                <MultipleImageInput
                     images={images}
                     setImages={setImages}
                     existingImages={existingImages}

@@ -182,32 +182,6 @@ export default function Pontos() {
                     )
                 }
 
-                {
-                    currentTipo != "1" && (
-                        <>
-                            <label htmlFor="associados"> Reservatórios Associados: </label>
-                            <select
-                                id="associados"
-                                name="associados"
-                                className="w-full rounded-lg border border-neutral-400 px-6 py-4"
-                                multiple
-                            >
-                                <option value="" disabled>-</option>
-                                {pontosAssociados.map((ponto: Ponto) => {
-                                    return (
-                                        <option className="" value={ponto.id} key={ponto.id}>
-                                            {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
-                                            {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
-                                            {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                        </>
-                    )
-
-                }
-
                 <label htmlFor="">Ponto a montante:</label>
                 <div className="flex">
 

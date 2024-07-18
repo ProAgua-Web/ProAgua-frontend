@@ -97,6 +97,7 @@ export default function Pontos() {
   // });
   const filteredEdificacoes = edificacoes;
   const [checkBebedouro, setCheckBebedouro] = useState<boolean>(true);
+  const [checkTorneira, setCheckTorneira] = useState<boolean>(true);
   const [checkRPS, setCheckRPS] = useState<boolean>(true);
   const [checkRPI, setCheckRPI] = useState<boolean>(true);
   const [checkRDS, setCheckRDS] = useState<boolean>(true);
@@ -139,7 +140,8 @@ export default function Pontos() {
       let query = toURLParams(_filters);
 
       // http://localhost:8000/api/v1/pontos/?tipo=1&tipo=3&limit=10000&offset=0
-      if (checkBebedouro) query = query.concat("&tipo=1");
+      if (checkBebedouro) query = query.concat("&tipo=0");
+      if (checkTorneira) query = query.concat("&tipo=1");
       if (checkRPS) query = query.concat("&tipo=2");
       if (checkRPI) query = query.concat("&tipo=3");
       if (checkRDS) query = query.concat("&tipo=4");
@@ -201,9 +203,18 @@ export default function Pontos() {
                 <label htmlFor="bebedouro" onClick={(e) => { setCheckBebedouro(!checkBebedouro); setFilters }}
                   className={`cursor-pointer ${checkBebedouro ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
                 > Bebedouro</label>
-                <input id="bebedouro" name="tipo" type="checkbox" value="1" defaultChecked={checkBebedouro} hidden
+                <input id="bebedouro" name="tipo" type="checkbox" value="0" defaultChecked={checkBebedouro} hidden
                   className="" />
               </div>
+
+              <div className="flex flex-row justify-center items-center">
+                <label htmlFor="torneira" onClick={(e) => { setCheckTorneira(!checkTorneira) }}
+                  className={`cursor-pointer ${checkTorneira ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
+                > Torneira</label>
+                <input id="torneira" name="tipo" type="checkbox" value="1" defaultChecked={checkTorneira} hidden
+                  className="" />
+              </div>
+
               <div className="flex flex-row justify-center items-center">
                 <label htmlFor="rps" onClick={(e) => { setCheckRPS(!checkRPS) }}
                   className={`cursor-pointer ${checkRPS ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
