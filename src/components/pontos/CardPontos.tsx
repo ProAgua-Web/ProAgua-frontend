@@ -26,13 +26,15 @@ export default function CardPonto(props: { ponto: Ponto, publicCard: boolean }) 
 }
 
 
-export function AddCard({ cod_edificacao }: { cod_edificacao?: string }) {
+export function AddCard({ cod_edificacao, tipo }: { cod_edificacao?: string, tipo?: string}) {
+  let url_tipo = tipo === 'reservatorio' ? '/admin/reservatorios/criar' : '/admin/pontos/criar';
   return (
-    <a href={`/admin/pontos/criar${cod_edificacao ? `/${cod_edificacao}` : ''}`}>
+    <a href={`${url_tipo}${cod_edificacao ? `/${cod_edificacao}` : ''}`}>
       <div
         className="relative px-2 py-4 flex aspect-square w-[260px] flex-col items-center justify-center rounded-md border border-neutral-300 bg-white hover:bg-slate-50 hover:text-green-500 text-center cursor-pointer"
       >
-        <h2 className="text-center text-3xl select-none">+</h2>
+        <h2> {tipo === 'reservatorio' ? "Reservatório" : "Ponto Inicial"}</h2>
+        <h2 className="text-center text-3xl select-none"> +</h2>
       </div>
     </a>
   );

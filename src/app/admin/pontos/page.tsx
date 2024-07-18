@@ -53,6 +53,7 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
           <CardPonto ponto={item} key={"ponto-" + i} publicCard={false} />
         ))}
         <AddCard cod_edificacao={group.edificacao.codigo} />
+        <AddCard cod_edificacao={group.edificacao.codigo} tipo="reservatorio" />
       </div>
     </div>
   )

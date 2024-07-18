@@ -75,7 +75,7 @@ export default function Sequencia({ params }: { params: { sequencia_id: number }
                                 <div className="w-full p-4 flex border border-b-0 border-slate-400 bg-primary-500 text-white font-semibold">
                                     <div className="w-full">
                                         <p>Ponto: {TIPOS_PONTOS[ponto.tipo]}</p>
-                                        <p>Ambiente: {ponto.ambiente}</p>
+                                        <p>localizacao: {ponto.localizacao}</p>
                                         {ponto.tipo == 1 && (
                                             <p>Tombo: {ponto.tombo}</p>
                                         )}
