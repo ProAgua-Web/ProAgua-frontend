@@ -12,7 +12,6 @@ export default function Pontos() {
     const [currentEdificacao, setCurrentEdificacao] = useState<string>('');
     const [currentTipo, setCurrentTipo] = useState<string>('1');
     const pontosAmontantes = pontos.filter(ponto => ponto.tipo > Number(currentTipo));
-    const pontosAssociados = pontos.filter(ponto => ponto.tipo == Number(currentTipo));
 
     const [file, setFile] = useState<File | null>();
     const [preview, setPreview] = useState<string>();
@@ -36,7 +35,7 @@ export default function Pontos() {
 
         const data = {
             codigo_edificacao: formData.get("edificacao"),
-            ambiente: formData.get("ambiente"),
+            localizacao: formData.get("localizacao"),
             tombo: formData.get("tombo"),
             tipo: Number(formData.get("tipo")),
             amontante: Number(formData.get("amontante")),
@@ -146,11 +145,11 @@ export default function Pontos() {
 
                 </div>
 
-                <label htmlFor="">Ambiente:</label>
+                <label htmlFor="">Localização:</label>
                 <input
                     type="text"
-                    id="ambiente"
-                    name="ambiente"
+                    id="localizacao"
+                    name="localizacao"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
                 />
 
@@ -223,7 +222,7 @@ export default function Pontos() {
                             return (
                                 <option className="" value={ponto.id} key={ponto.id}>
                                     {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
-                                    {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
+                                    {ponto.localizacao && ponto.localizacao.trim() != "-" && ponto.localizacao.trim() != "nan" && ponto.localizacao.trim() != "" ? "- " + ponto.localizacao : ""}
                                     {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
                                 </option>
                             )

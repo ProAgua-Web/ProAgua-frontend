@@ -39,7 +39,6 @@ export default function CriarEdificacao() {
             nome: String(formData.get("nome")),
             campus: String(formData.get("campus")),
             cronograma: Number(formData.get("cronograma")),
-            informacoes_gerais: String(formData.get("informacoes_gerais"))
         };
 
         const response = await consumerEdficacao.post(data);

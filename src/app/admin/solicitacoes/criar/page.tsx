@@ -183,7 +183,7 @@ export default function CriarSolicitacao() {
                     >
                         <option value="" disabled selected>-</option>
                         {filteredPontos.map(ponto => (
-                            <option value={ponto.id} key={ponto.id}> {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente} </option>
+                            <option value={ponto.id} key={ponto.id}> {TIPOS_PONTOS[ponto.tipo]}, {ponto.localizacao} </option>
                         ))}
                     </select>
 

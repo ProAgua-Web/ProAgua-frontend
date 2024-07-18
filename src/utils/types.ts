@@ -3,6 +3,8 @@ export type PontoIn = {
     ambiente: string | null,
     tipo: number | null,
     codigo_edificacao?: string,
+    localizacao: string | null,
+    tipo: number | null,
     amontante: number | null,
     tombo: string | null,
     imagem: string | null,

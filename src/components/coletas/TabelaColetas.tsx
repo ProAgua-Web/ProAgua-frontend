@@ -41,7 +41,7 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                                     <td className="px-2 py-3">{coleta.id}</td>
                                     <td className="px-2 py-3">{coleta.ponto.edificacao.codigo}</td>
                                     <td className="px-2 py-3">
-                                        <span className="max-w-40 block text-nowrap text-ellipsis overflow-hidden">{TIPOS_PONTOS[coleta.ponto.tipo]} </span> - {coleta.ponto.ambiente} - {coleta.ponto.tombo}
+                                        <span className="max-w-40 block text-nowrap text-ellipsis overflow-hidden">{TIPOS_PONTOS[coleta.ponto.tipo]} </span> - {coleta.ponto.localizacao} - {coleta.ponto.tombo}
                                     </td>
                                     <td className="px-2 py-3">{coleta.ordem}</td>
                                     <td className="px-2 py-3">{coleta.temperatura} ºC</td>

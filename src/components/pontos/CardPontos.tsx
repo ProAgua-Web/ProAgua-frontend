@@ -11,7 +11,7 @@ export default function CardPonto(props: { ponto: Ponto, publicCard: boolean }) 
       <div className="relative flex aspect-square w-[260px] flex-col items-center justify-between rounded-md border border-neutral-300 bg-white px-2 py-4 text-center">
         <h3>{edificacao?.codigo}</h3>
         <h2 className="text-center text-xl">{TIPOS_PONTOS[ponto.tipo]}</h2>
-        <p className="text-sm">{ponto.ambiente}</p>
+        <p className="text-sm">{ponto.localizacao}</p>
 
         <a
           href={publicCard ? `${BASE_URL}/pontos/${ponto.id}` : `pontos/${ponto.id}`}

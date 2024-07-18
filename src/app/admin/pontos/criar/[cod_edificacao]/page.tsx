@@ -41,9 +41,8 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
         
         const data: PontoIn = {
             codigo_edificacao: (formData.get("edificacao") as string),
-            ambiente: (formData.get("ambiente") as string),
+            localizacao: (formData.get("localizacao") as string),
             tombo: (formData.get("tombo") as string | null),
-            tipo: Number(formData.get("tipo")),
             amontante: (amontante ? Number(amontante) : null),
             associados: formData.getAll("associados").map(Number),
             imagem: null,
@@ -123,14 +122,6 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
 
                 }
 
-                <label htmlFor="">Ambiente:</label>
-                <input
-                    type="text"
-                    id="ambiente"
-                    name="ambiente"
-                    className="rounded-lg border border-neutral-400 px-6 py-4"
-                />
-
                 <label htmlFor="">Tipo:</label>
                 <select
                     id="tipo"
@@ -145,6 +136,15 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                     <option value="5">RDI - Reservatório de destribuição inferior</option>
                     <option value="6">CAERN</option>
                 </select>
+
+                <label htmlFor="">Localizacão:</label>
+                <input
+                    type="text"
+                    id="localizacao"
+                    name="localizacao"
+                    placeholder="Torneira na tubulação de entrada ao RPS, na fachada de trás do prédio"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
+                />
 
                 {
                     currentTipo == "1" && (
@@ -200,7 +200,7 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                             return (
                                 <option value={ponto.id} key={ponto.id}>
                                     {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
-                                    {ponto.ambiente && ponto.ambiente.trim() != "-" && ponto.ambiente.trim() != "nan" && ponto.ambiente.trim() != "" ? "- " + ponto.ambiente : ""}
+                                    {ponto.localizacao && ponto.localizacao.trim() != "-" && ponto.localizacao.trim() != "nan" && ponto.localizacao.trim() != "" ? "- " + ponto.localizacao : ""}
                                     {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
                                 </option>
                             )

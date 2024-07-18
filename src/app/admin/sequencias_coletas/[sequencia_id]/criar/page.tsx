@@ -68,7 +68,7 @@ export default function CriarColeta({ params }: {
                         className="w-full rounded-lg border border-neutral-400 px-6 py-4"
                         onChange={(e) => setCurrentPontoId(parseInt(e.currentTarget.value))}
                     >
-                        {pontos.map(ponto => <option value={ponto.id} key={"ponto " + ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente}</option>)}
+                        {pontos.map(ponto => <option value={ponto.id} key={"ponto " + ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]}, {ponto.localizacao}</option>)}
                     </select>
 
                     <a className="flex justify-center" href={currentPontoId ? "/admin/pontos/" + currentPontoId : "#"} target={currentPontoId ? "_blank" : "_self"}>

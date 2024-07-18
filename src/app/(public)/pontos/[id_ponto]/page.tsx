@@ -150,7 +150,7 @@ export default function Page(props: {
                     <h1 className="text-2xl font-semibold">{ponto?.edificacao.nome}</h1>
                     <p className="text-lg text-black">
                         Ponto de Coleta - {ponto?.tipo == 2 ? "Torneira - " + TIPOS_PONTOS[ponto?.tipo ?? 0] : TIPOS_PONTOS[ponto?.tipo ?? 0]}<br />
-                        Local - {ponto?.ambiente}<br />
+                        Local - {ponto?.localizacao}<br />
                         {coleta && coleta.data ? `Última coleta em ${new Date(coleta.data).toLocaleDateString()}` : "Sem coleta registrada"}
                     </p>
                     <div className="mt-8">

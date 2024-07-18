@@ -53,7 +53,7 @@ export default function Sequencia({ params }: { params: { sequencia_id: number }
                         <h3 className="text-xl">Informações da edificação:</h3>
                         <p className="text-neutral-700 ml-4">Edificação: {sequencia?.ponto?.edificacao.nome}</p>
                         <p className="text-neutral-700 ml-4">Código edificação: {sequencia?.ponto?.edificacao.codigo}</p>
-                        <p className="text-neutral-700 ml-4">Ambiente: {sequencia?.ponto?.ambiente}</p>
+                        <p className="text-neutral-700 ml-4">Localização: {sequencia?.ponto?.localizacao}</p>
                     </div>
                     <div className="flex justify-between p-4 py-2">
                         <a href={`/admin/edificacoes/${sequencia?.ponto?.edificacao.codigo}`} className="hover:text-primary-600">

@@ -50,6 +50,8 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
             ambiente: String(formData.get("ambiente")),
             tipo: Number(formData.get("tipo")),
             codigo_edificacao: String(formData.get("edificacao")),
+            localizacao: String(formData.get("localizacao")),
+            tombo: String(formData.get("tombo")),
             amontante: formData.get("amontante") ? Number(formData.get("amontante")) : null,
             imagem: String(formData.get("imagem")),
             associados: (formData.getAll("associados") as unknown as number[]),
@@ -154,16 +156,6 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     )
                 }
 
-                <label htmlFor="ambiente">Ambiente:</label>
-                <input
-                    type="text"
-                    id="ambiente"
-                    name="ambiente"
-                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    defaultValue={ponto?.ambiente}
-                    disabled={!editable}
-                />
-
                 {pontos.length > 0 && (
                     <>
                         <label htmlFor="tipo">
@@ -202,36 +194,15 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     </>
                 )}
 
-                {
-                    currentTipo != "1" && (
-                        <>
-                            <label htmlFor="associados"> Reservatórios Interligados: </label>
-                            <select
-                                id="associados"
-                                name="associados"
-                                className="w-full rounded-lg border border-neutral-400 px-6 py-4"
-                                multiple
-                                disabled={!editable}
-                            >
-                                <option value="" disabled>-</option>
-                                {pontosAssociados.map((point: Ponto) => {
-                                    return (
-                                        <option
-                                            value={point.id}
-                                            key={"associado-" + point.id}
-                                            selected={ponto?.associados.includes(point.id)}
-                                        >
-                                            {point.id} - {point.edificacao.codigo} - {point.edificacao.nome} - {TIPOS_PONTOS[point.tipo]}
-                                            {point.ambiente && point.ambiente.trim() != "-" && point.ambiente.trim() != "nan" && point.ambiente.trim() != "" ? "- " + point.ambiente : ""}
-                                            {point.tombo && point.tombo.trim() != "-" && point.tombo.trim() != "nan" && point.tombo.trim() ? "- " + point.tombo : ""}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                        </>
-                    )
-
-                }
+                <label htmlFor="localizacao">Localização:</label>
+                <input
+                    type="text"
+                    id="localizacao"
+                    name="localizacao"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    defaultValue={ponto?.localizacao}
+                    disabled={!editable}
+                />
 
                 {
                     pontos.length > 0 && (

@@ -134,7 +134,7 @@ export default function Coletas() {
                                     <th className="px-2 py-4 text-center">Cód. Edificação</th>
                                     <th className="px-2 py-4 text-center">Campus</th>
                                     <th className="px-2 py-4">Ponto</th>
-                                    <th className="px-2 py-4">Ambiente ponto</th>
+                                    <th className="px-2 py-4">Localização Ponto</th>
                                     <th className="px-2 py-4">Tombo</th>
                                     <th className="px-2 py-4">Ultima coleta</th>
                                     <th className="px-2 py-4">Qnt. de coletas</th>
@@ -157,7 +157,7 @@ export default function Coletas() {
                                             <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.codigo}</td>
                                             <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.campus == "OE" ? "Oeste" : "Leste"}</td>
                                             <td className="text-sm px-2 py-3">{tipo}</td>
-                                            <td className="text-sm px-2 py-3">{sequencia.ponto?.ambiente || "-"}</td>
+                                            <td className="text-sm px-2 py-3">{sequencia.ponto?.localizacao || "-"}</td>
                                             <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
                                             <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
                                             <td className="text-sm px-2 py-3 text-center">{sequencia.quantidade_coletas}</td>

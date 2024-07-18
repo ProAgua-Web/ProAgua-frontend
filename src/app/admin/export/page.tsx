@@ -174,7 +174,7 @@ export default function Page() {
                                 onChange={e => setFilters({ ...filters, ponto_id: e.target.value })}>
                                 <option value="">-</option>
 
-                                {filteredPontos && filteredPontos.map((ponto: Ponto) => <option key={ponto.id} value={ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]} {ponto.ambiente && '- ' + ponto.ambiente} {ponto.tombo && '- ' + ponto.tombo}</option>)}
+                                {filteredPontos && filteredPontos.map((ponto: Ponto) => <option key={ponto.id} value={ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]} {ponto.localizacao && '- ' + ponto.localizacao} {ponto.tombo && '- ' + ponto.tombo}</option>)}
                             </select>
                         </div>
 
