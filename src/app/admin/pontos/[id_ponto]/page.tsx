@@ -91,9 +91,9 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
 
     useEffect(() => {
         if (currentTipo == "-1") {
-            setCurrentTipo(ponto?.tipo.toString() || '0');
+            setCurrentTipo(ponto?.tipo.toString() || '-1');
         }
-    }, [ponto, editable]);
+    }, [ponto]);
 
     useEffect(() => {
     }, [currentTipo]);
@@ -158,7 +158,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     )
                 }
 
-                {pontos.length > 0 && (
+                {pontos.length > 0  && (
                     <>
                         <label htmlFor="tipo">
                             Tipo:
@@ -175,6 +175,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                             <option value="0">Bebedouro</option>
                             <option value="1">Torneira</option>
                         </select>
+                        
                     </>
                 )}
 
