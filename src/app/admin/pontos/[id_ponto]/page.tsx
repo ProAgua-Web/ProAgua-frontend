@@ -61,7 +61,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
 
         if (response.ok) {
             alert("Ponto atualizado com sucesso!");
-            // window.location.href = "/admin/pontos";
+            window.location.href = "/admin/pontos";
         }
         else {
             throw "Erro ao atualizar ponto!";
@@ -96,7 +96,6 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     }, [ponto, editable]);
 
     useEffect(() => {
-        console.log(currentTipo);
     }, [currentTipo]);
 
     useEffect(() => {
