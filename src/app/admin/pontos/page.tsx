@@ -69,6 +69,33 @@ interface Groups {
   [x: string]: {edificacao: Edificacao, pontos: Ponto[]}
 }
 
+function Filter({ value, setValue, children, checkbox_value}: {
+  value:boolean,
+  setValue:(v: boolean) => void,
+  children: any
+  checkbox_value: string,
+}) {
+  return (
+    <div className="flex flex-row justify-center items-center">
+      <label 
+        htmlFor="bebedouro"
+        onClick={(e) => { setValue(!value) }}
+        className={ `cursor-pointer ${value ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
+      >
+        {children}
+      </label>
+      <input
+        id="bebedouro"
+        name="tipo"
+        type="checkbox"
+        value={checkbox_value}
+        defaultChecked={value}
+        hidden
+      />
+    </div>
+  );
+}
+
 function CollapseIcon() {
   return (
     <svg
@@ -223,58 +250,13 @@ export default function Pontos() {
           <div className="w-full flex justify-between gap-3 self-end">
 
             <div className="flex gap-8">
-
-              <div className="flex flex-row justify-center items-center">
-                <label htmlFor="bebedouro" onClick={(e) => { setCheckBebedouro(!checkBebedouro); setFilters }}
-                  className={`cursor-pointer ${checkBebedouro ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                > Bebedouro</label>
-                <input id="bebedouro" name="tipo" type="checkbox" value="0" defaultChecked={checkBebedouro} hidden
-                  className="" />
-              </div>
-
-              <div className="flex flex-row justify-center items-center">
-                <label htmlFor="torneira" onClick={(e) => { setCheckTorneira(!checkTorneira) }}
-                  className={`cursor-pointer ${checkTorneira ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                > Torneira</label>
-                <input id="torneira" name="tipo" type="checkbox" value="1" defaultChecked={checkTorneira} hidden
-                  className="" />
-              </div>
-
-              <div className="flex flex-row justify-center items-center">
-                <label htmlFor="rps" onClick={(e) => { setCheckRPS(!checkRPS) }}
-                  className={`cursor-pointer ${checkRPS ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                > RPS</label>
-                <input id="rps" name="tipo" type="checkbox" value="2" defaultChecked={checkRPS} hidden
-                  className="" />
-              </div>
-              <div className="flex flex-row justify-center items-center">
-                <label htmlFor="rpi" onClick={(e) => { setCheckRPI(!checkRPI) }}
-                  className={`cursor-pointer ${checkRPI ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                > RPI</label>
-                <input id="rpi" name="tipo" type="checkbox" value="3" defaultChecked={checkRPI} hidden
-                  className="" />
-              </div>
-              <div className="flex flex-row justify-center items-center">
-                <label htmlFor="rds" onClick={(e) => { setCheckRDS(!checkRDS) }}
-                  className={`cursor-pointer ${checkRDS ? "text-primary-500" : "hover:text-primary-400"} `}
-                > RDS</label>
-                <input id="rds" name="tipo" type="checkbox" value="4" defaultChecked={checkRDS} hidden
-                  className="" />
-              </div>
-              <div className="flex flex-row justify-center items-center">
-                <label htmlFor="rdi" onClick={(e) => { setCheckRDI(!checkRDI) }}
-                  className={`cursor-pointer ${checkRDI ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-                > RDI</label>
-                <input id="rdi" name="tipo" type="checkbox" value="5" defaultChecked={checkRDI} hidden
-                  className="" />
-              </div>
-              <div className="flex flex-row justify-center items-center">
-                <label htmlFor="caern" onClick={(e) => { setCheckCAERN(!checkCAERN) }}
-                  className={`cursor-pointer ${checkCAERN ? "text-primary-500" : "hover:text-primary-400"} `}
-                > CAERN</label>
-                <input id="caern" name="tipo" type="checkbox" value="6" defaultChecked={checkCAERN} hidden
-                  className="" />
-              </div>
+              <Filter checkbox_value="0" value={checkBebedouro} setValue={setCheckBebedouro}>Bebedouro</Filter>
+              <Filter checkbox_value="1" value={checkTorneira} setValue={setCheckTorneira}>Torneira</Filter>
+              <Filter checkbox_value="2" value={checkRPS} setValue={setCheckRPS}>RPS</Filter>
+              <Filter checkbox_value="3" value={checkRPI} setValue={setCheckRPI}>RPI</Filter>
+              <Filter checkbox_value="4" value={checkRDS} setValue={setCheckRDS}>RDS</Filter>
+              <Filter checkbox_value="5" value={checkRDI} setValue={setCheckRDI}>RDI</Filter>
+              <Filter checkbox_value="6" value={checkCAERN} setValue={setCheckCAERN}>CAERN</Filter>
             </div>
 
             <button
