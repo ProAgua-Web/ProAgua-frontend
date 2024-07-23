@@ -27,7 +27,6 @@ function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
 }
 
 function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[]}, collapsed: boolean }) {
-
   const { group } = props;
   const [collapsed, setCollapsed] = useState<boolean>(props.collapsed);
 
@@ -58,12 +57,6 @@ function CardEdificacao(props: { group: { edificacao: Edificacao, pontos: Ponto[
     </div>
   )
 }
-
-type GroupPonto = {
-  edificacao: Edificacao,
-  pontos: Ponto[]
-};
-
 
 interface Groups {
   [x: string]: {edificacao: Edificacao, pontos: Ponto[]}
@@ -124,29 +117,8 @@ function ExpandIcon() {
 export default function Pontos() {
   const [filters, setFilters] = useState<any>({ q: "", campus: "" })
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
-
   const [collapsed, setCollapsed] = useState<boolean>(false);
-
-  useEffect(() => {
-    // TODO: fazer uso do consumer
-    // consumerEdficacao.list()
-    //   .then(data => {
-    //     setEdificacoes(data)
-    //   })
-
-    const query = toURLParams(filters);
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?${query}`, { cache: "no-cache", credentials: 'include' })
-        .then(res => res.json())
-        .then(data => {
-          setEdificacoes(data.items); // Ensure data.items is an array or fallback to an empty array
-        })
-    }, [filters]);
-
-  // const filteredEdificacoes = edificacoes.filter((edificacao) => {
-  //   const matchesQuery = edificacao.codigo.includes(filters.q) || edificacao.nome.includes(filters.q);
-  //   const matchesCampus = filters.campus === "BOTH" || edificacao.campus === filters.campus;
-  //   return matchesQuery && matchesCampus;
-  // });
+  
   const filteredEdificacoes = edificacoes;
   const [checkBebedouro, setCheckBebedouro] = useState<boolean>(true);
   const [checkTorneira, setCheckTorneira] = useState<boolean>(true);
@@ -155,12 +127,8 @@ export default function Pontos() {
   const [checkRDS, setCheckRDS] = useState<boolean>(true);
   const [checkRDI, setCheckRDI] = useState<boolean>(true);
   const [checkCAERN, setCheckCAERN] = useState<boolean>(true);
-
-
   const [pontos, setPontos] = useState<Ponto[]>([]);
-
   const [abortController, setAbortController] = useState(new AbortController());
-
   const groups: Groups = groupBy(pontos, (ponto: Ponto) => {
     return ponto.edificacao.codigo;
   });
@@ -173,7 +141,15 @@ export default function Pontos() {
     }
   }
 
-
+  useEffect(() => {
+    const query = toURLParams(filters);
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?${query}`, { cache: "no-cache", credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        setEdificacoes(data.items); // Ensure data.items is an array or fallback to an empty array
+      })
+  },[filters]);
+  
   useEffect(() => {
     if (abortController) {
       abortController.abort();
@@ -221,27 +197,21 @@ export default function Pontos() {
       <div className="flex w-full flex-col items-center">
         <div className="mb-4 flex w-full flex-col gap-4">
           <div className="relative flex space-between gap-2">
-            {/* <i className="bi bi-search"></i> */}
             <input
               id="search-bar"
               className="w-full rounded-md border bg-white px-5 py-3 text-[#525252]"
               type="text"
               name="search-query"
               placeholder="Digite o termo de pesquisa"
-              onChange={(e) => {
-                setFilters({ ...filters, q: e.target.value });
-              }
-              }
+              onChange={ e => setFilters({ ...filters, q: e.target.value }) }
             />
 
             <select
               name="campus"
               className="w-36 rounded-md border bg-white px-3 py-2 text-[#525252]"
-              onChange={(e) => { setFilters({ ...filters, campus: e.target.value }) }}
+              onChange={ e => setFilters({ ...filters, campus: e.target.value }) }
             >
-              <option value="" disabled selected hidden>
-                Campus
-              </option>
+              <option value="" disabled selected hidden>Campus</option>
               <option value="">Leste/Oeste</option>
               <option value="LE">Leste</option>
               <option value="OE">Oeste</option>
@@ -264,10 +234,10 @@ export default function Pontos() {
               className={`self-end px-4 py-2 mb-2 border rounded-md hover:bg-slate-50`}>
               { collapsed ? <CollapseIcon /> : <ExpandIcon /> }
             </button>
+
           </div>
         </div>
         <div className="flex flex-col w-full">
-
           <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-full bg-gray-100 border border-gray-300 text-green-500 font-semibold rounded-md hover:bg-green-600 hover:text-white text-center">+ Adicionar edificação</a>
 
           {Object.values(groups).map((group, i) => {
