@@ -6,6 +6,8 @@ import { Edificacao, Ponto } from "@/utils/types";
 import { useEdificacoes, toURLParams, usePonto, consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
 
 import { useEffect, useState } from "react";
+import { CollapseIcon } from "./components/CollapseIcon";
+import { ExpandIcon } from "./components/ExpandIcon";
 import { CardEdificacao } from "./components/CardEdificacao";
 
 function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
@@ -27,58 +29,6 @@ function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
 
 interface Groups {
   [x: string]: {edificacao: Edificacao, pontos: Ponto[]}
-}
-
-function Filter({ value, setValue, children, checkbox_value}: {
-  value:boolean,
-  setValue:(v: boolean) => void,
-  children: any
-  checkbox_value: string,
-}) {
-  return (
-    <div className="flex flex-row justify-center items-center">
-      <label 
-        htmlFor="bebedouro"
-        onClick={(e) => { setValue(!value) }}
-        className={ `cursor-pointer ${value ? "text-primary-500  hover:text-primary-800" : "hover:text-primary-400"} `}
-      >
-        {children}
-      </label>
-      <input
-        id="bebedouro"
-        name="tipo"
-        type="checkbox"
-        value={checkbox_value}
-        defaultChecked={value}
-        hidden
-      />
-    </div>
-  );
-}
-
-function CollapseIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      id="Outline"
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-    >
-      <path d="M1,6H23a1,1,0,0,0,0-2H1A1,1,0,0,0,1,6Z" />
-      <path d="M23,9H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" />
-      <path d="M23,19H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" />
-      <path d="M23,14H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" />
-    </svg>
-  )
-}
-
-function ExpandIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20">
-      <path d="M19,1H5C2.24,1,0,3.24,0,6v12c0,2.76,2.24,5,5,5h14c2.76,0,5-2.24,5-5V6c0-2.76-2.24-5-5-5ZM5,3h14c1.65,0,3,1.35,3,3v2H2v-2c0-1.65,1.35-3,3-3Zm14,18H5c-1.65,0-3-1.35-3-3V10H22v8c0,1.65-1.35,3-3,3Z" />
-    </svg>
-  )
 }
 
 export default function Pontos() {
