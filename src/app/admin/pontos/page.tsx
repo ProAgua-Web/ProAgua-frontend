@@ -32,18 +32,23 @@ interface Groups {
 }
 
 export default function Pontos() {
-  const [filters, setFilters] = useState<any>({ q: "", campus: "" })
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   
   const filteredEdificacoes = edificacoes;
-  const [checkBebedouro, setCheckBebedouro] = useState<boolean>(true);
-  const [checkTorneira, setCheckTorneira] = useState<boolean>(true);
-  const [checkRPS, setCheckRPS] = useState<boolean>(true);
-  const [checkRPI, setCheckRPI] = useState<boolean>(true);
-  const [checkRDS, setCheckRDS] = useState<boolean>(true);
-  const [checkRDI, setCheckRDI] = useState<boolean>(true);
-  const [checkCAERN, setCheckCAERN] = useState<boolean>(true);
+  const [filters, setFilters] = useState<any>({ 
+    q: "",
+    campus: "",
+    filtroPontos: {
+      "Bebedouro": true,
+      "Torneira": true, 
+      "RPS": true,
+      "RPI": true,
+      "RDS": true,
+      "RDI": true,
+      "CAERN": true
+    }
+  })
   const [pontos, setPontos] = useState<Ponto[]>([]);
   const [abortController, setAbortController] = useState(new AbortController());
   const groups: Groups = groupBy(pontos, (ponto: Ponto) => {
@@ -59,53 +64,34 @@ export default function Pontos() {
   }
 
   useEffect(() => {
-    const query = toURLParams(filters);
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/edificacoes?${query}`, { cache: "no-cache", credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        setEdificacoes(data.items); // Ensure data.items is an array or fallback to an empty array
-      })
+    // Acessar todas as edificações pela API
+    consumerEdficacao.list().then(
+      data => setEdificacoes  
+    );
+    
+    // Cria lista com ids referentes aos tipos de pontos filtrados
+    const filtrosIds = Object.entries(filters.filtroPontos)
+      .filter(([key, value]) => value == true)
+      .map((entry, index) => Number(index + 1));
+
+    // Acessar todos os pontos da API de acordo com os filtros
+    consumerPonto.list("no-cache", { tipo: filtrosIds })
+      .then( data => setPontos(data) );
+    
   },[filters]);
   
-  useEffect(() => {
-    if (abortController) {
-      abortController.abort();
-    }
 
-    const newAbortController = new AbortController();
-    setAbortController(newAbortController);
-
-    const fetchData = async () => {
-      const _filters = { ...filters };
-      if (_filters.campus === "BOTH") {
-        delete _filters.campus;
+  function toggleFilter(name: string) {
+    setFilters(
+      {
+        ...filters,
+        filtroPontos: {
+          ...filters.filtroPontos,
+          [name]: !filters.filtroPontos[name]
+        }
       }
-
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos`
-      let query = toURLParams(_filters);
-
-      // http://localhost:8000/api/v1/pontos/?tipo=1&tipo=3&limit=10000&offset=0
-      if (checkBebedouro) query = query.concat("&tipo=0");
-      if (checkTorneira) query = query.concat("&tipo=1");
-      if (checkRPS) query = query.concat("&tipo=2");
-      if (checkRPI) query = query.concat("&tipo=3");
-      if (checkRDS) query = query.concat("&tipo=4");
-      if (checkRDI) query = query.concat("&tipo=5");
-      if (checkCAERN) query = query.concat("&tipo=6");
-
-      // TODO: fazer uso do consumer
-      const res = await fetch(`${url}?${query}`, { cache: "no-cache", credentials: 'include' });
-
-      if (!res.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const pontos = await res.json();
-      setPontos(pontos.items);
-    };
-
-    fetchData();
-  }, [filters, checkBebedouro, checkRPS, checkRPI, checkRDS, checkRDI, checkCAERN]);
+    );
+  }
 
   return (
     <>
@@ -137,13 +123,22 @@ export default function Pontos() {
           <div className="w-full flex justify-between gap-3 self-end">
 
             <div className="flex gap-8">
-              <Filter checkbox_value="0" value={checkBebedouro} setValue={setCheckBebedouro}>Bebedouro</Filter>
-              <Filter checkbox_value="1" value={checkTorneira} setValue={setCheckTorneira}>Torneira</Filter>
-              <Filter checkbox_value="2" value={checkRPS} setValue={setCheckRPS}>RPS</Filter>
-              <Filter checkbox_value="3" value={checkRPI} setValue={setCheckRPI}>RPI</Filter>
-              <Filter checkbox_value="4" value={checkRDS} setValue={setCheckRDS}>RDS</Filter>
-              <Filter checkbox_value="5" value={checkRDI} setValue={setCheckRDI}>RDI</Filter>
-              <Filter checkbox_value="6" value={checkCAERN} setValue={setCheckCAERN}>CAERN</Filter>
+
+              { Object.entries(filters.filtroPontos).map(([key, value]) => {
+                return (
+                  <label htmlFor={key}>
+                    <input 
+                      type="checkbox"
+                      name={key}
+                      key={key}
+                      id={key}
+                      checked={Boolean(value)}
+                      onChange={() => toggleFilter(key) }
+                    />
+                    {key}
+                  </label>
+                );
+              })}
             </div>
 
             <button
