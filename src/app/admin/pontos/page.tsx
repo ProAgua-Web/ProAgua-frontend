@@ -1,9 +1,7 @@
 "use client";
 
-import Filters from "@/components/sequencias/Filters";
-import CardPonto, { AddCard } from "@/components/pontos/CardPontos";
 import { Edificacao, Ponto } from "@/utils/types";
-import { useEdificacoes, toURLParams, usePonto, consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
+import { consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
 
 import { useEffect, useState } from "react";
 import { CollapseIcon } from "./components/CollapseIcon";
@@ -32,10 +30,10 @@ interface Groups {
 }
 
 export default function Pontos() {
+  const [pontos, setPontos] = useState<Ponto[]>([]);
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  
-  const filteredEdificacoes = edificacoes;
+
   const [filters, setFilters] = useState<any>({ 
     q: "",
     campus: "",
@@ -49,25 +47,21 @@ export default function Pontos() {
       "CAERN": true
     }
   })
-  const [pontos, setPontos] = useState<Ponto[]>([]);
-  const [abortController, setAbortController] = useState(new AbortController());
-  const groups: Groups = groupBy(pontos, (ponto: Ponto) => {
-    return ponto.edificacao.codigo;
-  });
 
-  for (let edificacao of filteredEdificacoes) {
+  // Agrupa pontos de acordo com a edificação
+  const groups: Groups = groupBy(pontos, (ponto: Ponto) => ponto.edificacao.codigo );
+  
+  // Adiciona novos grupos vazios para edificações que não possuem pontos
+  for (let edificacao of edificacoes) {
     if (!groups[edificacao.codigo]) {
-      {
-        groups[edificacao.codigo] = { edificacao: edificacao, pontos: [] };
-      }
+      groups[edificacao.codigo] = { edificacao: edificacao, pontos: [] };
     }
   }
 
   useEffect(() => {
     // Acessar todas as edificações pela API
-    consumerEdficacao.list().then(
-      data => setEdificacoes  
-    );
+    consumerEdficacao.list()
+      .then( data => setEdificacoes(data) );
     
     // Cria lista com ids referentes aos tipos de pontos filtrados
     const filtrosIds = Object.entries(filters.filtroPontos)
@@ -79,7 +73,7 @@ export default function Pontos() {
       .then( data => setPontos(data) );
     
   },[filters]);
-  
+
 
   function toggleFilter(name: string) {
     setFilters(
@@ -142,23 +136,22 @@ export default function Pontos() {
             </div>
 
             <button
-              onClick={() => setCollapsed(!collapsed)}
-              className={`self-end px-4 py-2 mb-2 border rounded-md hover:bg-slate-50`}>
+              className="self-end px-4 py-2 mb-2 border rounded-md hover:bg-slate-50"
+              onClick={ () => setCollapsed(!collapsed) }
+            >
               { collapsed ? <CollapseIcon /> : <ExpandIcon /> }
             </button>
 
           </div>
         </div>
+
         <div className="flex flex-col w-full">
           <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-full bg-gray-100 border border-gray-300 text-green-500 font-semibold rounded-md hover:bg-green-600 hover:text-white text-center">+ Adicionar edificação</a>
-
           {Object.values(groups).map((group, i) => {
-            return (
-              <CardEdificacao group={group} key={"edificacao-" + i} collapsed={collapsed} />
-            )
-          }
-          )}
+            return <CardEdificacao group={group} key={"edificacao-" + i} collapsed={collapsed} />
+          })}
         </div>
+
       </div>
     </>
   );
