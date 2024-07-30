@@ -4,6 +4,22 @@ import { getCookie } from "../cookies";
 
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+function toQuery(data: any): string {
+    return Object.keys(data).reduce((acc: string[], cur: string) => {
+        const value = data[cur];
+
+        if (value === undefined || value === null) {
+            return acc;
+        }
+        
+        if (value instanceof Array) {
+            return [...acc, ...value.map( v => `${cur}=${v}`)];
+        }
+
+        return [...acc, `${cur}=${value}`];
+    }, []).join('&');
+}
+
 export class APIConsumer<Tin, Tout> {
     baseUrl: string;
 
@@ -26,10 +42,7 @@ export class APIConsumer<Tin, Tout> {
 
         if (query) {
             query["limit"] = 10000
-            // Remove undefined fields
-            Object.keys(query).forEach(key => query[key] === undefined && delete query[key])
-            searchParams = new URLSearchParams(query).toString();
-            searchParams = '?' + searchParams;
+            searchParams = '?' + toQuery(query);
         }
 
         const response = await fetch(this.baseUrl + searchParams, {
