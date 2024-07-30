@@ -26,7 +26,7 @@ function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
 }
 
 interface Groups {
-  [x: string]: {edificacao: Edificacao, pontos: Ponto[]}
+  [x: string]: { edificacao: Edificacao, pontos: Ponto[] }
 }
 
 export default function Pontos() {
@@ -34,12 +34,16 @@ export default function Pontos() {
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
-  const [filters, setFilters] = useState<any>({ 
+  const [filters, setFilters] = useState<{
+    q: string,
+    campus: string,
+    filtroPontos: { [key: string]: boolean }
+  }>({
     q: "",
     campus: "",
     filtroPontos: {
       "Bebedouro": true,
-      "Torneira": true, 
+      "Torneira": true,
       "RPS": true,
       "RPI": true,
       "RDS": true,
@@ -48,9 +52,19 @@ export default function Pontos() {
     }
   })
 
+  const tiposPontos = {
+    "Bebedouro": 0,
+    "Torneira": 1,
+    "RPS": 2,
+    "RPI": 3,
+    "RDS": 4,
+    "RDI": 5,
+    "CAERN": 6,
+  };
+
   // Agrupa pontos de acordo com a edificação
-  const groups: Groups = groupBy(pontos, (ponto: Ponto) => ponto.edificacao.codigo );
-  
+  const groups: Groups = groupBy(pontos, (ponto: Ponto) => ponto.edificacao.codigo);
+
   // Adiciona novos grupos vazios para edificações que não possuem pontos
   for (let edificacao of edificacoes) {
     if (!groups[edificacao.codigo]) {
@@ -61,30 +75,26 @@ export default function Pontos() {
   useEffect(() => {
     // Acessar todas as edificações pela API
     consumerEdficacao.list()
-      .then( data => setEdificacoes(data) );
-    
+      .then(data => setEdificacoes(data));
+
     // Cria lista com ids referentes aos tipos de pontos filtrados
     const filtrosIds = Object.entries(filters.filtroPontos)
       .filter(([key, value]) => value == true)
-      .map((entry, index) => Number(index + 1));
+      .map(([key, value]) => tiposPontos[key]);
 
     // Acessar todos os pontos da API de acordo com os filtros
     consumerPonto.list("no-cache", { tipo: filtrosIds })
-      .then( data => setPontos(data) );
-    
-  },[filters]);
+      .then(data => setPontos(data));
+  }, [filters]);
 
 
   function toggleFilter(name: string) {
-    setFilters(
-      {
-        ...filters,
-        filtroPontos: {
-          ...filters.filtroPontos,
-          [name]: !filters.filtroPontos[name]
-        }
+    setFilters({
+      ...filters, filtroPontos: {
+        ...filters.filtroPontos,
+        [name]: !filters.filtroPontos[name]
       }
-    );
+    });
   }
 
   return (
@@ -100,13 +110,13 @@ export default function Pontos() {
               type="text"
               name="search-query"
               placeholder="Digite o termo de pesquisa"
-              onChange={ e => setFilters({ ...filters, q: e.target.value }) }
+              onChange={e => setFilters({ ...filters, q: e.target.value })}
             />
 
             <select
               name="campus"
               className="w-36 rounded-md border bg-white px-3 py-2 text-[#525252]"
-              onChange={ e => setFilters({ ...filters, campus: e.target.value }) }
+              onChange={e => setFilters({ ...filters, campus: e.target.value })}
             >
               <option value="" disabled selected hidden>Campus</option>
               <option value="">Leste/Oeste</option>
@@ -118,16 +128,16 @@ export default function Pontos() {
 
             <div className="flex gap-8">
 
-              { Object.entries(filters.filtroPontos).map(([key, value]) => {
+              {Object.entries(filters.filtroPontos).map(([key, value]) => {
                 return (
                   <label htmlFor={key}>
-                    <input 
+                    <input
                       type="checkbox"
                       name={key}
                       key={key}
                       id={key}
                       checked={Boolean(value)}
-                      onChange={() => toggleFilter(key) }
+                      onChange={() => toggleFilter(key)}
                     />
                     {key}
                   </label>
@@ -137,9 +147,9 @@ export default function Pontos() {
 
             <button
               className="self-end px-4 py-2 mb-2 border rounded-md hover:bg-slate-50"
-              onClick={ () => setCollapsed(!collapsed) }
+              onClick={() => setCollapsed(!collapsed)}
             >
-              { collapsed ? <CollapseIcon /> : <ExpandIcon /> }
+              {collapsed ? <CollapseIcon /> : <ExpandIcon />}
             </button>
 
           </div>
