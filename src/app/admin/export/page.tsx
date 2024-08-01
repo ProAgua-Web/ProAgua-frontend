@@ -5,6 +5,8 @@ import TableColetas from "@/components/coletas/TabelaColetas";
 import { Edificacao, Ponto, TIPOS_PONTOS, } from "@/utils/types";
 import { APIConsumer, apiUrl, consumerColeta, consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
 import { OptionalField, convertTypes } from "./typeUtils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload, faFileDownload, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 function DateISO(d: string): String {
     return new Date(d).toISOString().split('T')[0];
@@ -80,12 +82,13 @@ export default function Page() {
             <div className="w-[calc(100%-100px)] min-w-fit flex mb-14">
                 <TableColetas
                     coletas={coletas}
-                />
-                <div className="max-h-[calc(100vh-clamp(50px,8vh,100px)-2rem)] w-[320px] mb-12 overflow-y-scroll fixed top-[calc(clamp(50px,8vh,100px)+1rem)] right-4 z-[1000] bg-white shadow-xl border border-neutral-300 rounded-xl">
+                    />
+                <div className="w-[320px] max-h-[calc(100vh-clamp(50px,8vh,100px)-2rem)] mb-12 overflow-y-scroll fixed top-[calc(clamp(50px,8vh,100px)+1rem)] right-4 z-[1000] bg-neutral-50 shadow-xl border border-neutral-300 rounded-xl overflow-x-hidden">
+                    
                     <form
                         method="GET"
                         onSubmit={submitForm}
-                        className="w-[320px] flex flex-wrap gap-4 items-end flex-col px-8 py-6 "
+                        className="w-full flex flex-wrap gap-4 items-end flex-col px-6 py-6"
                     >
                         <h1 className="w-full text-center text-2xl mb-4 font-bold text-neutral-600">Filtrar dados</h1>
 
@@ -99,7 +102,6 @@ export default function Page() {
                                     setPontoId('');
                                 }}>
                                 <option value="">-</option>
-
                                 {edificacoes && edificacoes.map((edificacao: Edificacao) => (
                                     <option key={edificacao.codigo} value={edificacao.codigo} className="">{edificacao.codigo} - {edificacao.nome.length < 30 ? edificacao.nome : edificacao.nome.slice(0, 30).trim() + "..."}</option>
                                 ))}
@@ -108,11 +110,10 @@ export default function Page() {
 
                         <div className="flex flex-col w-full">
                             <label htmlFor="ponto_id">Ponto de coleta</label>
-
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg"
                                 id="ponto_id"
                                 name="ponto_id"
-                                onChange={e => setFilters({ ...filters, ponto_id: e.target.value })}>
+                                onChange={e => setPontoId(e.target.value)}>
                                 <option value="">-</option>
 
                                 {filteredPontos && filteredPontos.map((ponto: Ponto) => <option key={ponto.id} value={ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]} {ponto.localizacao && '- ' + ponto.localizacao} {ponto.tombo && '- ' + ponto.tombo}</option>)}
@@ -121,7 +122,6 @@ export default function Page() {
 
                         <div className="flex flex-col">
                             <label htmlFor="">Intervalo de Data</label>
-
                             <div>
                                 <input
                                     type="date"
@@ -140,7 +140,6 @@ export default function Page() {
                                     onChange={e => setFilters({ ...filters, data_maxima: e.target.value })}
                                 />
                             </div>
-
                         </div>
 
                         <div className="flex flex-col">
@@ -166,7 +165,6 @@ export default function Page() {
                                     placeholder="max"
                                     onChange={e => setFilters({ ...filters, temperatura_maxima: e.target.value })}
                                 />
-
                             </div>
                         </div>
 
@@ -198,7 +196,6 @@ export default function Page() {
 
                         <div className="flex flex-col">
                             <label htmlFor="">Turbidez (uT)</label>
-
                             <div>
                                 <input
                                     type="number"
@@ -221,7 +218,6 @@ export default function Page() {
                                     onChange={e => setFilters({ ...filters, turbidez_maxima: e.target.value })}
                                 />
                             </div>
-
                         </div>
 
                         <div className="flex flex-col">
@@ -247,7 +243,6 @@ export default function Page() {
                                     placeholder="max"
                                     onChange={e => setFilters({ ...filters, cor_maxima: e.target.value })}
                                 />
-
                             </div>
                         </div>
 
@@ -272,11 +267,12 @@ export default function Page() {
                             </select>
                         </div>
 
-                        <input
+                        <button
                             type="submit"
-                            value="Exportar"
-                            className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500 p-4 h-fit w-[320px] rounded-lg hover:bg-blue-600 text-white font-semibold border border-blue-600 shadow-lg"
-                        />
+                            className="w-fit h-fit px-8 py-4 rounded-lg fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500  hover:bg-blue-600 text-white font-semibold border border-blue-600 shadow-lg"
+                        >
+                            <FontAwesomeIcon icon={faDownload}/> Exportar
+                        </button>
                     </form>
                 </div>
             </div>
