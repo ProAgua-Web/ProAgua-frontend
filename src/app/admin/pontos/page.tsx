@@ -164,7 +164,7 @@ export default function Pontos() {
         </div>
 
         <div className="flex flex-col w-full">
-          <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-full bg-gray-100 border border-gray-300 text-green-500 font-semibold rounded-md hover:bg-green-600 hover:text-white text-center">+ Adicionar edificação</a>
+          <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-fit bg-gray-50 border border-gray-300 text-green-500 font-semibold rounded-lg hover:bg-green-500 hover:border-green-600 transition-all duration-75 hover:text-white text-center">+ Adicionar edificação</a>
           {Object.values(groups).map((group, i) => {
             return <CardEdificacao group={group} key={"edificacao-" + i} collapsed={false} />
           })}
