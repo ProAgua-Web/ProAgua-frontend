@@ -2,23 +2,39 @@
 
 import { useState, useEffect } from "react";
 import TableColetas from "@/components/coletas/TabelaColetas";
-import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
-import { consumerColeta, consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
+import { Edificacao, Ponto, TIPOS_PONTOS, } from "@/utils/types";
+import { APIConsumer, apiUrl, consumerColeta, consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
+import { OptionalField, convertTypes } from "./typeUtils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload, faFileDownload, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
-function toURLParams(data: Object) {
-    let params = [];
-
-    for (const [key, value] of Object.entries(data)) {
-        if (value) {
-            params.push(key + "=" + value);
-        }
-    }
-
-    return params.join('&');
+function DateISO(d: string): String {
+    return new Date(d).toISOString().split('T')[0];
 }
 
+const SchemaFilter = {
+    data_minima: new OptionalField(DateISO),
+    data_maxima: new OptionalField(DateISO),
+    temperatura_minima: new OptionalField(Number),
+    temperatura_maxima: new OptionalField(Number),
+    cloro_residual_livre_minimo: new OptionalField(Number),
+    cloro_residual_livre_maximo: new OptionalField(Number),
+    turbidez_minima: new OptionalField(Number),
+    turbidez_maxima: new OptionalField(Number),
+    cor_minima: new OptionalField(Number),
+    cor_maxima: new OptionalField(Number),
+    coliformes_totais: new OptionalField(Boolean),
+    escherichia: new OptionalField(Boolean),
+};
+
 export default function Page() {
-    const [filters, setFilters] = useState<any>({
+    const [coletas, setColetas] = useState<any[]>([]);
+    const [edificacoes, setEdificacoes] = useState<any[]>([]);
+    const [pontos, setPontos] = useState<any[]>([]);
+    const [pontoId, setPontoId] = useState('');
+    const [codEdificacao, setCodEdificacao] = useState('');
+
+    const [filters, setFilters] = useState<{[key: string]: string}>({
         data_minima: '',
         data_maxima: '',
         temperatura_minima: '',
@@ -29,18 +45,12 @@ export default function Page() {
         turbidez_maxima: '',
         cor_minima: '',
         cor_maxima: '',
-        coliformes_totais: false,
-        escherichia: false,
-        codigo_edificacao: '',
-        ponto_id: ''
+        coliformes_totais: 'false',
+        escherichia: 'false',
     });
 
-    const [coletas, setColetas] = useState<any[]>([]);
-    const [edificacoes, setEdificacoes] = useState<any[]>([]);
-    const [pontos, setPontos] = useState<any[]>([]);
-
     // Filtrar pontos por edificação (no navegador)
-    const filteredPontos = filters.codigo_edificacao ? pontos.filter(ponto => ponto.edificacao.codigo == filters.codigo_edificacao) : pontos;
+    const filteredPontos = codEdificacao ? pontos.filter(ponto => ponto.edificacao.codigo == codEdificacao) : pontos;
 
     useEffect(() => {
         consumerEdficacao.list()
@@ -51,85 +61,17 @@ export default function Page() {
     }, []);
 
     useEffect(() => {
-        (async () => {
-            const q = {
-                data_minima: filters.data_minima ? (new Date(filters.data_minima)).toISOString().split('T')[0] : undefined,
-                data_maxima: filters.data_maxima ? (new Date(filters.data_maxima)).toISOString().split('T')[0] : undefined,
-
-                temperatura_minima: filters.temperatura_minima ? parseFloat(filters.temperatura_minima) : undefined,
-                temperatura_maxima: filters.temperatura_maxima ? parseFloat(filters.temperatura_maxima) : undefined,
-
-                cloro_residual_livre_minimo: filters.cloro_residual_livre_minimo ? parseFloat(filters.cloro_residual_livre_minimo) : undefined,
-                cloro_residual_livre_maximo: filters.cloro_residual_livre_maximo ? parseFloat(filters.cloro_residual_livre_maximo) : undefined,
-
-                turbidez_minima: filters.turbidez_minima ? parseFloat(filters.turbidez_minima) : undefined,
-                turbidez_maxima: filters.turbidez_maxima ? parseFloat(filters.turbidez_maxima) : undefined,
-
-                cor_minima: filters.cor_minima ? parseFloat(filters.cor_minima) : undefined,
-                cor_maxima: filters.cor_maxima ? parseFloat(filters.cor_maxima) : undefined,
-                
-                escherichia: filters.escherichia !== 'both' ? filters.escherichia : undefined,
-                coliformes_totais: filters.coliformes_totais !== 'both' ? filters.coliformes_totais : undefined,
-            };
-
-            console.log("Query:", q);
-            const coletas = await consumerColeta.list('no-cache', q);
-            console.log("Coletas:", coletas);
-            setColetas(coletas);
-        })();
+        const q = convertTypes(filters, SchemaFilter, false);
+        consumerColeta.list('no-cache', q).then(data => setColetas(data));
     }, [filters]);
 
-    const submitForm = async (e: { preventDefault: () => void; }) => {
+    async function submitForm(e: { preventDefault: () => void; }) {
         e.preventDefault();
-        const _filters = { ...filters };
-        if (_filters.data_minima != '') {
-            _filters.data_minima = (new Date(_filters.data_minima)).toISOString().split('T')[0];
-        }
 
-        if (_filters.data_maxima != '') {
-            _filters.data_maxima = (new Date(_filters.data_maxima)).toISOString().split('T')[0];
-        }
-
-        if (_filters.temperatura_minima != '') {
-            _filters.temperatura_minima = parseFloat(_filters.temperatura_minima);
-        }
-
-        if (_filters.temperatura_maxima != '') {
-            _filters.temperatura_maxima = parseFloat(_filters.temperatura_maxima);
-        }
-
-        if (_filters.cloro_residual_livre_minimo != '') {
-            _filters.cloro_residual_livre_minimo = parseFloat(_filters.cloro_residual_livre_minimo);
-        }
-
-        if (_filters.cloro_residual_livre_maximo != '') {
-            _filters.cloro_residual_livre_maximo = parseFloat(_filters.cloro_residual_livre_maximo);
-        }
-
-        if (_filters.turbidez_minima != '') {
-            _filters.turbidez_minima = parseFloat(_filters.turbidez_minima);
-        }
-
-        if (_filters.turbidez_maxima != '') {
-            _filters.turbidez_maxima = parseFloat(_filters.turbidez_maxima);
-        }
-
-        if (_filters.cor_minima != '') {
-            _filters.cor_minima = parseFloat(_filters.cor_minima);
-        }
-
-        if (_filters.cor_maxima != '') {
-            _filters.cor_maxima = parseFloat(_filters.cor_maxima);
-        }
-
-        // TODO: corrigir esses filtros aqui
-        const query = toURLParams(_filters);
-        const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/excel?" + query, {
-            'credentials': 'include'
-        });
-        const blob = await resp.blob();
-
-        var file = window.URL.createObjectURL(blob);
+        const q = convertTypes(filters, SchemaFilter, false);
+        const excel = new APIConsumer(`${apiUrl}/api/v1/coletas/excel`);
+        const blob = await excel.getBlob('no-cache', q);
+        const file = window.URL.createObjectURL(blob);
         window.location.assign(file);
     }
 
@@ -140,12 +82,13 @@ export default function Page() {
             <div className="w-[calc(100%-100px)] min-w-fit flex mb-14">
                 <TableColetas
                     coletas={coletas}
-                />
-                <div className="max-h-[calc(100vh-clamp(50px,8vh,100px)-2rem)] w-[320px] mb-12 overflow-y-scroll fixed top-[calc(clamp(50px,8vh,100px)+1rem)] right-4 z-[1000] bg-white shadow-xl border border-neutral-300 rounded-xl">
+                    />
+                <div className="w-[320px] max-h-[calc(100vh-clamp(50px,8vh,100px)-2rem)] mb-12 overflow-y-scroll fixed top-[calc(clamp(50px,8vh,100px)+1rem)] right-4 z-[1000] bg-neutral-50 shadow-xl border border-neutral-300 rounded-xl overflow-x-hidden">
+                    
                     <form
                         method="GET"
                         onSubmit={submitForm}
-                        className="w-[320px] flex flex-wrap gap-4 items-end flex-col px-8 py-6 "
+                        className="w-full flex flex-wrap gap-4 items-end flex-col px-6 py-6"
                     >
                         <h1 className="w-full text-center text-2xl mb-4 font-bold text-neutral-600">Filtrar dados</h1>
 
@@ -155,10 +98,10 @@ export default function Page() {
                                 id="codigo_edificacao"
                                 name="codigo_edificacao"
                                 onChange={async e => {
-                                    setFilters({ ...filters, codigo_edificacao: e.target.value, ponto_id: ''})
+                                    setCodEdificacao(e.target.value);
+                                    setPontoId('');
                                 }}>
                                 <option value="">-</option>
-
                                 {edificacoes && edificacoes.map((edificacao: Edificacao) => (
                                     <option key={edificacao.codigo} value={edificacao.codigo} className="">{edificacao.codigo} - {edificacao.nome.length < 30 ? edificacao.nome : edificacao.nome.slice(0, 30).trim() + "..."}</option>
                                 ))}
@@ -167,11 +110,10 @@ export default function Page() {
 
                         <div className="flex flex-col w-full">
                             <label htmlFor="ponto_id">Ponto de coleta</label>
-
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg"
                                 id="ponto_id"
                                 name="ponto_id"
-                                onChange={e => setFilters({ ...filters, ponto_id: e.target.value })}>
+                                onChange={e => setPontoId(e.target.value)}>
                                 <option value="">-</option>
 
                                 {filteredPontos && filteredPontos.map((ponto: Ponto) => <option key={ponto.id} value={ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]} {ponto.localizacao && '- ' + ponto.localizacao} {ponto.tombo && '- ' + ponto.tombo}</option>)}
@@ -180,7 +122,6 @@ export default function Page() {
 
                         <div className="flex flex-col">
                             <label htmlFor="">Intervalo de Data</label>
-
                             <div>
                                 <input
                                     type="date"
@@ -199,7 +140,6 @@ export default function Page() {
                                     onChange={e => setFilters({ ...filters, data_maxima: e.target.value })}
                                 />
                             </div>
-
                         </div>
 
                         <div className="flex flex-col">
@@ -225,7 +165,6 @@ export default function Page() {
                                     placeholder="max"
                                     onChange={e => setFilters({ ...filters, temperatura_maxima: e.target.value })}
                                 />
-
                             </div>
                         </div>
 
@@ -257,7 +196,6 @@ export default function Page() {
 
                         <div className="flex flex-col">
                             <label htmlFor="">Turbidez (uT)</label>
-
                             <div>
                                 <input
                                     type="number"
@@ -280,7 +218,6 @@ export default function Page() {
                                     onChange={e => setFilters({ ...filters, turbidez_maxima: e.target.value })}
                                 />
                             </div>
-
                         </div>
 
                         <div className="flex flex-col">
@@ -306,7 +243,6 @@ export default function Page() {
                                     placeholder="max"
                                     onChange={e => setFilters({ ...filters, cor_maxima: e.target.value })}
                                 />
-
                             </div>
                         </div>
 
@@ -314,7 +250,7 @@ export default function Page() {
                             <label htmlFor="coliformes_totais">Presença de Coliformes totais</label>
 
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="coliformes_totais" id="coliformes_totais" onChange={e => setFilters({ ...filters, coliformes_totais: e.target.value })}>
-                                <option value="both">Presença/Ausência</option>
+                                <option value="">Presença/Ausência</option>
                                 <option value="true">Presença</option>
                                 <option value="false">Ausência</option>
                             </select>
@@ -325,17 +261,18 @@ export default function Page() {
                             <label htmlFor="escherichia">Presença de Escherichia coli</label>
 
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="escherichia" id="escherichia" onChange={e => setFilters({ ...filters, escherichia: e.target.value })}>
-                                <option value="both">Presença/Ausência</option>
+                                <option value="">Presença/Ausência</option>
                                 <option value="true">Presença</option>
                                 <option value="false">Ausência</option>
                             </select>
                         </div>
 
-                        <input
+                        <button
                             type="submit"
-                            value="Exportar"
-                            className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500 p-4 h-fit w-[320px] rounded-lg hover:bg-blue-600 text-white font-semibold border border-blue-600 shadow-lg"
-                        />
+                            className="w-fit h-fit px-8 py-4 rounded-lg fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500  hover:bg-blue-600 text-white font-semibold border border-blue-600 shadow-lg"
+                        >
+                            <FontAwesomeIcon icon={faDownload}/> Exportar
+                        </button>
                     </form>
                 </div>
             </div>

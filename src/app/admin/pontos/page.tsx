@@ -4,9 +4,25 @@ import { Edificacao, Ponto } from "@/utils/types";
 import { consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
 
 import { useEffect, useState } from "react";
-import { CollapseIcon } from "./components/CollapseIcon";
-import { ExpandIcon } from "./components/ExpandIcon";
 import { CardEdificacao } from "./components/CardEdificacao";
+
+interface Groups {
+  [x: string]: { edificacao: Edificacao, pontos: Ponto[] }
+}
+
+interface FiltroPontos {
+  [key: string]: boolean;
+}
+
+interface TiposPontos {
+  [key: string]: number;
+}
+
+interface Filters {
+  q: string,
+  campus: string,
+  filtroPontos: FiltroPontos
+}
 
 function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
   var groups = Object();
@@ -25,20 +41,44 @@ function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
   return groups;
 }
 
-interface Groups {
-  [x: string]: { edificacao: Edificacao, pontos: Ponto[] }
+function FilterPontos(props: {filtersState:any, setFilters: (d: any) => void} ) {
+  const {filtersState: filters, setFilters} = props;
+
+  function toggleFilter(name: string) {
+    setFilters({
+      ...filters, filtroPontos: {
+        ...filters.filtroPontos,
+        [name]: !filters.filtroPontos[name]
+      }
+    });
+  }
+
+  return (
+    <div className="flex gap-8">
+      {Object.entries(filters.filtroPontos).map(([key, value]) => {
+        return (
+          <label htmlFor={key} key={key} className="select-none cursor-pointer">
+            <input
+              type="checkbox"
+              className="cursor-pointer mr-1"
+              name={key}
+              id={key}
+              checked={Boolean(value)}
+              onChange={() => toggleFilter(key)}
+            />
+            {key}
+          </label>
+        );
+      })}
+    </div>
+  )
 }
 
 export default function Pontos() {
   const [pontos, setPontos] = useState<Ponto[]>([]);
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-
-  const [filters, setFilters] = useState<{
-    q: string,
-    campus: string,
-    filtroPontos: { [key: string]: boolean }
-  }>({
+  
+  const [filters, setFilters] = useState<Filters>({
     q: "",
     campus: "",
     filtroPontos: {
@@ -52,7 +92,7 @@ export default function Pontos() {
     }
   })
 
-  const tiposPontos = {
+  const tiposPontos: TiposPontos = {
     "Bebedouro": 0,
     "Torneira": 1,
     "RPS": 2,
@@ -87,16 +127,6 @@ export default function Pontos() {
       .then(data => setPontos(data));
   }, [filters]);
 
-
-  function toggleFilter(name: string) {
-    setFilters({
-      ...filters, filtroPontos: {
-        ...filters.filtroPontos,
-        [name]: !filters.filtroPontos[name]
-      }
-    });
-  }
-
   return (
     <>
       <h2 className="text-3xl text-[#525252]">Edificações e Pontos de Coleta</h2>
@@ -124,41 +154,19 @@ export default function Pontos() {
               <option value="OE">Oeste</option>
             </select>
           </div>
-          <div className="w-full flex justify-between gap-3 self-end">
 
-            <div className="flex gap-8">
-
-              {Object.entries(filters.filtroPontos).map(([key, value]) => {
-                return (
-                  <label htmlFor={key}>
-                    <input
-                      type="checkbox"
-                      name={key}
-                      key={key}
-                      id={key}
-                      checked={Boolean(value)}
-                      onChange={() => toggleFilter(key)}
-                    />
-                    {key}
-                  </label>
-                );
-              })}
-            </div>
-
-            <button
-              className="self-end px-4 py-2 mb-2 border rounded-md hover:bg-slate-50"
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              {collapsed ? <CollapseIcon /> : <ExpandIcon />}
-            </button>
-
+          <div className="w-full flex justify-between gap-3 self-end mb-4">
+            <FilterPontos
+              filtersState={filters}
+              setFilters={setFilters}
+            />
           </div>
         </div>
 
         <div className="flex flex-col w-full">
-          <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-full bg-gray-100 border border-gray-300 text-green-500 font-semibold rounded-md hover:bg-green-600 hover:text-white text-center">+ Adicionar edificação</a>
+          <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-fit bg-gray-50 border border-gray-300 text-green-500 font-semibold rounded-lg hover:bg-green-500 hover:border-green-600 transition-all duration-75 hover:text-white text-center">+ Adicionar edificação</a>
           {Object.values(groups).map((group, i) => {
-            return <CardEdificacao group={group} key={"edificacao-" + i} collapsed={collapsed} />
+            return <CardEdificacao group={group} key={"edificacao-" + i} collapsed={false} />
           })}
         </div>
 

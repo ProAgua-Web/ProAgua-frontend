@@ -3,6 +3,8 @@
 import { ParametroReferencia, Usuario } from "@/utils/types";
 import { useState } from "react";
 import { consumerParametrosReferencia, useParametrosReferencia, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 export default function Configuracoes() {
     const usuarios: Usuario[] = useUsuarios();
@@ -105,19 +107,27 @@ export default function Configuracoes() {
                 </div> */}
 
                     <div className="w-full flex justify-center pt-4 gap-8">
-                        <input
+                        <button
                             id="editar"
                             type="submit"
-                            className={`w-44 rounded-lg border ${editable ? 'bg-green-500 hover:bg-green-600' : 'bg-rose-500 hover:bg-rose-600'}  disabled:bg-green-900 px-6 py-4 text-center font-semibold text-white`}
+                            className={`w-fit rounded-lg border ${editable ? 'bg-green-500 hover:bg-green-600' : 'bg-rose-500 hover:bg-rose-600'}  disabled:bg-green-900 px-6 py-4 text-center font-semibold text-white`}
                             onClick={event => {
                                 if (!editable) {
                                     event.preventDefault();
                                     setEditable(true);
                                 }
                             }}
-                            value={editable ? submiting ? "Editando..." : "Salvar" : "Habilitar edição"}
                             disabled={submiting}
-                        />
+                        >
+                            {editable
+                                ?
+                                submiting 
+                                    ? "Editando..." 
+                                    : "Salvar"
+                                :
+                                <><FontAwesomeIcon icon={faPenToSquare}/> Habilitar edição</>
+                            }
+                        </button>
 
                         {editable && (
                             <>

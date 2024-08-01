@@ -37,6 +37,22 @@ export class APIConsumer<Tin, Tout> {
         return data;
     }
 
+    async getBlob(cache: RequestCache = "no-cache", query: any = undefined) {
+        let searchParams = "";
+
+        if (query) {
+            query["limit"] = 10000
+            searchParams = '?' + toQuery(query);
+        }
+
+        const response = await fetch(this.baseUrl + searchParams, {
+            cache: cache,
+            credentials: "include"
+        });
+
+        return await response.blob();
+    }
+
     async list(cache: RequestCache = "no-cache", query: any = undefined) {
         let searchParams = "";
 
