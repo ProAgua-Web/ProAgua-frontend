@@ -1,6 +1,6 @@
 import { Coleta, TIPOS_PONTOS } from "@/utils/types";
-import DangerIcon from "../icons/DangerIcon";
-import OkIcon from "../icons/OkIcon";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function TableColetas(props: { coletas: Coleta[] }) {
     const { coletas } = props;
@@ -53,7 +53,11 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                                     <td className="px-2 py-3 text-nowrap">{formatDate(coleta.data)}</td>
                                     <td className="px-2 py-3" title={String(coleta.status_messages)}>
                                         <span className="w-full flex justify-center">
-                                            {coleta.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem" />}
+                                            <FontAwesomeIcon 
+                                                icon={coleta.status ? faCircleCheck : faExclamationCircle}
+                                                className={coleta.status ? 'text-green-500' : 'text-red-500'}
+                                                size="xl"
+                                            />
                                         </span>
                                     </td>
                                 </tr>
