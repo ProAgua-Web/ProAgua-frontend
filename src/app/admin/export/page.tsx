@@ -2,23 +2,37 @@
 
 import { useState, useEffect } from "react";
 import TableColetas from "@/components/coletas/TabelaColetas";
-import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
-import { consumerColeta, consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
+import { Edificacao, Ponto, TIPOS_PONTOS, } from "@/utils/types";
+import { APIConsumer, apiUrl, consumerColeta, consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
+import { OptionalField, convertTypes } from "./typeUtils";
 
-function toURLParams(data: Object) {
-    let params = [];
-
-    for (const [key, value] of Object.entries(data)) {
-        if (value) {
-            params.push(key + "=" + value);
-        }
-    }
-
-    return params.join('&');
+function DateISO(d: string): String {
+    return new Date(d).toISOString().split('T')[0];
 }
 
+const SchemaFilter = {
+    data_minima: new OptionalField(DateISO),
+    data_maxima: new OptionalField(DateISO),
+    temperatura_minima: new OptionalField(Number),
+    temperatura_maxima: new OptionalField(Number),
+    cloro_residual_livre_minimo: new OptionalField(Number),
+    cloro_residual_livre_maximo: new OptionalField(Number),
+    turbidez_minima: new OptionalField(Number),
+    turbidez_maxima: new OptionalField(Number),
+    cor_minima: new OptionalField(Number),
+    cor_maxima: new OptionalField(Number),
+    coliformes_totais: new OptionalField(Boolean),
+    escherichia: new OptionalField(Boolean),
+};
+
 export default function Page() {
-    const [filters, setFilters] = useState<any>({
+    const [coletas, setColetas] = useState<any[]>([]);
+    const [edificacoes, setEdificacoes] = useState<any[]>([]);
+    const [pontos, setPontos] = useState<any[]>([]);
+    const [pontoId, setPontoId] = useState('');
+    const [codEdificacao, setCodEdificacao] = useState('');
+
+    const [filters, setFilters] = useState<{[key: string]: string}>({
         data_minima: '',
         data_maxima: '',
         temperatura_minima: '',
@@ -29,18 +43,12 @@ export default function Page() {
         turbidez_maxima: '',
         cor_minima: '',
         cor_maxima: '',
-        coliformes_totais: false,
-        escherichia: false,
-        codigo_edificacao: '',
-        ponto_id: ''
+        coliformes_totais: 'false',
+        escherichia: 'false',
     });
 
-    const [coletas, setColetas] = useState<any[]>([]);
-    const [edificacoes, setEdificacoes] = useState<any[]>([]);
-    const [pontos, setPontos] = useState<any[]>([]);
-
     // Filtrar pontos por edificação (no navegador)
-    const filteredPontos = filters.codigo_edificacao ? pontos.filter(ponto => ponto.edificacao.codigo == filters.codigo_edificacao) : pontos;
+    const filteredPontos = codEdificacao ? pontos.filter(ponto => ponto.edificacao.codigo == codEdificacao) : pontos;
 
     useEffect(() => {
         consumerEdficacao.list()
@@ -51,85 +59,17 @@ export default function Page() {
     }, []);
 
     useEffect(() => {
-        (async () => {
-            const q = {
-                data_minima: filters.data_minima ? (new Date(filters.data_minima)).toISOString().split('T')[0] : undefined,
-                data_maxima: filters.data_maxima ? (new Date(filters.data_maxima)).toISOString().split('T')[0] : undefined,
-
-                temperatura_minima: filters.temperatura_minima ? parseFloat(filters.temperatura_minima) : undefined,
-                temperatura_maxima: filters.temperatura_maxima ? parseFloat(filters.temperatura_maxima) : undefined,
-
-                cloro_residual_livre_minimo: filters.cloro_residual_livre_minimo ? parseFloat(filters.cloro_residual_livre_minimo) : undefined,
-                cloro_residual_livre_maximo: filters.cloro_residual_livre_maximo ? parseFloat(filters.cloro_residual_livre_maximo) : undefined,
-
-                turbidez_minima: filters.turbidez_minima ? parseFloat(filters.turbidez_minima) : undefined,
-                turbidez_maxima: filters.turbidez_maxima ? parseFloat(filters.turbidez_maxima) : undefined,
-
-                cor_minima: filters.cor_minima ? parseFloat(filters.cor_minima) : undefined,
-                cor_maxima: filters.cor_maxima ? parseFloat(filters.cor_maxima) : undefined,
-                
-                escherichia: filters.escherichia !== 'both' ? filters.escherichia : undefined,
-                coliformes_totais: filters.coliformes_totais !== 'both' ? filters.coliformes_totais : undefined,
-            };
-
-            console.log("Query:", q);
-            const coletas = await consumerColeta.list('no-cache', q);
-            console.log("Coletas:", coletas);
-            setColetas(coletas);
-        })();
+        const q = convertTypes(filters, SchemaFilter, false);
+        consumerColeta.list('no-cache', q).then(data => setColetas(data));
     }, [filters]);
 
-    const submitForm = async (e: { preventDefault: () => void; }) => {
+    async function submitForm(e: { preventDefault: () => void; }) {
         e.preventDefault();
-        const _filters = { ...filters };
-        if (_filters.data_minima != '') {
-            _filters.data_minima = (new Date(_filters.data_minima)).toISOString().split('T')[0];
-        }
 
-        if (_filters.data_maxima != '') {
-            _filters.data_maxima = (new Date(_filters.data_maxima)).toISOString().split('T')[0];
-        }
-
-        if (_filters.temperatura_minima != '') {
-            _filters.temperatura_minima = parseFloat(_filters.temperatura_minima);
-        }
-
-        if (_filters.temperatura_maxima != '') {
-            _filters.temperatura_maxima = parseFloat(_filters.temperatura_maxima);
-        }
-
-        if (_filters.cloro_residual_livre_minimo != '') {
-            _filters.cloro_residual_livre_minimo = parseFloat(_filters.cloro_residual_livre_minimo);
-        }
-
-        if (_filters.cloro_residual_livre_maximo != '') {
-            _filters.cloro_residual_livre_maximo = parseFloat(_filters.cloro_residual_livre_maximo);
-        }
-
-        if (_filters.turbidez_minima != '') {
-            _filters.turbidez_minima = parseFloat(_filters.turbidez_minima);
-        }
-
-        if (_filters.turbidez_maxima != '') {
-            _filters.turbidez_maxima = parseFloat(_filters.turbidez_maxima);
-        }
-
-        if (_filters.cor_minima != '') {
-            _filters.cor_minima = parseFloat(_filters.cor_minima);
-        }
-
-        if (_filters.cor_maxima != '') {
-            _filters.cor_maxima = parseFloat(_filters.cor_maxima);
-        }
-
-        // TODO: corrigir esses filtros aqui
-        const query = toURLParams(_filters);
-        const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/coletas/excel?" + query, {
-            'credentials': 'include'
-        });
-        const blob = await resp.blob();
-
-        var file = window.URL.createObjectURL(blob);
+        const q = convertTypes(filters, SchemaFilter, false);
+        const excel = new APIConsumer(`${apiUrl}/api/v1/coletas/excel`);
+        const blob = await excel.getBlob('no-cache', q);
+        const file = window.URL.createObjectURL(blob);
         window.location.assign(file);
     }
 
@@ -155,7 +95,8 @@ export default function Page() {
                                 id="codigo_edificacao"
                                 name="codigo_edificacao"
                                 onChange={async e => {
-                                    setFilters({ ...filters, codigo_edificacao: e.target.value, ponto_id: ''})
+                                    setCodEdificacao(e.target.value);
+                                    setPontoId('');
                                 }}>
                                 <option value="">-</option>
 
@@ -314,7 +255,7 @@ export default function Page() {
                             <label htmlFor="coliformes_totais">Presença de Coliformes totais</label>
 
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="coliformes_totais" id="coliformes_totais" onChange={e => setFilters({ ...filters, coliformes_totais: e.target.value })}>
-                                <option value="both">Presença/Ausência</option>
+                                <option value="">Presença/Ausência</option>
                                 <option value="true">Presença</option>
                                 <option value="false">Ausência</option>
                             </select>
@@ -325,7 +266,7 @@ export default function Page() {
                             <label htmlFor="escherichia">Presença de Escherichia coli</label>
 
                             <select className="p-4 bg-white border border-neutral-300 rounded-lg" name="escherichia" id="escherichia" onChange={e => setFilters({ ...filters, escherichia: e.target.value })}>
-                                <option value="both">Presença/Ausência</option>
+                                <option value="">Presença/Ausência</option>
                                 <option value="true">Presença</option>
                                 <option value="false">Ausência</option>
                             </select>
