@@ -1,5 +1,7 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProAguaLogo from "/public/ProAguaLogo.svg";
 import Image from "next/image";
+import { faBars, faChevronLeft, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header(props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
@@ -11,21 +13,14 @@ export default function Header(props: {
         credentials: 'include'
       });
       window.location.reload();
-  }
+  } 
 
   return (
     <header>
       <div
         id="header-bar"
-        className="h-[clamp(50px,8vh,100px)] fixed z-20 flex w-full items-center bg-primary-500 text-white-100 shadow-lg"
+        className="h-20 fixed z-20 flex w-full items-center bg-primary-500 text-white-100 shadow-lg"
       >
-        <button
-          id="menu-button"
-          onClick={props.expand}
-          className="h-[clamp(50px,8vh,100px)] w-[clamp(50px,8vh,100px)] bg-primary-500 hover:bg-primary-600"
-        >
-          -
-        </button>
         <i className="bi bi-list header-icon"></i>
 
         <div id="header-content" className="flex w-full justify-center">
@@ -41,7 +36,9 @@ export default function Header(props: {
           </div>
         </div>
 
-        <button onClick={ logout } className="h-[clamp(50px,8vh,100px)] w-[clamp(50px,8vh,100px)] bg-primary-500 hover:bg-primary-600">Sair</button>
+        <button onClick={ logout } className="h-[clamp(50px,8vh,100px)] w-[clamp(50px,8vh,100px)] bg-primary-500 hover:bg-primary-600">
+          <FontAwesomeIcon icon={faRightFromBracket} className="mr-1"/>Sair
+        </button>
       </div>
     </header>
   );

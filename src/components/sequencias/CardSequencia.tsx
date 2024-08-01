@@ -14,7 +14,7 @@ export default function CardSequencia(props: { sequencia: Sequencia }) {
         <p className="text-sm">
           {sequencia.ponto?.tipo === 1 ? "Bebedouro" : "RPS"}
         </p>
-        <p className="text-sm">{sequencia.ponto?.ambiente}</p>
+        <p className="text-sm">{sequencia.ponto?.localizacao}</p>
         <h5>Ciclo de Amostragem {sequencia.amostragem.toString()}</h5>
         <a
           href={`sequencias_coletas/${sequencia.id}`}

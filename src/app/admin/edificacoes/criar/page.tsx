@@ -39,7 +39,6 @@ export default function CriarEdificacao() {
             nome: String(formData.get("nome")),
             campus: String(formData.get("campus")),
             cronograma: Number(formData.get("cronograma")),
-            informacoes_gerais: String(formData.get("informacoes_gerais"))
         };
 
         const response = await consumerEdficacao.post(data);
@@ -110,18 +109,7 @@ export default function CriarEdificacao() {
                     className="rounded-lg border border-neutral-400 px-6 py-4"
                     required
                 />
-
-                <label htmlFor="informacoes_gerais">
-                    Informações gerais:
-                </label>
-                <textarea
-                    id="informacoes_gerais"
-                    name="informacoes_gerais"
-                    className="rounded-lg border border-neutral-200 px-6 py-4"
-                    rows={4}
-                    placeholder="Informações gerais sobre a edificação...">
-                </textarea>
-
+                
                 <hr />
 
                 <label htmlFor="foto">

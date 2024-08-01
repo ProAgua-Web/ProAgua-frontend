@@ -1,8 +1,24 @@
 import { useEffect, useState } from "react";
-import { Coleta, ColetaIn, Edificacao, EdificacaoIn, ParametroReferencia, Ponto, PontoIn, Sequencia, SequenciaIn, Solicitacao, SolicitacaoIn, Usuario, UsuarioIn } from "@/utils/types";
+import { Coleta, ColetaIn, Edificacao, EdificacaoIn, ParametroReferencia, Ponto, PontoIn, Reservatorio, ReservatorioIn, Sequencia, SequenciaIn, Solicitacao, SolicitacaoIn, Usuario, UsuarioIn } from "@/utils/types";
 import { getCookie } from "../cookies";
 
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+function toQuery(data: any): string {
+    return Object.keys(data).reduce((acc: string[], cur: string) => {
+        const value = data[cur];
+
+        if (value === undefined || value === null) {
+            return acc;
+        }
+        
+        if (value instanceof Array) {
+            return [...acc, ...value.map( v => `${cur}=${v}`)];
+        }
+
+        return [...acc, `${cur}=${value}`];
+    }, []).join('&');
+}
 
 export class APIConsumer<Tin, Tout> {
     baseUrl: string;
@@ -21,15 +37,28 @@ export class APIConsumer<Tin, Tout> {
         return data;
     }
 
+    async getBlob(cache: RequestCache = "no-cache", query: any = undefined) {
+        let searchParams = "";
+
+        if (query) {
+            query["limit"] = 10000
+            searchParams = '?' + toQuery(query);
+        }
+
+        const response = await fetch(this.baseUrl + searchParams, {
+            cache: cache,
+            credentials: "include"
+        });
+
+        return await response.blob();
+    }
+
     async list(cache: RequestCache = "no-cache", query: any = undefined) {
         let searchParams = "";
 
         if (query) {
             query["limit"] = 10000
-            // Remove undefined fields
-            Object.keys(query).forEach(key => query[key] === undefined && delete query[key])
-            searchParams = new URLSearchParams(query).toString();
-            searchParams = '?' + searchParams;
+            searchParams = '?' + toQuery(query);
         }
 
         const response = await fetch(this.baseUrl + searchParams, {
@@ -115,6 +144,7 @@ export class APIConsumer<Tin, Tout> {
 
 export const consumerEdficacao = new APIConsumer<EdificacaoIn, Edificacao>(`${apiUrl}/api/v1/edificacoes/`);
 export const consumerPonto = new APIConsumer<PontoIn, Ponto>(`${apiUrl}/api/v1/pontos/`);
+export const consumerReservatorio = new APIConsumer<ReservatorioIn, Reservatorio>(`${apiUrl}/api/v1/reservatorios/`);
 export const consumerColeta = new APIConsumer<ColetaIn, Coleta>(`${apiUrl}/api/v1/coletas/`);
 export const consumerSolicitacao = new APIConsumer<SolicitacaoIn, Solicitacao>(`${apiUrl}/api/v1/solicitacoes/`);
 export const consumerSequencia = new APIConsumer<SequenciaIn, Sequencia>(`${apiUrl}/api/v1/sequencias/`);
@@ -184,6 +214,15 @@ export function usePonto(id_ponto: number) {
     return ponto
 }
 
+export function useReservatorio(id_reservatorio: number) {
+    const [reservatorio, setReservatorio] = useState<Reservatorio>();
+    useEffect(() => {
+        consumerReservatorio.get(id_reservatorio.toString())
+            .then(data => setReservatorio(data))
+    }, [id_reservatorio])
+    return reservatorio
+}
+
 export function usePontos(codigo_edificacao: string | null = null, id_sequencia: number | null = null) {
     const [pontos, setPontos] = useState<Ponto[]>([]);
     useEffect(() => {
@@ -191,6 +230,16 @@ export function usePontos(codigo_edificacao: string | null = null, id_sequencia:
             .then(data => setPontos(data))
     }, [])
     return pontos
+}
+
+export function useReservatorios(codigo_edificacao: string | null = null, id_sequencia: number | null = null) {
+    const [reservatorios, setReservatorios] = useState<Reservatorio[]>([]);
+    useEffect(() => {
+        consumerReservatorio.list('no-cache', { limit: 10000 })
+            .then(data => setReservatorios(data))
+    }, [])
+    console.log(reservatorios)
+    return reservatorios
 }
 
 export function usePontosAmontante(ponto: Ponto | null) {

@@ -1,25 +1,72 @@
 
 export type PontoIn = {
-    ambiente: string | null,
-    tipo: number | null,
     codigo_edificacao?: string,
+    localizacao: string | null,
+    tipo: number | null,
     amontante: number | null,
     tombo: string | null,
-    imagem: string | null,
-    associados: number[] | null,
+
+    quantidade?: number | null,
+    capacidade?: number | null,
+    material?: string | null,
+    fonte_informacao?: string | null,
+    observacao?: string | null,
+
+    // imagem: string | null,
+}
+
+export type PontoInicialIn = {
+    codigo_edificacao: string,
+    tipo: number,
+    localizacao: string | null,
+    tombo: string | null,
+    // imagem: string | null,
+    amontante: number | null,
+}
+
+export type ReservatorioIn = {
+    codigo_edificacao: string,
+    tipo: number,
+    localizacao: string | null,
+    quantidade: number | null, // unico, duplo, triplo
+    capacidade: number | null, // em (L)
+    material: string | null, // polietileno, alvenaria, fibra de vidro
+    fonte_informacao: string | null, // Técnico reponsável
+    observacao: string | null,
+    // imagem: string,
+    amontante: number | null,
 }
 
 export type Ponto = {
     id: number;
-    tombo: string;
-    ambiente: string;
-    edificacao_url: string;
-    tipo: number;
     edificacao: Edificacao;
+    tipo: number;
+    localizacao?: string | null;
+    observacao?: string | null;
+    tombo?: string | null;
+    
+    quantidade?: number | null;
+    capacidade?: number | null;
+    material?: string | null;
+    fonte_informacao?: string | null;
+
     status: boolean;
     status_message: string;
     amontante?: Ponto;
-    associados: number[];
+    imagens: ImageOut[];
+};
+
+export type Reservatorio = {
+    id: number;
+    edificacao: Edificacao;
+    tipo: number;
+    localizacao: string;
+    quantidade: number;
+    capacidade: number;
+    material: string;
+    status: boolean;
+    status_message: string;
+    amontante?: Ponto;
     imagens: ImageOut[];
 };
 
@@ -162,8 +209,8 @@ export type ImageOut = {
 };
 
 export const TIPOS_PONTOS = [
-    null,
     "Bebedouro",
+    "Torneira",
     "RPS (Reservatório predial superior)",
     "RPI (Reservatório predial inferior)",
     "RDS (Reservatório de distribuição superior)",

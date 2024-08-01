@@ -2,7 +2,7 @@
 
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { APIConsumer, apiUrl, consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
-import { Edificacao, ImageIn, Ponto, PontoInicialIn, TIPOS_PONTOS } from "@/utils/types";
+import { Edificacao, ImageIn, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
 import React, { FormEvent, useEffect, useState } from "react";
 
 export default function CriarPonto({ params }: { params: { cod_edificacao: string } }) {
@@ -11,7 +11,7 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
 
     const [currentAmontante, setCurrentAmontante] = useState<string>('');
     const [currentEdificacao, setCurrentEdificacao] = useState<string>('');
-    const [currentTipo, setCurrentTipo] = useState<string>('0');
+    const [currentTipo, setCurrentTipo] = useState<string>('1');
     const pontosAmontantes = pontos.filter(ponto => ponto.tipo > Number(currentTipo));
     const [images, setImages] = useState<ImageIn[]>([]);
     const [submiting, setSubmiting] = useState<boolean>(false);
@@ -38,11 +38,11 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
 
         let amontante = formData.get("amontante");
 
-        const data: PontoInicialIn = {
+        const data: PontoIn = {
             codigo_edificacao: (formData.get("edificacao") as string),
-            tipo: Number(formData.get("tipo")),
             localizacao: (formData.get("localizacao") as string),
             tombo: (formData.get("tombo") as string | null),
+            tipo: Number(formData.get("tipo")),
             amontante: (amontante ? Number(amontante) : null),
             // imagem: null,
         };
@@ -74,13 +74,12 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
 
     return (
         <>
-            <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar Ponto de Coleta</h1>
+            <h1 className="text-4xl text-neutral-700 font-bold mb-8">Criar Reservatório</h1>
             <form className="w-full flex flex-col gap-4" onSubmit={(e) => submitForm(e)} method="POST">
                 {
                     edificacoes.length > 0 && (
                         <>
                             <label htmlFor="">Edificação:</label>
-
 
                             <div className="flex">
                                 <select
@@ -119,15 +118,29 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
 
                 }
 
-                <label htmlFor="">Tipo:</label>
+                <label htmlFor="tipo">Tipo:</label>
                 <select
                     id="tipo"
                     name="tipo"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
                     onChange={currentTipo => setCurrentTipo(currentTipo.target.value)}
                 >
-                    <option value="0">Bebedouro</option>
-                    <option value="1">Torneira</option>
+                    <option value="2">Reservatório Predial Superior</option>
+                    <option value="3">Reservatório Predial Inferior</option>
+                    <option value="4">Reservatório de Distribuição Superior</option>
+                    <option value="5">Reservatório de Distribuição Inferior</option>
+                    <option value="6">CAERN</option>
+                </select>
+
+                <label htmlFor="quantidade">Quantidade de Reservatórios:</label>
+                <select
+                    id="quantidade"
+                    name="quantitdade"
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
+                >
+                    <option value="1">1 Reservatório</option>
+                    <option value="2">2 Reservatórios Interligados</option>
+                    <option value="3">3 Reservatórios Interligados</option>
                 </select>
 
                 <label htmlFor="">Localizacão:</label>
@@ -138,21 +151,6 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                     placeholder="Torneira na tubulação de entrada ao RPS, na fachada de trás do prédio"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
                 />
-
-                {
-                    currentTipo == "0" && (
-                        <>
-                            <label htmlFor="">Tombo:</label>
-                            <input
-                                type="text"
-                                id="tombo"
-                                name="tombo"
-                                placeholder="Insira o identificador do bebedouro"
-                                className="rounded-lg border border-neutral-400 px-6 py-4"
-                            />
-                        </>
-                    )
-                }
 
                 <label htmlFor="">Ponto a montante (Abastece):</label>
                 <div className="flex">
@@ -193,13 +191,25 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
 
                 </div>
 
-                <label htmlFor="observacao">Observação:</label>
-                <textarea
-                    id="observacao"
-                    name="observacao"
-                    placeholder="Informações adicionais..."
+                <label htmlFor="capacidade">Capacidade (L): </label>
+                <input
+                    type="number"
+                    id="quantidade"
+                    name="quantidade"
+                    placeholder="1000"
                     className="rounded-lg border border-neutral-400 px-6 py-4"
-                ></textarea>
+                />
+
+
+                <label htmlFor="material">Material: </label>
+                <input
+                    type="text"
+                    id="material"
+                    name="material"
+                    placeholder="Polietileno, alvenaria, fibra de vidro, etc."
+                    className="rounded-lg border border-neutral-400 px-6 py-4"
+
+                />
 
                 <label htmlFor="foto">
                     Foto:
@@ -209,8 +219,6 @@ export default function CriarPonto({ params }: { params: { cod_edificacao: strin
                     images={images}
                     setImages={setImages}
                 />
-
-
 
                 <div className="w-full">
                     <input id="criar" type="submit" className={"w-full rounded-lg border border-neutral-400 px-6 py-4 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500 text-white font-semibold"} value={`${submiting ? "Criando..." : "Criar"}`} disabled={submiting} />

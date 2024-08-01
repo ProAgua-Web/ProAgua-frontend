@@ -68,7 +68,7 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
 
     useEffect(() => {
         if (edificacao?.imagens) {
-            setExistingImages([...solicitacao.imagens, ...edificacao?.imagens]);
+            setExistingImages([...(solicitacao?.imagens || []), ...edificacao?.imagens]);
         }
     }, [edificacao, solicitacao]);
 
@@ -134,7 +134,7 @@ export default function Page({ params }: { params: { id_solicitacao: string } })
                                 >
                                     <option>-</option>
                                     {filteredPontos.map(ponto => (
-                                        <option key={ponto.id} value={ponto.id}>{ponto.ambiente}</option>
+                                        <option key={ponto.id} value={ponto.id}>{ponto.localizacao}</option>
                                     ))}
 
 

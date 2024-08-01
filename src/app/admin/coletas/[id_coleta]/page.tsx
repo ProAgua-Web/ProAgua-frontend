@@ -98,7 +98,7 @@ export default function Page({ params }: {
                                 defaultValue={currentPontoId}
                                 onChange={(e) => setCurrentPontoId(parseInt(e.currentTarget.value))}
                             >
-                                {pontos.map(ponto => <option value={ponto.id} key={"ponto " + ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]}, {ponto.ambiente}</option>)}
+                                {pontos.map(ponto => <option value={ponto.id} key={"ponto " + ponto.id}>{ponto.id} - {TIPOS_PONTOS[ponto.tipo]}, {ponto.localizacao}</option>)}
                             </select>
 
                             <a className="flex justify-center" href={currentPontoId ? "/admin/pontos/" + currentPontoId : "#"} target={currentPontoId ? "_blank" : "_self"}>

@@ -3,7 +3,7 @@
 import { FormEvent, use, useEffect, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
-import { Edificacao, ImageIn, ImageOut, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
+import { Edificacao, ImageIn, ImageOut, Ponto, PontoIn, Reservatorio, ReservatorioIn, TIPOS_PONTOS } from "@/utils/types";
 import { APIConsumer, apiUrl, consumerPonto, delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
 import MultipleImageInput from "@/components/MultipleImageInput";
 
@@ -40,6 +40,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         setExistingImages(existingImages.filter(image => apiUrl + image.src != url));
     }
 
+    // TODO: Testar a função de atualizar ponto
     async function submitForm(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -48,16 +49,15 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
             codigo_edificacao: String(formData.get("edificacao")),
             tipo: Number(formData.get("tipo")),
             localizacao: String(formData.get("localizacao")),
-            tombo: String(formData.get("tombo")),
+            tombo: null,
+            quantidade: Number(formData.get("quantidade")),
+            capacidade: Number(formData.get("capacidade")),
+            material: String(formData.get("material")),
+            fonte_informacao: String(formData.get("fonte_informacao")),
+            observacao: String(formData.get("observacao")),
             amontante: formData.get("amontante") ? Number(formData.get("amontante")) : null,
             // imagem: String(formData.get("imagem")),
-            quantidade: null,
-            capacidade: null,
-            material: null,
-            fonte_informacao: null,
-            observacao: null,
         }
-        
         const response = await consumerPonto.put(params.id_ponto, data)
 
         if (images.length > 0) {
@@ -65,11 +65,11 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
         }
 
         if (response.ok) {
-            alert("Ponto atualizado com sucesso!");
+            alert("Reservatório atualizado com sucesso!");
             window.location.href = "/admin/pontos";
         }
         else {
-            throw "Erro ao atualizar ponto!";
+            throw "Erro ao atualizar reservatório!";
         }
 
     }
@@ -112,7 +112,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
     return (
         <>
             <h2 className="text-4xl text-neutral-700 font-bold mb-8">
-                {editable ? "Editar" : "Visualizar"} Ponto
+                {editable ? "Editar" : "Visualizar"} Reservatório
             </h2>
 
             <form onSubmit={(e) => submitForm(e)} onReset={() => setEditable(false)} method="POST"
@@ -163,7 +163,7 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     )
                 }
 
-                {pontos.length > 0  && (
+                { ponto && (
                     <>
                         <label htmlFor="tipo">
                             Tipo:
@@ -177,27 +177,30 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                             onChange={e => setCurrentTipo(e.target.value)}
                             disabled={!editable}
                         >
-                            <option value="0">Bebedouro</option>
-                            <option value="1">Torneira</option>
+                            <option value="2">Reservatório Predial Superior</option>
+                            <option value="3">Reservatório Predial Inferior</option>
+                            <option value="4">Reservatório de Distribuição Superior</option>
+                            <option value="5">Reservatório de Distribuição Inferior</option>
+                            <option value="6">CAERN</option>
                         </select>
-                        
-                    </>
-                )}
 
-
-                {currentTipo == "0" && (
-                    <>
-                        <label htmlFor="tombo">Tombo:</label>
-                        <input
-                            type="text"
-                            id="tombo"
-                            name="tombo"
+                        <label htmlFor="quantidade">Quantidade de Reservatórios:</label>
+                        <select
+                            id="quantidade"
+                            name="quantidade"
+                            defaultValue={ponto?.quantidade ?? ''}
                             className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                            defaultValue={ponto?.tombo || ""}
                             disabled={!editable}
-                        />
+                        >
+                            <option value="1">1 Reservatório</option>
+                            <option value="2">2 Reservatórios Interligados</option>
+                            <option value="3">3 Reservatórios Interligados</option>
+                        </select>
+
                     </>
                 )}
+
+
 
                 <label htmlFor="localizacao">Localização:</label>
                 <input
@@ -205,7 +208,50 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                     id="localizacao"
                     name="localizacao"
                     className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                    defaultValue={ponto?.localizacao || ""}
+                    defaultValue={ponto?.localizacao ?? ''}
+                    disabled={!editable}
+                />
+
+                <label htmlFor="capacidade">Capacidade (L):</label>
+                <input
+                    type="number"
+                    id="capacidade"
+                    name="capacidade"
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    placeholder="1000"
+                    defaultValue={ponto?.capacidade ?? ''}
+                    disabled={!editable}
+                />
+
+                <label htmlFor="material">Material:</label>
+                <input
+                    type="text"
+                    id="material"
+                    name="material"
+                    placeholder="Polietileno, Alvenaria, Fibra de Vidro, etc."
+                    defaultValue={ponto?.material ?? ''}
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    disabled={!editable}
+                />
+
+                <label htmlFor="fonte_informacao">Fonte de Informação:</label>
+                <input
+                    type="text"
+                    id="fonte_informacao"
+                    name="fonte_informacao"
+                    placeholder="Encanador da UFERSA"
+                    defaultValue={ponto?.fonte_informacao ?? ''}
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
+                    disabled={!editable}
+                />
+
+                <label htmlFor="observacao">Observação:</label>
+                <textarea
+                    id="observacao"
+                    name="observacao"
+                    placeholder="Informações adicionais..."
+                    defaultValue={ponto?.observacao ?? ''}
+                    className="rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
                     disabled={!editable}
                 />
 
@@ -229,7 +275,6 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
                                             <option className="" value={ponto.id} key={ponto.id}>
                                                 {TIPOS_PONTOS[ponto.tipo]}
                                                 {ponto.localizacao && ponto.localizacao.trim() != "-" && ponto.localizacao.trim() != "nan" && ponto.localizacao.trim() != "" ? "- " + ponto.localizacao : ""}
-                                                {ponto.tombo && ponto.tombo.trim() != "-" && ponto.tombo.trim() != "nan" && ponto.tombo.trim() ? "- " + ponto.tombo : ""}
                                             </option>
                                         );
                                     })}
