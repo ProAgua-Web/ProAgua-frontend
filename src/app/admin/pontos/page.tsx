@@ -10,6 +10,19 @@ interface Groups {
   [x: string]: { edificacao: Edificacao, pontos: Ponto[] }
 }
 
+interface FiltroPontos {
+  [key: string]: boolean;
+}
+
+interface TiposPontos {
+  [key: string]: number;
+}
+
+interface Filters {
+  q: string,
+  campus: string,
+  filtroPontos: FiltroPontos
+}
 
 function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
   var groups = Object();
@@ -65,6 +78,7 @@ export default function Pontos() {
   const [pontos, setPontos] = useState<Ponto[]>([]);
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
   
+  const [filters, setFilters] = useState<Filters>({
     q: "",
     campus: "",
     filtroPontos: {
@@ -78,7 +92,7 @@ export default function Pontos() {
     }
   })
 
-  const tiposPontos = {
+  const tiposPontos: TiposPontos = {
     "Bebedouro": 0,
     "Torneira": 1,
     "RPS": 2,
