@@ -4,8 +4,6 @@ import { Edificacao, Ponto } from "@/utils/types";
 import { consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
 
 import { useEffect, useState } from "react";
-import { CollapseIcon } from "./components/CollapseIcon";
-import { ExpandIcon } from "./components/ExpandIcon";
 import { CardEdificacao } from "./components/CardEdificacao";
 
 function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
@@ -32,13 +30,7 @@ interface Groups {
 export default function Pontos() {
   const [pontos, setPontos] = useState<Ponto[]>([]);
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-
-  const [filters, setFilters] = useState<{
-    q: string,
-    campus: string,
-    filtroPontos: { [key: string]: boolean }
-  }>({
+  
     q: "",
     campus: "",
     filtroPontos: {
@@ -145,12 +137,6 @@ export default function Pontos() {
               })}
             </div>
 
-            <button
-              className="self-end px-4 py-2 mb-2 border rounded-md hover:bg-slate-50"
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              {collapsed ? <CollapseIcon /> : <ExpandIcon />}
-            </button>
 
           </div>
         </div>
@@ -158,7 +144,7 @@ export default function Pontos() {
         <div className="flex flex-col w-full">
           <a href="/admin/edificacoes/criar" className="p-2 px-4 mb-4 w-full bg-gray-100 border border-gray-300 text-green-500 font-semibold rounded-md hover:bg-green-600 hover:text-white text-center">+ Adicionar edificação</a>
           {Object.values(groups).map((group, i) => {
-            return <CardEdificacao group={group} key={"edificacao-" + i} collapsed={collapsed} />
+            return <CardEdificacao group={group} key={"edificacao-" + i} collapsed={false} />
           })}
         </div>
 
