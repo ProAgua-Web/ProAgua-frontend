@@ -6,6 +6,11 @@ import { consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_si
 import { useEffect, useState } from "react";
 import { CardEdificacao } from "./components/CardEdificacao";
 
+interface Groups {
+  [x: string]: { edificacao: Edificacao, pontos: Ponto[] }
+}
+
+
 function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
   var groups = Object();
 
@@ -23,8 +28,37 @@ function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
   return groups;
 }
 
-interface Groups {
-  [x: string]: { edificacao: Edificacao, pontos: Ponto[] }
+function FilterPontos(props: {filtersState:any, setFilters: (d: any) => void} ) {
+  const {filtersState: filters, setFilters} = props;
+
+  function toggleFilter(name: string) {
+    setFilters({
+      ...filters, filtroPontos: {
+        ...filters.filtroPontos,
+        [name]: !filters.filtroPontos[name]
+      }
+    });
+  }
+
+  return (
+    <div className="flex gap-8">
+      {Object.entries(filters.filtroPontos).map(([key, value]) => {
+        return (
+          <label htmlFor={key} key={key} className="select-none cursor-pointer">
+            <input
+              type="checkbox"
+              className="cursor-pointer mr-1"
+              name={key}
+              id={key}
+              checked={Boolean(value)}
+              onChange={() => toggleFilter(key)}
+            />
+            {key}
+          </label>
+        );
+      })}
+    </div>
+  )
 }
 
 export default function Pontos() {
@@ -79,16 +113,6 @@ export default function Pontos() {
       .then(data => setPontos(data));
   }, [filters]);
 
-
-  function toggleFilter(name: string) {
-    setFilters({
-      ...filters, filtroPontos: {
-        ...filters.filtroPontos,
-        [name]: !filters.filtroPontos[name]
-      }
-    });
-  }
-
   return (
     <>
       <h2 className="text-3xl text-[#525252]">Edificações e Pontos de Coleta</h2>
@@ -116,28 +140,12 @@ export default function Pontos() {
               <option value="OE">Oeste</option>
             </select>
           </div>
-          <div className="w-full flex justify-between gap-3 self-end">
 
-            <div className="flex gap-8">
-
-              {Object.entries(filters.filtroPontos).map(([key, value]) => {
-                return (
-                  <label htmlFor={key}>
-                    <input
-                      type="checkbox"
-                      name={key}
-                      key={key}
-                      id={key}
-                      checked={Boolean(value)}
-                      onChange={() => toggleFilter(key)}
-                    />
-                    {key}
-                  </label>
-                );
-              })}
-            </div>
-
-
+          <div className="w-full flex justify-between gap-3 self-end mb-4">
+            <FilterPontos
+              filtersState={filters}
+              setFilters={setFilters}
+            />
           </div>
         </div>
 
