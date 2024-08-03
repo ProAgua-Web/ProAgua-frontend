@@ -12,6 +12,9 @@ import {
   SortingState,
   VisibilityState,
   useReactTable,
+  FilterFn,
+  SortingFn,
+  sortingFns,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -28,6 +31,37 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTablePagination } from "./datatable-pagination";
+import {
+  RankingInfo,
+  rankItem,
+  compareItems,
+} from "@tanstack/match-sorter-utils";
+
+declare module "@tanstack/react-table" {
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>;
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo;
+  }
+}
+
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  const itemRank = rankItem(row.getValue(columnId), value);
+  addMeta({ itemRank });
+  return itemRank.passed;
+};
+
+const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+  let dir = 0;
+  if (rowA.columnFiltersMeta[columnId]) {
+    dir = compareItems(
+      rowA.columnFiltersMeta[columnId]?.itemRank!,
+      rowB.columnFiltersMeta[columnId]?.itemRank!
+    );
+  }
+  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
+};
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -45,23 +79,31 @@ export default function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [globalFilter, setGlobalFilter] = React.useState("");
+
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+      globalFilter,
+    },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: "fuzzy",
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -69,10 +111,8 @@ export default function DataTable<TData, TValue>({
       <div className="flex items-center py-4 ">
         <Input
           placeholder="Pesquisar"
-          value={(table.getColumn("amostragem")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("amostragem")?.setFilterValue(event.target.value)
-          }
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
         <DropdownMenu>
@@ -113,9 +153,9 @@ export default function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -143,32 +183,16 @@ export default function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  Nenhum resultado.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+      <div className="py-8">
+        <DataTablePagination table={table} />
       </div>
-      <DataTablePagination table={table} />
     </div>
   );
 }
