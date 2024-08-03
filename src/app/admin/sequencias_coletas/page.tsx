@@ -1,14 +1,13 @@
 "use client";
 
-import { Ponto, Sequencia, TIPOS_PONTOS } from "@/utils/types";
-import { apiUrl, formatDate, toURLParams } from "@/utils/api_consumer/client_side_consumer";
+import { Ponto, Sequencia } from "@/utils/types";
+import { apiUrl, toURLParams } from "@/utils/api_consumer/client_side_consumer";
 import { useEffect, useState } from "react";
-import OkIcon from "@/components/icons/OkIcon";
-import DangerIcon from "@/components/icons/DangerIcon";
 
 import DataTable from "@/components/widgets/datatable";
 import { columns } from "./_components/columns";
 import Spinner from "@/components/widgets/spinner";
+import { Button } from "@/components/ui/button";
 
 
 export default function Page() {
@@ -77,12 +76,17 @@ export default function Page() {
                     <DataTable columns={columns} data={filteredSequencias} />
                 }
 
-                <a
-                    href="sequencias_coletas/criar"
-                    className="w-[320px] h-fit fixed bottom-4 left-1/2 transform -translate-x-1/2 mt-4 p-4 flex justify-center items-center px-6 py-4 bg-green-500 hover:bg-green-600 border border-green-600 rounded text-white font-semibold"
+                <Button
+                    asChild
+                    variant={"add"}
                 >
-                    + Criar Sequência de Coleta
-                </a>
+                    <a
+                        href="sequencias_coletas/criar"
+                        className="w-[320px] h-fit fixed bottom-4 left-1/2 transform -translate-x-1/2 mt-4 px-6 py-4"
+                    >
+                        + Criar Sequência de Coleta
+                    </a>
+                </Button>
             </div>
         </>
     );

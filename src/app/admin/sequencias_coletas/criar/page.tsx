@@ -1,8 +1,8 @@
 "use client";
 
-import { consumerEdficacao, consumerPonto, consumerSequencia, consumerSolicitacao, useEdificacao, useEdificacoes, usePontos } from "@/utils/api_consumer/client_side_consumer";
-import { Edificacao, Ponto, Sequencia, SequenciaIn, Solicitacao, TIPOS_PONTOS } from "@/utils/types";
-import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
+import { consumerEdficacao, consumerPonto, consumerSequencia, } from "@/utils/api_consumer/client_side_consumer";
+import { Edificacao, Ponto, SequenciaIn, TIPOS_PONTOS } from "@/utils/types";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function CriarSequencia() {
     const [edificacoes, setEdificacoes] = useState<Edificacao[]>([])
