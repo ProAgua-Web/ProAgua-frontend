@@ -6,54 +6,58 @@ import { useEffect, useState } from "react";
 import OkIcon from "@/components/icons/OkIcon";
 import DangerIcon from "@/components/icons/DangerIcon";
 
-function TabelaSequencias(props: {sequencias: Sequencia[]}) {
-    return (
-        <table className="border-separate border-spacing-0 w-full block border border-slate-500 mb-8 last:mb-0 box-border">
-            <thead>
-                <tr className="bg-primary-500 text-white">
-                    <th className="px-2 py-4">Ciclo de Amostragem</th>
-                    <th className="px-2 py-4 text-center">Cód. Edificação</th>
-                    <th className="px-2 py-4 text-center">Campus</th>
-                    <th className="px-2 py-4">Ponto</th>
-                    <th className="px-2 py-4">Localização Ponto</th>
-                    <th className="px-2 py-4">Tombo</th>
-                    <th className="px-2 py-4">Ultima coleta</th>
-                    <th className="px-2 py-4">Qnt. de coletas</th>
-                    <th className="px-2 py-4">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {props.sequencias.map((sequencia: Sequencia, i) => {
-                    const tipo = sequencia.ponto && TIPOS_PONTOS[sequencia.ponto?.tipo];
-                    return (
-                        <tr
-                            title={sequencia.status ? "Concluída" : sequencia.status_message}
-                            key={sequencia.id}
-                            className="w-full bg-slate-200 even:bg-sla      te-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
-                            onClick={() => {
-                                window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
-                            } }
-                        >
-                            <td className="text-sm px-2 py-3">{sequencia.amostragem}</td>
-                            <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.codigo}</td>
-                            <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.campus == "OE" ? "Oeste" : "Leste"}</td>
-                            <td className="text-sm px-2 py-3">{tipo}</td>
-                            <td className="text-sm px-2 py-3">{sequencia.ponto?.localizacao || "-"}</td>
-                            <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
-                            <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
-                            <td className="text-sm px-2 py-3 text-center">{sequencia.quantidade_coletas}</td>
-                            <td className="text-sm px-2 py-3 text-center">
-                                <span className="w-full flex justify-center">
-                                    {sequencia.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem" />}
-                                </span>
-                            </td>
-                        </tr>
-                    );
-                })}
-            </tbody>
-        </table>
-    );
-}
+import DataTable from "@/components/widgets/datatable";
+import { columns } from "./_components/DataTable";
+
+
+// function TabelaSequencias(props: { sequencias: Sequencia[] }) {
+//     return (
+//         <table className="border-separate border-spacing-0 w-full block border border-slate-500 mb-8 last:mb-0 box-border">
+//             <thead>
+//                 <tr className="bg-primary-500 text-white">
+//                     <th className="px-2 py-4">Ciclo de Amostragem</th>
+//                     <th className="px-2 py-4 text-center">Cód. Edificação</th>
+//                     <th className="px-2 py-4 text-center">Campus</th>
+//                     <th className="px-2 py-4">Ponto</th>
+//                     <th className="px-2 py-4">Localização Ponto</th>
+//                     <th className="px-2 py-4">Tombo</th>
+//                     <th className="px-2 py-4">Ultima coleta</th>
+//                     <th className="px-2 py-4">Qnt. de coletas</th>
+//                     <th className="px-2 py-4">Status</th>
+//                 </tr>
+//             </thead>
+//             <tbody>
+//                 {props.sequencias.map((sequencia: Sequencia, i) => {
+//                     const tipo = sequencia.ponto && TIPOS_PONTOS[sequencia.ponto?.tipo];
+//                     return (
+//                         <tr
+//                             title={sequencia.status ? "Concluída" : sequencia.status_message}
+//                             key={sequencia.id}
+//                             className="w-full bg-slate-200 even:bg-sla      te-100 hover:bg-blue-300 transition-colors duration-200 cursor-pointer select-none"
+//                             onClick={() => {
+//                                 window.location.href = `/admin/sequencias_coletas/${sequencia.id}`;
+//                             }}
+//                         >
+//                             <td className="text-sm px-2 py-3">{sequencia.amostragem}</td>
+//                             <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.codigo}</td>
+//                             <td className="text-sm px-2 py-3 text-center">{sequencia.ponto?.edificacao.campus == "OE" ? "Oeste" : "Leste"}</td>
+//                             <td className="text-sm px-2 py-3">{tipo}</td>
+//                             <td className="text-sm px-2 py-3">{sequencia.ponto?.localizacao || "-"}</td>
+//                             <td className="text-sm px-2 py-3">{sequencia.ponto?.tombo || "N/A"}</td>
+//                             <td className="text-sm px-2 py-3 text-center">{sequencia.ultima_coleta ? formatDate(sequencia.ultima_coleta) : "-"}</td>
+//                             <td className="text-sm px-2 py-3 text-center">{sequencia.quantidade_coletas}</td>
+//                             <td className="text-sm px-2 py-3 text-center">
+//                                 <span className="w-full flex justify-center">
+//                                     {sequencia.status ? <OkIcon width="1.5rem" /> : <DangerIcon width="1.5rem" />}
+//                                 </span>
+//                             </td>
+//                         </tr>
+//                     );
+//                 })}
+//             </tbody>
+//         </table>
+//     );
+// }
 
 export default function Coletas() {
     const [sequencias, setSequencias] = useState<Sequencia[]>([]);
@@ -112,7 +116,7 @@ export default function Coletas() {
             <h2 className="text-3xl text-[#525252]">Sequência de Coletas</h2>
             <div className="flex w-full flex-col items-center">
                 <div className="mb-4 flex w-full flex-col gap-4">
-                    <div className="relative flex gap-2">
+                    {/* <div className="relative flex gap-2">
                         <input
                             id="search-bar"
                             className="w-full rounded-md border bg-white px-5 py-3 text-[#525252]"
@@ -136,8 +140,8 @@ export default function Coletas() {
                             <option value="LE">Leste</option>
                             <option value="OE">Oeste</option>
                         </select>
-                    </div>
-                    
+                    </div> */}
+
                     <div className="w-full flex justify-between gap-3 self-end">
                         <div className="flex">
                             <div
@@ -165,14 +169,14 @@ export default function Coletas() {
                 </div>
 
                 <div className="w-full">
-                    {loading 
+                    {loading
                         ?
                         <div className="w-full bg-neutral-50 rounded p-4 flex justify-center align-middle border border-neutral-300">
                             <span className="w-8 h-8 block border-4 rounded-full border-neutral-200 border-t-primary-500 animate-spin mr-2"></span>
                             <span className="text-neutral-700 block h-full align-middle text-center">Carregando...</span>
                         </div>
                         :
-                        <TabelaSequencias sequencias={filteredSequencias}/>
+                        <DataTable columns={columns} data={filteredSequencias} />
                     }
                 </div>
 
@@ -186,5 +190,5 @@ export default function Coletas() {
         </>
     );
 
-    
+
 }
