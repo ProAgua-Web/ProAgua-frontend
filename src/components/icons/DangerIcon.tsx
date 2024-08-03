@@ -1,4 +1,4 @@
-export default function Danger(props: {width?:string}) {
+export default function Danger(props: {width?: "1.5rem"}) {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width={props.width}>
             <defs id="defs1" />

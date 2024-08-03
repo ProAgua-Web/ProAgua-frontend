@@ -1,4 +1,4 @@
-export default function OkIcon(props: {width: string}) {
+export default function OkIcon(props: {width?: "1.5rem"}) {
     return (
         <>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={props.width}>
