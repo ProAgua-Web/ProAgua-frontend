@@ -87,8 +87,7 @@ export const columns = [
                     window.location.reload();
                 }}
                 onEdit={() => {
-                    // window.location.href = `/doctors/edit/${id}`;
-                    alert("Edit not implemented");
+                    window.location.href = `/admin/sequencias_coletas/${id}`;
                 }
                 }
             />;
