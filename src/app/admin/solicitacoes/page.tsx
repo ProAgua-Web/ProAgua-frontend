@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Solicitacao } from "@/utils/types";
-import { consumerSolicitacao, formatDate } from "@/utils/api_consumer/client_side_consumer";
+import { formatDate } from "@/utils/api/client_side_consumer";
+import { consumerSolicitacao } from "@/utils/api/consumerSolicitacao";
 
 export default function Solicitacoes() {
     const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);

@@ -2,7 +2,7 @@
 
 import Header from "@/components/layout/Header";
 import CardPonto from "@/components/pontos/CardPontos";
-import { toURLParams, useEdificacoes } from "@/utils/api_consumer/client_side_consumer";
+import { toURLParams, useEdificacoes } from "@/utils/api/client_side_consumer";
 import { Edificacao, Ponto } from "@/utils/types";
 import { useEffect, useState } from "react";
 

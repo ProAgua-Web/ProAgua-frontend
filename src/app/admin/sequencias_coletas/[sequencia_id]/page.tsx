@@ -2,7 +2,7 @@
 
 import TableColetas from "@/components/coletas/TabelaColetas";
 import { type Sequencia, type Coleta, TIPOS_PONTOS } from "@/utils/types";
-import { useColetaBySequencia, useSequencia } from "@/utils/api_consumer/client_side_consumer";
+import { useColetaBySequencia, useSequencia } from "@/utils/api/client_side_consumer";
 
 function groupColetas(coletas: Coleta[]) {
     let groups = [];

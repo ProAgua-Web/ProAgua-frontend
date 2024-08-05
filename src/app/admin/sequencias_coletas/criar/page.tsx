@@ -1,6 +1,8 @@
 "use client";
 
-import { consumerEdficacao, consumerPonto, consumerSequencia, } from "@/utils/api_consumer/client_side_consumer";
+import { consumerSequencia } from "@/utils/api/consumerSequencia";
+import { consumerPonto } from "@/utils/api/consumerPonto";
+import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
 import { Edificacao, Ponto, SequenciaIn, TIPOS_PONTOS } from "@/utils/types";
 import { FormEvent, useEffect, useState } from "react";
 

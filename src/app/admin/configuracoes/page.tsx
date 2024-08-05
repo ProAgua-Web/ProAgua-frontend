@@ -2,7 +2,8 @@
 
 import { ParametroReferencia, Usuario } from "@/utils/types";
 import { useState } from "react";
-import { consumerParametrosReferencia, useParametrosReferencia, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
+import { useParametrosReferencia, useUsuarios } from "@/utils/api/client_side_consumer";
+import { consumerParametrosReferencia } from "@/utils/api/consumerParametrosReferencia";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 

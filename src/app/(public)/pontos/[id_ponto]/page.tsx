@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/components/layout/Header";
-import { useLastColetaByPonto, usePonto, useParametrosReferencia } from "@/utils/api_consumer/client_side_consumer";
+import { useLastColetaByPonto, usePonto, useParametrosReferencia } from "@/utils/api/client_side_consumer";
 import { Coleta, TIPOS_PONTOS } from "@/utils/types";
 import Image from "next/image";
 

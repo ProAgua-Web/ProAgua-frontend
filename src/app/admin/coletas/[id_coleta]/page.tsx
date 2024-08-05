@@ -1,7 +1,8 @@
 "use client";
 
 import { Coleta, ColetaIn, Ponto, Sequencia, TIPOS_PONTOS } from "@/utils/types"
-import { consumerColeta, useColeta, usePontos, usePontosAmontante, useSequencias, useUsuarios } from "@/utils/api_consumer/client_side_consumer";
+import { useColeta, usePontos, usePontosAmontante, useSequencias, useUsuarios } from "@/utils/api/client_side_consumer";
+import { consumerColeta } from "@/utils/api/consumerColeta";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page({ params }: {

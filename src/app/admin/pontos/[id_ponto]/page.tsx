@@ -4,7 +4,9 @@ import { FormEvent, use, useEffect, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
 import { Edificacao, ImageIn, ImageOut, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
-import { APIConsumer, apiUrl, consumerPonto, delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
+import { apiUrl, delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api/client_side_consumer";
+import { consumerPonto } from "@/utils/api/consumerPonto";
+import { APIConsumer } from "@/utils/api/APIConsumer";
 import MultipleImageInput from "@/components/MultipleImageInput";
 
 export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {

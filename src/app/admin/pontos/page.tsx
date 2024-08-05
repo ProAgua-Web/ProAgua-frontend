@@ -1,7 +1,8 @@
 "use client";
 
 import { Edificacao, Ponto } from "@/utils/types";
-import { consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
+import { consumerPonto } from "@/utils/api/consumerPonto";
+import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
 
 import { useEffect, useState } from "react";
 import { CardEdificacao } from "./components/CardEdificacao";

@@ -1,7 +1,8 @@
 'use client'
 
 import { Coleta, ColetaIn, Ponto, TIPOS_PONTOS } from "@/utils/types"
-import { useSequencia, useUsuarios, usePontosAmontante, consumerColeta } from "@/utils/api_consumer/client_side_consumer";
+import { useSequencia, useUsuarios, usePontosAmontante } from "@/utils/api/client_side_consumer";
+import { consumerColeta } from "@/utils/api/consumerColeta";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function CriarColeta({ params }: {

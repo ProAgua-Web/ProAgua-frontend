@@ -1,6 +1,6 @@
 "use client"
 
-import { consumerUsuario } from "@/utils/api_consumer/client_side_consumer";
+import { consumerUsuario } from "@/utils/api/consumerUsuario";
 import { UsuarioIn } from "@/utils/types";
 import { FormEvent, useEffect, useState } from "react";
 

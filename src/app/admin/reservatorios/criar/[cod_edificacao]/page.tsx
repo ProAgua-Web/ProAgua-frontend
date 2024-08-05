@@ -1,7 +1,10 @@
 "use client"
 
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { APIConsumer, apiUrl, consumerEdficacao, consumerPonto, usePontos } from "@/utils/api_consumer/client_side_consumer";
+import { apiUrl, usePontos } from "@/utils/api/client_side_consumer";
+import { consumerPonto } from "@/utils/api/consumerPonto";
+import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
+import { APIConsumer } from "@/utils/api/APIConsumer";
 import { Edificacao, ImageIn, Ponto, PontoIn, TIPOS_PONTOS } from "@/utils/types";
 import React, { FormEvent, useEffect, useState } from "react";
 

@@ -1,6 +1,8 @@
 "use client";
 
-import { APIConsumer, apiUrl, consumerEdficacao, useEdificacao } from "@/utils/api_consumer/client_side_consumer";
+import { apiUrl, useEdificacao } from "@/utils/api/client_side_consumer";
+import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
+import { APIConsumer } from "@/utils/api/APIConsumer";
 import { FormEvent, useEffect, useState } from "react";
 import MultipleImageInput from "@/components/MultipleImageInput";
 import { EdificacaoIn, ImageIn, ImageOut } from "@/utils/types";

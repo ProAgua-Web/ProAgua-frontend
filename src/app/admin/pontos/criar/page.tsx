@@ -1,6 +1,6 @@
 "use client"
 
-import { usePontos } from "@/utils/api_consumer/client_side_consumer";
+import { usePontos } from "@/utils/api/client_side_consumer";
 import { Edificacao, Ponto, TIPOS_PONTOS } from "@/utils/types";
 import { FormEvent, useEffect, useState } from "react";
 

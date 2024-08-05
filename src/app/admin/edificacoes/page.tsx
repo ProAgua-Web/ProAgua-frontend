@@ -2,7 +2,7 @@
 
 import Filters from "@/components/sequencias/Filters";
 import { Edificacao } from "@/utils/types";
-import { consumerEdficacao } from "@/utils/api_consumer/client_side_consumer";
+import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
 import { useEffect, useState } from "react";
 
 export default function Edificacoes() {

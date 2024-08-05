@@ -3,7 +3,11 @@
 import { useState, useEffect } from "react";
 import TableColetas from "@/components/coletas/TabelaColetas";
 import { Edificacao, Ponto, TIPOS_PONTOS, } from "@/utils/types";
-import { APIConsumer, apiUrl, consumerColeta, consumerEdficacao, consumerPonto } from "@/utils/api_consumer/client_side_consumer";
+import { apiUrl } from "@/utils/api/client_side_consumer";
+import { consumerColeta } from "@/utils/api/consumerColeta";
+import { consumerPonto } from "@/utils/api/consumerPonto";
+import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
+import { APIConsumer } from "@/utils/api/APIConsumer";
 import { OptionalField, convertTypes } from "./typeUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faFileDownload, faPenToSquare } from "@fortawesome/free-solid-svg-icons";

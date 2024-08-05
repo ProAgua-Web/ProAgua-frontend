@@ -1,7 +1,8 @@
 'use client'
 
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { useEdificacoes, useEdificacao, usePontos, usePonto, consumerSolicitacao } from "@/utils/api_consumer/client_side_consumer"
+import { useEdificacoes, useEdificacao, usePontos, usePonto } from "@/utils/api/client_side_consumer"
+import { consumerSolicitacao } from "@/utils/api/consumerSolicitacao";
 import { getCookie } from "@/utils/cookies";
 import { ImageIn, SolicitacaoIn, TIPOS_PONTOS } from "@/utils/types";
 import { useEffect, useState } from "react";
