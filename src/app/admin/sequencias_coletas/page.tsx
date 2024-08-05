@@ -1,7 +1,8 @@
 "use client";
 
 import { Ponto, Sequencia } from "@/utils/types";
-import { apiUrl, toURLParams } from "@/utils/api/client_side_consumer";
+import { toURLParams } from "@/utils/api/client_side_consumer";
+import { apiUrl } from "@/utils/api/APIConsumer";
 import { useEffect, useState } from "react";
 
 import DataTable from "@/components/widgets/datatable";

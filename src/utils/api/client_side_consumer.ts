@@ -9,8 +9,6 @@ import { consumerSolicitacao } from "./consumerSolicitacao";
 import { consumerSequencia } from "./consumerSequencia";
 import { consumerUsuario } from "./consumerUsuario";
 
-export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
 export function toURLParams(data: Object) {
     let params = [];
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { apiUrl, useEdificacao } from "@/utils/api/client_side_consumer";
+import { useEdificacao } from "@/utils/api/client_side_consumer";
+import { apiUrl } from "@/utils/api/APIConsumer";
 import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
 import { APIConsumer } from "@/utils/api/APIConsumer";
 import { FormEvent, useEffect, useState } from "react";

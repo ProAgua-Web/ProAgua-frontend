@@ -2,7 +2,7 @@
 
 import React, { FormEvent, useState } from "react";
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { apiUrl } from "@/utils/api/client_side_consumer";
+import { apiUrl } from "@/utils/api/APIConsumer";
 import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
 import { APIConsumer } from "@/utils/api/APIConsumer";
 import { EdificacaoIn } from "@/utils/types";

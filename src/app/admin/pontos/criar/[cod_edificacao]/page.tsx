@@ -1,7 +1,8 @@
 "use client"
 
 import MultipleImageInput from "@/components/MultipleImageInput";
-import { apiUrl, usePontos } from "@/utils/api/client_side_consumer";
+import { usePontos } from "@/utils/api/client_side_consumer";
+import { apiUrl } from "@/utils/api/APIConsumer";
 import { consumerPonto } from "@/utils/api/consumerPonto";
 import { consumerEdficacao } from "@/utils/api/consumerEdficacao";
 import { APIConsumer } from "@/utils/api/APIConsumer";

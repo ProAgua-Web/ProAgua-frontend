@@ -4,7 +4,8 @@ import { FormEvent, use, useEffect, useState } from "react";
 
 import QRCode from "@/utils/qr_code";
 import { Edificacao, ImageIn, ImageOut, Ponto, PontoIn, Reservatorio, ReservatorioIn, TIPOS_PONTOS } from "@/utils/types";
-import { apiUrl, delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api/client_side_consumer";
+import { delPonto, useEdificacoes, usePonto, usePontos } from "@/utils/api/client_side_consumer";
+import { apiUrl } from "@/utils/api/APIConsumer";
 import { consumerPonto } from "@/utils/api/consumerPonto";
 import { APIConsumer } from "@/utils/api/APIConsumer";
 import MultipleImageInput from "@/components/MultipleImageInput";
