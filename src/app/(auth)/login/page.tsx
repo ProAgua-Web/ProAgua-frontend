@@ -1,108 +1,109 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { ControlledInput } from '@/components/controlled-input';
 import { Button } from '@/components/ui/button';
-import { LabeledInput } from '@/components/widgets/labeled-input';
 import Spinner from '@/components/widgets/spinner';
+import { entrar } from '@/services/api/autenticacao-service';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { HiOutlineEye, HiOutlineEyeSlash } from 'react-icons/hi2';
+import { z } from 'zod';
 
-async function getCSRFToken() {
-  const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/csrf', {
-    method: 'GET',
-    credentials: 'include',
-  });
-
-  const data = await resp.json();
-
-  return data['csrftoken'];
-}
+const formSchema = z.object({
+  username: z
+    .string({ message: 'Informe o usuário' })
+    .min(4, 'Usuário deve ter no mínimo 4 caracteres'),
+  password: z
+    .string({ message: 'Informe a senha' })
+    .min(4, 'Senha deve ter no mínimo 4 caracteres'),
+});
+type FormSchema = z.infer<typeof formSchema>;
 
 export default function Login() {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { control, formState, handleSubmit } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+  });
 
-  async function submitForm(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
+  async function submitForm(data: FormSchema) {
     setIsSubmitting(true);
-
-    try {
-      const csrftoken = await getCSRFToken();
-      const data = {
-        username: formData.get('email'),
-        password: formData.get('password'),
-      };
-
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + '/api/v1/auth/login',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken,
-          },
-          credentials: 'include',
-          body: JSON.stringify(data),
-        },
-      );
-
-      const responseData = await response.json();
-
-      setIsSubmitting(false);
-      if (response.status != 200 || responseData == null) {
-        alert(`Erro ao fazer login!`);
-      } else {
-        alert('Login efetuado com sucesso!');
-
-        let token = responseData.access_token;
-        localStorage.setItem('token', token);
-
-        window.location.href = '/admin/pontos';
-      }
-    } catch (err) {
-      alert('Houve um erro durante a autenticação');
-      setIsSubmitting(false);
-    }
+    await entrar(data);
+    setIsSubmitting(false);
   }
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const noErrors = Object.keys(formState.errors).length === 0;
+
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <form
-      onSubmit={submitForm}
+      onSubmit={(e) => {
+        handleSubmit((data) => {
+          submitForm(data);
+        })(e);
+      }}
       className="flex h-full w-full flex-col items-center justify-between gap-10"
     >
       <h1 className="text-center text-4xl font-medium">Login</h1>
 
       <div className="flex w-full flex-col justify-center gap-10">
-        <LabeledInput
-          name="email"
+        <ControlledInput
+          control={control}
+          name="username"
+          label="E-mail"
           type="text"
-          label="Email"
-          required={true}
-          className="w-full"
+          required
         />
 
-        <LabeledInput
+        <ControlledInput
+          control={control}
           name="password"
-          type="password"
           label="Senha"
-          required={true}
-          className="w-full"
+          type={showPassword ? 'text' : 'password'}
+          icon={
+            <Button
+              variant="ghost"
+              className="absolute right-0 top-0 hover:bg-transparent"
+              size="icon"
+              onClick={() => setShowPassword(!showPassword)}
+              type="button"
+            >
+              {showPassword ? (
+                <HiOutlineEyeSlash
+                  className="text-slate-500 hover:scale-105"
+                  size={20}
+                />
+              ) : (
+                <HiOutlineEye
+                  className="text-slate-500 hover:scale-105"
+                  size={20}
+                />
+              )}
+            </Button>
+          }
         />
 
-        <Button asChild variant="link" className="flex self-end text-[#1098F7]">
-          <a href="">Esqueceu a senha?</a>
+        <Button
+          asChild
+          variant="link"
+          className="flex self-end text-primary-300"
+        >
+          <a href="#">Esqueceu a senha?</a>
         </Button>
       </div>
 
       <Button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !noErrors}
         variant="primary"
         className="flex min-h-16 w-full justify-center"
       >
         {isSubmitting ? (
           <>
-            {' '}
-            <Spinner /> Entrando...{' '}
+            <Spinner /> Entrando...
           </>
         ) : (
           'Entrar'

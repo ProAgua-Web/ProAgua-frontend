@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/utils/config';
+import { BASE_URL } from '@/services/api/index';
 import { Ponto, TIPOS_PONTOS } from '@/utils/types';
 
 export default function CardPonto(props: {
