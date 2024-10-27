@@ -9,6 +9,24 @@ import { apiUrl } from "@/utils/api/APIConsumer";
 import { consumerPonto } from "@/utils/api/consumerPonto";
 import { APIConsumer } from "@/utils/api/APIConsumer";
 import MultipleImageInput from "@/components/MultipleImageInput";
+import React from 'react';
+import { ReactFlow } from '@xyflow/react';
+import CardPonto, { AddCard } from "@/components/pontos/CardPontos";
+ 
+import '@xyflow/react/dist/style.css';
+
+import { Node } from '@xyflow/react';
+
+const initialNodes: Node[] = [
+    { id: '1', position: { x: 500, y: 0 }, data: { label: '1' }, type: 'input', draggable: true },
+    { id: '2', position: { x: 300, y: 100 }, data: { label: '2' } },
+    { id: '3', position: { x: 500, y: 100 }, data: { label: '3' } },
+    { id: '4', position: { x: 300, y: 200 }, data: { label: '4' }, type: 'output' },
+  ];
+  const initialEdges = [
+    { id: 'e1-2', source: '1', target: '2', animated: true }, 
+    { id: 'e1-3', source: '1', target: '3', animated: true},
+    { id: 'e2-4', source: '2', target: '4', animated: true},];
 
 export default function VisualizarPonto({ params }: { params: { id_ponto: string } }) {
     const edificacoes = useEdificacoes();
@@ -117,6 +135,10 @@ export default function VisualizarPonto({ params }: { params: { id_ponto: string
             <h2 className="text-4xl text-neutral-700 font-bold mb-8">
                 {editable ? "Editar" : "Visualizar"} Reservatório
             </h2>
+
+            <div style={{ width: '100vh', height: '100vh' }}>
+                <ReactFlow nodes={initialNodes} edges={initialEdges} />
+            </div>
 
             <form onSubmit={(e) => submitForm(e)} onReset={() => setEditable(false)} method="POST"
                 className="w-full flex flex-col gap-4"
