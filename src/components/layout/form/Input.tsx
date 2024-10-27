@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 interface InputProps {
   label: string;
@@ -10,8 +10,7 @@ interface InputProps {
 }
 
 export default function Input(props: InputProps) {
-
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -25,7 +24,7 @@ export default function Input(props: InputProps) {
         {props.label}
       </label>
       <input
-        className="w-full h-14 rounded-md border border-neutral-200 p-2 active:outline-primary-300 focus:outline-primary-300"
+        className="h-14 w-full rounded-md border border-neutral-200 p-2 focus:outline-primary-300 active:outline-primary-300"
         type={props.type}
         name={props.name}
         value={inputValue}

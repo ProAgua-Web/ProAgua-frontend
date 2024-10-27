@@ -1,6 +1,6 @@
-import Gotinha from "/public/gotinha.svg";
+import Gotinha from '/public/gotinha.svg';
 
-import Image from "next/image";
+import Image from 'next/image';
 
 function Header() {
   return (
@@ -38,13 +38,10 @@ function Header() {
 
 export default function NotFound() {
   return (
-    <main className="w-full h-screen flex flex-col">
+    <main className="flex h-screen w-full flex-col">
       <Header />
-      <div className="w-full flex flex-col flex-grow justify-center items-center">
-        <Image
-          className="min-w-36"
-          src={Gotinha}
-          alt="Gotinha triste" />
+      <div className="flex w-full flex-grow flex-col items-center justify-center">
+        <Image className="min-w-36" src={Gotinha} alt="Gotinha triste" />
         <h1 className="text-3xl">404 - Not Found!</h1>
       </div>
     </main>

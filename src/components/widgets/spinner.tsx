@@ -1,11 +1,9 @@
 const Spinner = () => {
-    
-    return (
-        <span className="w-6 h-6 block border-4 border-l-white border-blue-400 rounded-full animate-spin mr-4"/>
-    )
+  return (
+    <span className="mr-4 block h-6 w-6 animate-spin rounded-full border-4 border-blue-400 border-l-white" />
+  );
+};
 
-}
-
-Spinner.displayName = "Spinner";
+Spinner.displayName = 'Spinner';
 
 export default Spinner;

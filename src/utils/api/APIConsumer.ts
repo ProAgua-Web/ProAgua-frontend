@@ -1,141 +1,145 @@
-import { getCookie } from "../cookies";
-
+import { getCookie } from '../cookies';
 
 export class APIConsumer<Tin, Tout> {
-    baseUrl: string;
+  baseUrl: string;
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
+
+  async get(id: string, cache: RequestCache = 'no-cache') {
+    const response = await fetch(this.baseUrl + id, {
+      cache: cache,
+      credentials: 'include',
+    });
+
+    const data: Tout = await response.json();
+    return data;
+  }
+
+  async getBlob(cache: RequestCache = 'no-cache', query: any = undefined) {
+    let searchParams = '';
+
+    if (query) {
+      query['limit'] = 10000;
+      searchParams = '?' + toQuery(query);
     }
 
-    async get(id: string, cache: RequestCache = "no-cache") {
-        const response = await fetch(this.baseUrl + id, {
-            cache: cache,
-            credentials: "include"
-        });
+    const response = await fetch(this.baseUrl + searchParams, {
+      cache: cache,
+      credentials: 'include',
+    });
 
-        const data: Tout = await response.json();
-        return data;
+    return await response.blob();
+  }
+
+  async list(cache: RequestCache = 'no-cache', query: any = undefined) {
+    let searchParams = '';
+
+    if (query) {
+      query['limit'] = 10000;
+      searchParams = '?' + toQuery(query);
     }
 
-    async getBlob(cache: RequestCache = "no-cache", query: any = undefined) {
-        let searchParams = "";
+    const response = await fetch(this.baseUrl + searchParams, {
+      cache: cache,
+      credentials: 'include',
+    });
 
-        if (query) {
-            query["limit"] = 10000;
-            searchParams = '?' + toQuery(query);
-        }
+    const data: Tout[] = (await response.json()).items;
+    return data;
+  }
 
-        const response = await fetch(this.baseUrl + searchParams, {
-            cache: cache,
-            credentials: "include"
-        });
+  async post(
+    data: Tin,
+    headers = new Headers({ 'Content-Type': 'application/json' }),
+  ) {
+    // Try to get the csrftoken in the cookies
+    const csrfToken = getCookie('csrftoken');
 
-        return await response.blob();
+    if (csrfToken) {
+      headers.set('X-CSRFToken', csrfToken);
     }
 
-    async list(cache: RequestCache = "no-cache", query: any = undefined) {
-        let searchParams = "";
+    let body: any = data;
 
-        if (query) {
-            query["limit"] = 10000;
-            searchParams = '?' + toQuery(query);
-        }
-
-        const response = await fetch(this.baseUrl + searchParams, {
-            cache: cache,
-            credentials: "include"
-        });
-
-        const data: Tout[] = (await response.json()).items;
-        return data;
+    if (headers.get('Content-Type') === 'application/json') {
+      body = JSON.stringify(data);
     }
 
-    async post(data: Tin, headers = new Headers({ "Content-Type": "application/json" })) {
-        // Try to get the csrftoken in the cookies
-        const csrfToken = getCookie("csrftoken");
+    // Send request
+    const response = await fetch(this.baseUrl, {
+      method: 'POST',
+      headers: headers,
+      credentials: 'include',
+      body: body,
+    });
 
-        if (csrfToken) {
-            headers.set("X-CSRFToken", csrfToken);
-        }
+    return response;
+  }
 
-        let body: any = data;
+  async delete(id: string) {
+    // Set request headers
+    const headers: HeadersInit = {};
 
-        if (headers.get("Content-Type") === "application/json") {
-            body = JSON.stringify(data);
-        }
+    // Try to get the csrftoken in the cookies
+    const csrfToken = getCookie('csrftoken');
 
-        // Send request
-        const response = await fetch(this.baseUrl, {
-            method: "POST",
-            headers: headers,
-            credentials: "include",
-            body: body
-        });
-
-        return response;
+    if (csrfToken) {
+      headers['X-CSRFToken'] = csrfToken;
     }
 
-    async delete(id: string) {
-        // Set request headers
-        const headers: HeadersInit = {};
+    // Send request
+    const response = await fetch(this.baseUrl + id, {
+      method: 'DELETE',
+      headers: headers,
+      credentials: 'include',
+    });
 
-        // Try to get the csrftoken in the cookies
-        const csrfToken = getCookie("csrftoken");
+    return response;
+  }
 
-        if (csrfToken) {
-            headers["X-CSRFToken"] = csrfToken;
-        }
+  async put(id: string, data: Tin) {
+    // Set request headers
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
 
-        // Send request
-        const response = await fetch(this.baseUrl + id, {
-            method: "DELETE",
-            headers: headers,
-            credentials: "include"
-        });
+    // Try to get the csrftoken in the cookies
+    const csrfToken = getCookie('csrftoken');
 
-        return response;
+    if (csrfToken) {
+      headers['X-CSRFToken'] = csrfToken;
     }
 
-    async put(id: string, data: Tin) {
-        // Set request headers
-        const headers: HeadersInit = {
-            "Content-Type": "application/json",
-        };
+    // Send request
+    const response = await fetch(this.baseUrl + id, {
+      method: 'PUT',
+      headers: headers,
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
 
-        // Try to get the csrftoken in the cookies
-        const csrfToken = getCookie("csrftoken");
-
-        if (csrfToken) {
-            headers["X-CSRFToken"] = csrfToken;
-        }
-
-        // Send request
-        const response = await fetch(this.baseUrl + id, {
-            method: "PUT",
-            headers: headers,
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
-
-        return response;
-    }
+    return response;
+  }
 }
 
 export function toQuery(data: any): string {
-    return Object.keys(data).reduce((acc: string[], cur: string) => {
-        const value = data[cur];
+  return Object.keys(data)
+    .reduce((acc: string[], cur: string) => {
+      const value = data[cur];
 
-        if (value === undefined || value === null) {
-            return acc;
-        }
+      if (value === undefined || value === null) {
+        return acc;
+      }
 
-        if (value instanceof Array) {
-            return [...acc, ...value.map(v => `${cur}=${v}`)];
-        }
+      if (value instanceof Array) {
+        return [...acc, ...value.map((v) => `${cur}=${v}`)];
+      }
 
-        return [...acc, `${cur}=${value}`];
-    }, []).join('&');
+      return [...acc, `${cur}=${value}`];
+    }, [])
+    .join('&');
 }
 
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;

@@ -1,7 +1,7 @@
-"use client"
+'use client';
 import { useQRCode } from 'next-qrcode';
 
-export default function QRCode(props: { data: string, width?: number }) {
+export default function QRCode(props: { data: string; width?: number }) {
   const { Canvas } = useQRCode();
 
   return (

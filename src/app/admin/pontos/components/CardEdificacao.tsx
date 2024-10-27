@@ -1,30 +1,44 @@
-"use client";
-import CardPonto, { AddCard } from "@/components/pontos/CardPontos";
-import { Edificacao, Ponto } from "@/utils/types";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+'use client';
+import CardPonto, { AddCard } from '@/components/pontos/CardPontos';
+import { Edificacao, Ponto } from '@/utils/types';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 
-export function CardEdificacao(props: { group: { edificacao: Edificacao; pontos: Ponto[]; }; collapsed: boolean; }) {
+export function CardEdificacao(props: {
+  group: { edificacao: Edificacao; pontos: Ponto[] };
+  collapsed: boolean;
+}) {
   const { group } = props;
   const [collapsed, setCollapsed] = useState<boolean>(props.collapsed);
 
   return (
-    <div className={`mb-4 border rounded-lg border-gray-300 bg-gray-50 hover:shadow-lg transition-shadow duration-75 ${collapsed && "rounded bg-gray-200 border-t"}`}>
-      <div className="border-b border-gray-300 flex justify-between p-4 py-2">
+    <div
+      className={`mb-4 rounded-lg border border-gray-300 bg-gray-50 transition-shadow duration-75 hover:shadow-lg ${collapsed && 'rounded border-t bg-gray-200'}`}
+    >
+      <div className="flex justify-between border-b border-gray-300 p-4 py-2">
         <button
-          className="w-full text-xl text-start font-regular py-4 px-2 text-black"
+          className="font-regular w-full px-2 py-4 text-start text-xl text-black"
           onClick={() => setCollapsed(!collapsed)}
         >
           {group.edificacao.codigo} - {group.edificacao.nome}
         </button>
-        <a href={`/admin/edificacoes/${group.edificacao.codigo}`} className="text-neutral-500 p-4 hover:text-primary-600">
-          <FontAwesomeIcon icon={faPenToSquare} size="lg" className="font-light"/>
+        <a
+          href={`/admin/edificacoes/${group.edificacao.codigo}`}
+          className="p-4 text-neutral-500 hover:text-primary-600"
+        >
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            size="lg"
+            className="font-light"
+          />
         </a>
       </div>
-      <div className={`p-4 flex gap-4 flex-wrap bg-gray-100 ${collapsed ? 'hidden' : ''}`}>
+      <div
+        className={`flex flex-wrap gap-4 bg-gray-100 p-4 ${collapsed ? 'hidden' : ''}`}
+      >
         {group.pontos.map((item, i) => (
-          <CardPonto ponto={item} key={"ponto-" + i} publicCard={false} />
+          <CardPonto ponto={item} key={'ponto-' + i} publicCard={false} />
         ))}
         <AddCard cod_edificacao={group.edificacao.codigo} />
         <AddCard cod_edificacao={group.edificacao.codigo} tipo="reservatorio" />

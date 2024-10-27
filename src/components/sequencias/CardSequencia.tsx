@@ -1,4 +1,4 @@
-import { Sequencia } from "@/utils/types";
+import { Sequencia } from '@/utils/types';
 
 export default function CardSequencia(props: { sequencia: Sequencia }) {
   const { sequencia } = props;
@@ -12,7 +12,7 @@ export default function CardSequencia(props: { sequencia: Sequencia }) {
           {sequencia.ponto?.edificacao.nome}
         </h2>
         <p className="text-sm">
-          {sequencia.ponto?.tipo === 1 ? "Bebedouro" : "RPS"}
+          {sequencia.ponto?.tipo === 1 ? 'Bebedouro' : 'RPS'}
         </p>
         <p className="text-sm">{sequencia.ponto?.localizacao}</p>
         <h5>Ciclo de Amostragem {sequencia.amostragem.toString()}</h5>

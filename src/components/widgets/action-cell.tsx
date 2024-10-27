@@ -1,7 +1,13 @@
-import { useState } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { useState } from 'react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { MoreHorizontal } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 
 interface ActionsCellProps {
   row: any;
@@ -20,14 +26,14 @@ interface ActionsCellProps {
   onEdit?: () => void;
 }
 
-function ActionsCell({ row, onDelete, onEdit}: ActionsCellProps) {
+function ActionsCell({ row, onDelete, onEdit }: ActionsCellProps) {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const handleDelete = () => {
     if (onDelete) {
       onDelete();
     } else {
-      alert("Deleted not implemented");
+      alert('Deleted not implemented');
     }
     setIsAlertOpen(false);
   };
@@ -36,7 +42,7 @@ function ActionsCell({ row, onDelete, onEdit}: ActionsCellProps) {
     if (onEdit) {
       onEdit();
     } else {
-      alert("Edit not implemented");
+      alert('Edit not implemented');
     }
     setIsAlertOpen(false);
   };
@@ -52,20 +58,20 @@ function ActionsCell({ row, onDelete, onEdit}: ActionsCellProps) {
       <DropdownMenuContent align="end">
         <DropdownMenuSeparator />
         <DropdownMenuItem className="">
-          <Button
-            variant="none"
-            className=""
-            onClick={handleEdit}
-          >
+          <Button variant="none" className="" onClick={handleEdit}>
             Editar
           </Button>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
             <AlertDialogTrigger asChild>
-              <Button variant="none"
+              <Button
+                variant="none"
                 className="text-red-500"
-                onClick={(e) => { e.preventDefault(); setIsAlertOpen(true); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsAlertOpen(true);
+                }}
               >
                 Excluir
               </Button>
@@ -74,11 +80,14 @@ function ActionsCell({ row, onDelete, onEdit}: ActionsCellProps) {
               <AlertDialogHeader>
                 <AlertDialogTitle>Excluir informação</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Essa ação não pode ser desfeita. Isso excluirá permanentemente os dados de nossos servidores.
+                  Essa ação não pode ser desfeita. Isso excluirá permanentemente
+                  os dados de nossos servidores.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel onClick={() => setIsAlertOpen(false)}>Cancel</AlertDialogCancel>
+                <AlertDialogCancel onClick={() => setIsAlertOpen(false)}>
+                  Cancel
+                </AlertDialogCancel>
                 <AlertDialogAction
                   className="bg-red-500 hover:bg-red-500"
                   onClick={handleDelete}

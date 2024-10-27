@@ -49,7 +49,7 @@ function Footer() {
 
 export default function Home() {
   const sectionClassName =
-    "flex flex-col min-h-[calc(100vh-clamp(50px,8vh,100px))] w-full justify-center";
+    'flex flex-col min-h-[calc(100vh-clamp(50px,8vh,100px))] w-full justify-center';
 
   return (
     <>
@@ -60,7 +60,7 @@ export default function Home() {
           id="inicio"
           className={
             sectionClassName +
-            " color-white gap-6 text-balance bg-primary-500 pl-[max(30px,4vh+1rem)] text-white"
+            ' color-white gap-6 text-balance bg-primary-500 pl-[max(30px,4vh+1rem)] text-white'
           }
         >
           <p className="text-xs uppercase">BOAS-VINDAS AO PROÁGUA</p>
@@ -76,7 +76,7 @@ export default function Home() {
 
         <section
           id="pesquise"
-          className={sectionClassName + " w-full items-center justify-center"}
+          className={sectionClassName + ' w-full items-center justify-center'}
         >
           <p className="mb-8 text-xs font-semibold text-neutral-600">
             PESQUISA
@@ -104,7 +104,7 @@ export default function Home() {
 
         <section
           id="sobre"
-          className={sectionClassName + " py-12 pl-[max(30px,6vh+1rem)]"}
+          className={sectionClassName + ' py-12 pl-[max(30px,6vh+1rem)]'}
         >
           <h2 className="text-xs font-semibold text-primary-500">SOBRE NÓS</h2>
           <h1 className="max-w-[95%] text-balance">
@@ -125,9 +125,9 @@ export default function Home() {
           <p className="word-wrap w-[60vw] text-balance text-justify">
             A metodologia utilizada para monitorar a qualidade da água foi
             construída levando em conta, dentre outros, a diretriz nacional do
-            plano de ciclo de amostragem da vigilância da qualidade da água para consumo
-            humano e especificidades do sistema de distribuição da água da
-            UFERSA, incluindo seus sistemas prediais de água fria.
+            plano de ciclo de amostragem da vigilância da qualidade da água para
+            consumo humano e especificidades do sistema de distribuição da água
+            da UFERSA, incluindo seus sistemas prediais de água fria.
           </p>
           <a href="/">Saiba mais</a>
         </section>

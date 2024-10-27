@@ -1,3 +1,62 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    // "plugin:n/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "curly": "warn",
+    "block-scoped-var": "warn",
+    "eqeqeq": "warn",
+    "no-var": "warn",
+    "prefer-const": "warn",
+    "eol-last": "warn",
+    "prefer-arrow-callback": "warn",
+    "no-restricted-properties": [
+      "error",
+      { "object": "describe", "property": "only" },
+      { "object": "it", "property": "only" }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+      },
+      "extends": ["plugin:@typescript-eslint/recommended-type-checked"],
+      "rules": {
+        "eol-last": "off",
+        "require-await": "warn",
+        "n/no-missing-import": "off",
+        "n/no-unsupported-features/es-syntax": "off",
+        "n/no-missing-require": "off",
+
+        "@typescript-eslint/consistent-type-definitions": ["warn", "interface"],
+        "@typescript-eslint/no-explicit-any": [
+          "error",
+          { "fixToUnknown": true }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          { "argsIgnorePattern": "^_", "destructuredArrayIgnorePattern": "^_" }
+        ],
+        "@typescript-eslint/consistent-type-imports": [
+          "error",
+          { "prefer": "type-imports", "fixStyle": "inline-type-imports" }
+        ],
+        "import/consistent-type-specifier-style": ["warn", "prefer-inline"],
+        "@typescript-eslint/no-misused-promises": [
+          "warn",
+          { "checksVoidReturn": false }
+        ],
+        "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-empty-object-type": "off"
+      }
+    }
+  ]
 }

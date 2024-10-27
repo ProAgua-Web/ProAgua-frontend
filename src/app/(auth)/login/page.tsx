@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { FormEvent, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { LabeledInput } from "@/components/widgets/labeled-input"
-import Spinner from "@/components/widgets/spinner";
+import { FormEvent, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { LabeledInput } from '@/components/widgets/labeled-input';
+import Spinner from '@/components/widgets/spinner';
 
 async function getCSRFToken() {
-  const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/csrf", {
+  const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/csrf', {
     method: 'GET',
-    credentials: 'include'
+    credentials: 'include',
   });
 
-  const data = await resp.json()
+  const data = await resp.json();
 
-  return data["csrftoken"]
+  return data['csrftoken'];
 }
 
 export default function Login() {
@@ -28,19 +28,22 @@ export default function Login() {
     try {
       const csrftoken = await getCSRFToken();
       const data = {
-        username: formData.get("email"),
-        password: formData.get("password"),
+        username: formData.get('email'),
+        password: formData.get('password'),
       };
 
-      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrftoken,
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + '/api/v1/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+          },
+          credentials: 'include',
+          body: JSON.stringify(data),
         },
-        credentials: "include",
-        body: JSON.stringify(data),
-      });
+      );
 
       const responseData = await response.json();
 
@@ -48,15 +51,15 @@ export default function Login() {
       if (response.status != 200 || responseData == null) {
         alert(`Erro ao fazer login!`);
       } else {
-        alert("Login efetuado com sucesso!");
+        alert('Login efetuado com sucesso!');
 
         let token = responseData.access_token;
-        localStorage.setItem("token", token);
+        localStorage.setItem('token', token);
 
-        window.location.href = "/admin/pontos";
+        window.location.href = '/admin/pontos';
       }
     } catch (err) {
-      alert("Houve um erro durante a autenticação")
+      alert('Houve um erro durante a autenticação');
       setIsSubmitting(false);
     }
   }
@@ -64,12 +67,11 @@ export default function Login() {
   return (
     <form
       onSubmit={submitForm}
-      className="w-full h-full flex flex-col justify-between items-center gap-10"
+      className="flex h-full w-full flex-col items-center justify-between gap-10"
     >
-      <h1 className="text-4xl font-medium text-center">Login</h1>
+      <h1 className="text-center text-4xl font-medium">Login</h1>
 
-      <div className="w-full flex flex-col justify-center gap-10">
-
+      <div className="flex w-full flex-col justify-center gap-10">
         <LabeledInput
           name="email"
           type="text"
@@ -86,14 +88,8 @@ export default function Login() {
           className="w-full"
         />
 
-        <Button
-          asChild
-          variant="link"
-          className="flex self-end text-[#1098F7]"
-        >
-          <a href="">
-            Esqueceu a senha?
-          </a>
+        <Button asChild variant="link" className="flex self-end text-[#1098F7]">
+          <a href="">Esqueceu a senha?</a>
         </Button>
       </div>
 
@@ -101,12 +97,16 @@ export default function Login() {
         type="submit"
         disabled={isSubmitting}
         variant="primary"
-        className="w-full min-h-16 flex justify-center"
+        className="flex min-h-16 w-full justify-center"
       >
-        {isSubmitting ?
-          <> <Spinner /> Entrando... </>
-          : "Entrar"
-        }
+        {isSubmitting ? (
+          <>
+            {' '}
+            <Spinner /> Entrando...{' '}
+          </>
+        ) : (
+          'Entrar'
+        )}
       </Button>
     </form>
   );

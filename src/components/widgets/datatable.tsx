@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import * as React from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,7 +15,7 @@ import {
   FilterFn,
   SortingFn,
   sortingFns,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -23,21 +23,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DataTablePagination } from "./datatable-pagination";
+} from '@/components/ui/dropdown-menu';
+import { DataTablePagination } from './datatable-pagination';
 import {
   RankingInfo,
   rankItem,
   compareItems,
-} from "@tanstack/match-sorter-utils";
+} from '@tanstack/match-sorter-utils';
 
-declare module "@tanstack/react-table" {
+declare module '@tanstack/react-table' {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
   }
@@ -57,7 +57,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   if (rowA.columnFiltersMeta[columnId]) {
     dir = compareItems(
       rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!
+      rowB.columnFiltersMeta[columnId]?.itemRank!,
     );
   }
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
@@ -74,12 +74,12 @@ export default function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [globalFilter, setGlobalFilter] = React.useState('');
 
   const table = useReactTable({
     data,
@@ -101,13 +101,13 @@ export default function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: "fuzzy",
+    globalFilterFn: 'fuzzy',
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
-    <div className="bg-white p-4 rounded-xl">
+    <div className="rounded-xl bg-white p-4">
       <div className="flex items-center py-4 ">
         <Input
           placeholder="Pesquisar"
@@ -153,9 +153,9 @@ export default function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   );
                 })}
@@ -167,14 +167,14 @@ export default function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row, index) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={index % 2 === 0 ? "bg-[#FFF]" : "bg-[#F9FAFB]"}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className={index % 2 === 0 ? 'bg-[#FFF]' : 'bg-[#F9FAFB]'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -182,7 +182,10 @@ export default function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   Nenhum resultado.
                 </TableCell>
               </TableRow>

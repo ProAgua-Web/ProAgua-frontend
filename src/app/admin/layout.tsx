@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Inter } from "next/font/google";
+import { Inter } from 'next/font/google';
 
-import Header from "@/components/layout/Header";
-import Navbar from "@/components/layout/Navbar";
-import { useState } from "react";
+import Header from '@/components/layout/Header';
+import Navbar from '@/components/layout/Navbar';
+import { useState } from 'react';
 
 // The following import prevents a Font Awesome icon server-side rendering bug,
 // where the icons flash from a very large icon down to a properly sized one:
@@ -13,8 +13,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false; /* eslint-disable import/first */
 
-
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
   children,
@@ -28,7 +27,7 @@ export default function RootLayout({
   };
 
   return (
-    <div className={inter.className + " bg-background min-h-[100vh]"}>
+    <div className={inter.className + ' min-h-[100vh] bg-background'}>
       <Header expand={toggleCollapsed} collapsed={collapsed} />
 
       <Navbar collapse={toggleCollapsed} collapsed={collapsed} />
