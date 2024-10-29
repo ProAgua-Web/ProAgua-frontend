@@ -55,7 +55,6 @@ export default function Login() {
           name="username"
           label="E-mail"
           type="text"
-          required
         />
 
         <ControlledInput

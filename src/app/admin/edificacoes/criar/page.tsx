@@ -1,69 +1,48 @@
 'use client';
 
-import React, { FormEvent, useState } from 'react';
+import { ControlledNumberInput } from '@/components/controlled-number-input';
+import { ControlledSelect } from '@/components/controlled-select';
+import { ControlledTextInput } from '@/components/controlled-text-input';
 import MultipleImageInput from '@/components/MultipleImageInput';
-import { apiUrl } from '@/utils/api/APIConsumer';
-import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
-import { APIConsumer } from '@/utils/api/APIConsumer';
+import { campus, Campus, campusLabel } from '@/lib/utils';
+import { createEdificacao } from '@/services/api/edificacao-service';
+import { ImageType } from '@/types/Image';
 import { EdificacaoIn } from '@/utils/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-type Image = {
-  file: File;
-  description: string;
-};
+const formSchema = z.object({
+  codigo: z
+    .string({ message: 'Código é obrigatório' })
+    .min(1, { message: 'Código é obrigatório' })
+    .max(20, { message: 'Código muito grande' }),
+  nome: z
+    .string({ message: 'Nome é obrigatório' })
+    .min(1, { message: 'Nome é obrigatório' })
+    .max(80, { message: 'Nome muito grande' }),
+  campus: z.nativeEnum(Campus, { message: 'Campus é obrigatório' }),
+  cronograma: z
+    .number({ message: 'Cronograma é obrigatório' })
+    .positive({ message: 'Cronograma precisa ser positivo' }),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 export default function CriarEdificacao() {
-  // Page state variables
+  const { control, formState, handleSubmit } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+  });
+
   const [submiting, setSubmiting] = useState<boolean>(false);
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<ImageType[]>([]);
 
-  async function uploadImage(codigo_edificacao: string, image: Image) {
-    let formData = new FormData();
-    formData.append('description', image.description);
-    formData.append('file', image.file);
-
-    const consumer = new APIConsumer(
-      `${apiUrl}/api/v1/edificacoes/${codigo_edificacao}/imagem`,
-    );
-    const response = await consumer.post(formData, new Headers());
-
-    if (!response.ok) {
-      throw `Erro ao adicionar imagem ${image.file.name}`;
-    }
-  }
-
-  async function submitForm(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function submitForm(data: FormSchema) {
     setSubmiting(true);
-
-    // Create "edificação" without image
-    const formData = new FormData(event.currentTarget);
-    const data: EdificacaoIn = {
-      codigo: String(formData.get('codigo')),
-      nome: String(formData.get('nome')),
-      campus: String(formData.get('campus')),
-      cronograma: Number(formData.get('cronograma')),
-    };
-
-    const response = await consumerEdficacao.post(data);
-
-    if (response.status != 200) {
-      alert('Erro ao criar edificação!');
-      setSubmiting(false);
-      return;
-    } else {
-      alert('Edificação criada.');
-    }
-
-    // If the creation was well succeded, then upload the images
-    // and attach to the "edficação".
-    await Promise.all(
-      images.map((image) => {
-        return uploadImage(String(data.codigo), image);
-      }),
-    );
-
-    alert('Imagens criadas.');
+    await createEdificacao(data as EdificacaoIn, images);
     window.location.href = '/admin/pontos';
   }
 
@@ -75,47 +54,34 @@ export default function CriarEdificacao() {
 
       <form
         className="flex w-full flex-col gap-4"
-        onSubmit={(e) => submitForm(e)}
+        onSubmit={handleSubmit(submitForm)}
         method="POST"
       >
-        <label htmlFor="codigo">Código:</label>
-        <input
-          type="text"
-          id="codigo"
+        <ControlledTextInput
+          control={control}
           name="codigo"
-          className="rounded-lg border border-neutral-400 px-6 py-4"
-          required
-        />
-
-        <label htmlFor="nome">Nome:</label>
-        <input
+          label="Código"
           type="text"
-          id="nome"
+        />
+        <ControlledTextInput
+          control={control}
           name="nome"
-          className="rounded-lg border border-neutral-400 px-6 py-4"
-          required
+          label="Nome"
+          type="text"
         />
-
-        <label htmlFor="campus">Campus:</label>
-        <select
-          id="campus"
+        <ControlledSelect
+          control={control}
           name="campus"
-          className="rounded-lg border border-neutral-400 px-6 py-4"
-          required
-        >
-          <option value="LE">Leste</option>
-          <option value="OE">Oeste</option>
-        </select>
-
-        <label htmlFor="cronograma">Cronograma:</label>
-        <input
-          type="number"
-          id="cronograma"
-          name="cronograma"
-          className="rounded-lg border border-neutral-400 px-6 py-4"
-          required
+          label="Campus"
+          options={campus}
+          getOptionValue={(camp) => camp}
+          renderOption={(camp) => campusLabel[camp]}
         />
-
+        <ControlledNumberInput
+          control={control}
+          name="cronograma"
+          label="Cronograma"
+        />
         <hr />
 
         <label htmlFor="foto">Fotos:</label>

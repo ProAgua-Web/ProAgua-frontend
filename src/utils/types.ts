@@ -1,3 +1,5 @@
+import { Campus } from '@/lib/utils';
+
 export type PontoIn = {
   codigo_edificacao?: string;
   localizacao: string | null;
@@ -88,7 +90,7 @@ export type Sequencia = {
 export type Edificacao = {
   codigo: string;
   nome: string;
-  campus: string;
+  campus: Campus;
   cronograma: number;
   imagens: ImageOut[];
   pontos_url: string;
@@ -98,7 +100,7 @@ export type Edificacao = {
 export type EdificacaoIn = {
   codigo: string;
   nome: string;
-  campus: string;
+  campus: Campus;
   cronograma: number;
   informacoes_gerais?: string;
 };
