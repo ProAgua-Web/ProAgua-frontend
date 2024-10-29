@@ -22,11 +22,14 @@ export async function getCSRFToken(): Promise<string> {
 
 export async function entrar(data: CredenciaisDTO) {
   try {
+    const csrfToken = await getCSRFToken();
+    localStorage.setItem('csrftoken', csrfToken);
+
     const response = await fetch(API_BASE_URL + '/api/v1/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': await getCSRFToken(),
+        'X-CSRFToken': csrfToken,
       },
       credentials: 'include',
       body: JSON.stringify(data),
@@ -41,7 +44,6 @@ export async function entrar(data: CredenciaisDTO) {
 
       let token = responseData.access_token;
       localStorage.setItem('token', token);
-
       window.location.href = '/admin/pontos';
     }
   } catch (err) {
