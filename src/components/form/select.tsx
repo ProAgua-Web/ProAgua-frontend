@@ -31,7 +31,7 @@ export function Select<TData, TValue extends SelectValue>({
             'peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
             {
               'cursor-default opacity-50': readOnly,
-              'cursor-not-allowed bg-slate-200': disabled,
+              'cursor-not-allowed': disabled,
             },
           )}
         >

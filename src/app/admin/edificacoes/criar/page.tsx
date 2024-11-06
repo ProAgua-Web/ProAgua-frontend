@@ -4,6 +4,7 @@ import { ControlledNumberInput } from '@/components/controlled-number-input';
 import { ControlledSelect } from '@/components/controlled-select';
 import { ControlledTextInput } from '@/components/controlled-text-input';
 import MultipleImageInput from '@/components/MultipleImageInput';
+import { Button } from '@/components/ui/button';
 import { campus, Campus, campusLabel } from '@/lib/utils';
 import { createEdificacao } from '@/services/api/edificacao-service';
 import { ImageType } from '@/types/Image';
@@ -26,6 +27,7 @@ const formSchema = z.object({
   cronograma: z
     .number({ message: 'Cronograma é obrigatório' })
     .positive({ message: 'Cronograma precisa ser positivo' }),
+  informacoes_gerais: z.string().optional(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -82,6 +84,13 @@ export default function CriarEdificacao() {
           name="cronograma"
           label="Cronograma"
         />
+        <ControlledTextInput
+          control={control}
+          name="informacoes_gerais"
+          label="Informações gerais"
+          type="text"
+        />
+
         <hr />
 
         <label htmlFor="foto">Fotos:</label>
@@ -90,16 +99,15 @@ export default function CriarEdificacao() {
           setImages={setImages}
           disabled={false}
         />
-
-        <div className="w-full">
-          <input
-            id="criar"
-            type="submit"
-            className="w-full rounded-lg border border-neutral-400 bg-primary-500 px-6 py-4 font-semibold text-white hover:bg-primary-600 disabled:bg-neutral-200 disabled:text-neutral-500"
-            value={`${submiting ? 'Criando...' : 'Criar'}`}
-            disabled={submiting}
-          />
-        </div>
+        <Button
+          variant={'primary'}
+          id="criar"
+          type="submit"
+          className="w-full"
+          disabled={submiting}
+        >
+          {`${submiting ? 'Criando...' : 'Criar'}`}
+        </Button>
       </form>
     </>
   );
