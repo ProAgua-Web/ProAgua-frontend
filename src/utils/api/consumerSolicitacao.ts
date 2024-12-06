@@ -1,7 +1,6 @@
-import { SolicitacaoIn, Solicitacao } from '../types';
-import { APIConsumer } from './APIConsumer';
-import { apiUrl } from './APIConsumer';
+import { Solicitacao, SolicitacaoIn } from '../types';
+import { APIConsumer, apiUrl } from './APIConsumer';
 
 export const consumerSolicitacao = new APIConsumer<SolicitacaoIn, Solicitacao>(
-  `${apiUrl}/api/v1/solicitacoes/`,
+  `${apiUrl}/solicitacoes/`,
 );

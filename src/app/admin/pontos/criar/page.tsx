@@ -45,16 +45,13 @@ export default function Pontos() {
       amontante: Number(formData.get('amontante')),
     };
 
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/pontos/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(data),
+    });
 
     if (response.status === 200) {
       const responseData = await response.json();
@@ -63,13 +60,10 @@ export default function Pontos() {
       if (file != undefined && file != null) {
         let formData = new FormData();
         formData.append('imagem', file);
-        await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos/${id}/imagem`,
-          {
-            method: 'POST',
-            body: formData,
-          },
-        )
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pontos/${id}/imagem`, {
+          method: 'POST',
+          body: formData,
+        })
           .then((response) => {
             if (!response.ok) {
               alert('Erro ao adicionar imagem');
@@ -108,7 +102,7 @@ export default function Pontos() {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + '/api/v1/edificacoes?limit=10000',
+        process.env.NEXT_PUBLIC_API_URL + '/edificacoes?limit=10000',
       );
       setEdificacoes((await response.json()).items);
     })();

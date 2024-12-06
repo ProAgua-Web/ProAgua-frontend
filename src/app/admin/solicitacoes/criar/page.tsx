@@ -2,10 +2,10 @@
 
 import MultipleImageInput from '@/components/MultipleImageInput';
 import {
-  useEdificacoes,
   useEdificacao,
-  usePontos,
+  useEdificacoes,
   usePonto,
+  usePontos,
 } from '@/utils/api/client_side_consumer';
 import { consumerSolicitacao } from '@/utils/api/consumerSolicitacao';
 import { getCookie } from '@/utils/cookies';
@@ -92,7 +92,7 @@ export default function CriarSolicitacao() {
     if (image.file) formData.append('file', image.file);
 
     let response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/${id_solicitacao}/imagem`,
+      `${process.env.NEXT_PUBLIC_API_URL}/solicitacoes/${id_solicitacao}/imagem`,
       {
         method: 'POST',
         headers: headers,

@@ -1,14 +1,14 @@
 'use client';
 
-import { Ponto, Sequencia } from '@/utils/types';
-import { toURLParams } from '@/utils/api/client_side_consumer';
 import { apiUrl } from '@/utils/api/APIConsumer';
+import { toURLParams } from '@/utils/api/client_side_consumer';
+import { Ponto, Sequencia } from '@/utils/types';
 import { useEffect, useState } from 'react';
 
-import DataTable from '@/components/widgets/datatable';
-import { columns } from './_components/columns';
-import Spinner from '@/components/widgets/spinner';
 import { Button } from '@/components/ui/button';
+import DataTable from '@/components/widgets/datatable';
+import Spinner from '@/components/widgets/spinner';
+import { columns } from './_components/columns';
 
 export default function Page() {
   const [sequencias, setSequencias] = useState<Sequencia[]>([]);
@@ -38,7 +38,7 @@ export default function Page() {
         delete _filters.campus;
       }
 
-      const url = `${apiUrl}/api/v1/sequencias?limit=10000`;
+      const url = `${apiUrl}/sequencias?limit=10000`;
       let query = toURLParams(_filters);
 
       const res = await fetch(`${url}&${query}`, {

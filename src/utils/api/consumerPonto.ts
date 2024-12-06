@@ -1,7 +1,6 @@
-import { PontoIn, Ponto } from '../types';
-import { APIConsumer } from './APIConsumer';
-import { apiUrl } from './APIConsumer';
+import { Ponto, PontoIn } from '../types';
+import { APIConsumer, apiUrl } from './APIConsumer';
 
 export const consumerPonto = new APIConsumer<PontoIn, Ponto>(
-  `${apiUrl}/api/v1/pontos/`,
+  `${apiUrl}/pontos/`,
 );

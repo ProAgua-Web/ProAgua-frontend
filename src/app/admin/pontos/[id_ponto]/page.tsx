@@ -1,7 +1,16 @@
 'use client';
 
-import { FormEvent, use, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
+import MultipleImageInput from '@/components/MultipleImageInput';
+import { APIConsumer, apiUrl } from '@/utils/api/APIConsumer';
+import {
+  delPonto,
+  useEdificacoes,
+  usePonto,
+  usePontos,
+} from '@/utils/api/client_side_consumer';
+import { consumerPonto } from '@/utils/api/consumerPonto';
 import QRCode from '@/utils/qr_code';
 import {
   Edificacao,
@@ -11,16 +20,6 @@ import {
   PontoIn,
   TIPOS_PONTOS,
 } from '@/utils/types';
-import {
-  delPonto,
-  useEdificacoes,
-  usePonto,
-  usePontos,
-} from '@/utils/api/client_side_consumer';
-import { apiUrl } from '@/utils/api/APIConsumer';
-import { consumerPonto } from '@/utils/api/consumerPonto';
-import { APIConsumer } from '@/utils/api/APIConsumer';
-import MultipleImageInput from '@/components/MultipleImageInput';
 
 export default function VisualizarPonto({
   params,
@@ -54,9 +53,7 @@ export default function VisualizarPonto({
     }
 
     // Send request to delete image
-    const consumer = new APIConsumer(
-      `${apiUrl}/api/v1/pontos/${ponto?.id}/imagem/`,
-    );
+    const consumer = new APIConsumer(`${apiUrl}/pontos/${ponto?.id}/imagem/`);
     const response = await consumer.delete(String(image?.id));
 
     if (!response.ok) {
@@ -108,9 +105,7 @@ export default function VisualizarPonto({
     formData.append('description', image.description);
     formData.append('file', image.file);
 
-    const consumer = new APIConsumer(
-      `${apiUrl}/api/v1/pontos/${ponto?.id}/imagem`,
-    );
+    const consumer = new APIConsumer(`${apiUrl}/pontos/${ponto?.id}/imagem`);
     const response = await consumer.post(formData, new Headers());
 
     if (!response.ok) {

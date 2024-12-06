@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   Coleta,
   Edificacao,
@@ -9,13 +8,14 @@ import {
   Solicitacao,
   Usuario,
 } from '@/utils/types';
+import { useEffect, useState } from 'react';
 import { getCookie } from '../cookies';
+import { consumerColeta } from './consumerColeta';
 import { consumerEdficacao } from './consumerEdficacao';
 import { consumerPonto } from './consumerPonto';
 import { consumerReservatorio } from './consumerReservatorio';
-import { consumerColeta } from './consumerColeta';
-import { consumerSolicitacao } from './consumerSolicitacao';
 import { consumerSequencia } from './consumerSequencia';
+import { consumerSolicitacao } from './consumerSolicitacao';
 import { consumerUsuario } from './consumerUsuario';
 
 export function toURLParams(data: Object) {
@@ -126,7 +126,7 @@ export function usePontosAmontante(ponto: Ponto | null) {
 
         if (ponto.amontante) {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos/${ponto.amontante.id}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/pontos/${ponto.amontante.id}`,
           );
           const pontoAmontante: Ponto = await response.json();
           await fetchPontosAmontante(pontoAmontante);
@@ -181,7 +181,7 @@ export function useSequencia(id_sequencia: number) {
       }
 
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia,
+        process.env.NEXT_PUBLIC_API_URL + '/sequencias/' + id_sequencia,
         {
           headers: {
             'X-CSRFToken': csrftoken,
@@ -206,7 +206,7 @@ export function useColetaBySequencia(id_sequencia: number) {
     (async () => {
       const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL +
-          '/api/v1/sequencias/' +
+          '/sequencias/' +
           id_sequencia +
           '/coletas',
         {
@@ -247,10 +247,7 @@ export function useColetasByPonto(id_ponto: number) {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL +
-          '/api/v1/pontos/' +
-          id_ponto +
-          '/coletas',
+        process.env.NEXT_PUBLIC_API_URL + '/pontos/' + id_ponto + '/coletas',
       );
       const coletas = await response.json();
 
@@ -265,7 +262,7 @@ export function useLastColetaByPonto(id_ponto: number) {
   const [coleta, setColeta] = useState<Coleta | null>(null);
 
   const url =
-    process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto + '/coletas';
+    process.env.NEXT_PUBLIC_API_URL + '/pontos/' + id_ponto + '/coletas';
 
   useEffect(() => {
     (async () => {
@@ -290,7 +287,7 @@ export function useParametrosReferencia() {
   const [parametrosReferencia, setParametrosReferencia] =
     useState<ParametroReferencia>();
 
-  const url = process.env.NEXT_PUBLIC_API_URL + '/api/v1/parametros_referencia';
+  const url = process.env.NEXT_PUBLIC_API_URL + '/parametros_referencia';
 
   useEffect(() => {
     (async () => {
@@ -357,6 +354,6 @@ export function useSolicitacao(id_solicitacao: number) {
 }
 
 export function downloadSolictacao(id_solicitacao: number) {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/solicitacoes/${id_solicitacao}/document`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitacoes/${id_solicitacao}/document`;
   window.open(url, '_blank');
 }

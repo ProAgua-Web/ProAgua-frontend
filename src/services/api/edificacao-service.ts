@@ -9,7 +9,7 @@ export async function uploadImage(codigo_edificacao: string, image: ImageType) {
   formData.append('file', image.file);
 
   const response = await fetch(
-    `${apiUrl}/api/v1/edificacoes/${codigo_edificacao}/imagem`,
+    `${apiUrl}/edificacoes/${codigo_edificacao}/imagem`,
     {
       headers: {
         'X-CSRFToken': csrftoken,
@@ -27,7 +27,7 @@ export async function uploadImage(codigo_edificacao: string, image: ImageType) {
 
 export async function deleteImage(codigo_edificacao: string, id: string) {
   const consumer = new APIConsumer(
-    `${apiUrl}/api/v1/edificacoes/${codigo_edificacao}/imagem/`,
+    `${apiUrl}/edificacoes/${codigo_edificacao}/imagem/`,
   );
   const response = await consumer.delete(id);
 
@@ -40,7 +40,7 @@ export async function createEdificacao(
   edificacao: EdificacaoIn,
   images: ImageType[] = [],
 ) {
-  const consumer = new APIConsumer(`${apiUrl}/api/v1/edificacoes/`);
+  const consumer = new APIConsumer(`${apiUrl}/edificacoes/`);
   const response = await consumer.post(edificacao);
 
   if (!response.ok) {
@@ -60,7 +60,7 @@ export async function updateEdificacao(
   edificacao: EdificacaoIn,
   images: ImageType[] = [],
 ) {
-  const consumer = new APIConsumer(`${apiUrl}/api/v1/edificacoes/`);
+  const consumer = new APIConsumer(`${apiUrl}/edificacoes/`);
   const response = await consumer.put(edificacao.codigo, edificacao);
 
   if (!response.ok) {
@@ -77,7 +77,7 @@ export async function updateEdificacao(
 }
 
 export async function deleteEdificacao(codigo: string) {
-  const consumer = new APIConsumer(`${apiUrl}/api/v1/edificacoes/`);
+  const consumer = new APIConsumer(`${apiUrl}/edificacoes/`);
   const response = await consumer.delete(codigo);
 
   if (response.status == 200) {
