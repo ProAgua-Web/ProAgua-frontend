@@ -53,9 +53,7 @@ export default function VisualizarPonto({
     }
 
     // Send request to delete image
-    const consumer = new APIConsumer(
-      `${apiUrl}/api/v1/pontos/${ponto?.id}/imagem/`,
-    );
+    const consumer = new APIConsumer(`${apiUrl}/pontos/${ponto?.id}/imagem/`);
     const response = await consumer.delete(String(image?.id));
 
     if (!response.ok) {
@@ -107,9 +105,7 @@ export default function VisualizarPonto({
     formData.append('description', image.description);
     formData.append('file', image.file);
 
-    const consumer = new APIConsumer(
-      `${apiUrl}/api/v1/pontos/${ponto?.id}/imagem`,
-    );
+    const consumer = new APIConsumer(`${apiUrl}/pontos/${ponto?.id}/imagem`);
     const response = await consumer.post(formData, new Headers());
 
     if (!response.ok) {

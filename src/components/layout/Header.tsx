@@ -1,23 +1,16 @@
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ProAguaLogo from '/public/ProAguaLogo.svg';
 import Image from 'next/image';
-import {
-  faBars,
-  faChevronLeft,
-  faRightFromBracket,
-} from '@fortawesome/free-solid-svg-icons';
+import ProAguaLogo from '/public/ProAguaLogo.svg';
 
 export default function Header(props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
   collapsed?: Boolean;
 }) {
   async function logout() {
-    const resp = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/logout`,
-      {
-        credentials: 'include',
-      },
-    );
+    const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+      credentials: 'include',
+    });
     window.location.reload();
   }
 

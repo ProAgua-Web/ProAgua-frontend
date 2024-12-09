@@ -86,7 +86,7 @@ export default function Page() {
         delete _filters.campus;
       }
 
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pontos?limit=10000`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/pontos?limit=10000`;
       let query = toURLParams(_filters);
 
       if (checkBebedouro) query = query.concat('&tipo=1');

@@ -1,20 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import TableColetas from '@/components/coletas/TabelaColetas';
-import { Edificacao, Ponto, TIPOS_PONTOS } from '@/utils/types';
-import { apiUrl } from '@/utils/api/APIConsumer';
+import { APIConsumer, apiUrl } from '@/utils/api/APIConsumer';
 import { consumerColeta } from '@/utils/api/consumerColeta';
-import { consumerPonto } from '@/utils/api/consumerPonto';
 import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
-import { APIConsumer } from '@/utils/api/APIConsumer';
-import { OptionalField, convertTypes } from './typeUtils';
+import { consumerPonto } from '@/utils/api/consumerPonto';
+import { Edificacao, Ponto, TIPOS_PONTOS } from '@/utils/types';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faDownload,
-  faFileDownload,
-  faPenToSquare,
-} from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import { OptionalField, convertTypes } from './typeUtils';
 
 function DateISO(d: string): String {
   return new Date(d).toISOString().split('T')[0];
@@ -77,7 +72,7 @@ export default function Page() {
     e.preventDefault();
 
     const q = convertTypes(filters, SchemaFilter, false);
-    const excel = new APIConsumer(`${apiUrl}/api/v1/coletas/excel`);
+    const excel = new APIConsumer(`${apiUrl}/coletas/excel`);
     const blob = await excel.getBlob('no-cache', q);
     const file = window.URL.createObjectURL(blob);
     window.location.assign(file);

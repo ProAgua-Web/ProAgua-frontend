@@ -1,11 +1,10 @@
 'use client';
 
 import MultipleImageInput from '@/components/MultipleImageInput';
+import { APIConsumer, apiUrl } from '@/utils/api/APIConsumer';
 import { usePontos } from '@/utils/api/client_side_consumer';
-import { apiUrl } from '@/utils/api/APIConsumer';
-import { consumerPonto } from '@/utils/api/consumerPonto';
 import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
-import { APIConsumer } from '@/utils/api/APIConsumer';
+import { consumerPonto } from '@/utils/api/consumerPonto';
 import {
   Edificacao,
   ImageIn,
@@ -13,7 +12,7 @@ import {
   PontoIn,
   TIPOS_PONTOS,
 } from '@/utils/types';
-import React, { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 export default function CriarPonto({
   params,
@@ -37,9 +36,7 @@ export default function CriarPonto({
     formData.append('description', image.description);
     formData.append('file', image.file);
 
-    const consumer = new APIConsumer(
-      `${apiUrl}/api/v1/pontos/${id_ponto}/imagem`,
-    );
+    const consumer = new APIConsumer(`${apiUrl}/pontos/${id_ponto}/imagem`);
     const response = await consumer.post(formData, new Headers());
 
     if (!response.ok) {

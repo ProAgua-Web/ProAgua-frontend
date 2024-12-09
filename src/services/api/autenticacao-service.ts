@@ -10,7 +10,7 @@ export interface CSRF {
 }
 
 export async function getCSRFToken(): Promise<string> {
-  const resp = await fetch(API_BASE_URL + '/api/v1/csrf', {
+  const resp = await fetch(API_BASE_URL + '/csrf', {
     method: 'GET',
     credentials: 'include',
   });
@@ -25,7 +25,7 @@ export async function entrar(data: CredenciaisDTO) {
     const csrfToken = await getCSRFToken();
     localStorage.setItem('csrftoken', csrfToken);
 
-    const response = await fetch(API_BASE_URL + '/api/v1/auth/login', {
+    const response = await fetch(API_BASE_URL + '/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
