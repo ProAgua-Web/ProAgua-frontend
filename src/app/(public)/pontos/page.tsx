@@ -67,9 +67,6 @@ export default function Page() {
 
   const [pontos, setPontos] = useState<Ponto[]>([]);
 
-  const [abortController, setAbortController] = useState(new AbortController());
-
-  // {edificacao: Edificacao, pontos: Ponto[]}
   const groups: Groups = groupBy<Ponto>(pontos, (ponto: Ponto) => {
     return ponto.edificacao.codigo;
   });
@@ -83,13 +80,6 @@ export default function Page() {
   }
 
   useEffect(() => {
-    if (abortController) {
-      abortController.abort();
-    }
-
-    const newAbortController = new AbortController();
-    setAbortController(newAbortController);
-
     const fetchData = async () => {
       const _filters = { ...filters };
       if (_filters.campus === 'BOTH') {
@@ -107,8 +97,8 @@ export default function Page() {
       if (checkCAERN) query = query.concat('&tipo=6');
 
       const res = await fetch(`${url}&${query}`, {
-        signal: newAbortController.signal,
         cache: 'no-cache',
+        credentials: 'include',
       });
 
       if (!res.ok) {
@@ -120,10 +110,6 @@ export default function Page() {
     };
 
     fetchData();
-
-    return () => {
-      newAbortController.abort();
-    };
   }, [
     filters,
     checkBebedouro,
