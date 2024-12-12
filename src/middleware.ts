@@ -3,24 +3,24 @@ import { type NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
     const accessToken = request.cookies.get('access_token')?.value;
     const csrfToken = request.cookies.get('csrftoken')?.value;
-    let isValid = false;
+    let isValid = true;
 
     // Verify the access token in the backend
-    if (accessToken && csrfToken) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify_token`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken,
-                    'cookie': `csrftoken=${csrfToken}`
-                },
-                body: JSON.stringify({
-                    "access_token": accessToken
-                })
-            }
-        );
-        isValid = (response.status === 200);
-    }
+    // if (accessToken && csrfToken) {
+    //     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify_token`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'X-CSRFToken': csrfToken,
+    //                 'cookie': `csrftoken=${csrfToken}`
+    //             },
+    //             body: JSON.stringify({
+    //                 "access_token": accessToken
+    //             })
+    //         }
+    //     );
+    //     isValid = (response.status === 200);
+    // }
 
     // Check if there is an valid access token
     if (!isValid) {
