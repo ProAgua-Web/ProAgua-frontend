@@ -5,9 +5,9 @@ import { toURLParams } from '@/utils/api/client_side_consumer';
 import { Ponto, Sequencia } from '@/utils/types';
 import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/widgets/datatable';
 import Spinner from '@/components/widgets/spinner';
+import Link from 'next/link';
 
 export default function Page() {
   const [sequencias, setSequencias] = useState<Sequencia[]>([]);
@@ -109,14 +109,12 @@ export default function Page() {
           />
         )}
 
-        <Button variant={'add'}>
-          <a
-            href="sequencias_coletas/criar"
-            className="fixed bottom-4 left-1/2 mt-4 h-fit w-[320px] -translate-x-1/2 transform px-6 py-4"
-          >
-            + Criar Sequência de Coleta
-          </a>
-        </Button>
+        <Link
+          href="sequencias_coletas/criar"
+          className="fixed bottom-4 left-1/2 mt-4 h-fit w-[320px] -translate-x-1/2 transform rounded-md bg-green-500 px-6 py-4 text-center font-semibold text-white hover:bg-green-600"
+        >
+          + Criar Sequência de Coleta
+        </Link>
       </div>
     </>
   );
