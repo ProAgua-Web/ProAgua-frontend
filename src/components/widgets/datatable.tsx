@@ -1,200 +1,185 @@
-import * as React from 'react';
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  VisibilityState,
-  useReactTable,
-  FilterFn,
-  SortingFn,
-  sortingFns,
-} from '@tanstack/react-table';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { DataTablePagination } from './datatable-pagination';
-import {
-  RankingInfo,
-  rankItem,
-  compareItems,
-} from '@tanstack/match-sorter-utils';
+import { Pagination } from '@/components/ui/pagination';
+import { Select, Value } from '@/components/ui/select';
+import Spinner from '@/components/widgets/spinner';
+import { cn, type NonEmptyArray, options } from '@/lib/utils';
+import { type ReactNode, useMemo, useState } from 'react';
+import { HiArrowLongDown, HiMagnifyingGlass } from 'react-icons/hi2';
 
-declare module '@tanstack/react-table' {
-  interface FilterFns {
-    fuzzy: FilterFn<unknown>;
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo;
-  }
-}
+type Id = string | number;
+type Data<TCols extends string> = Record<TCols, string> & { id: Id };
 
-const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-  const itemRank = rankItem(row.getValue(columnId), value);
-  addMeta({ itemRank });
-  return itemRank.passed;
-};
-
-const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-  let dir = 0;
-  if (rowA.columnFiltersMeta[columnId]) {
-    dir = compareItems(
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!,
-    );
-  }
-  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
-};
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+type Props<TData extends Data<TCols>, TCols extends string> = Readonly<{
+  isLoading: boolean;
   data: TData[];
-}
+  cols: NonEmptyArray<TCols>;
+  customRender?: Partial<Record<TCols, (data: TData) => ReactNode>>;
+  customColumnStyle?: Partial<Record<TCols, string>>;
+  actions?: (data: TData) => ReactNode;
+}>;
 
-export default function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [globalFilter, setGlobalFilter] = React.useState('');
+const pageSizeOptions = [6, 12, 20, 30, 50];
 
-  const table = useReactTable({
-    data,
-    columns,
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-      globalFilter,
-    },
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: 'fuzzy',
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+export function DataTable<TData extends Data<TCols>, TCols extends string>(
+  props: Props<TData, TCols>,
+) {
+  const [pageSize, setPageSize] = useState(6);
+  const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<TCols>(props.cols[0]);
+
+  const totalPages = Math.ceil(props.data.length / pageSize);
+
+  const filteredData = useMemo(() => {
+    return props.data.filter((row) => {
+      const values = Object.values(row).map((value) =>
+        value.toString().toLowerCase(),
+      );
+      return values.some((value) => value.includes(search.toLowerCase()));
+    });
+  }, [props.data, search]);
+
+  const orderedData = useMemo(() => {
+    return filteredData.toSorted((a, b) => {
+      const valueA = a[orderBy].toString();
+      const valueB = b[orderBy].toString();
+      return order === 'asc'
+        ? valueA.localeCompare(valueB)
+        : valueB.localeCompare(valueA);
+    });
+  }, [filteredData, order, orderBy]);
+
+  const paginatedData = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    const slicedData: (TData | null)[] = orderedData.slice(
+      start,
+      start + pageSize,
+    );
+    return slicedData.concat(
+      Array.from({ length: pageSize - slicedData.length }).fill(null) as null[],
+    );
+  }, [orderedData, currentPage, pageSize]);
+
+  function handlePageSizeChange(value: Value) {
+    setPageSize(Number(value));
+    setCurrentPage(1);
+  }
 
   return (
-    <div className="rounded-xl bg-white p-4">
-      <div className="flex items-center py-4 ">
-        <Input
-          placeholder="Pesquisar"
-          value={globalFilter}
-          onChange={(event) => setGlobalFilter(event.target.value)}
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Colunas
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
+    <div className="flex w-full flex-col gap-4">
+      <div className="flex w-full flex-col border-y bg-white lg:rounded-xl lg:border-x">
+        <div className="flex w-full flex-col justify-between gap-4 border-b border-slate-100 p-6 lg:flex-row">
+          <div className="relative flex lg:grow">
+            <Input
+              className="w-full min-w-0 pl-9"
+              placeholder="Pesquisar"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <HiMagnifyingGlass className="absolute left-3 top-3" size={16} />
+          </div>
+          <div className="flex items-center justify-end gap-2 lg:grow">
+            {props.isLoading && <Spinner />}
+            <p className="text-xs font-medium">
+              Informações apresentadas por página:
+            </p>
+            <Select
+              className="w-20"
+              options={options(pageSizeOptions, (n) => [n, n.toString()])}
+              value={pageSize}
+              onChange={handlePageSizeChange}
+            />
+          </div>
+        </div>
+        <div className="w-full overflow-auto">
+          <table className="w-full">
+            <thead>
+              <tr>
+                {props.cols.map((col) => (
+                  <th
+                    key={col}
+                    className={
+                      props.customColumnStyle?.[col]
+                        ? props.customColumnStyle[col]
+                        : `overflow-auto p-0`
                     }
                   >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, index) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className={index % 2 === 0 ? 'bg-[#FFF]' : 'bg-[#F9FAFB]'}
+                    <Button
+                      variant="ghost"
+                      className="group flex w-full justify-start gap-2 rounded-none border-none"
+                      onClick={() => {
+                        if (orderBy === col) {
+                          setOrder(order === 'asc' ? 'desc' : 'asc');
+                        } else {
+                          setOrderBy(col);
+                          setOrder('asc');
+                        }
+                      }}
+                    >
+                      <p
+                        className={cn('truncate text-xs', {
+                          'font-semibold text-slate-900': orderBy === col,
+                          'font-medium text-slate-500': orderBy !== col,
+                        })}
+                      >
+                        {col}
+                      </p>
+                      <HiArrowLongDown
+                        className={cn('transform transition-transform', {
+                          'rotate-180': orderBy === col && order === 'desc',
+                          'text-brand-green-400 stroke-2': orderBy === col,
+                        })}
+                        size={16}
+                      />
+                    </Button>
+                  </th>
+                ))}
+                {props.actions ? (
+                  <th className="table-row-group overflow-auto p-0" colSpan={0}>
+                    <p className="flex h-10 items-center truncate p-2 text-left text-xs font-medium text-slate-500">
+                      Ações
+                    </p>
+                  </th>
+                ) : null}
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.map((row, i) => (
+                <tr
+                  key={row?.id ?? 'empty_' + i}
+                  className="h-14 border-t border-slate-100 text-slate-500 last:rounded-b-xl odd:bg-slate-50"
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
+                  {props.cols.map((col) => (
+                    <td
+                      key={col}
+                      className="max-w-48 overflow-auto truncate p-4"
+                      title={row ? row[col].toString() : ''}
+                    >
+                      {row
+                        ? props.customRender?.[col]?.(row) ??
+                          row[col].toString()
+                        : null}
+                    </td>
                   ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Nenhum resultado.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                  {props.actions ? (
+                    <td className="px-2">{row && props.actions(row)}</td>
+                  ) : null}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div className="py-8">
-        <DataTablePagination table={table} />
+      <div className="flex justify-end gap-4 px-4 lg:px-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );

@@ -41,3 +41,28 @@ export const campusLabel = {
   LE: 'Leste',
   OE: 'Oeste',
 } as const satisfies Record<Campus, string>;
+
+export function DateISO(d: string): String {
+  return new Date(d).toISOString().split('T')[0];
+}
+
+export type NonEmptyArray<T> = [T, ...T[]];
+
+type Value = string | number | boolean;
+
+export interface Option<TValue extends Value> {
+  value: TValue;
+  label: string;
+}
+
+export function options<T, V extends Value>(
+  dados: Array<T> | undefined,
+  callback: (item: T) => [value: V, label: string],
+): Array<Option<V>> {
+  return (
+    dados?.map((item) => {
+      const [value, label] = callback(item);
+      return { value, label };
+    }) ?? []
+  );
+}

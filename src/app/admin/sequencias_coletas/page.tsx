@@ -6,9 +6,8 @@ import { Ponto, Sequencia } from '@/utils/types';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import DataTable from '@/components/widgets/datatable';
+import { DataTable } from '@/components/widgets/datatable';
 import Spinner from '@/components/widgets/spinner';
-import { columns } from './_components/columns';
 
 export default function Page() {
   const [sequencias, setSequencias] = useState<Sequencia[]>([]);
@@ -41,7 +40,7 @@ export default function Page() {
       const url = `${apiUrl}/sequencias?limit=10000`;
       let query = toURLParams(_filters);
 
-      const res = await fetch(`${url}&${query}`, {
+      const res = await fetch(`${url}${query}`, {
         signal: newAbortController.signal,
         cache: 'no-cache',
         credentials: 'include',
@@ -82,10 +81,35 @@ export default function Page() {
             </span>
           </div>
         ) : (
-          <DataTable columns={columns} data={filteredSequencias} />
+          <DataTable
+            isLoading={false}
+            cols={[
+              'Código',
+              'Amostragem',
+              'Ponto',
+              // 'Status',
+              'Status Message',
+              'Última Coleta',
+              'Quantidade de Coletas',
+            ]}
+            data={filteredSequencias.map((sequencia) => ({
+              'id': sequencia.id.toString(),
+              'Código': sequencia.id.toString(),
+              'Amostragem': sequencia.amostragem.toString(),
+              'Ponto': sequencia.ponto
+                ? sequencia.ponto.localizacao +
+                  ' - ' +
+                  sequencia.ponto.edificacao.codigo
+                : '',
+              // 'Status': sequencia.status.toString(),
+              'Status Message': sequencia.status_message,
+              'Última Coleta': sequencia.ultima_coleta?.toString() || '',
+              'Quantidade de Coletas': sequencia.quantidade_coletas.toString(),
+            }))}
+          />
         )}
 
-        <Button asChild variant={'add'}>
+        <Button variant={'add'}>
           <a
             href="sequencias_coletas/criar"
             className="fixed bottom-4 left-1/2 mt-4 h-fit w-[320px] -translate-x-1/2 transform px-6 py-4"

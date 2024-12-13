@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 import * as React from 'react';
+import { Button, type ButtonProps } from './button';
 
 const SelectRoot = SelectPrimitive.Root;
 
@@ -13,20 +14,15 @@ const SelectValue = SelectPrimitive.Value;
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      'flex h-10 w-full items-center justify-between rounded-md bg-white px-3 py-2 text-sm ring-offset-primary-300 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
-      className,
-    )}
-    {...props}
-  >
-    {children}
-    <SelectPrimitive.Icon asChild>
-      <ChevronDown className="size-4 shrink-0 text-black" />
-    </SelectPrimitive.Icon>
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & ButtonProps
+>(({ children, ...props }, ref) => (
+  <SelectPrimitive.Trigger asChild>
+    <Button variant="input" size="input" {...props} ref={ref}>
+      {children}
+      <SelectPrimitive.Icon asChild>
+        <ChevronDown className="size-4 shrink-0" />
+      </SelectPrimitive.Icon>
+    </Button>
   </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
@@ -43,7 +39,7 @@ const SelectScrollUpButton = React.forwardRef<
     )}
     {...props}
   >
-    <ChevronUp className="size-4 text-black" />
+    <ChevronUp className="size-4" />
   </SelectPrimitive.ScrollUpButton>
 ));
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
@@ -74,7 +70,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border-transparent bg-white text-slate-950 shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+        'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-slate-200 bg-white text-slate-950 shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
         position === 'popper' &&
           'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
         className,
@@ -159,72 +155,76 @@ export {
 };
 
 export type Value = string | number | boolean;
+export interface Option<TValue extends Value> {
+  value: TValue;
+  label: string;
+}
 
-export interface SelectProps<TData, TValue extends Value> {
+export interface SelectProps<TValue extends Value> {
   className?: string;
-  options: TData[];
-  getOptionValue: (data: TData) => TValue;
-  renderOption: (data: TData) => React.ReactNode;
+  options: Array<Option<TValue>>;
   value?: TValue;
   onChange?: (value: TValue) => void;
   onBlur?: () => void;
   placeholder?: string;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 const DEFAULT_PLACEHOLDER = 'Selecione uma opção';
 
-export function Select<TData, TValue extends Value>(
-  props: SelectProps<TData, TValue>,
-) {
-  return (
-    <SelectRoot
-      value={props.value !== undefined ? String(props.value) : ''}
-      onValueChange={(value) => {
-        if (props.onChange) {
-          const newValue = props.options.find(
-            (item) => String(props.getOptionValue(item)) === value,
-          );
-          if (newValue !== undefined) {
-            props.onChange?.(props.getOptionValue(newValue));
+export const Select = React.forwardRef<HTMLButtonElement, SelectProps<Value>>(
+  (props, ref) => {
+    return (
+      <SelectRoot
+        value={props.value?.toString()}
+        onValueChange={(value) => {
+          if (props.onChange) {
+            const newValue = props.options.find(
+              (item) => String(item.value) === value,
+            );
+            if (newValue !== undefined) {
+              props.onChange(newValue.value);
+            }
           }
-        }
-      }}
-      onOpenChange={(open) => {
-        if (!open) {
-          props.onBlur?.();
-        }
-      }}
-      disabled={props.disabled}
-    >
-      <SelectTrigger className={cn('text-left', props.className)}>
-        <div className="truncate">
-          <SelectValue
-            placeholder={props.placeholder ?? DEFAULT_PLACEHOLDER}
-            className="placeholder:text-slate-500"
-          >
-            {props.value !== undefined
-              ? props.renderOption(
-                  props.options.find(
-                    (item) =>
-                      String(props.getOptionValue(item)) ===
-                      String(props.value),
-                  )!,
-                )
-              : props.placeholder ?? DEFAULT_PLACEHOLDER}
-          </SelectValue>
-        </div>
-      </SelectTrigger>
-      <SelectContent>
-        {props.options.map((item) => (
-          <SelectItem
-            key={String(props.getOptionValue(item))}
-            value={String(props.getOptionValue(item))}
-          >
-            {props.renderOption(item)}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </SelectRoot>
-  );
-}
+        }}
+        onOpenChange={(open) => {
+          if (!open) {
+            props.onBlur?.();
+          }
+        }}
+        disabled={props.disabled || props.readOnly}
+      >
+        <SelectTrigger
+          className={props.className}
+          disabled={props.disabled || props.readOnly}
+          readOnly={props.readOnly}
+          ref={ref}
+        >
+          <div className="flex w-full items-center justify-between">
+            <span className="truncate">
+              <SelectValue
+                placeholder={
+                  <span className="text-slate-500">
+                    {props.placeholder ?? DEFAULT_PLACEHOLDER}
+                  </span>
+                }
+              />
+            </span>
+          </div>
+        </SelectTrigger>
+        <SelectContent>
+          {props.options.map((item) => (
+            <SelectItem
+              key={item.value.toString()}
+              value={item.value.toString()}
+            >
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectRoot>
+    );
+  },
+);
+Select.displayName = 'Select';
