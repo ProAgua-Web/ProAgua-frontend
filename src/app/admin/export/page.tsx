@@ -1,6 +1,7 @@
 'use client';
 
 import TableColetas from '@/components/coletas/TabelaColetas';
+import { DateISO } from '@/lib/utils';
 import { APIConsumer, apiUrl } from '@/utils/api/APIConsumer';
 import { consumerColeta } from '@/utils/api/consumerColeta';
 import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
@@ -11,11 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { OptionalField, convertTypes } from './typeUtils';
 
-function DateISO(d: string): String {
-  return new Date(d).toISOString().split('T')[0];
-}
-
 const SchemaFilter = {
+  codigo_edificacao: new OptionalField(String),
   data_minima: new OptionalField(DateISO),
   data_maxima: new OptionalField(DateISO),
   temperatura_minima: new OptionalField(Number),
@@ -38,6 +36,7 @@ export default function Page() {
   const [codEdificacao, setCodEdificacao] = useState('');
 
   const [filters, setFilters] = useState<{ [key: string]: string }>({
+    codigo_edificacao: '',
     data_minima: '',
     data_maxima: '',
     temperatura_minima: '',
@@ -48,8 +47,8 @@ export default function Page() {
     turbidez_maxima: '',
     cor_minima: '',
     cor_maxima: '',
-    coliformes_totais: 'false',
-    escherichia: 'false',
+    coliformes_totais: '',
+    escherichia: '',
   });
 
   // Filtrar pontos por edificação (no navegador)
@@ -102,7 +101,8 @@ export default function Page() {
                 className="rounded-lg border border-neutral-300 bg-white p-4"
                 id="codigo_edificacao"
                 name="codigo_edificacao"
-                onChange={async (e) => {
+                onChange={(e) => {
+                  setFilters({ ...filters, codigo_edificacao: e.target.value });
                   setCodEdificacao(e.target.value);
                   setPontoId('');
                 }}
@@ -312,6 +312,7 @@ export default function Page() {
                 className="rounded-lg border border-neutral-300 bg-white p-4"
                 name="coliformes_totais"
                 id="coliformes_totais"
+                defaultValue={''}
                 onChange={(e) =>
                   setFilters({ ...filters, coliformes_totais: e.target.value })
                 }
@@ -329,6 +330,7 @@ export default function Page() {
                 className="rounded-lg border border-neutral-300 bg-white p-4"
                 name="escherichia"
                 id="escherichia"
+                defaultValue={''}
                 onChange={(e) =>
                   setFilters({ ...filters, escherichia: e.target.value })
                 }
