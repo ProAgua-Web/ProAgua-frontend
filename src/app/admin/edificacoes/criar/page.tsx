@@ -1,11 +1,11 @@
 'use client';
 
-import { ControlledNumberInput } from '@/components/controlled-number-input';
 import { ControlledSelect } from '@/components/controlled-select';
-import { ControlledTextInput } from '@/components/controlled-text-input';
 import MultipleImageInput from '@/components/MultipleImageInput';
+import { ControlledNumberInput } from '@/components/number-input';
+import { ControlledTextInput } from '@/components/text-input';
 import { Button } from '@/components/ui/button';
-import { campus, Campus, campusLabel } from '@/lib/utils';
+import { Campus, campusOptions } from '@/lib/utils';
 import { createEdificacao } from '@/services/api/edificacao-service';
 import { ImageType } from '@/types/Image';
 import { EdificacaoIn } from '@/utils/types';
@@ -75,9 +75,7 @@ export default function CriarEdificacao() {
           control={control}
           name="campus"
           label="Campus"
-          options={campus}
-          getOptionValue={(camp) => camp}
-          renderOption={(camp) => campusLabel[camp]}
+          options={campusOptions}
         />
         <ControlledNumberInput
           control={control}

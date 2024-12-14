@@ -69,6 +69,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   focusVisible?: boolean;
   readOnly?: boolean;
+  asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

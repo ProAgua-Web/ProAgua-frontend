@@ -1,15 +1,15 @@
 'use client';
 
 import MultipleImageInput from '@/components/MultipleImageInput';
-import { campus, Campus, campusLabel } from '@/lib/utils';
+import { Campus, campusOptions } from '@/lib/utils';
 import { apiUrl } from '@/utils/api/APIConsumer';
 import { useEdificacao } from '@/utils/api/client_side_consumer';
 import { EdificacaoIn, ImageIn, ImageOut } from '@/utils/types';
 import { useEffect, useState } from 'react';
 
-import { ControlledNumberInput } from '@/components/controlled-number-input';
 import { ControlledSelect } from '@/components/controlled-select';
-import { ControlledTextInput } from '@/components/controlled-text-input';
+import { ControlledNumberInput } from '@/components/number-input';
+import { ControlledTextInput } from '@/components/text-input';
 import { Button } from '@/components/ui/button';
 import {
   deleteEdificacao,
@@ -124,9 +124,7 @@ export default function VisualizarEdificacao() {
           control={control}
           name="campus"
           label="Campus"
-          options={campus}
-          getOptionValue={(camp) => camp}
-          renderOption={(camp) => campusLabel[camp]}
+          options={campusOptions}
           disabled={!editable}
         />
         <ControlledNumberInput

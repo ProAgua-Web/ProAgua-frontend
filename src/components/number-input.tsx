@@ -1,10 +1,6 @@
 import { ErrorMessage } from '@/components/error-message';
-import {
-  Select as SelectBase,
-  type SelectProps as PropsBase,
-  type Value,
-} from '@/components/ui/select';
-import { forwardRef, type NamedExoticComponent } from 'react';
+import { Input, type InputProps } from '@/components/ui/input';
+import { forwardRef, type ReactNode } from 'react';
 import {
   Controller,
   type Control,
@@ -15,17 +11,12 @@ import {
 import { useFormProps } from './container';
 import { FloatingLabel } from './floating-label';
 
-interface SelectProps<TValue extends Value> extends PropsBase<TValue> {
-  label?: React.ReactNode;
+export interface NumberInputProps extends Omit<InputProps, 'value'> {
+  value?: number;
+  label?: ReactNode;
 }
 
-interface SelectComp extends NamedExoticComponent {
-  <TValue extends Value>(
-    props: SelectProps<TValue> & React.RefAttributes<HTMLButtonElement>,
-  ): JSX.Element;
-}
-
-export const Select = forwardRef<HTMLButtonElement, SelectProps<Value>>(
+export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   ({ label, ...props }, ref) => {
     const formProps = useFormProps();
 
@@ -35,25 +26,23 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps<Value>>(
         disabled={props.disabled || formProps?.disabled}
         readOnly={props.readOnly}
       >
-        <SelectBase {...(props as PropsBase<Value>)} {...formProps} ref={ref} />
+        <Input type="number" {...props} {...formProps} ref={ref} />
       </FloatingLabel>
     );
   },
-) as SelectComp;
-Select.displayName = 'Select';
+);
+NumberInput.displayName = 'NumberInput';
 
-interface ControlledSelectProps<
-  TValue extends Value & PathValue<TForm, TField>,
+interface ControlledNumberInputProps<
   TForm extends FieldValues,
   TField extends FieldPath<TForm>,
-> extends Omit<SelectProps<TValue>, 'label' | 'value' | 'onChange'> {
+> extends NumberInputProps {
   control: Control<TForm>;
-  name: TValue extends PathValue<TForm, TField> ? TField : never;
+  name: number extends PathValue<TForm, TField> ? TField : never;
   label: string;
 }
 
-export function ControlledSelect<
-  TValue extends Value & PathValue<TForm, TField>,
+export function ControlledNumberInput<
   TForm extends FieldValues,
   TField extends FieldPath<TForm>,
 >({
@@ -61,19 +50,20 @@ export function ControlledSelect<
   name,
   label,
   ...props
-}: ControlledSelectProps<TValue, TForm, TField>) {
+}: ControlledNumberInputProps<TForm, TField>) {
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field: { ref: _, ...field }, fieldState }) => (
+      render={({ field: { onChange, ...field }, fieldState }) => (
         <div className="flex flex-col gap-1">
-          <Select
+          <NumberInput
             label={
               <span className={fieldState.error && 'text-red-500'}>
                 {label}
               </span>
             }
+            onChange={(e) => onChange(e.target.valueAsNumber)}
             {...field}
             {...props}
           />

@@ -28,24 +28,6 @@ export const floatMask: InputMask = {
   },
 };
 
-export const Campus = {
-  LE: 'LE',
-  OE: 'OE',
-} as const;
-
-export type Campus = (typeof Campus)[keyof typeof Campus];
-
-export const campus = Object.values(Campus);
-
-export const campusLabel = {
-  LE: 'Leste',
-  OE: 'Oeste',
-} as const satisfies Record<Campus, string>;
-
-export function DateISO(d: string): String {
-  return new Date(d).toISOString().split('T')[0];
-}
-
 export type NonEmptyArray<T> = [T, ...T[]];
 
 type Value = string | number | boolean;
@@ -65,4 +47,27 @@ export function options<T, V extends Value>(
       return { value, label };
     }) ?? []
   );
+}
+
+export const Campus = {
+  LE: 'LE',
+  OE: 'OE',
+} as const;
+
+export type Campus = (typeof Campus)[keyof typeof Campus];
+
+export const campus = Object.values(Campus);
+
+export const campusLabel = {
+  LE: 'Leste',
+  OE: 'Oeste',
+} as const satisfies Record<Campus, string>;
+
+export const campusOptions = options(campus, (campus) => [
+  campus,
+  campusLabel[campus],
+]);
+
+export function DateISO(d: string): String {
+  return new Date(d).toISOString().split('T')[0];
 }
