@@ -1,10 +1,12 @@
 'use client';
 
 import { apiUrl } from '@/utils/api/APIConsumer';
-import { toURLParams } from '@/utils/api/client_side_consumer';
+import { delSequencia, toURLParams } from '@/utils/api/client_side_consumer';
 import { Ponto, Sequencia } from '@/utils/types';
 import { useEffect, useState } from 'react';
 
+import { DestructiveAlert } from '@/components/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/widgets/datatable';
 import Spinner from '@/components/widgets/spinner';
 import Link from 'next/link';
@@ -106,6 +108,18 @@ export default function Page() {
               'Última Coleta': sequencia.ultima_coleta?.toString() || '',
               'Quantidade de Coletas': sequencia.quantidade_coletas.toString(),
             }))}
+            actions={(sequencia) => (
+              <div className="flex gap-2">
+                <Link href={`sequencias_coletas/${sequencia.id}`}>
+                  <Button variant="table-edit">Editar</Button>
+                </Link>
+                <DestructiveAlert
+                  onConfirm={() => delSequencia(Number(sequencia.id))}
+                >
+                  <Button variant="table-delete">Excluir</Button>
+                </DestructiveAlert>
+              </div>
+            )}
           />
         )}
 

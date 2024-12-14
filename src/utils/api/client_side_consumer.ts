@@ -198,6 +198,21 @@ export function useSequencia(id_sequencia: number) {
   return sequencia;
 }
 
+export function delSequencia(id_sequencia: number) {
+  (async () => {
+    if (!id_sequencia) return;
+    const response = await consumerSequencia.delete(id_sequencia.toString());
+
+    if (response.status === 200) {
+      alert('Sequência deletada com sucesso!');
+    } else if (response.status === 404) {
+      alert('Sequência não encontrada!');
+    } else if (response.status === 409) {
+      alert('Sequência não pode ser deletada pois possui coletas associadas!');
+    }
+  })();
+}
+
 // TODO: refatorar função
 export function useColetaBySequencia(id_sequencia: number) {
   const [coletas, setColetas] = useState<Coleta[]>([]);
