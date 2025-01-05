@@ -1,9 +1,9 @@
 import { Coleta, TIPOS_PONTOS } from '@/utils/types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleCheck,
   faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function TableColetas(props: { coletas: Coleta[] }) {
   const { coletas } = props;
@@ -62,12 +62,13 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                     </td>
                     <td className="px-2 py-3">{coleta.turbidez} uT </td>
                     <td className="px-2 py-3">
-                      {coleta.coliformes_totais ? 'Presença' : 'Ausência'}
+                      {coleta.coliformes_totais ? 'Presença' : 'Ausência'}/100
+                      mL
                     </td>
                     <td className="px-2 py-3">
-                      {coleta.escherichia ? 'Presença' : 'Ausência'}
+                      {coleta.escherichia ? 'Presença' : 'Ausência'}/100 mL
                     </td>
-                    <td className="px-2 py-3">{coleta.cor}</td>
+                    <td className="px-2 py-3">{coleta.cor}uC</td>
                     <td className="text-nowrap px-2 py-3">
                       {formatDate(coleta.data)}
                     </td>
