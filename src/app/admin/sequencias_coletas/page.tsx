@@ -1,15 +1,17 @@
 'use client';
 
-import { apiUrl } from '@/utils/api/APIConsumer';
-import { delSequencia, toURLParams } from '@/utils/api/client_side_consumer';
-import { Ponto, Sequencia } from '@/utils/types';
-import { useEffect, useState } from 'react';
-
 import { DestructiveAlert } from '@/components/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/widgets/datatable';
 import Spinner from '@/components/widgets/spinner';
+import { apiUrl } from '@/utils/api/APIConsumer';
+import { delSequencia, toURLParams } from '@/utils/api/client_side_consumer';
+import { Ponto, Sequencia } from '@/utils/types';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { FaRegTrashCan } from 'react-icons/fa6';
+import { PiNotePencilBold } from 'react-icons/pi';
 
 export default function Page() {
   const [sequencias, setSequencias] = useState<Sequencia[]>([]);
@@ -110,13 +112,22 @@ export default function Page() {
             }))}
             actions={(sequencia) => (
               <div className="flex gap-2">
+                <Link href={`sequencias_coletas/${sequencia.id}/criar`}>
+                  <Button variant="table-add">
+                    <FaPlus />
+                  </Button>
+                </Link>
                 <Link href={`sequencias_coletas/${sequencia.id}`}>
-                  <Button variant="table-edit">Editar</Button>
+                  <Button variant="table-edit">
+                    <PiNotePencilBold />
+                  </Button>
                 </Link>
                 <DestructiveAlert
                   onConfirm={() => delSequencia(Number(sequencia.id))}
                 >
-                  <Button variant="table-delete">Excluir</Button>
+                  <Button variant="table-delete">
+                    <FaRegTrashCan />
+                  </Button>
                 </DestructiveAlert>
               </div>
             )}
