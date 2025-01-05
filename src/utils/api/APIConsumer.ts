@@ -8,7 +8,7 @@ export class APIConsumer<Tin, Tout> {
   }
 
   async get(id: string, cache: RequestCache = 'no-cache') {
-    const response = await fetch(this.baseUrl + id, {
+    const response = await fetch(this.baseUrl + '/' + id, {
       cache: cache,
       credentials: 'include',
     });
