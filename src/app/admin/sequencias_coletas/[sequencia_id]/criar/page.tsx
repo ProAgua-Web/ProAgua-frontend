@@ -1,12 +1,12 @@
 'use client';
 
-import { Coleta, ColetaIn, Ponto, TIPOS_PONTOS } from '@/utils/types';
 import {
+  usePontosAmontante,
   useSequencia,
   useUsuarios,
-  usePontosAmontante,
 } from '@/utils/api/client_side_consumer';
 import { consumerColeta } from '@/utils/api/consumerColeta';
+import { ColetaIn, Ponto, TIPOS_PONTOS } from '@/utils/types';
 import { FormEvent, useEffect, useState } from 'react';
 
 export default function CriarColeta({
@@ -132,7 +132,6 @@ export default function CriarColeta({
           id="temperatura"
           name="temperatura"
           className="rounded-lg border border-neutral-400 px-6 py-4"
-          step={0.1}
           required
         />
 
@@ -142,7 +141,6 @@ export default function CriarColeta({
           id="cloro_residual_livre"
           name="cloro_residual_livre"
           className="rounded-lg border border-neutral-400 px-6 py-4"
-          step={0.1}
           required
         />
 
@@ -152,7 +150,6 @@ export default function CriarColeta({
           id="turbidez"
           name="turbidez"
           className="rounded-lg border border-neutral-400 px-6 py-4"
-          step={0.1}
           required
         />
 
@@ -162,7 +159,6 @@ export default function CriarColeta({
           id="cor"
           name="cor"
           className="rounded-lg border border-neutral-400 px-6 py-4"
-          step={0.1}
           required
         />
 
@@ -173,7 +169,9 @@ export default function CriarColeta({
             name="coliformes_totais"
             className="h-6 w-6 rounded-lg border border-neutral-400 px-6 py-4"
           />
-          <label htmlFor="coliformes">Coliformes Totais</label>
+          <label htmlFor="coliformes">
+            Presença de Coliformes totais/100 mL
+          </label>
         </div>
 
         <div className="flex gap-2">
@@ -183,7 +181,9 @@ export default function CriarColeta({
             name="escherichia"
             className="h-6 w-6 rounded-lg border border-neutral-400 px-6 py-4"
           />
-          <label htmlFor="escherichia">Escherichia</label>
+          <label htmlFor="escherichia">
+            Presença de Escherichia coli/100 mL
+          </label>
         </div>
 
         <div className="flex gap-4">
