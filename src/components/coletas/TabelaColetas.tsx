@@ -56,11 +56,16 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                       - {coleta.ponto.localizacao} - {coleta.ponto.tombo}
                     </td>
                     <td className="px-2 py-3">{coleta.ordem}</td>
-                    <td className="px-2 py-3">{coleta.temperatura} ºC</td>
                     <td className="px-2 py-3">
-                      {coleta.cloro_residual_livre} mg/L
+                      {String(coleta.temperatura).replace('.', ',')} ºC
                     </td>
-                    <td className="px-2 py-3">{coleta.turbidez} uT </td>
+                    <td className="px-2 py-3">
+                      {String(coleta.cloro_residual_livre).replace('.', ',')}
+                      mg/L
+                    </td>
+                    <td className="px-2 py-3">
+                      {String(coleta.turbidez).replace('.', ',')} uT{' '}
+                    </td>
                     <td className="px-2 py-3">
                       {coleta.coliformes_totais ? 'Presença' : 'Ausência'}/100
                       mL
@@ -68,7 +73,9 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                     <td className="px-2 py-3">
                       {coleta.escherichia ? 'Presença' : 'Ausência'}/100 mL
                     </td>
-                    <td className="px-2 py-3">{coleta.cor}uC</td>
+                    <td className="px-2 py-3">
+                      {String(coleta.cor).replace('.', ',')}uC
+                    </td>
                     <td className="text-nowrap px-2 py-3">
                       {formatDate(coleta.data)}
                     </td>
