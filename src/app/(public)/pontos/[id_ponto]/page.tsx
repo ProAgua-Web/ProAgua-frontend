@@ -162,14 +162,7 @@ function PointDashboard(props: { coleta: Coleta }) {
       >
         <div>
           <h1 className="text-lg font-bold">Temperatura</h1>
-          <p className="text-md p-2">
-            {coleta.temperatura} ºC <br />
-            {temperaturaInterval()
-              ? 'Em conformidade'
-              : coleta.ponto.tipo == 1
-                ? 'Alerta'
-                : ''}
-          </p>
+          <p className="text-md p-2">{coleta.temperatura} ºC</p>
 
           {coleta.ponto.tipo == 1 && (
             <span className="text-sm text-gray-700">
