@@ -336,6 +336,7 @@ export default function Page() {
             <button
               type="submit"
               className="fixed bottom-4 left-1/2 h-fit w-fit -translate-x-1/2 transform rounded-lg border border-blue-600 bg-blue-500  px-8 py-4 font-semibold text-white shadow-lg hover:bg-blue-600"
+              disabled={coletas.length === 0}
             >
               <FontAwesomeIcon icon={faDownload} /> Exportar
             </button>
