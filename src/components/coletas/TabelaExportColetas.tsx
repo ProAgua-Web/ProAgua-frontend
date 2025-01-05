@@ -1,4 +1,4 @@
-import { Coleta } from '@/utils/types';
+import { Coleta, TIPOS_PONTOS } from '@/utils/types';
 import {
   faCircleCheck,
   faExclamationCircle,
@@ -16,11 +16,13 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
 
   return (
     <>
-      <div className="w-full overflow-x-auto">
-        <table className="mb-8 w-full border border-slate-500 last:mb-0">
+      <div className="w-full overflow-x-auto ">
+        <table className="mb-8 border border-slate-500 last:mb-0">
           <thead>
-            <tr className="w-full bg-slate-300 text-neutral-800">
+            <tr className="bg-slate-300 text-neutral-800">
               <th className="px-2 py-1">ID</th>
+              <th className="px-2 py-1">Edificação</th>
+              <th className="px-2 py-1">Ponto</th>
               <th className="px-2 py-1">Ordem</th>
               <th className="px-2 py-1">Temperatura</th>
               <th className="px-2 py-1">Cloro residual livre</th>
@@ -44,6 +46,15 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                     }}
                   >
                     <td className="px-2 py-3">{coleta.id}</td>
+                    <td className="px-2 py-3">
+                      {coleta.ponto.edificacao.codigo}
+                    </td>
+                    <td className="px-2 py-3">
+                      <span className="block max-w-40 overflow-hidden text-ellipsis text-nowrap">
+                        {TIPOS_PONTOS[coleta.ponto.tipo]}{' '}
+                      </span>{' '}
+                      - {coleta.ponto.localizacao} - {coleta.ponto.tombo}
+                    </td>
                     <td className="px-2 py-3">{coleta.ordem}</td>
                     <td className="px-2 py-3">
                       {String(coleta.temperatura).replace('.', ',')} ºC

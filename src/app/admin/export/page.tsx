@@ -1,6 +1,6 @@
 'use client';
 
-import TableColetas from '@/components/coletas/TabelaColetas';
+import TableColetas from '@/components/coletas/TabelaExportColetas';
 import { DateISO } from '@/lib/utils';
 import { APIConsumer, apiUrl } from '@/utils/api/APIConsumer';
 import { consumerColeta } from '@/utils/api/consumerColeta';
@@ -180,7 +180,6 @@ export default function Page() {
                   id="min-temp"
                   className="w-1/2 rounded-lg rounded-r-none border border-r-0 border-neutral-300 bg-white p-4"
                   value={filters.temperatura_minima}
-                  step={0.1}
                   placeholder="min"
                   onChange={(e) =>
                     setFilters({
@@ -195,7 +194,6 @@ export default function Page() {
                   id="max-temp"
                   className="w-1/2 rounded-lg rounded-l-none border border-neutral-300 bg-white p-4"
                   value={filters.temperatura_maxima}
-                  step={0.1}
                   placeholder="max"
                   onChange={(e) =>
                     setFilters({
@@ -216,7 +214,6 @@ export default function Page() {
                   id="min-cloro"
                   className="w-1/2 rounded-lg rounded-r-none border border-r-0 border-neutral-300 bg-white p-4"
                   value={filters.cloro_residual_livre_minimo}
-                  step={0.1}
                   placeholder="min"
                   onChange={(e) =>
                     setFilters({
@@ -231,7 +228,6 @@ export default function Page() {
                   id="max-cloro"
                   className="w-1/2 rounded-lg rounded-l-none border border-neutral-300 bg-white p-4"
                   value={filters.cloro_residual_livre_maximo}
-                  step={0.1}
                   placeholder="max"
                   onChange={(e) =>
                     setFilters({
@@ -252,7 +248,6 @@ export default function Page() {
                   id="min-turbidez"
                   className="w-1/2 rounded-lg rounded-r-none border border-r-0 border-neutral-300 bg-white p-4"
                   value={filters.turbidez_minima}
-                  step={0.1}
                   placeholder="min"
                   onChange={(e) =>
                     setFilters({ ...filters, turbidez_minima: e.target.value })
@@ -264,7 +259,6 @@ export default function Page() {
                   id="max-turbidez"
                   className="w-1/2 rounded-lg rounded-l-none border border-neutral-300 bg-white p-4"
                   value={filters.turbidez_maxima}
-                  step={0.1}
                   placeholder="max"
                   onChange={(e) =>
                     setFilters({ ...filters, turbidez_maxima: e.target.value })
@@ -282,7 +276,6 @@ export default function Page() {
                   id="min-cor"
                   className="w-1/2 rounded-lg rounded-r-none border border-r-0 border-neutral-300 bg-white p-4"
                   value={filters.cor_minima}
-                  step={0.1}
                   placeholder="min"
                   onChange={(e) =>
                     setFilters({ ...filters, cor_minima: e.target.value })
@@ -294,7 +287,6 @@ export default function Page() {
                   id="max-cor"
                   className="w-1/2 rounded-lg rounded-l-none border border-neutral-300 bg-white p-4"
                   value={filters.cor_maxima}
-                  step={0.1}
                   placeholder="max"
                   onChange={(e) =>
                     setFilters({ ...filters, cor_maxima: e.target.value })
