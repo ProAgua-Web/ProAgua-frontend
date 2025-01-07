@@ -1,14 +1,14 @@
 'use client';
 
-import { ParametroReferencia, Usuario } from '@/utils/types';
-import { useState } from 'react';
 import {
   useParametrosReferencia,
   useUsuarios,
 } from '@/utils/api/client_side_consumer';
 import { consumerParametrosReferencia } from '@/utils/api/consumerParametrosReferencia';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ParametroReferencia, Usuario } from '@/utils/types';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 
 export default function Configuracoes() {
   const usuarios: Usuario[] = useUsuarios();
@@ -34,6 +34,8 @@ export default function Configuracoes() {
       ),
       min_turbidez: Number(formData.get('min_turbidez')),
       max_turbidez: Number(formData.get('max_turbidez')),
+      min_cor: Number(formData.get('min_cor')),
+      max_cor: Number(formData.get('max_cor')),
       coliformes_totais: false,
       escherichia: false,
     };
@@ -100,7 +102,7 @@ export default function Configuracoes() {
             className="w-full rounded border border-neutral-300 bg-white p-4 shadow-lg"
           >
             <div className="flex w-full items-center border-b border-neutral-300 p-4">
-              <label className="flex-grow">Temperatura</label>
+              <label className="flex-grow">Temperatura (°C)</label>
               <input
                 name="min_temperatura"
                 defaultValue={parametroReferencia.min_temperatura}
@@ -122,7 +124,7 @@ export default function Configuracoes() {
             </div>
 
             <div className="flex w-full items-center border-b border-neutral-300 p-4">
-              <label className="flex-grow">Cloro residual livre</label>
+              <label className="flex-grow">Cloro residual livre (mg/L)</label>
               <input
                 name="min_cloro_residual_livre"
                 defaultValue={parametroReferencia.min_cloro_residual_livre}
@@ -144,7 +146,7 @@ export default function Configuracoes() {
             </div>
 
             <div className="flex w-full items-center border-b border-neutral-300 p-4">
-              <label className="flex-grow">Turbidez</label>
+              <label className="flex-grow">Turbidez (uT)</label>
               <input
                 name="min_turbidez"
                 defaultValue={parametroReferencia.min_turbidez}
@@ -165,11 +167,28 @@ export default function Configuracoes() {
               />
             </div>
 
-            {/* <div className="w-full flex items-center p-4 border-b border-neutral-300">
-                    <label className="flex-grow">Cor</label>
-                    <input className="w-48 px-4 py-2 border border-r-0 border-neutral-300 rounded-lg rounded-r-none" type="number" step="0.1" placeholder="valor mínimo" />
-                    <input className="w-48 px-4 py-2 border border-neutral-300 rounded-lg rounded-l-none" type="number" step="0.1" placeholder="valor máximo" />
-                </div> */}
+            <div className="flex w-full items-center border-b border-neutral-300 p-4">
+              <label className="flex-grow">Cor (uH)</label>
+              <input
+                name="min_cor"
+                defaultValue={parametroReferencia.min_cor}
+                disabled={!editable}
+                className="w-48 rounded-lg rounded-r-none border border-r-0 border-neutral-300 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                type="number"
+                step="0.1"
+                placeholder="valor mínimo"
+              />
+
+              <input
+                name="max_cor"
+                defaultValue={parametroReferencia.max_cor}
+                disabled={!editable}
+                className="w-48 rounded-lg rounded-l-none border border-neutral-300 px-4 py-2 disabled:bg-neutral-200 disabled:text-neutral-500"
+                type="number"
+                step="0.1"
+                placeholder="valor máximo"
+              />
+            </div>
 
             <div className="flex w-full justify-center gap-8 pt-4">
               <button
