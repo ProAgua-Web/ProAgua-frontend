@@ -1,6 +1,6 @@
+import { ImageIn, ImageOut } from '@/utils/types';
 import { useState } from 'react';
 import ImageUploadModal from './ImageUploadModal';
-import { ImageIn, ImageOut } from '@/utils/types';
 import Modal from './Modal';
 
 function ConfirmImageDeletionModal(props: {
@@ -109,7 +109,7 @@ export default function MultipleImageInput({
   };
 
   let imageSlots = existingImages.map((image) => {
-    const imageUrl = process.env.NEXT_PUBLIC_API_URL + image.src;
+    const imageUrl = image.src;
 
     return (
       <ImageSlot
