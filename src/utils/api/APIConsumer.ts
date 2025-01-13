@@ -35,9 +35,9 @@ export class APIConsumer<Tin, Tout> {
 
   async list(cache: RequestCache = 'no-cache', query: any = undefined) {
     let searchParams = '';
+    query = { ...query, limit: 10000 };
 
     if (query) {
-      query['limit'] = 10000;
       searchParams = '?' + toQuery(query);
     }
 
