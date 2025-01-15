@@ -227,8 +227,7 @@ export default function CriarSolicitacao() {
             </option>
             {filteredPontos.map((ponto) => (
               <option value={ponto.id} key={ponto.id}>
-                {' '}
-                {TIPOS_PONTOS[ponto.tipo]}, {ponto.localizacao}{' '}
+                {ponto.id} - {TIPOS_PONTOS[ponto.tipo]} - {ponto.localizacao}
               </option>
             ))}
           </select>

@@ -113,7 +113,7 @@ export class APIConsumer<Tin, Tout> {
     }
 
     // Send request
-    const response = await fetch(this.baseUrl + id, {
+    const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'PUT',
       headers: headers,
       credentials: 'include',
