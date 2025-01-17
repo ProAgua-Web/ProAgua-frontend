@@ -1,20 +1,19 @@
 'use client';
 
 import {
+  useColeta,
+  usePontos,
+  useSequencias,
+  useUsuarios,
+} from '@/utils/api/client_side_consumer';
+import { consumerColeta } from '@/utils/api/consumerColeta';
+import {
   Coleta,
   ColetaIn,
   Ponto,
   Sequencia,
   TIPOS_PONTOS,
 } from '@/utils/types';
-import {
-  useColeta,
-  usePontos,
-  usePontosAmontante,
-  useSequencias,
-  useUsuarios,
-} from '@/utils/api/client_side_consumer';
-import { consumerColeta } from '@/utils/api/consumerColeta';
 import { FormEvent, useEffect, useState } from 'react';
 
 export default function Page({
@@ -172,7 +171,6 @@ export default function Page({
             id="temperatura"
             name="temperatura"
             className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-            step={0.1}
             disabled={!editable}
             defaultValue={coleta.temperatura}
             required
@@ -184,7 +182,6 @@ export default function Page({
             id="cloro_residual_livre"
             name="cloro_residual_livre"
             className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-            step={0.1}
             disabled={!editable}
             defaultValue={coleta.cloro_residual_livre}
             required
@@ -196,7 +193,6 @@ export default function Page({
             id="turbidez"
             name="turbidez"
             className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-            step={0.1}
             disabled={!editable}
             defaultValue={coleta.turbidez}
             required
@@ -208,7 +204,6 @@ export default function Page({
             id="cor"
             name="cor"
             className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-            step={0.1}
             disabled={!editable}
             defaultValue={coleta.cor}
             required
@@ -223,7 +218,9 @@ export default function Page({
               disabled={!editable}
               defaultChecked={coleta.coliformes_totais}
             />
-            <label htmlFor="coliformes">Coliformes Totais</label>
+            <label htmlFor="coliformes">
+              Presença de Coliformes totais/100 mL
+            </label>
           </div>
 
           <div className="flex gap-2">
@@ -235,7 +232,9 @@ export default function Page({
               disabled={!editable}
               defaultChecked={coleta.escherichia}
             />
-            <label htmlFor="escherichia">Escherichia</label>
+            <label htmlFor="escherichia">
+              Presença de Escherichia coli/100 mL
+            </label>
           </div>
 
           <div className="flex gap-4">

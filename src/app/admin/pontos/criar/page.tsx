@@ -221,25 +221,27 @@ export default function Pontos() {
             onChange={(e) => setCurrentAmontante(e.target.value)}
           >
             <option value="">-</option>
-            {pontosAmontantes.map((ponto: Ponto) => {
-              return (
-                <option className="" value={ponto.id} key={ponto.id}>
-                  {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
-                  {ponto.localizacao &&
-                  ponto.localizacao.trim() != '-' &&
-                  ponto.localizacao.trim() != 'nan' &&
-                  ponto.localizacao.trim() != ''
-                    ? '- ' + ponto.localizacao
-                    : ''}
-                  {ponto.tombo &&
-                  ponto.tombo.trim() != '-' &&
-                  ponto.tombo.trim() != 'nan' &&
-                  ponto.tombo.trim()
-                    ? '- ' + ponto.tombo
-                    : ''}
-                </option>
-              );
-            })}
+            {pontosAmontantes
+              .filter((ponto) => (ponto.tipo = 1 + Number(currentTipo)))
+              .map((ponto: Ponto) => {
+                return (
+                  <option className="" value={ponto.id} key={ponto.id}>
+                    {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
+                    {ponto.localizacao &&
+                    ponto.localizacao.trim() != '-' &&
+                    ponto.localizacao.trim() != 'nan' &&
+                    ponto.localizacao.trim() != ''
+                      ? '- ' + ponto.localizacao
+                      : ''}
+                    {ponto.tombo &&
+                    ponto.tombo.trim() != '-' &&
+                    ponto.tombo.trim() != 'nan' &&
+                    ponto.tombo.trim()
+                      ? '- ' + ponto.tombo
+                      : ''}
+                  </option>
+                );
+              })}
           </select>
 
           <a

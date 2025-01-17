@@ -2,7 +2,7 @@
 
 import { consumerUsuario } from '@/utils/api/consumerUsuario';
 import { UsuarioIn } from '@/utils/types';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 export default function Page() {
   const [submiting, setSubmiting] = useState<boolean>(false);
@@ -33,7 +33,7 @@ export default function Page() {
       alert('Usuário criado com sucesso!');
       const responseData = await response.json();
       const id = responseData.id;
-      window.location.href = `/admin/configuracoes/`;
+      window.location.href = `/admin/configuracoes`;
     } else {
       alert('Erro ao criar usuário');
     }

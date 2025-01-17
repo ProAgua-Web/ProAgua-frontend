@@ -2,14 +2,14 @@
 
 import MultipleImageInput from '@/components/MultipleImageInput';
 import {
+  downloadSolictacao,
   useEdificacao,
   useEdificacoes,
   usePontos,
   useSolicitacao,
-  downloadSolictacao,
 } from '@/utils/api/client_side_consumer';
 import { consumerSolicitacao } from '@/utils/api/consumerSolicitacao';
-import { ImageIn, ImageOut, SolicitacaoIn } from '@/utils/types';
+import { ImageIn, ImageOut, SolicitacaoIn, TIPOS_PONTOS } from '@/utils/types';
 import { useEffect, useState } from 'react';
 
 export default function Page({
@@ -21,13 +21,12 @@ export default function Page({
   const solicitacao = useSolicitacao(parseInt(id_solicitacao));
   const edificacoes = useEdificacoes();
   const pontos = usePontos();
-  const [idPonto, setidPonto] = useState(solicitacao?.ponto.id ?? 0);
+  const [idPonto, setIdPonto] = useState<number>(0);
   const [codEdificacao, setCodEdificacao] = useState<string>('');
   const edificacao = useEdificacao(codEdificacao);
   const filteredPontos = pontos.filter(
-    (ponto) => ponto.edificacao.codigo === edificacao?.codigo,
+    (ponto) => ponto.edificacao.codigo === codEdificacao,
   );
-
   const [existingImages, setExistingImages] = useState<ImageOut[]>([]);
   const [images, setImages] = useState<ImageIn[]>([]);
 
@@ -74,7 +73,7 @@ export default function Page({
   useEffect(() => {
     if (solicitacao) {
       setCodEdificacao(solicitacao.ponto.edificacao.codigo);
-      setidPonto(solicitacao.ponto.id);
+      setIdPonto(solicitacao.ponto.id);
     }
   }, [solicitacao]);
 
@@ -127,13 +126,16 @@ export default function Page({
                 required
                 name="edificacao"
                 disabled={!editable}
-                defaultValue={solicitacao.ponto.edificacao.codigo}
                 onChange={(e) => setCodEdificacao(e.target.value)}
                 className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
               >
                 <option>-</option>
                 {edificacoes.map((edificacao) => (
-                  <option key={edificacao.codigo} value={edificacao.codigo}>
+                  <option
+                    key={edificacao.codigo}
+                    value={edificacao.codigo}
+                    selected={edificacao.codigo === codEdificacao}
+                  >
                     {edificacao.codigo} - {edificacao.nome}
                   </option>
                 ))}
@@ -167,13 +169,17 @@ export default function Page({
                 required
                 name="ponto"
                 disabled={!editable}
-                defaultValue={solicitacao.ponto.id.toString()}
-                onChange={(e) => setidPonto(parseInt(e.target.value))}
+                onChange={(e) => setIdPonto(parseInt(e.target.value))}
                 className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
               >
                 <option>-</option>
                 {filteredPontos.map((ponto) => (
-                  <option key={ponto.id} value={ponto.id}>
+                  <option
+                    key={ponto.id}
+                    value={ponto.id}
+                    selected={ponto.id === idPonto}
+                  >
+                    {ponto.id} - {TIPOS_PONTOS[ponto.tipo]} -{' '}
                     {ponto.localizacao}
                   </option>
                 ))}

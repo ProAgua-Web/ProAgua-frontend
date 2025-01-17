@@ -1,11 +1,11 @@
 'use client';
 
 import TableColetas from '@/components/coletas/TabelaColetas';
-import { type Sequencia, type Coleta, TIPOS_PONTOS } from '@/utils/types';
 import {
   useColetaBySequencia,
   useSequencia,
 } from '@/utils/api/client_side_consumer';
+import { type Coleta, type Sequencia, TIPOS_PONTOS } from '@/utils/types';
 
 function groupColetas(coletas: Coleta[]) {
   let groups = [];
@@ -92,7 +92,7 @@ export default function Sequencia({
             </a>
           </div>
         </div>
-        <div className="w-fit">
+        <div className="w-full">
           {groups?.map((group: Coleta[]) => {
             if (group.length == 0) {
               return null;
@@ -101,7 +101,7 @@ export default function Sequencia({
             const ponto = group[0].ponto;
 
             return (
-              <div className="mb-4" key={ponto.id}>
+              <div className="mb-4 w-full" key={ponto.id}>
                 <div className="flex w-full border border-b-0 border-slate-400 bg-primary-500 p-4 font-semibold text-white">
                   <div className="w-full">
                     <p>Ponto: {TIPOS_PONTOS[ponto.tipo]}</p>

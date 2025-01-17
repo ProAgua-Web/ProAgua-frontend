@@ -53,7 +53,7 @@ export default function VisualizarPonto({
     }
 
     // Send request to delete image
-    const consumer = new APIConsumer(`${apiUrl}/pontos/${ponto?.id}/imagem/`);
+    const consumer = new APIConsumer(`${apiUrl}/pontos/${ponto?.id}/imagem`);
     const response = await consumer.delete(String(image?.id));
 
     if (!response.ok) {
@@ -301,28 +301,28 @@ export default function VisualizarPonto({
                 id="amontante"
                 name="amontante"
                 className="w-full rounded-md border border-neutral-200 px-6 py-4 disabled:bg-neutral-200 disabled:text-neutral-500"
-                defaultValue={
-                  pontos.length > 0 ? ponto?.amontante?.id : undefined
-                }
+                defaultValue={pontos.length > 0 ? ponto?.amontante?.id : 2}
                 disabled={!editable}
                 onChange={(e) => {
                   setCurrentAmontante(e.target.value);
                 }}
               >
                 <option value="">-</option>
-                {pontosAmontantes.map((ponto: Ponto) => {
-                  return (
-                    <option className="" value={ponto.id} key={ponto.id}>
-                      {TIPOS_PONTOS[ponto.tipo]}
-                      {ponto.localizacao &&
-                      ponto.localizacao.trim() != '-' &&
-                      ponto.localizacao.trim() != 'nan' &&
-                      ponto.localizacao.trim() != ''
-                        ? '- ' + ponto.localizacao
-                        : ''}
-                    </option>
-                  );
-                })}
+                {pontosAmontantes
+                  .filter((ponto) => (ponto.tipo = 1 + Number(currentTipo)))
+                  .map((ponto: Ponto) => {
+                    return (
+                      <option className="" value={ponto.id} key={ponto.id}>
+                        {TIPOS_PONTOS[ponto.tipo]}
+                        {ponto.localizacao &&
+                        ponto.localizacao.trim() != '-' &&
+                        ponto.localizacao.trim() != 'nan' &&
+                        ponto.localizacao.trim() != ''
+                          ? '- ' + ponto.localizacao
+                          : ''}
+                      </option>
+                    );
+                  })}
               </select>
 
               <a

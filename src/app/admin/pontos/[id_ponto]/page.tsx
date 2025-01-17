@@ -53,7 +53,7 @@ export default function VisualizarPonto({
     }
 
     // Send request to delete image
-    const consumer = new APIConsumer(`${apiUrl}/pontos/${ponto?.id}/imagem/`);
+    const consumer = new APIConsumer(`${apiUrl}/pontos/${ponto?.id}/imagem`);
     const response = await consumer.delete(String(image?.id));
 
     if (!response.ok) {

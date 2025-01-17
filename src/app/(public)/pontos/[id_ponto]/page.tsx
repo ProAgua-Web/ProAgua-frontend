@@ -3,15 +3,15 @@
 import Header from '@/components/layout/Header';
 import {
   useLastColetaByPonto,
-  usePonto,
   useParametrosReferencia,
+  usePonto,
 } from '@/utils/api/client_side_consumer';
 import { Coleta, TIPOS_PONTOS } from '@/utils/types';
 import Image from 'next/image';
 
+import Alert from '/public/alert.svg';
 import Conformidade from '/public/conformidade.svg';
 import NaoConformidade from '/public/nao_conformidade.svg';
-import Alert from '/public/alert.svg';
 
 function PointDashboard(props: { coleta: Coleta }) {
   const { coleta } = props;
@@ -82,8 +82,7 @@ function PointDashboard(props: { coleta: Coleta }) {
             {coleta.coliformes_totais ? 'Não conformidade' : 'Em conformidade'}
           </p>
           <span className="text-sm text-gray-700">
-            VMP<sup>(1)</sup>:{' '}
-            {coleta.coliformes_totais ? 'Presença' : 'Ausência'} em 100 mL
+            VMP<sup>(1)</sup>: Ausência em 100 mL
           </span>
         </div>
         <Image
@@ -162,14 +161,7 @@ function PointDashboard(props: { coleta: Coleta }) {
       >
         <div>
           <h1 className="text-lg font-bold">Temperatura</h1>
-          <p className="text-md p-2">
-            {coleta.temperatura} ºC <br />
-            {temperaturaInterval()
-              ? 'Em conformidade'
-              : coleta.ponto.tipo == 1
-                ? 'Alerta'
-                : ''}
-          </p>
+          <p className="text-md p-2">{coleta.temperatura} ºC</p>
 
           {coleta.ponto.tipo == 1 && (
             <span className="text-sm text-gray-700">

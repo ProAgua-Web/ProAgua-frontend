@@ -8,7 +8,7 @@ export class APIConsumer<Tin, Tout> {
   }
 
   async get(id: string, cache: RequestCache = 'no-cache') {
-    const response = await fetch(this.baseUrl + id, {
+    const response = await fetch(this.baseUrl + '/' + id, {
       cache: cache,
       credentials: 'include',
     });
@@ -35,9 +35,9 @@ export class APIConsumer<Tin, Tout> {
 
   async list(cache: RequestCache = 'no-cache', query: any = undefined) {
     let searchParams = '';
+    query = { ...query, limit: 10000 };
 
     if (query) {
-      query['limit'] = 10000;
       searchParams = '?' + toQuery(query);
     }
 
@@ -113,7 +113,7 @@ export class APIConsumer<Tin, Tout> {
     }
 
     // Send request
-    const response = await fetch(this.baseUrl + id, {
+    const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'PUT',
       headers: headers,
       credentials: 'include',
