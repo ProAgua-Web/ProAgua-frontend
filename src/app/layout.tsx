@@ -1,7 +1,9 @@
+import { QueryProvider } from '@/app/query-provider';
+import { Toaster } from '@/components/ui/toaster';
+import { AutenticacaoProvider } from '@/lib/autenticacao';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -15,8 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <QueryProvider>
+      <AutenticacaoProvider>
+        <html lang="pt-BR">
+          <body className={inter.className}>
+            {children}
+            <Toaster />
+          </body>
+        </html>
+      </AutenticacaoProvider>
+    </QueryProvider>
   );
 }

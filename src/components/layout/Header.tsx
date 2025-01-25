@@ -1,18 +1,17 @@
+import { useAutenticacao } from '@/lib/autenticacao';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import ProAguaLogo from '/public/ProAguaLogo.svg';
 
 export default function Header(props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
   collapsed?: Boolean;
 }) {
-  async function logout() {
-    const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
-      credentials: 'include',
-    });
-    window.location.reload();
-  }
+  const { sair, autenticando } = useAutenticacao();
+
+  const router = useRouter();
 
   return (
     <header>
@@ -39,7 +38,7 @@ export default function Header(props: {
         </div>
 
         <button
-          onClick={logout}
+          onClick={sair}
           className="h-[clamp(50px,8vh,100px)] w-[clamp(50px,8vh,100px)] bg-primary-500 hover:bg-primary-600"
         >
           <FontAwesomeIcon icon={faRightFromBracket} className="mr-1" />

@@ -3,8 +3,9 @@
 import { ControlledInput } from '@/components/controlled-input';
 import { Button } from '@/components/ui/button';
 import Spinner from '@/components/widgets/spinner';
-import { entrar } from '@/services/api/autenticacao-service';
+import { useAutenticacao } from '@/lib/autenticacao';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiOutlineEye, HiOutlineEyeSlash } from 'react-icons/hi2';
@@ -27,24 +28,25 @@ export default function Login() {
     reValidateMode: 'onChange',
   });
 
-  async function submitForm(data: FormSchema) {
-    setIsSubmitting(true);
-    await entrar(data);
-    setIsSubmitting(false);
-  }
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const noErrors = Object.keys(formState.errors).length === 0;
-
   const [showPassword, setShowPassword] = useState(false);
+
+  const { entrar, autenticando } = useAutenticacao();
+
+  const router = useRouter();
+
+  function submitForm(data: FormSchema) {
+    entrar.mutate(data, {
+      onSuccess: () => {
+        router.push('/admin/pontos/');
+      },
+    });
+  }
+  const noErrors = Object.keys(formState.errors).length === 0;
+  const disabled = !noErrors || entrar.isPending;
 
   return (
     <form
-      onSubmit={(e) => {
-        handleSubmit((data) => {
-          submitForm(data);
-        })(e);
-      }}
+      onSubmit={handleSubmit(submitForm)}
       className="flex h-full w-full flex-col items-center justify-between gap-10"
     >
       <h1 className="text-center text-4xl font-medium">Login</h1>
@@ -94,19 +96,8 @@ export default function Login() {
         </Button>
       </div>
 
-      <Button
-        type="submit"
-        disabled={isSubmitting || !noErrors}
-        variant="primary"
-        className="flex min-h-16 w-full justify-center"
-      >
-        {isSubmitting ? (
-          <>
-            <Spinner /> Entrando...
-          </>
-        ) : (
-          'Entrar'
-        )}
+      <Button type="submit" size="lg" className="text-md" disabled={disabled}>
+        {autenticando && <Spinner />} Entrar
       </Button>
     </form>
   );
