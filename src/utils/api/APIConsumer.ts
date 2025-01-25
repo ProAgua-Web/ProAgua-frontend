@@ -142,4 +142,4 @@ export function toQuery(data: any): string {
     .join('&');
 }
 
-export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL + "api/v1/";

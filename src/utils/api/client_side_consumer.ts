@@ -181,7 +181,7 @@ export function useSequencia(id_sequencia: number) {
       }
 
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + '/sequencias/' + id_sequencia,
+        process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia,
         {
           headers: {
             'X-CSRFToken': csrftoken,
@@ -221,7 +221,7 @@ export function useColetaBySequencia(id_sequencia: number) {
     (async () => {
       const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL +
-          '/sequencias/' +
+          '/api/v1/sequencias/' +
           id_sequencia +
           '/coletas',
         {
@@ -302,7 +302,7 @@ export function useParametrosReferencia() {
   const [parametrosReferencia, setParametrosReferencia] =
     useState<ParametroReferencia>();
 
-  const url = process.env.NEXT_PUBLIC_API_URL + '/parametros_referencia';
+  const url = process.env.NEXT_PUBLIC_API_URL + 'api/v1/parametros_referencia';
 
   useEffect(() => {
     (async () => {

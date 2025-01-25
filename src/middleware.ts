@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
   // Verify the access token in the backend
   if (accessToken && csrfToken) {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/verify_token`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify_token`,
       {
         method: 'POST',
         headers: {
