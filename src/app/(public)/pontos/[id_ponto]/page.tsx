@@ -69,6 +69,16 @@ function PointDashboard(props: { coleta: Coleta }) {
     return true;
   };
 
+  const corInterval = () => {
+    if (referencia?.min_cor != null && coleta.cor < referencia.min_cor) {
+      return false;
+    }
+    if (referencia?.max_cor != null && coleta.cor > referencia.max_cor) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className="flex flex-wrap gap-4">
       <div
@@ -178,6 +188,26 @@ function PointDashboard(props: { coleta: Coleta }) {
             className="h-24 w-24"
           />
         )}
+      </div>
+
+      <div
+        className={`flex w-full items-center justify-between rounded-lg p-6 shadow ${corInterval() ? bg_color_ok : bg_color_not_ok}`}
+      >
+        <div>
+          <h1 className="text-lg font-bold">Cor</h1>
+          <p className="text-md p-2">
+            {coleta.cor} uH <br />
+            {corInterval() ? 'Em conformidade' : 'Não conformidade'}
+          </p>
+          <span className="text-sm text-gray-700">
+            Entre<sup>(1)</sup> {referencia?.min_cor} e {referencia?.max_cor} uH
+          </span>
+        </div>
+        <Image
+          src={corInterval() ? Conformidade : NaoConformidade}
+          alt="Cor"
+          className="h-24 w-24"
+        />
       </div>
     </div>
   );
