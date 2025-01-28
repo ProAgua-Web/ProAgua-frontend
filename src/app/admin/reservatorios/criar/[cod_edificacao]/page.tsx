@@ -194,7 +194,7 @@ export default function CriarPonto({
           className="rounded-lg border border-neutral-400 px-6 py-4"
         />
 
-        <label htmlFor="">Ponto a montante (Abastece):</label>
+        {/* <label htmlFor="">Ponto a montante (Abastece):</label>
         <div className="flex">
           <select
             id="amontante"
@@ -208,6 +208,71 @@ export default function CriarPonto({
               .map((ponto: Ponto) => {
                 return (
                   <option value={ponto.id} key={ponto.id}>
+                    {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
+                    {ponto.localizacao &&
+                    ponto.localizacao.trim() != '-' &&
+                    ponto.localizacao.trim() != 'nan' &&
+                    ponto.localizacao.trim() != ''
+                      ? '- ' + ponto.localizacao
+                      : ''}
+                    {ponto.tombo &&
+                    ponto.tombo.trim() != '-' &&
+                    ponto.tombo.trim() != 'nan' &&
+                    ponto.tombo.trim()
+                      ? '- ' + ponto.tombo
+                      : ''}
+                  </option>
+                );
+              })}
+          </select>
+
+          <a
+            className="flex justify-center"
+            href={currentAmontante ? '/admin/pontos/' + currentAmontante : '#'}
+            target={currentAmontante ? '_blank' : '_self'}
+          >
+            <svg
+              className={
+                currentAmontante
+                  ? `mx-2 w-6 fill-primary-600`
+                  : `mx-2 w-6 fill-neutral-500`
+              }
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 576 512"
+            >
+              <path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
+            </svg>
+          </a>
+
+          <a
+            className="flex justify-center"
+            href="/admin/pontos/criar"
+            target="_blank"
+          >
+            <svg
+              className="mx-2 w-6 fill-primary-600"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+            >
+              <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+            </svg>
+          </a>
+        </div> */}
+
+        <label htmlFor="">Ponto a montante:</label>
+        <div className="flex">
+          <select
+            id="amontante"
+            name="amontante"
+            className="w-full rounded-lg border border-neutral-400 px-6 py-4"
+            onChange={(e) => setCurrentAmontante(e.target.value)}
+          >
+            <option value="">-</option>
+            {pontosAmontantes
+              .filter((ponto) => (ponto.tipo = 1 + Number(currentTipo)))
+              .map((ponto: Ponto) => {
+                return (
+                  <option className="" value={ponto.id} key={ponto.id}>
                     {ponto.id} - {TIPOS_PONTOS[ponto.tipo]}
                     {ponto.localizacao &&
                     ponto.localizacao.trim() != '-' &&

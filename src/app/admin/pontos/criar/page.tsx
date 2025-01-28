@@ -222,7 +222,7 @@ export default function Pontos() {
           >
             <option value="">-</option>
             {pontosAmontantes
-              .filter((ponto) => (ponto.tipo = 1 + Number(currentTipo)))
+              .filter((ponto) => (ponto.tipo = 2))
               .map((ponto: Ponto) => {
                 return (
                   <option className="" value={ponto.id} key={ponto.id}>
