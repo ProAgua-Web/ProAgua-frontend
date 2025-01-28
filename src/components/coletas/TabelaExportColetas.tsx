@@ -64,7 +64,7 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                       mg/L
                     </td>
                     <td className="px-2 py-3">
-                      {String(coleta.turbidez).replace('.', ',')} uT{' '}
+                      {String(coleta.turbidez).replace('.', ',')} uH{' '}
                     </td>
                     <td className="px-2 py-3">
                       {coleta.coliformes_totais ? 'Presença' : 'Ausência'}/100
