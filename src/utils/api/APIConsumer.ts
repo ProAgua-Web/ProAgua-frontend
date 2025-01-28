@@ -90,7 +90,7 @@ export class APIConsumer<Tin, Tout> {
     }
 
     // Send request
-    const response = await fetch(this.baseUrl + id, {
+    const response = await fetch(this.baseUrl + '/' + id, {
       method: 'DELETE',
       headers: headers,
       credentials: 'include',
@@ -142,4 +142,4 @@ export function toQuery(data: any): string {
     .join('&');
 }
 
-export const apiUrl = process.env.NEXT_PUBLIC_API_URL + "api/v1/";
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL + 'api/v1/';

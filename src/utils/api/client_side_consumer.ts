@@ -277,7 +277,7 @@ export function useLastColetaByPonto(id_ponto: number) {
   const [coleta, setColeta] = useState<Coleta | null>(null);
 
   const url =
-    process.env.NEXT_PUBLIC_API_URL + '/pontos/' + id_ponto + '/coletas';
+    process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto + '/coletas';
 
   useEffect(() => {
     (async () => {
