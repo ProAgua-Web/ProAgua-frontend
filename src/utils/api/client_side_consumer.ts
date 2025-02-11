@@ -41,7 +41,7 @@ export function useEdificacao(codigo_edificacao: string) {
   useEffect(() => {
     consumerEdficacao
       .get(codigo_edificacao)
-      .then((data) => setEdificacao(data));
+      .then((data) => setEdificacao(data.data));
   }, [codigo_edificacao]);
   return edificacao;
 }
