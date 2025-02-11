@@ -2,8 +2,8 @@
 
 import { DestructiveAlert } from '@/components/alert-dialog';
 import { Button } from '@/components/ui/button';
+import Spinner from '@/components/ui/spinner';
 import { DataTable } from '@/components/widgets/datatable';
-import Spinner from '@/components/widgets/spinner';
 import { apiUrl } from '@/utils/api/APIConsumer';
 import { delSequencia, toURLParams } from '@/utils/api/client_side_consumer';
 import { Ponto, Sequencia } from '@/utils/types';

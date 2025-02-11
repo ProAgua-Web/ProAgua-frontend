@@ -1,7 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import Spinner from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 import {
   createContext,
@@ -12,6 +10,8 @@ import {
   type ReactNode,
 } from 'react';
 import { type FieldValues, type UseFormReturn } from 'react-hook-form';
+import { Button } from '../ui/button';
+import Spinner from '../ui/spinner';
 
 interface Props {
   title: string;
@@ -49,7 +49,7 @@ export const FormContainer = forwardRef<HTMLFormElement, Props>(
         <div className="flex w-full flex-col border-y bg-white pb-8 lg:rounded-lg lg:border-x lg:pt-2">
           <div className="flex flex-row">
             <div className="flex grow flex-col gap-2 border-b border-slate-50 px-6 py-4 lg:px-14 lg:py-6">
-              <h1 className="text-2xl font-semibold text-slate-600">
+              <h1 className="text-2xl font-semibold text-primary-800">
                 {props.title}
               </h1>
               <p className="text-xs text-slate-500">{props.subtitle}</p>
@@ -99,9 +99,7 @@ export const FormSection: FC<SectionProps> = (props) => {
   return (
     <div className="flex flex-col gap-2 border-t border-slate-300 py-2 lg:py-4">
       {props.title && (
-        <h2 className="text-brand-green-600 pb-2 font-semibold">
-          {props.title}
-        </h2>
+        <h2 className="pb-2 font-semibold text-primary-800">{props.title}</h2>
       )}
       <div
         className={cn(

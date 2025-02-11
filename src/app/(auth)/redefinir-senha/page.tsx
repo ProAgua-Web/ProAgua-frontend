@@ -1,9 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import Spinner from '@/components/ui/spinner';
 import { LabeledInput } from '@/components/widgets/labeled-input';
 import { FormEvent, useState } from 'react';
-import Spinner from '@/components/widgets/spinner';
 
 export default function ResetPasswordForm() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

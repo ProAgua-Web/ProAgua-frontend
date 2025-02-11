@@ -2,7 +2,7 @@
 
 import { ControlledInput } from '@/components/controlled-input';
 import { Button } from '@/components/ui/button';
-import Spinner from '@/components/widgets/spinner';
+import Spinner from '@/components/ui/spinner';
 import { useAutenticacao } from '@/lib/autenticacao';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
