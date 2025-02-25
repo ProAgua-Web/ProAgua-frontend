@@ -102,7 +102,7 @@ export default function Pontos() {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + '/edificacoes?limit=10000',
+        process.env.NEXT_PUBLIC_API_URL + '/edificacoes?limit=0',
       );
       setEdificacoes((await response.json()).items);
     })();

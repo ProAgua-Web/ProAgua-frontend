@@ -1,8 +1,8 @@
 'use client';
 
-import { Edificacao, Ponto } from '@/utils/types';
-import { consumerPonto } from '@/utils/api/consumerPonto';
 import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
+import { consumerPonto } from '@/utils/api/consumerPonto';
+import { Edificacao, Ponto } from '@/utils/types';
 
 import { useEffect, useState } from 'react';
 import { CardEdificacao } from './components/CardEdificacao';
@@ -122,7 +122,9 @@ export default function Pontos() {
 
   useEffect(() => {
     // Acessar todas as edificações pela API
-    consumerEdficacao.list().then((data) => setEdificacoes(data));
+    consumerEdficacao
+      .list()
+      .then((data) => setEdificacoes(data as Edificacao[]));
 
     // Cria lista com ids referentes aos tipos de pontos filtrados
     const filtrosIds = Object.entries(filters.filtroPontos)
@@ -132,7 +134,7 @@ export default function Pontos() {
     // Acessar todos os pontos da API de acordo com os filtros
     consumerPonto
       .list('no-cache', { tipo: filtrosIds })
-      .then((data) => setPontos(data));
+      .then((data) => setPontos(data as Ponto[]));
   }, [filters]);
 
   return (

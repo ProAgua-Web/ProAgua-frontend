@@ -41,7 +41,7 @@ export default function Page() {
         delete _filters.campus;
       }
 
-      const url = `${apiUrl}/sequencias?limit=10000`;
+      const url = `${apiUrl}/sequencias?limit=0`;
       let query = toURLParams(_filters);
 
       const res = await fetch(`${url}${query}`, {
@@ -55,7 +55,7 @@ export default function Page() {
       }
 
       const response = await res.json();
-      let filtered = response.items;
+      let filtered = response.data.items;
       filtered = filtered.filter((sequencia: Sequencia) => {
         if (checkConcluidas && checkPendentes) {
           return true;
