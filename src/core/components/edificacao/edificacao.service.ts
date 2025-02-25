@@ -49,7 +49,7 @@ export const useCriarEdificacao = (
     },
     invalidateQueries: () => [['edificacoes']],
     successMessage: 'Edificação criado com sucesso!',
-    errorMessage: 'Não foi possível criar o convênio',
+    errorMessage: 'Não foi possível criar a edificação',
     ...options,
   });
 };
@@ -71,7 +71,7 @@ export const useEditarEdificacao = (
       ['edificacao', codigo],
     ],
     successMessage: 'Edificação editado com sucesso!',
-    errorMessage: 'Não foi possível editar o convênio',
+    errorMessage: 'Não foi possível editar a edificação',
     ...options,
   });
 };
@@ -83,7 +83,7 @@ export const useExcluirEdificacao = (options?: ApiMutationOptions<number>) => {
     },
     invalidateQueries: (id) => [['edificacoes'], ['edificacao', id]],
     successMessage: 'Edificação excluído com sucesso!',
-    errorMessage: 'Não foi possível excluir o convênio',
+    errorMessage: 'Não foi possível excluir a edificação',
     ...options,
   });
 };

@@ -12,7 +12,7 @@ export const CriarEdificacao = () => {
 
   const criarEdificacao = useCriarEdificacao({
     onSuccess() {
-      router.push('/edificacoes');
+      router.push('/admin/edificacoes');
     },
     onFieldError: form.setError,
   });
