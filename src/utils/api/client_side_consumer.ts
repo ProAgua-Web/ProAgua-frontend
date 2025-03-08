@@ -189,7 +189,8 @@ export function useSequencia(id_sequencia: number) {
           credentials: 'include',
         },
       );
-      const sequencia = await response.json();
+      const data = (await response.json()).data;
+      const sequencia = data;
 
       setSequencia(sequencia);
     })();

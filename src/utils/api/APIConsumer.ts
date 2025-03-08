@@ -13,7 +13,10 @@ export class APIConsumer<Tin, Tout> {
       credentials: 'include',
     });
 
-    const data: Tout = await response.json();
+    const data = (await response.json()).data;
+    if (data && 'items' in data) {
+      return data.items;
+    }
     return data;
   }
 
