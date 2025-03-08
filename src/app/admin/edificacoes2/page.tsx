@@ -9,7 +9,9 @@ export default function Edificacoes() {
   const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
 
   useEffect(() => {
-    consumerEdficacao.list().then((data) => setEdificacoes(data));
+    consumerEdficacao
+      .list()
+      .then((data) => setEdificacoes(data as Edificacao[]));
   }, []);
 
   return (
