@@ -228,7 +228,7 @@ export function useColetaBySequencia(id_sequencia: number) {
           credentials: 'include',
         },
       );
-      const coletas = await response.json();
+      const coletas = (await response.json()).data?.items;
       setColetas(coletas);
     })();
   }, [id_sequencia]);
