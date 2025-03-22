@@ -1,30 +1,22 @@
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { CriarEdificacao } from '@/core/components/edificacao/ui/criar-edificacao';
 
-interface Props {
-  params: { codigo: string };
-}
-
-export default function Pagina({ params }: Props) {
+export default function Pagina() {
   return (
-    <div className="flex w-full flex-1 flex-col gap-2">
-      <div className="flex w-full max-w-full shrink flex-col items-center">
-        <div className="flex w-full flex-col bg-primary-500 pb-2 lg:items-center">
-          <div className="flex flex-row flex-wrap items-center justify-between gap-2 px-4 lg:w-3/4 lg:px-0">
-            <div className="flex flex-col pt-4 lg:pt-8">
-              <Breadcrumbs
-                path={[
-                  { route: '/admin/edificacoes', label: 'Edificações' },
-                  {
-                    route: `/admin/edificacoes/criar`,
-                    label: 'Criar edificação',
-                  },
-                ]}
-              />
-            </div>
-          </div>
+    <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col items-center">
+        <div className="flex w-full flex-row flex-wrap items-center justify-start gap-2 border-slate-200 bg-white px-8 py-4 lg:px-16">
+          <Breadcrumbs
+            path={[
+              { route: '/admin/edificacoes', label: 'Edificações' },
+              {
+                route: `/admin/edificacoes/criar`,
+                label: 'Criar edificação',
+              },
+            ]}
+          />
         </div>
-        <div className="w-full pt-2 lg:w-3/4">
+        <div className="w-full">
           <CriarEdificacao />
         </div>
       </div>
