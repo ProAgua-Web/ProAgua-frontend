@@ -48,7 +48,7 @@ export const FormContainer = forwardRef<HTMLFormElement, Props>(
       <FormContext.Provider value={props}>
         <div className="flex w-full flex-col border-y bg-white pb-8 lg:rounded-lg lg:border-x lg:pt-2">
           <div className="flex flex-row">
-            <div className="flex grow flex-col gap-2 border-b border-slate-50 px-6 py-4 lg:px-14 lg:py-6">
+            <div className="flex grow flex-col gap-2 border-b border-slate-100 px-6 py-4 lg:px-14 lg:py-6">
               <h1 className="text-2xl font-semibold text-primary-800">
                 {props.title}
               </h1>
@@ -61,8 +61,8 @@ export const FormContainer = forwardRef<HTMLFormElement, Props>(
             )}
           </div>
           <form onSubmit={props.onSubmit} ref={ref}>
-            <div className="px-6 lg:px-14">{props.children}</div>
-            <div className="flex flex-col items-end gap-2 border-t border-slate-300">
+            <div className="px-6 py-4 lg:px-14">{props.children}</div>
+            <div className="flex flex-col items-end gap-2 border-t border-slate-100">
               <div className="flex justify-end gap-2 px-6 pt-8 lg:px-14">
                 <Button
                   variant="destructive-ghost"
@@ -97,7 +97,7 @@ interface SectionProps {
 
 export const FormSection: FC<SectionProps> = (props) => {
   return (
-    <div className="flex flex-col gap-2 border-t border-slate-300 py-2 lg:py-4">
+    <div className="flex flex-col gap-2 py-2 lg:py-4">
       {props.title && (
         <h2 className="pb-2 font-semibold text-primary-800">{props.title}</h2>
       )}

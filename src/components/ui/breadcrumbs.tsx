@@ -9,10 +9,10 @@ interface Props {
 
 export function Breadcrumbs({ path }: Props) {
   return (
-    <div className="flex flex-row items-center gap-1 underline-offset-2 lg:pt-12">
+    <div className="flex flex-row items-center gap-1 underline-offset-2">
       <Link
         href="/home"
-        className="text-xs font-bold text-white hover:text-brand-green-200"
+        className="text-xs font-bold text-primary-500 hover:text-primary-300"
       >
         Home
       </Link>
@@ -20,13 +20,13 @@ export function Breadcrumbs({ path }: Props) {
         <Fragment key={i}>
           <HiOutlineChevronRight
             size={12}
-            className="text-white"
+            className="text-slate-500"
             strokeWidth={2.5}
           />
           <Link
             href={segment.route}
             className={cn(
-              'text-xs font-bold text-white hover:text-brand-green-200',
+              'text-xs font-bold text-primary-500 hover:text-primary-300',
               {
                 underline: i === path.length - 1,
               },

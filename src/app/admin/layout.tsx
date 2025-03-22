@@ -27,12 +27,12 @@ export default function RootLayout({
   };
 
   return (
-    <div className={inter.className + ' min-h-[100vh] bg-background'}>
+    <div className={inter.className + 'relative min-h-screen bg-background'}>
       <Header expand={toggleCollapsed} collapsed={collapsed} />
 
       <Navbar collapse={toggleCollapsed} collapsed={collapsed} />
 
-      <main className="relative m-auto flex w-[clamp(320px,90vw-2rem,1200px)] flex-col items-center gap-4 p-8 pt-[calc(clamp(50px,8vh,100px)+2rem)]">
+      <main className="container gap-4 p-8 pt-[calc(clamp(50px,8vh,100px)+2rem)]">
         {children}
       </main>
     </div>

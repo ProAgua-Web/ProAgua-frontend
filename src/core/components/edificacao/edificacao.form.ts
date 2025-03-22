@@ -30,11 +30,7 @@ export const useEdificacaoForm = (edificacao?: Edificacao) => {
 
   useEffect(() => {
     if (edificacao) {
-      form.setValue('codigo', edificacao.codigo);
-      form.setValue('nome', edificacao.nome);
-      form.setValue('campus', edificacao.campus);
-      form.setValue('cronograma', edificacao.cronograma);
-      form.setValue('informacoes_gerais', edificacao.informacoes_gerais);
+      form.reset(edificacaoToSchema(edificacao));
     }
   }, [edificacao, form]);
 
