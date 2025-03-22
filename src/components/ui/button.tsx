@@ -48,15 +48,17 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-10 px-4 py-2',
+        wide: 'h-10 px-10 py-2',
+        xs: 'h-7 px-2',
         sm: 'h-9 px-3',
         lg: 'h-11 px-8',
         xl: 'h-14 px-10',
         icon: 'size-10',
         nav: 'size-12',
         header: 'size-14',
-        search: 'h-10 px-10 py-2',
         badge: 'size-4',
         input: 'min-h-10 px-3 py-2',
+        table: 'h-10 px-1.5 py-3',
       },
     },
     defaultVariants: {

@@ -1,4 +1,4 @@
-import { photographySchema } from '@/core/common/imagem/imagem.model';
+import { imageSchema } from '@/core/common/file';
 import { Campus } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
@@ -15,7 +15,7 @@ export const edificacaoSchema = z.object({
   campus: z.nativeEnum(Campus, { message: 'Campus é obrigatório' }),
   cronograma: z.number({ message: 'Cronograma é obrigatório' }),
   informacoes_gerais: z.string().nullish(),
-  imagens: z.array(photographySchema).optional(),
+  imagens: z.array(imageSchema),
 });
 
 export type EdificacaoSchema = z.infer<typeof edificacaoSchema>;
