@@ -1,9 +1,9 @@
 'use client';
 
-import { ControlledSelect } from '@/components/controlled-select';
+import { ControlledNumberInput } from '@/components/form/input/number-input';
+import { ControlledSelect } from '@/components/form/input/select';
+import { ControlledTextInput } from '@/components/form/input/text-input';
 import MultipleImageInput from '@/components/MultipleImageInput';
-import { ControlledNumberInput } from '@/components/number-input';
-import { ControlledTextInput } from '@/components/text-input';
 import { Button } from '@/components/ui/button';
 import { Campus, campusOptions } from '@/lib/utils';
 import { createEdificacao } from '@/services/api/edificacao-service';

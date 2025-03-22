@@ -1,23 +1,22 @@
 'use client';
 
+import { ControlledNumberInput } from '@/components/form/input/number-input';
+import { ControlledSelect } from '@/components/form/input/select';
+import { ControlledTextInput } from '@/components/form/input/text-input';
 import MultipleImageInput from '@/components/MultipleImageInput';
-import { Campus, campusOptions } from '@/lib/utils';
-import { apiUrl } from '@/utils/api/APIConsumer';
-import { useEdificacao } from '@/utils/api/client_side_consumer';
-import { EdificacaoIn, ImageIn, ImageOut } from '@/utils/types';
-import { useEffect, useState } from 'react';
-
-import { ControlledSelect } from '@/components/controlled-select';
-import { ControlledNumberInput } from '@/components/number-input';
-import { ControlledTextInput } from '@/components/text-input';
 import { Button } from '@/components/ui/button';
+import { Campus, campusOptions } from '@/lib/utils';
 import {
   deleteEdificacao,
   deleteImage,
   updateEdificacao,
 } from '@/services/api/edificacao-service';
+import { apiUrl } from '@/utils/api/APIConsumer';
+import { useEdificacao } from '@/utils/api/client_side_consumer';
+import { EdificacaoIn, ImageIn, ImageOut } from '@/utils/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 

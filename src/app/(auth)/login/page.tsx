@@ -1,6 +1,6 @@
 'use client';
 
-import { ControlledInput } from '@/components/controlled-input';
+import { ControlledAuthTextInput } from '@/components/form/input/text-input';
 import { Button } from '@/components/ui/button';
 import Spinner from '@/components/ui/spinner';
 import { useAutenticacao } from '@/lib/autenticacao';
@@ -52,14 +52,14 @@ export default function Login() {
       <h1 className="text-center text-4xl font-medium">Login</h1>
 
       <div className="flex w-full flex-col justify-center gap-10">
-        <ControlledInput
+        <ControlledAuthTextInput
           control={control}
           name="username"
           label="E-mail"
           type="text"
         />
 
-        <ControlledInput
+        <ControlledAuthTextInput
           control={control}
           name="password"
           label="Senha"
