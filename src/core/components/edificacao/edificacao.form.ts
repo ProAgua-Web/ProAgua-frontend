@@ -1,13 +1,14 @@
-import { imageSchema } from '@/core/common/file';
+import { fileDescriptionSchema, imageSchema } from '@/core/common/file';
 import { Campus } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { edificacaoToSchema } from './edificacao.mapper';
-import { type Edificacao } from './edificacao.model';
+import { edificacaoDtoToSchema } from './edificacao.mapper';
+import { type EdificacaoDto } from './edificacao.model';
 
-export const edificacaoSchema = z.object({
+const edificacaoSchema = z.object({
+  id: z.number().nullish(),
   codigo: z.string({ message: 'Código é obrigatório' }),
   nome: z
     .string({ message: 'Nome é obrigatório' })
@@ -15,24 +16,24 @@ export const edificacaoSchema = z.object({
   campus: z.nativeEnum(Campus, { message: 'Campus é obrigatório' }),
   cronograma: z.number({ message: 'Cronograma é obrigatório' }),
   informacoes_gerais: z.string().nullish(),
-  imagens: z.array(imageSchema),
+  imagens: z.array(z.union([imageSchema, fileDescriptionSchema])),
 });
 
 export type EdificacaoSchema = z.infer<typeof edificacaoSchema>;
 
-export const useEdificacaoForm = (edificacao?: Edificacao) => {
+export const useEdificacaoForm = (dto?: EdificacaoDto) => {
   const form = useForm<EdificacaoSchema>({
     resolver: zodResolver(edificacaoSchema),
-    defaultValues: edificacao ? edificacaoToSchema(edificacao) : undefined,
+    defaultValues: dto ? edificacaoDtoToSchema(dto) : undefined,
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
 
   useEffect(() => {
-    if (edificacao) {
-      form.reset(edificacaoToSchema(edificacao));
+    if (dto) {
+      form.reset(edificacaoDtoToSchema(dto));
     }
-  }, [edificacao, form]);
+  }, [dto, form]);
 
   return form;
 };

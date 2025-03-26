@@ -1,49 +1,45 @@
 'use client';
 
-import Filters from '@/components/sequencias/Filters';
-import { Edificacao } from '@/utils/types';
-import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
-import { useEffect, useState } from 'react';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { HiOutlinePlus } from 'react-icons/hi2';
+import { EdificacaoDataTable } from './table';
 
-export default function Edificacoes() {
-  const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
-
-  useEffect(() => {
-    consumerEdficacao.list().then((data) => setEdificacoes(data));
-  }, []);
-
+export default function Pagina() {
   return (
-    <>
-      <Filters />
-      <div className="mx-auto max-h-[70vh] w-full overflow-y-auto rounded-md border border-neutral-200 bg-white p-4 shadow-lg">
-        <h2 className="w-full text-center text-2xl font-medium text-[#7a7a7a]">
-          Lista edificações
-        </h2>
-        <a
-          className="m-4 block w-fit rounded-lg bg-primary-500 p-4 font-semibold text-white hover:bg-primary-600"
-          href="/admin/edificacoes/criar"
-        >
-          + Criar edificação
-        </a>
-        <ul>
-          {edificacoes.map((item: Edificacao, i) => {
-            return (
-              <li
-                key={'edif-' + i}
-                className="group/item flex justify-between border-b px-4 py-6 text-neutral-700 hover:bg-blue-100 hover:font-medium"
-              >
-                {item.codigo} - {item.nome}
-                <a
-                  href={'/admin/edificacoes/' + item.codigo}
-                  className="hidden rounded p-2 text-blue-900 hover:bg-white group-hover/item:block"
-                >
-                  Detalhes
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+    <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col items-center">
+        <div className="flex w-fit flex-row flex-wrap items-center justify-start gap-2 self-start px-8 py-2 lg:px-4">
+          <Breadcrumbs
+            path={[
+              {
+                route: '/admin/edificacoes',
+                label: 'Edificações',
+              },
+            ]}
+          />
+        </div>
+        <div className="flex w-full flex-row justify-between px-6 py-4">
+          <div>
+            <h1 className="text-2xl font-semibold text-primary-800">
+              Edificações
+            </h1>
+            <p className="text-xs text-slate-500">
+              Gerencie as edificações do sistema
+            </p>
+          </div>
+          <div>
+            <Button variant="add" className="h-full" asChild>
+              <HiOutlinePlus size={20} />
+              <Link href="/admin/edificacoes/criar">Criar edificação</Link>
+            </Button>
+          </div>
+        </div>
+        <div className="w-full">
+          <EdificacaoDataTable />
+        </div>
       </div>
-    </>
+    </div>
   );
 }

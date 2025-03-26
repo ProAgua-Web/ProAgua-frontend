@@ -1,49 +1,33 @@
-import { ImagemDTO } from '@/core/common/imagem/imagem.api';
 import { api, type ApiResponse } from '@/lib/api';
-import { Campus } from '@/lib/utils';
-
-export interface EdificacaoDTO {
-  codigo: string;
-  nome: string;
-  campus: Campus;
-  cronograma: number;
-  imagens: ImagemDTO[];
-  pontos_url: string;
-  informacoes_gerais?: string;
-}
-
-export interface CreateEdificacaoDTO {
-  codigo: string;
-  nome: string;
-  campus: Campus;
-  cronograma: number;
-  informacoes_gerais?: string | null;
-  imagens: ImagemDTO[];
-}
+import {
+  type CreateEdificacaoDto,
+  type EdificacaoDto,
+  type UpdateEdificacaoDto,
+} from './edificacao.model';
 
 export async function listEdificacoes() {
-  const response = await api.get<ApiResponse<EdificacaoDTO[]>>('/edificacoes');
+  const response = await api.get<ApiResponse<EdificacaoDto[]>>('/edificacoes');
   return response.data;
 }
 
 export async function getEdificacao(codigo: string) {
-  const response = await api.get<ApiResponse<EdificacaoDTO>>(
+  const response = await api.get<ApiResponse<EdificacaoDto>>(
     `/edificacoes/${codigo}`,
   );
   return response.data;
 }
 
-export async function createEdificacao(edificacao: CreateEdificacaoDTO) {
+export async function createEdificacao(edificacao: CreateEdificacaoDto) {
   await api.post('/edificacoes', edificacao);
 }
 
 export async function updateEdificacao(
   codigo: string,
-  edificacao: CreateEdificacaoDTO,
+  edificacao: UpdateEdificacaoDto,
 ) {
   await api.put(`/edificacoes/${codigo}`, edificacao);
 }
 
-export async function deleteEdificacao(id: number) {
-  await api.delete(`/edificacoes/${id}`);
+export async function deleteEdificacao(codigo: string) {
+  await api.delete(`/edificacoes/${codigo}`);
 }

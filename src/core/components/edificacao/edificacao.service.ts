@@ -11,15 +11,19 @@ import {
   listEdificacoes,
   updateEdificacao,
 } from './edificacao.api';
+
 import { type EdificacaoSchema } from './edificacao.form';
 import { edificacaoSchemaToDto } from './edificacao.mapper';
-import { type Edificacao } from './edificacao.model';
+import { type EdificacaoDto } from './edificacao.model';
 
-export const useEdificacoes = (options?: ApiQueryOptions<Edificacao[]>) => {
+export const useEdificacoes = (options?: ApiQueryOptions<EdificacaoDto[]>) => {
   return useApiQuery({
     queryKey: ['edificacoes'],
     queryFn: async () => {
       const response = await listEdificacoes();
+      if ('items' in response.data) {
+        return response.data.items as EdificacaoDto[];
+      }
       return response.data;
     },
     ...options,
@@ -28,7 +32,7 @@ export const useEdificacoes = (options?: ApiQueryOptions<Edificacao[]>) => {
 
 export const useEdificacao = (
   codigo: string,
-  options?: ApiQueryOptions<Edificacao>,
+  options?: ApiQueryOptions<EdificacaoDto>,
 ) => {
   return useApiQuery({
     queryKey: ['edificacao', codigo],
@@ -76,8 +80,8 @@ export const useEditarEdificacao = (
   });
 };
 
-export const useExcluirEdificacao = (options?: ApiMutationOptions<number>) => {
-  return useApiMutation<number>({
+export const useExcluirEdificacao = (options?: ApiMutationOptions<string>) => {
+  return useApiMutation<string>({
     mutationFn: (id) => {
       return deleteEdificacao(id);
     },

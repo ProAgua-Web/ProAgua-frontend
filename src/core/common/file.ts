@@ -8,10 +8,9 @@ export interface FileDescription {
 }
 
 export const fileDescriptionSchema = z.object({
-  id: z.number(),
-  nome: z.string(),
-  tipo: z.string(),
-  url: z.string(),
+  id: z.string(),
+  src: z.string(),
+  description: z.string(),
 });
 
 const fileSizeLimit = 5 * 1024 * 1024; // 5MB

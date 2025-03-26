@@ -1,22 +1,16 @@
-import { type CreateEdificacaoDTO } from './edificacao.api';
 import { type EdificacaoSchema } from './edificacao.form';
-import { type Edificacao } from './edificacao.model';
+import { type EdificacaoDto } from './edificacao.model';
 
 export function edificacaoSchemaToDto({
-  imagens,
-  ...edificacao
-}: EdificacaoSchema): CreateEdificacaoDTO {
+  ...schema
+}: EdificacaoSchema): EdificacaoSchema {
   return {
-    imagens: imagens,
-    ...edificacao,
-    // endereco: enderecoSchemaToDto(endereco),
+    ...schema,
   };
 }
 
-export function edificacaoToSchema(edificacao: Edificacao): EdificacaoSchema {
+export function edificacaoDtoToSchema(dto: EdificacaoDto): EdificacaoSchema {
   return {
-    ...edificacao,
-    imagens: [],
-    // endereco: enderecoToSchema(edificacao.endereco),
+    ...dto,
   };
 }

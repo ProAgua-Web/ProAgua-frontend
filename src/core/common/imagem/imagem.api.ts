@@ -1,5 +1,5 @@
-export type ImagemDTO = {
+export interface ImagemDto {
   id: string;
   src: string;
   description: string;
-};
+}
