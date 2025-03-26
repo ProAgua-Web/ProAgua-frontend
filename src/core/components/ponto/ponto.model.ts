@@ -1,31 +1,32 @@
+import { type ImagemDto } from '@/core/common/imagem/imagem.api';
 import { type Campus } from '@/lib/utils';
 
-export interface PontoColetaDto {
-  id: number;
+export interface PontoDto {
+  id?: number | null;
   edificacao: {
     codigo: string;
     nome: string;
     campus: Campus;
     cronograma: number;
-    imagens: {
-      id: string;
-      src: string;
-      description: string;
-    }[];
+    imagens: Array<ImagemDto>;
     informacoes_gerais: string;
   };
   tipo: number;
   localizacao: string;
-  amontante: string;
-  imagens: {
-    id: string;
-    src: string;
-    description: string;
-  }[];
-  tombo: string;
-  quantidade: number;
-  capacidade: number;
-  observacao: string;
-  material: string;
-  fonte_informacao: string;
+  amontante?: number | null;
+  imagens: Array<ImagemDto>;
+  tombo?: string | null;
+  capacidade?: number | null;
+  quantidade?: number | null;
+  observacao?: string | null;
+  material?: string | null;
+  fonte_informacao?: string | null;
 }
+
+export interface CreatePontoDto
+  extends Omit<PontoDto, 'id' | 'imagens' | 'edificacao'> {
+  edificacao: string;
+  imagens: Array<File | ImagemDto>;
+}
+
+export type UpdatePontoDto = CreatePontoDto;
