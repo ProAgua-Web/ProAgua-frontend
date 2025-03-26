@@ -50,7 +50,7 @@ export const SequenciaDataTable = () => {
               <FaPlus />
             </Button>
           </Link>
-          <Link href={`sequencias/${sequencia.id}/`}>
+          <Link href={`sequencias/${sequencia.id}/editar`}>
             <Button variant="table-edit">
               <PiNotePencilBold />
             </Button>
