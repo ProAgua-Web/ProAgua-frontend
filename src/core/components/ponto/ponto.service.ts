@@ -51,7 +51,7 @@ export const useCriarPonto = (options?: ApiMutationOptions<PontoSchema>) => {
     },
     invalidateQueries: () => [['pontos']],
     successMessage: 'Ponto criado com sucesso!',
-    errorMessage: 'Não foi possível criar a ponto',
+    errorMessage: 'Não foi possível criar o ponto',
     ...options,
   });
 };
@@ -70,7 +70,7 @@ export const useEditarPonto = (
     },
     invalidateQueries: ({ codigo }) => [['pontos'], ['ponto', codigo]],
     successMessage: 'Ponto editado com sucesso!',
-    errorMessage: 'Não foi possível editar a ponto',
+    errorMessage: 'Não foi possível editar o ponto',
     ...options,
   });
 };
@@ -82,7 +82,7 @@ export const useExcluirPonto = (options?: ApiMutationOptions<number>) => {
     },
     invalidateQueries: (id) => [['pontos'], ['ponto', id]],
     successMessage: 'Ponto excluído com sucesso!',
-    errorMessage: 'Não foi possível excluir a ponto',
+    errorMessage: 'Não foi possível excluir o ponto',
     ...options,
   });
 };

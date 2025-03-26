@@ -68,6 +68,6 @@ export const campusOptions = options(campus, (campus) => [
   campusLabel[campus],
 ]);
 
-export function DateISO(d: string): String {
+export function DateISO(d: string): string {
   return new Date(d).toISOString().split('T')[0];
 }

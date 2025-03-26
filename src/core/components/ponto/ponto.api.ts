@@ -1,5 +1,9 @@
 import { api, type ApiResponse } from '@/lib/api';
-import { type CreatePontoDto, type PontoDto } from './ponto.model';
+import {
+  type CreatePontoDto,
+  type PontoDto,
+  type UpdatePontoDto,
+} from './ponto.model';
 
 export interface PontoQueryOptions {
   q?: string;
@@ -23,7 +27,7 @@ export async function createPonto(ponto: CreatePontoDto) {
   await api.post('/pontos', ponto);
 }
 
-export async function updatePonto(id: string, ponto: CreatePontoDto) {
+export async function updatePonto(id: string, ponto: UpdatePontoDto) {
   await api.put(`/pontos/${id}`, ponto);
 }
 
