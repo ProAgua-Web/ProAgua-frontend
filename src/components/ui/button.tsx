@@ -19,10 +19,9 @@ const buttonVariants = cva(
         'secondary':
           'bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
         'add':
-          'rounded-md border bg-green-500 text-white hover:bg-green-600 disabled:bg-green-400',
+          'rounded-md border bg-green-600 text-white hover:bg-green-500 disabled:bg-green-400',
         'delete':
           'rounded-md border bg-red-500 p-3 text-white hover:bg-red-600 disabled:bg-red-400',
-
         'ghost':
           'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
         'link':

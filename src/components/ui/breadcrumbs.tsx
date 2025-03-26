@@ -11,8 +11,8 @@ export function Breadcrumbs({ path }: Props) {
   return (
     <div className="flex flex-row items-center gap-1 underline-offset-2">
       <Link
-        href="/home"
-        className="text-xs font-bold text-primary-500 hover:text-primary-300"
+        href="/admin/pontos"
+        className="text-xs font-bold text-primary-500 hover:text-primary-300 hover:underline"
       >
         Home
       </Link>
@@ -26,10 +26,8 @@ export function Breadcrumbs({ path }: Props) {
           <Link
             href={segment.route}
             className={cn(
-              'text-xs font-bold text-primary-500 hover:text-primary-300',
-              {
-                underline: i === path.length - 1,
-              },
+              'text-xs font-bold text-primary-500 hover:text-primary-300 hover:underline',
+              i === path.length - 1 ? 'text-primary-700' : 'text-primary-500',
             )}
           >
             {segment.label}
