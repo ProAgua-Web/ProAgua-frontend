@@ -11,6 +11,7 @@ import {
   statusSolicitacaoLabel,
   tipoSolicitacaoLabel,
 } from '@/core/components/solicitacao/solicitacao.utils';
+import { formatDate } from '@/lib/utils';
 
 import Link from 'next/link';
 import { FaRegTrashCan } from 'react-icons/fa6';
@@ -30,7 +31,7 @@ export const SolicitacaoDataTable = () => {
           Código: solicitacao.id!.toString(),
           Edificação: solicitacao.ponto.edificacao.codigo,
           Tipo: tipoSolicitacaoLabel[solicitacao.tipo],
-          Data: solicitacao.data.toString() || '',
+          Data: formatDate(solicitacao.data),
           Status: statusSolicitacaoLabel[solicitacao.status],
         })) ?? []
       }

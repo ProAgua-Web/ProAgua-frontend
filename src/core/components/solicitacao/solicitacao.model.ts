@@ -1,5 +1,4 @@
 import { type ImagemDto } from '@/core/common/imagem/imagem.api';
-import { type Temporal } from '@js-temporal/polyfill';
 import { type PontoDto } from '../ponto/ponto.model';
 import {
   type StatusSolicitacao,
@@ -9,7 +8,7 @@ import {
 export interface SolicitacaoDto {
   id?: number | null;
   ponto: PontoDto;
-  data: Temporal.PlainDateTime;
+  data: Date;
   objetivo: string;
   justificativa: string;
   tipo: TipoSolicitacao;

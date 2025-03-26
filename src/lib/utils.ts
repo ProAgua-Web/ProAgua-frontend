@@ -71,3 +71,23 @@ export const campusOptions = options(campus, (campus) => [
 export function DateISO(d: string): string {
   return new Date(d).toISOString().split('T')[0];
 }
+
+const dateOptions = {
+  timeZone: 'America/Sao_Paulo',
+  minute: 'numeric',
+  hour: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  year: 'numeric',
+} as const;
+
+export function formatDate(dateInput: Date | string | number): string {
+  const date = new Date(dateInput);
+
+  if (isNaN(date.getTime())) {
+    return 'Data inválida';
+  }
+
+  const dateFormatter = new Intl.DateTimeFormat('pt-BR', dateOptions);
+  return dateFormatter.format(date);
+}
