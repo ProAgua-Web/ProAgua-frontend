@@ -1,7 +1,11 @@
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { CriarSolicitacao } from '@/core/components/solicitacao/ui/criar-solicitacao';
+import { EditarSolicitacao } from '@/core/components/solicitacao/ui/editar-solicitacao';
 
-export default function Pagina() {
+interface Props {
+  params: { id: number };
+}
+
+export default function Pagina({ params }: Props) {
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex w-full flex-col items-center">
@@ -13,14 +17,14 @@ export default function Pagina() {
                 label: 'Solicitações',
               },
               {
-                route: `/admin/solicitacoes/criar`,
-                label: 'Criar solicitações',
+                route: `/admin/solicitacoes/${params.id}/editar`,
+                label: 'Editar solicitação',
               },
             ]}
           />
         </div>
         <div className="w-full">
-          <CriarSolicitacao />
+          <EditarSolicitacao id={params.id} />
         </div>
       </div>
     </div>

@@ -1,45 +1,45 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Solicitacao } from '@/utils/types';
-import { formatDate } from '@/utils/api/client_side_consumer';
-import { consumerSolicitacao } from '@/utils/api/consumerSolicitacao';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { HiOutlinePlus } from 'react-icons/hi2';
+import { SolicitacaoDataTable } from './table';
 
-export default function Solicitacoes() {
-  const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
-  useEffect(() => {
-    consumerSolicitacao.list().then((data) => setSolicitacoes(data));
-  }, []);
-
+export default function Pagina() {
   return (
-    <>
-      <h1 className="mb-4 text-3xl font-bold">Solicitações</h1>
-      <div className="w-full rounded border border-neutral-300 bg-white p-4 shadow-lg">
-        <ul>
-          {solicitacoes.length > 0 &&
-            solicitacoes.map((solicitacao) => (
-              <li
-                key={solicitacao.id}
-                className="flex items-center justify-between border-b border-neutral-300 p-2 last:border-b-0"
-              >
-                {solicitacao.id} - Solicitação {solicitacao.tipo} -{' '}
-                {formatDate(solicitacao.data)} - {solicitacao.status}
-                <a
-                  className="rounded border border-blue-500 px-4 py-2 text-blue-500"
-                  href={'/admin/solicitacoes/' + solicitacao.id}
-                >
-                  Acessar
-                </a>
-              </li>
-            ))}
-        </ul>
+    <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col items-center">
+        <div className="flex w-fit flex-row flex-wrap items-center justify-start gap-2 self-start px-8 py-2 lg:px-4">
+          <Breadcrumbs
+            path={[
+              {
+                route: '/admin/solicitacoes',
+                label: 'Solicitações',
+              },
+            ]}
+          />
+        </div>
+        <div className="flex w-full flex-row justify-between px-6 py-4">
+          <div>
+            <h1 className="text-2xl font-semibold text-primary-800">
+              Solicitações
+            </h1>
+            <p className="text-xs text-slate-500">
+              Gerencie as solicitações do sistema
+            </p>
+          </div>
+          <div>
+            <Button variant="add" className="h-full" asChild>
+              <HiOutlinePlus size={20} />
+              <Link href="/admin/solicitacoes/criar">Criar solicitação</Link>
+            </Button>
+          </div>
+        </div>
+        <div className="w-full">
+          <SolicitacaoDataTable />
+        </div>
       </div>
-      <a
-        href="/admin/solicitacoes/criar"
-        className="flex w-full items-center justify-center rounded border border-green-600 bg-green-500 px-6 py-4 font-semibold text-white"
-      >
-        + Criar Solicitação
-      </a>
-    </>
+    </div>
   );
 }
