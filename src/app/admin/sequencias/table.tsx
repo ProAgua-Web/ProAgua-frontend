@@ -29,15 +29,14 @@ export const SequenciaDataTable = () => {
       ]}
       data={
         sequencias.data?.map((sequencia) => ({
-          'id': sequencia.id?.toString(),
-          'Código': sequencia.id?.toString(),
+          'id': sequencia.id?.toString() || '',
+          'Código': sequencia.id?.toString() || '',
           'Amostragem': sequencia.amostragem?.toString() || '',
           'Ponto': sequencia.ponto
             ? sequencia.ponto.localizacao +
               ' - ' +
               sequencia.ponto.edificacao.codigo
             : '',
-          // 'Status': sequencia.status.toString(),
           'Status Message': sequencia.status_message || '',
           'Última Coleta': sequencia.ultima_coleta?.toString() || '',
           'Quantidade de Coletas':
@@ -46,12 +45,12 @@ export const SequenciaDataTable = () => {
       }
       actions={(sequencia) => (
         <div className="flex gap-2">
-          <Link href={`sequencias_coletas/${sequencia.id}/criar`}>
+          <Link href={`sequencias/${sequencia.id}/criar`}>
             <Button variant="table-add">
               <FaPlus />
             </Button>
           </Link>
-          <Link href={`sequencias_coletas/${sequencia.id}/`}>
+          <Link href={`sequencias/${sequencia.id}/`}>
             <Button variant="table-edit">
               <PiNotePencilBold />
             </Button>

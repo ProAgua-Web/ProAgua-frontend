@@ -6,8 +6,8 @@ import {
   useUsuarios,
 } from '@/utils/api/client_side_consumer';
 import { consumerColeta } from '@/utils/api/consumerColeta';
-import { ColetaIn, Ponto, TIPOS_PONTOS } from '@/utils/types';
-import { FormEvent, useEffect, useState } from 'react';
+import { type ColetaIn, type Ponto, TIPOS_PONTOS } from '@/utils/types';
+import { type FormEvent, useEffect, useState } from 'react';
 
 export default function CriarColeta({
   params,
@@ -58,7 +58,7 @@ export default function CriarColeta({
       alert('Coleta criada com sucesso!');
       const responseData = await response.json();
       const id = responseData.id;
-      window.location.href = `/admin/sequencias_coletas/${sequencia_id}`;
+      window.location.href = `/admin/sequencias/${sequencia_id}`;
     } else {
       alert('Erro ao criar coleta');
     }

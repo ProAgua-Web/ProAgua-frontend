@@ -1,35 +1,21 @@
 import { type SequenciaSchema } from './sequencia.form';
-import {
-  type CriarSequenciaDto,
-  type EditarSequenciaDto,
-} from './sequencia.model';
+import { type CreateSequenciaDto, type SequenciaDto } from './sequencia.model';
 
-export const criarSequenciaDtoToSchema = (
-  dto: CriarSequenciaDto,
-): SequenciaSchema => ({
-  amostragem: dto.amostragem,
-  ponto: dto.ponto,
-});
-
-export const editarSequenciaDtoToSchema = (
-  dto: EditarSequenciaDto,
-): SequenciaSchema => ({
-  id: dto.id,
-  amostragem: dto.amostragem,
-  ponto: dto.ponto,
-});
-
-export const criarSequenciaSchemaToDto = (
+export function sequenciaSchemaToDto(
   schema: SequenciaSchema,
-): CriarSequenciaDto => ({
-  amostragem: schema.amostragem,
-  ponto: schema.ponto,
-});
+): CreateSequenciaDto {
+  return {
+    id: schema.id,
+    amostragem: schema.amostragem,
+    ponto: schema.ponto,
+  };
+}
 
-export const editarSequenciaSchemaToDto = (
-  schema: SequenciaSchema,
-): EditarSequenciaDto => ({
-  id: schema.id!,
-  amostragem: schema.amostragem,
-  ponto: schema.ponto,
-});
+export function sequenciaDtoToSchema(dto: SequenciaDto): SequenciaSchema {
+  return {
+    id: dto.id,
+    amostragem: dto.amostragem!,
+    edificacao: dto.ponto!.edificacao.codigo,
+    ponto: dto.ponto?.id || 0,
+  };
+}

@@ -12,11 +12,8 @@ import {
   updateSequencia,
 } from './sequencia.api';
 import { type SequenciaSchema } from './sequencia.form';
-import {
-  criarSequenciaSchemaToDto,
-  editarSequenciaSchemaToDto,
-} from './sequencia.mapper';
-import { type CriarSequenciaDto, type SequenciaDto } from './sequencia.model';
+import { sequenciaSchemaToDto } from './sequencia.mapper';
+import { type SequenciaDto } from './sequencia.model';
 
 export const useSequencias = (options?: ApiQueryOptions<SequenciaDto[]>) => {
   return useApiQuery({
@@ -47,11 +44,11 @@ export const useSequencia = (
 };
 
 export const useCriarSequencia = (
-  options?: ApiMutationOptions<CriarSequenciaDto>,
+  options?: ApiMutationOptions<SequenciaSchema>,
 ) => {
   return useApiMutation({
     mutationFn: (sequencia) => {
-      return createSequencia(criarSequenciaSchemaToDto(sequencia));
+      return createSequencia(sequenciaSchemaToDto(sequencia));
     },
     invalidateQueries: () => [['sequencias']],
     successMessage: 'Sequência criada com sucesso!',
@@ -70,7 +67,7 @@ export const useEditarSequencia = (
 ) => {
   return useApiMutation<EditarSequenciaArgs>({
     mutationFn: ({ id, sequencia }) => {
-      return updateSequencia(id, editarSequenciaSchemaToDto(sequencia));
+      return updateSequencia(id, sequenciaSchemaToDto(sequencia));
     },
     invalidateQueries: ({ id }) => [['sequencias'], ['sequencia', id]],
     successMessage: 'Sequência editada com sucesso!',

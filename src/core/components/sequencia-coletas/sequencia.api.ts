@@ -1,8 +1,8 @@
 import { api, type ApiResponse } from '@/lib/api';
 import {
-  type CriarSequenciaDto,
-  type EditarSequenciaDto,
+  type CreateSequenciaDto,
   type SequenciaDto,
+  type UpdateSequenciaDto,
 } from './sequencia.model';
 
 export async function listSequencias() {
@@ -17,13 +17,13 @@ export async function getSequencia(id: number) {
   return response.data;
 }
 
-export async function createSequencia(sequencia: CriarSequenciaDto) {
+export async function createSequencia(sequencia: CreateSequenciaDto) {
   await api.post('/sequencias', sequencia);
 }
 
 export async function updateSequencia(
   id: number,
-  sequencia: EditarSequenciaDto,
+  sequencia: UpdateSequenciaDto,
 ) {
   await api.put(`/sequencias/${id}`, sequencia);
 }

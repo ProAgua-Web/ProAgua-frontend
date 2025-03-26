@@ -12,12 +12,12 @@ import { usePathname } from 'next/navigation';
 
 export default function Navbar(props: {
   collapse: React.MouseEventHandler<HTMLButtonElement>;
-  collapsed: Boolean;
+  collapsed: boolean;
 }) {
   const pathname = usePathname();
   const navbar_links = [
     {
-      href: '/admin/sequencias_coletas',
+      href: '/admin/sequencias',
       icon: <FontAwesomeIcon icon={faClipboardList} className="h-6 w-6 p-2" />,
       name: 'Coletas',
     },

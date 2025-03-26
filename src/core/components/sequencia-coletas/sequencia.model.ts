@@ -1,20 +1,19 @@
-import { type PontoColetaDto } from '../ponto/ponto.model';
+import { type PontoDto } from '../ponto/ponto.model';
 
 export interface SequenciaDto {
-  id: number;
+  id?: number | null;
   amostragem?: number;
-  ponto?: PontoColetaDto;
+  ponto?: PontoDto;
   quantidade_coletas?: number;
   status?: boolean;
   status_message?: string;
   ultima_coleta?: Date;
 }
 
-export interface CriarSequenciaDto {
+export interface CreateSequenciaDto {
+  id?: number | null;
   amostragem: number;
   ponto: number;
 }
 
-export interface EditarSequenciaDto extends CriarSequenciaDto {
-  id: number;
-}
+export type UpdateSequenciaDto = CreateSequenciaDto;
