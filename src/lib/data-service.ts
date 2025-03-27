@@ -144,8 +144,8 @@ export function useApiMutation<TEntrada = void, TSaida = void>({
 
         if (onFieldError) {
           for (const err of erro.errors) {
-            if (err.name !== 'error') {
-              onFieldError(err.name as 'root', {
+            if (err.field !== 'error') {
+              onFieldError(err.field as 'root', {
                 type: 'manual',
                 message: err.message,
               });

@@ -7,7 +7,6 @@ import { ControlledSelect } from '@/components/form/input/select';
 import { ControlledTextInput } from '@/components/form/input/text-input';
 import { telefoneMask } from '@/lib/input-mask';
 import { useRouter } from 'next/navigation';
-import { useUnidadesOptions } from '../../unidade/unidade.utils';
 import { type UsuarioSchema, useEditarUsuarioForm } from '../usuario.form';
 import { useEditarUsuario, useUsuario } from '../usuario.service';
 import { nivelUsuarioOptions } from '../usuario.utils';
@@ -27,7 +26,9 @@ export const EditarUsuario: React.FC<Props> = ({ id }) => {
     onSuccess() {
       router.push('/usuarios');
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const unidadesOptions = useUnidadesOptions();

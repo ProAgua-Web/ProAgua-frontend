@@ -14,7 +14,9 @@ export const CriarEdificacao = () => {
     onSuccess() {
       router.push('/admin/edificacoes');
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const handleSubmit = form.handleSubmit((form) => {

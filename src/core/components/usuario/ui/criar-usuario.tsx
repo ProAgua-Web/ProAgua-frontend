@@ -21,7 +21,9 @@ export const CriarUsuario: React.FC = () => {
     onSuccess() {
       router.push('/usuarios');
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const unidadesOptions = useUnidadesOptions();

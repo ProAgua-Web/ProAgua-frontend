@@ -20,7 +20,9 @@ export const EditarSolicitacao: React.FC<Props> = ({ id: id }) => {
     onSuccess() {
       router.push('/admin/solicitacoes');
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const handleSubmit = form.handleSubmit((solicitacao) => {

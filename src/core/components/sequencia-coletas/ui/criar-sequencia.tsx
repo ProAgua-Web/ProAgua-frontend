@@ -14,7 +14,9 @@ export const CriarSequencia = () => {
     onSuccess() {
       router.push('/admin/sequencias');
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const handleSubmit = form.handleSubmit((form) => {

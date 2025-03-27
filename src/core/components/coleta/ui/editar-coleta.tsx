@@ -24,7 +24,9 @@ export const EditarColeta: React.FC<Props> = ({
     onSuccess() {
       router.push(`/admin/sequencias/${sequencia_id}/coletas`);
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const handleSubmit = form.handleSubmit((coleta) => {

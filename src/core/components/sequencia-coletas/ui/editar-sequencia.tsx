@@ -22,7 +22,9 @@ export const EditarSequencia: React.FC<Props> = ({
     onSuccess() {
       router.push('/sequencias');
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const handleSubmit = form.handleSubmit((sequencia) => {

@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const CriarColeta: React.FC<Props> = ({ id: id }) => {
-  const form = useColetaForm(undefined);
+  const form = useColetaForm();
 
   const router = useRouter();
 
@@ -18,7 +18,9 @@ export const CriarColeta: React.FC<Props> = ({ id: id }) => {
     onSuccess() {
       router.push('/admin/sequencias');
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const handleSubmit = form.handleSubmit((form) => {

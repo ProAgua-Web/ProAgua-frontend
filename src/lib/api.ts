@@ -60,7 +60,7 @@ export interface ApiErrorResponse {
 }
 
 export interface ValidationError {
-  name: string;
+  field: string;
   message: string;
 }
 
