@@ -2,7 +2,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { CriarColeta } from '@/core/components/coleta/ui/criar-coleta';
 
 interface Props {
-  params: { id: number };
+  params: { sequencia_id: number };
 }
 
 export default function Pagina({ params }: Props) {
@@ -17,14 +17,14 @@ export default function Pagina({ params }: Props) {
                 label: 'Sequência de coletas',
               },
               {
-                route: `/admin/sequencias/${params.id}/coletas/criar`,
+                route: `/admin/sequencias/${params.sequencia_id}/coletas/criar`,
                 label: 'Criar coleta',
               },
             ]}
           />
         </div>
         <div className="w-full">
-          <CriarColeta id={params.id} />
+          <CriarColeta id={params.sequencia_id} />
         </div>
       </div>
     </div>

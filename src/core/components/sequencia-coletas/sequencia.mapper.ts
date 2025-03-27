@@ -7,7 +7,7 @@ export function sequenciaSchemaToDto(
   return {
     id: schema.id,
     amostragem: schema.amostragem,
-    ponto: schema.ponto,
+    ponto_id: schema.ponto_id,
   };
 }
 
@@ -16,6 +16,6 @@ export function sequenciaDtoToSchema(dto: SequenciaDto): SequenciaSchema {
     id: dto.id,
     amostragem: dto.amostragem!,
     edificacao: dto.ponto!.edificacao.codigo,
-    ponto: dto.ponto?.id || 0,
+    ponto_id: dto.ponto?.id || 0,
   };
 }

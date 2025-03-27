@@ -20,7 +20,7 @@ export const sequenciaSchema = z.object({
   edificacao: z.string({ message: 'Edificação é obrigatória' }).min(1, {
     message: 'Edificação é obrigatória',
   }),
-  ponto: z.number({ message: 'Ponto é obrigatório' }),
+  ponto_id: z.number({ message: 'Ponto é obrigatório' }),
 });
 
 export type SequenciaSchema = z.infer<typeof sequenciaSchema>;

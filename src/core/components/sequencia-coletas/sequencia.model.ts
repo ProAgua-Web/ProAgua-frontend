@@ -13,7 +13,7 @@ export interface SequenciaDto {
 export interface CreateSequenciaDto {
   id?: number | null;
   amostragem: number;
-  ponto: number;
+  ponto_id: number;
 }
 
 export type UpdateSequenciaDto = CreateSequenciaDto;

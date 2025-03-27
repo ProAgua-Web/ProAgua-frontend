@@ -36,7 +36,7 @@ export const SequenciaForm: React.FC<FormProps<SequenciaSchema>> = ({
         />
         <ControlledCombobox
           control={form.control}
-          name="ponto"
+          name="ponto_id"
           label="Ponto"
           placeholder={
             pontosOptions.isLoading ? 'Carregando...' : 'Selecione o ponto'

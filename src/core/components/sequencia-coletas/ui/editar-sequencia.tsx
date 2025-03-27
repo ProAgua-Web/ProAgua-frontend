@@ -6,11 +6,13 @@ import { useEditarSequencia, useSequencia } from '../sequencia.service';
 import { SequenciaForm } from './sequencia-form';
 
 interface Props {
-  id: number;
+  sequencia_id: number;
 }
 
-export const EditarSequencia: React.FC<Props> = ({ id: id }) => {
-  const sequencia = useSequencia(id, { gcTime: Infinity });
+export const EditarSequencia: React.FC<Props> = ({
+  sequencia_id: sequencia_id,
+}) => {
+  const sequencia = useSequencia(sequencia_id, { gcTime: Infinity });
 
   const form = useSequenciaForm(sequencia.data);
 
@@ -25,7 +27,7 @@ export const EditarSequencia: React.FC<Props> = ({ id: id }) => {
 
   const handleSubmit = form.handleSubmit((sequencia) => {
     editarSequencia.mutate({
-      id: id,
+      id: sequencia_id,
       sequencia: sequencia,
     });
   });

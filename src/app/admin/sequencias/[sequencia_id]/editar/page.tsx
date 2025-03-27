@@ -2,7 +2,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { EditarSequencia } from '@/core/components/sequencia-coletas/ui/editar-sequencia';
 
 interface Props {
-  params: { id: number };
+  params: { sequencia_id: number };
 }
 
 export default function Pagina({ params }: Props) {
@@ -17,14 +17,14 @@ export default function Pagina({ params }: Props) {
                 label: 'Sequência de coletas',
               },
               {
-                route: `/admin/sequencias/${params.id}/editar`,
+                route: `/admin/sequencias/${params.sequencia_id}/editar`,
                 label: 'Editar sequência de coleta',
               },
             ]}
           />
         </div>
         <div className="w-full">
-          <EditarSequencia id={params.id} />
+          <EditarSequencia sequencia_id={params.sequencia_id} />
         </div>
       </div>
     </div>
