@@ -52,7 +52,7 @@ export const useCriarSequencia = (
     },
     invalidateQueries: () => [['sequencias']],
     successMessage: 'Sequência criada com sucesso!',
-    errorMessage: 'Não foi possível criar o convênio',
+    errorMessage: 'Não foi possível criar a sequência',
     ...options,
   });
 };

@@ -161,3 +161,49 @@ export const dataHoraMask: InputMask = {
     return dataMask.unmask(data) + ' ' + horaMask.unmask(hora);
   },
 };
+
+const floatWithSuffixMask = (suffix: string): InputMask => ({
+  mask(texto) {
+    if (!texto) {
+      return '';
+    }
+
+    // Remove múltiplos sinais negativos, mantendo apenas o primeiro (se existir)
+    const sanitizedText = texto.replace(/-/g, (match, offset) =>
+      offset === 0 ? '-' : '',
+    );
+
+    const isNegative = sanitizedText.startsWith('-');
+    const digits = sanitizedText.replace(/\D/g, '');
+
+    if (digits === '') {
+      return isNegative ? '-' : '';
+    }
+
+    const padded = digits.padStart(3, '0');
+    let formatted = padded.replace(/(\d{1,})(\d{2})$/, '$1,$2');
+    formatted = formatted.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+
+    return (isNegative ? '-' : '') + formatted + ' ' + suffix;
+  },
+  unmask(texto) {
+    if (!texto) {
+      return '';
+    }
+
+    // Remove múltiplos sinais negativos, mantendo apenas o primeiro (se existir)
+    const sanitizedText = texto.replace(/-/g, (match, offset) =>
+      offset === 0 ? '-' : '',
+    );
+
+    const isNegative = sanitizedText.startsWith('-');
+    const digits = sanitizedText.replace(/\D/g, '');
+
+    return (isNegative ? '-' : '') + digits.replace(/^0+/, '');
+  },
+});
+
+export const temperaturaMask: InputMask = floatWithSuffixMask('°C');
+export const turbidezMask: InputMask = floatWithSuffixMask('uT');
+export const cloroMask: InputMask = floatWithSuffixMask('mg/L');
+export const corMask: InputMask = floatWithSuffixMask('uH');

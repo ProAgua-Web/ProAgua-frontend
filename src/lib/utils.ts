@@ -28,6 +28,14 @@ export const floatMask: InputMask = {
   },
 };
 
+export const stringToFloat = (valor: string) => {
+  return parseFloat(valor) / 100;
+};
+
+export const floatToString = (valor: number) => {
+  return (valor * 100).toFixed(2);
+};
+
 export type NonEmptyArray<T> = [T, ...T[]];
 
 type Value = string | number | boolean;
