@@ -20,7 +20,9 @@ export const EditarEdificacao: React.FC<Props> = ({ codigo: codigo }) => {
     onSuccess() {
       router.push('/edificacoes');
     },
-    onFieldError: form.setError,
+    onFieldError(field, error) {
+      form.setError(field, error);
+    },
   });
 
   const handleSubmit = form.handleSubmit((edificacao) => {
