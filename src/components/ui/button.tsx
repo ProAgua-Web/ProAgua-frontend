@@ -29,7 +29,7 @@ const buttonVariants = cva(
         'header':
           'bg-brand-header hover:bg-brand-green-500 p-1 text-xl text-white',
         'new':
-          'text-brand-green-600 hover:border-brand-green-700 hover:text-brand-green-700 border border-transparent bg-white hover:bg-slate-50',
+          'hover:border-brand-green-700 hover:text-brand-green-700 border border-transparent bg-white text-green-600 hover:bg-slate-50',
         'table-access':
           'border-brand-green-400 bg-brand-green-400 hover:border-brand-green-500 hover:bg-brand-green-500 border text-white',
         'table-add':

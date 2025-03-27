@@ -35,8 +35,8 @@ function Calendar({
         caption_dropdowns: 'flex grow space-x-2',
         nav: 'space-x-1 flex items-center',
         nav_button: cn(
-          buttonVariants({ variant: 'secondary' }),
-          'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100',
+          buttonVariants({ variant: 'primary' }),
+          'h-7 w-7 bg-primary-500 p-0 opacity-50 hover:opacity-100',
         ),
         nav_button_previous: 'absolute left-1',
         nav_button_next: 'absolute right-1',
@@ -51,8 +51,8 @@ function Calendar({
         ),
         day_range_end: 'day-range-end',
         day_selected:
-          'bg-brand-green-500 text-white hover:bg-brand-green-500 hover:text-white focus:bg-brand-green-500 focus:text-white',
-        day_today: 'bg-brand-green-100 text-slate-900',
+          'bg-primary-500 text-white hover:bg-primary-500 hover:text-white focus:bg-primary-500 focus:text-white',
+        day_today: 'bg-primary-100 text-slate-900',
         day_outside:
           'day-outside text-slate-400 opacity-50 aria-selected:bg-slate-50/50 aria-selected:text-slate-400 aria-selected:opacity-30',
         day_disabled: 'text-slate-400 opacity-50',
@@ -63,7 +63,11 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        Dropdown: ({ value, onChange, children }: DropdownProps) => {
+        Dropdown: ({
+          value,
+          onChange,
+          children,
+        }: DropdownProps & { children?: React.ReactNode }) => {
           const options = React.Children.toArray(
             children,
           ) as React.ReactElement<React.HTMLProps<HTMLOptionElement>>[];
