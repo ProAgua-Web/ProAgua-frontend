@@ -45,7 +45,7 @@ export const SequenciaDataTable = () => {
       }
       actions={(sequencia) => (
         <div className="flex gap-2">
-          <Link href={`sequencias/${sequencia.id}/criar`}>
+          <Link href={`sequencias/${sequencia.id}/coletas/criar`}>
             <Button variant="table-add">
               <FaPlus />
             </Button>
