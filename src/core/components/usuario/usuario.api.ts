@@ -1,59 +1,36 @@
-import { type UnidadeDTO } from '@/core/components/unidade/unidade.api';
 import { api, type ApiResponse } from '@/lib/api';
-import { type NivelUsuario } from './usuario.utils';
-
-export interface CreateUsuarioDTO {
-  nome: string;
-  nivel: NivelUsuario;
-  email: string;
-  whatsapp: string;
-  unidades: number[]; // UnidadeDTO
-}
-
-export interface UpdateUsuarioDTO {
-  nome: string;
-  nivel: NivelUsuario;
-  email: string;
-  whatsapp: string;
-  unidades: number[]; // UnidadeDTO
-}
-
-export interface UsuarioDTO {
-  id: number;
-  nome: string;
-  nivel: NivelUsuario;
-  email: string;
-  whatsapp: string;
-  unidades: UnidadeDTO[];
-  alterarSenha: boolean;
-}
+import {
+  type CreateUsuarioDto,
+  type UpdateUsuarioDto,
+  type UsuarioDto,
+} from './usuario.model';
 
 export async function listUsuarios() {
-  const response = await api.get<ApiResponse<UsuarioDTO[]>>('/users');
+  const response = await api.get<ApiResponse<UsuarioDto[]>>('/usuarios');
   return response.data;
 }
 
 export async function getUsuario(id: number) {
-  const response = await api.get<ApiResponse<UsuarioDTO>>(`/users/${id}`);
+  const response = await api.get<ApiResponse<UsuarioDto>>(`/usuarios/${id}`);
   return response.data;
 }
 
 export async function getUsuarioByUsername(username: string) {
-  const response = await api.get<ApiResponse<UsuarioDTO>>(
-    `/users/search/login`,
+  const response = await api.get<ApiResponse<UsuarioDto>>(
+    `/usuarios/search/login`,
     { params: { login: username } },
   );
   return response.data;
 }
 
-export async function createUsuario(usuario: CreateUsuarioDTO) {
-  await api.post('/users', usuario);
+export async function createUsuario(usuario: CreateUsuarioDto) {
+  await api.post('/usuarios', usuario);
 }
 
-export async function updateUsuario(id: number, usuario: UpdateUsuarioDTO) {
-  await api.put(`/users/${id}`, usuario);
+export async function updateUsuario(id: number, usuario: UpdateUsuarioDto) {
+  await api.put(`/usuarios/${id}`, usuario);
 }
 
 export async function deleteUsuario(id: number) {
-  await api.delete(`/users/${id}`);
+  await api.delete(`/usuarios/${id}`);
 }

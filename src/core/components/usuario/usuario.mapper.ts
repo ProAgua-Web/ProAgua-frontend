@@ -1,20 +1,22 @@
-import { type CreateUsuarioDTO } from './usuario.api';
 import { type UsuarioSchema } from './usuario.form';
-import { type Usuario } from './usuario.model';
+import { type CreateUsuarioDto, type UsuarioDto } from './usuario.model';
 
-export function usuarioToSchema({
-  unidades,
-  ...usuario
-}: Usuario): UsuarioSchema {
+export function usuarioDtoToSchema(usuario: UsuarioDto): UsuarioSchema {
   return {
-    ...usuario,
-    unidades: unidades.map(({ id }) => id),
+    first_name: usuario.first_name,
+    last_name: usuario.last_name,
+    username: usuario.username,
+    email: usuario.email,
+    password: usuario.password,
   };
 }
 
-export function usuarioSchemaToDto(usuario: UsuarioSchema): CreateUsuarioDTO {
+export function usuarioSchemaToDto(usuario: UsuarioSchema): CreateUsuarioDto {
   return {
-    ...usuario,
-    unidades: usuario.unidades.map((id) => id),
+    first_name: usuario.first_name,
+    last_name: usuario.last_name,
+    username: usuario.username,
+    email: usuario.email,
+    password: usuario.password,
   };
 }

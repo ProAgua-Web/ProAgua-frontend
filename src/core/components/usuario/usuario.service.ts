@@ -13,20 +13,26 @@ import {
 } from '@/lib/data-service';
 import { type UsuarioSchema } from './usuario.form';
 import { usuarioSchemaToDto } from './usuario.mapper';
-import { type Usuario } from './usuario.model';
+import { type UsuarioDto } from './usuario.model';
 
-export const useUsuarios = (options?: ApiQueryOptions<Usuario[]>) => {
+export const useUsuarios = (options?: ApiQueryOptions<UsuarioDto[]>) => {
   return useApiQuery({
     queryKey: ['usuarios'],
     queryFn: async () => {
       const response = await listUsuarios();
+      if ('items' in response.data) {
+        return response.data.items as UsuarioDto[];
+      }
       return response.data;
     },
     ...options,
   });
 };
 
-export const useUsuario = (id: number, options?: ApiQueryOptions<Usuario>) => {
+export const useUsuario = (
+  id: number,
+  options?: ApiQueryOptions<UsuarioDto>,
+) => {
   return useApiQuery({
     queryKey: ['usuario', id],
     queryFn: async () => {
@@ -61,7 +67,7 @@ export const useEditarUsuario = (
 ) => {
   return useApiMutation<EditarUsuarioArgs>({
     mutationFn: ({ id, usuario }) => {
-      return updateUsuario(id, usuario);
+      return updateUsuario(id, usuarioSchemaToDto(usuario));
     },
     invalidateQueries: ({ id }) => [
       ['usuarios'],

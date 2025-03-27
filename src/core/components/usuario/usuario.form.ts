@@ -1,85 +1,43 @@
-import { telefoneSchema } from '@/core/common/telefone';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useUnidades } from '../unidade/unidade.service';
-import { usuarioToSchema } from './usuario.mapper';
-import { type Usuario } from './usuario.model';
-import { NivelUsuario } from './usuario.utils';
+import { usuarioDtoToSchema } from './usuario.mapper';
+import { type UsuarioDto } from './usuario.model';
 
 export const usuarioSchema = z.object({
-  nome: z
+  first_name: z
     .string({ message: 'Informe o nome do usuário' })
     .min(1, 'Informe o nome do usuário'),
-  nivel: z.nativeEnum(NivelUsuario, {
-    message: 'Informe o nível de acesso do usuário',
-  }),
-  unidades: z
-    .array(z.number({ message: 'Unidade inválida' }), {
-      message: 'Informe ao menos uma unidade',
-    })
-    .min(1, 'Informe ao menos uma unidade'),
+  last_name: z
+    .string({ message: 'Informe o sobrenome do usuário' })
+    .min(1, 'Informe o sobrenome do usuário'),
+  username: z
+    .string({ message: 'Informe o nome de usuário' })
+    .min(1, 'Informe o nome de usuário'),
   email: z
     .string({ message: 'Informe o e-mail do usuário' })
     .email('E-mail inválido'),
-  whatsapp: telefoneSchema,
+  password: z
+    .string({ message: 'Informe a senha do usuário' })
+    .min(6, 'Senha deve ter no mínimo 6 caracteres'),
 });
 
 export type UsuarioSchema = z.infer<typeof usuarioSchema>;
 
-export const useCriarUsuarioForm = () => {
-  const unidades = useUnidades();
-
+export const useCriarUsuarioForm = (dto: UsuarioDto) => {
   const form = useForm<UsuarioSchema>({
     resolver: zodResolver(usuarioSchema),
+    defaultValues: dto ? usuarioDtoToSchema(dto) : undefined,
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
 
   useEffect(() => {
-    if (unidades.data) {
-      form.setValue(
-        'unidades',
-        unidades.data.map((unidade) => unidade.id),
-      );
+    if (dto) {
+      form.reset(usuarioDtoToSchema(dto));
     }
-  }, [unidades, form]);
-
-  return form;
-};
-
-export const useEditarUsuarioForm = (usuario?: Usuario) => {
-  const unidades = useUnidades();
-
-  const form = useForm<UsuarioSchema>({
-    resolver: zodResolver(usuarioSchema),
-    defaultValues: usuario ? usuarioToSchema(usuario) : undefined,
-    mode: 'onBlur',
-    reValidateMode: 'onChange',
-  });
-
-  useEffect(() => {
-    if (unidades.data) {
-      form.setValue(
-        'unidades',
-        unidades.data.map((unidade) => unidade.id),
-      );
-    }
-  }, [unidades, form]);
-
-  useEffect(() => {
-    if (usuario) {
-      form.setValue('nome', usuario.nome);
-      form.setValue('nivel', usuario.nivel);
-      form.setValue(
-        'unidades',
-        usuario.unidades.map((unidade) => unidade.id),
-      );
-      form.setValue('email', usuario.email);
-      form.setValue('whatsapp', usuario.whatsapp);
-    }
-  }, [usuario, form]);
+  }, [dto, form]);
 
   return form;
 };

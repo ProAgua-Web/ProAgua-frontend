@@ -1,10 +1,13 @@
-import { type NivelUsuario } from './usuario.utils';
-
-export interface Usuario {
-  id: number;
-  nome: string;
-  nivel: NivelUsuario;
+export interface UsuarioDto {
+  id?: number | null;
+  isSuperUser: boolean;
+  username: string;
+  first_name: string;
+  last_name: string;
+  password: string;
   email: string;
-  whatsapp: string;
-  alterarSenha: boolean;
 }
+export interface CreateUsuarioDto
+  extends Omit<UsuarioDto, 'id' | 'isSuperUser'> {}
+
+export type UpdateUsuarioDto = CreateUsuarioDto;
