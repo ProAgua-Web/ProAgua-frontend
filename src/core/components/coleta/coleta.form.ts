@@ -35,7 +35,7 @@ export const coletaSchema = z.object({
     .array(z.number(), { message: 'Responsáveis é obrigatório' })
     .nonempty({ message: 'Responsáveis é obrigatório' })
     .min(1, { message: 'Responsáveis é obrigatório' }),
-  ordem: z.string({ message: 'Ordem é obrigatória' }),
+  ordem: z.number({ message: 'Ordem é obrigatória' }),
 });
 
 export type ColetaSchema = z.infer<typeof coletaSchema>;

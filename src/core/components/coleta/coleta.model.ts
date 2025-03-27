@@ -10,7 +10,7 @@ export interface ColetaDto {
   cor: number;
   data: string;
   responsaveis_id: Array<number>;
-  ordem: string;
+  ordem: number;
   sequencia_id: number;
   ponto: PontoDto;
   status: boolean;

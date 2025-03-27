@@ -11,7 +11,7 @@ import { ControlledDatePicker } from '@/components/form/input/date-picker';
 import { ControlledMaskedInput } from '@/components/form/input/masked-input';
 import { ControlledMultiSelect } from '@/components/form/input/multi-select';
 import { ControlledNumberInput } from '@/components/form/input/number-input';
-import { ControlledTextInput } from '@/components/form/input/text-input';
+import { ControlledSelect } from '@/components/form/input/select';
 import {
   cloroMask,
   corMask,
@@ -22,6 +22,7 @@ import { useEdificacoesOptions } from '../../edificacao/edificacao.utils';
 import { usePontosOptions } from '../../ponto/ponto.utils';
 import { useUsuariosOptions } from '../../usuario/usuario.utils';
 import { type ColetaSchema } from '../coleta.form';
+import { ordemColetasOptions } from '../coleta.utils';
 
 interface Props {
   sequencia_id?: number;
@@ -129,11 +130,12 @@ export const ColetaForm: React.FC<FormProps<ColetaSchema> & Props> = ({
           disabled={responsaveisOptions.isLoading}
           {...responsaveisOptions}
         />
-        <ControlledTextInput
+        <ControlledSelect
           control={form.control}
           name="ordem"
           label="Ordem"
           placeholder="Informe a ordem da coleta"
+          options={ordemColetasOptions}
         />
       </FormSection>
     </FormContainer>
