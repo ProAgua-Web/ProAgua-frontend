@@ -32,6 +32,8 @@ const buttonVariants = cva(
           'hover:border-brand-green-700 hover:text-brand-green-700 border border-transparent bg-white text-green-600 hover:bg-slate-50',
         'table-access':
           'border-brand-green-400 bg-brand-green-400 hover:border-brand-green-500 hover:bg-brand-green-500 border text-white',
+        'table-view':
+          'border border-blue-500 bg-blue-100 text-xs text-blue-500 shadow hover:border-blue-700 hover:bg-blue-200 hover:text-blue-800',
         'table-add':
           'border border-green-500 bg-green-100 text-xs text-green-500 shadow hover:border-green-700 hover:bg-green-200 hover:text-green-800',
         'table-edit':

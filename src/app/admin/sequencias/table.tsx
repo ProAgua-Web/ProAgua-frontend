@@ -10,6 +10,7 @@ import {
 import Link from 'next/link';
 import { FaPlus } from 'react-icons/fa';
 import { FaRegTrashCan } from 'react-icons/fa6';
+import { HiEye } from 'react-icons/hi2';
 import { PiNotePencilBold } from 'react-icons/pi';
 
 export const SequenciaDataTable = () => {
@@ -45,6 +46,11 @@ export const SequenciaDataTable = () => {
       }
       actions={(sequencia) => (
         <div className="flex gap-2">
+          <Link href={`sequencias/${sequencia.id}/coletas`}>
+            <Button variant="table-view">
+              <HiEye />
+            </Button>
+          </Link>
           <Link href={`sequencias/${sequencia.id}/coletas/criar`}>
             <Button variant="table-add">
               <FaPlus />
