@@ -8,6 +8,7 @@ import {
   createPonto,
   deletePontos,
   getPonto,
+  getPontosBySequenciaId,
   listPontos,
   type PontoQueryOptions,
   updatePonto,
@@ -17,13 +18,30 @@ import { pontoSchemaToDto } from './ponto.mapper';
 import { type PontoDto } from './ponto.model';
 
 export const usePontos = (
-  options?: ApiQueryOptions<PontoDto[]>,
   params?: PontoQueryOptions,
+  options?: ApiQueryOptions<PontoDto[]>,
 ) => {
   return useApiQuery({
     queryKey: ['pontos', params],
     queryFn: async () => {
       const response = await listPontos(params);
+      if ('items' in response.data) {
+        return response.data.items as PontoDto[];
+      }
+      return response.data;
+    },
+    ...options,
+  });
+};
+
+export const usePontosBySequenciaId = (
+  sequencia_id: number,
+  options?: ApiQueryOptions<PontoDto[]>,
+) => {
+  return useApiQuery({
+    queryKey: ['pontos', 'sequencia', sequencia_id],
+    queryFn: async () => {
+      const response = await getPontosBySequenciaId(sequencia_id);
       if ('items' in response.data) {
         return response.data.items as PontoDto[];
       }

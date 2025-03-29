@@ -33,7 +33,7 @@ export const stringToFloat = (valor: string) => {
 };
 
 export const floatToString = (valor: number) => {
-  return (valor * 100).toFixed(2);
+  return valor.toFixed(2);
 };
 
 export type NonEmptyArray<T> = [T, ...T[]];

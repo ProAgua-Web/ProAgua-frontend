@@ -21,7 +21,7 @@ export function buscarPontos(pontos: PontoDto[], busca: string): PontoDto[] {
 }
 
 export const usePontosOptions = (params?: PontoQueryOptions) => {
-  const pontos = usePontos(undefined, params);
+  const pontos = usePontos(params);
 
   const [[buscaPontos, buscaPontosDebounce], [, setBuscaPontos]] =
     useDebouncedState('');

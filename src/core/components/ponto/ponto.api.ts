@@ -7,6 +7,8 @@ import {
 
 export interface PontoQueryOptions {
   q?: string;
+  sequencia_id?: number;
+  limit?: number;
 }
 
 export async function listPontos(params?: PontoQueryOptions) {
@@ -20,6 +22,13 @@ export async function getPonto(id: string, params?: PontoQueryOptions) {
   const response = await api.get<ApiResponse<PontoDto>>(`/pontos/${id}`, {
     params,
   });
+  return response.data;
+}
+
+export async function getPontosBySequenciaId(sequencia_id: number) {
+  const response = await api.get<ApiResponse<PontoDto[]>>(
+    `/sequencias/${sequencia_id}/pontos`,
+  );
   return response.data;
 }
 

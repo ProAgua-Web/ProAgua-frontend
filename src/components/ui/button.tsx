@@ -58,6 +58,7 @@ const buttonVariants = cva(
         badge: 'size-4',
         input: 'min-h-10 px-3 py-2',
         table: 'h-10 px-1.5 py-3',
+        none: '',
       },
     },
     defaultVariants: {
