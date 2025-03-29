@@ -37,15 +37,14 @@ export default function Pagina({ params }: Props) {
             </p>
           </div>
           <div>
-            <Button variant="add" className="h-full" asChild>
-              <Link
-                href={`/admin/sequencias/${params.sequencia_id}/coletas/criar`}
-                className="flex items-center gap-2"
-              >
+            <Link
+              href={`/admin/sequencias/${params.sequencia_id}/coletas/criar`}
+            >
+              <Button variant="add" className="h-full">
                 <HiOutlinePlus size={20} />
                 Criar coleta
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="w-full">

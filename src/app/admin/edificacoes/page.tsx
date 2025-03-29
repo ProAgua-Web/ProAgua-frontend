@@ -30,10 +30,12 @@ export default function Pagina() {
             </p>
           </div>
           <div>
-            <Button variant="add" className="h-full" asChild>
-              <HiOutlinePlus size={20} />
-              <Link href="/admin/edificacoes/criar">Criar edificação</Link>
-            </Button>
+            <Link href="/admin/edificacoes/criar">
+              <Button variant="add" className="h-full">
+                <HiOutlinePlus size={20} />
+                Criar edificação
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="w-full">
