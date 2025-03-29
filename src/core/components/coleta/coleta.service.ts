@@ -17,8 +17,8 @@ import { coletaSchemaToDto } from './coleta.mapper';
 import { type ColetaDto } from './coleta.model';
 
 export const useColetas = (
-  options?: ApiQueryOptions<ColetaDto[]>,
   params?: ColetaQueryOptions,
+  options?: ApiQueryOptions<ColetaDto[]>,
 ) => {
   return useApiQuery({
     queryKey: ['coletas', params],

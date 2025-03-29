@@ -16,7 +16,7 @@ export const CriarColeta: React.FC<Props> = ({ id: id }) => {
 
   const criarColeta = useCriarColeta({
     onSuccess() {
-      router.push('/admin/sequencias');
+      router.push(`/admin/sequencias/${id}/coletas`);
     },
     onFieldError(field, error) {
       form.setError(field, error);

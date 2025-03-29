@@ -6,8 +6,9 @@ import {
 } from './coleta.model';
 
 export interface ColetaQueryOptions {
-  pontoId?: number;
-  sequenciaId?: number;
+  ponto_id?: number;
+  sequencia_id?: number;
+  limit?: number;
 }
 
 export async function listColetas(params?: ColetaQueryOptions) {

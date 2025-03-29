@@ -9,7 +9,7 @@ import { type ColetaDto } from './coleta.model';
 
 export const coletaSchema = z.object({
   id: z.number().nullish(),
-  sequencia_id: z.number({ message: 'Sequência é obrigatória' }),
+  sequencia_id: z.number({ message: 'Sequência é obrigatória' }).readonly(),
   edificacao: z.string({ message: 'Edificação é obrigatória' }).min(1, {
     message: 'Edificação é obrigatória',
   }),
