@@ -102,16 +102,6 @@ export const ColetaForm: React.FC<FormProps<ColetaSchema> & Props> = ({
           placeholder="Informe a cor da água"
           mask={corMask}
         />
-        <ControlledCheckbox
-          control={form.control}
-          name="coliformes_totais"
-          label="Presença de coliformes totais em 100 mL"
-        />
-        <ControlledCheckbox
-          control={form.control}
-          name="escherichia"
-          label="Presença de escherichia em 100 mL"
-        />
         <ControlledDatePicker
           control={form.control}
           name="data"
@@ -137,6 +127,23 @@ export const ColetaForm: React.FC<FormProps<ColetaSchema> & Props> = ({
           placeholder="Informe a ordem da coleta"
           options={ordemColetasOptions}
         />
+      </FormSection>
+      <FormSection>
+        <div className="flex items-center">
+          <ControlledCheckbox
+            control={form.control}
+            name="coliformes_totais"
+            label="Presença de coliformes totais em 100 mL"
+          />
+        </div>
+        <div className="flex items-center">
+          <ControlledCheckbox
+            control={form.control}
+            name="escherichia"
+            label="Presença de escherichia em 100 mL"
+            className="text-lg"
+          />
+        </div>
       </FormSection>
     </FormContainer>
   );
