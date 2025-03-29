@@ -17,6 +17,10 @@ export default function Pagina({ params }: Props) {
                 label: 'Sequência de coletas',
               },
               {
+                route: `/admin/sequencias/${params.sequencia_id}/coletas`,
+                label: 'Coletas',
+              },
+              {
                 route: `/admin/sequencias/${params.sequencia_id}/coletas/${params.coleta_id}/editar`,
                 label: 'Editar coleta',
               },
