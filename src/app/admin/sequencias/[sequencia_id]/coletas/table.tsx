@@ -14,6 +14,8 @@ import {
 import { floatToString } from '@/lib/utils';
 import Link from 'next/link';
 import { Fragment } from 'react';
+import { HiCheckCircle } from 'react-icons/hi2';
+import { MdError } from 'react-icons/md';
 import { PiNotePencilBold } from 'react-icons/pi';
 
 interface Props {
@@ -96,6 +98,7 @@ function TableHeader() {
       <T.Col>Cloro residual livre</T.Col>
       <T.Col>Temperatura</T.Col>
       <T.Col>Cor</T.Col>
+      <T.Col>Status</T.Col>
       <T.Col></T.Col>
     </T.Head>
   );
@@ -106,7 +109,7 @@ function TableBody({ coletas }: { coletas: ColetaDto[] }) {
     return (
       <T.Body className="bg-white">
         <T.Row className="text-left">
-          <T.Cell colSpan={7} className="text-center">
+          <T.Cell colSpan={10} className="text-center">
             Não há coleta registrada
           </T.Cell>
         </T.Row>
@@ -137,14 +140,28 @@ function ColetaRow({ coleta }: { coleta: ColetaDto }) {
       <T.Cell>{temperaturaMask.mask(floatToString(coleta.temperatura))}</T.Cell>
       <T.Cell>{corMask.mask(floatToString(coleta.cor))}</T.Cell>
       <T.Cell>
-        <Button variant="none" size="none" asChild>
-          <Link
-            href={`/admin/sequencias/${coleta.sequencia_id}/coletas/${coleta.id}/editar`}
+        {coleta.status ? (
+          <span className="text-green-500">
+            <HiCheckCircle size={24} />
+          </span>
+        ) : (
+          <span className="text-red-400">
+            <MdError size={24} />
+          </span>
+        )}
+      </T.Cell>
+      <T.Cell>
+        <Link
+          href={`/admin/sequencias/${coleta.sequencia_id}/coletas/${coleta.id}/editar`}
+        >
+          <Button
+            variant="none"
+            size="sm"
             className="text-left text-sm text-slate-500 hover:text-slate-600"
           >
             <PiNotePencilBold />
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </T.Cell>
     </T.Row>
   );

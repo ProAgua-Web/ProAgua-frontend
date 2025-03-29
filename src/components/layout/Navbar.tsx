@@ -46,7 +46,7 @@ export default function Navbar(props: {
   return (
     <div
       id="navbar-wrapper"
-      className={`fixed ${props.collapsed ? 'w-20' : 'w-full'} z-30 flex h-screen max-w-60 flex-col overflow-hidden shadow-lg transition-all duration-300 max-sm:max-w-full`}
+      className={`fixed hidden ${props.collapsed ? 'w-20' : 'w-full'} z-30 flex h-screen max-w-60 flex-col overflow-hidden shadow-lg transition-all duration-300 max-sm:max-w-full`}
     >
       <div id="navbar-header" className="h-20 bg-primary-500 text-white">
         <button
