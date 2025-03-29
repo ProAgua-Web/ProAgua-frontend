@@ -24,7 +24,7 @@ interface Props {
 
 export function ColetasTable({ sequencia_id }: Props) {
   const { data: pontos } = usePontosBySequenciaId(sequencia_id);
-  const { data: coletas } = useColetas({ sequencia_id, limit: 0 });
+  const { data: coletas } = useColetas({ sequencia_id });
 
   if (!pontos || !coletas) {
     return null;

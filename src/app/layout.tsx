@@ -1,14 +1,14 @@
 import { QueryProvider } from '@/app/query-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { AutenticacaoProvider } from '@/lib/autenticacao';
-import type { Metadata } from 'next';
+import { type Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'ProÁgua',
-  description: '',
+  description: 'Sistema de gestão de coletas de água',
 };
 
 export default function RootLayout({
