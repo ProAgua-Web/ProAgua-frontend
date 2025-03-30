@@ -87,6 +87,23 @@ export const Navbar: FC = () => {
           currentPath={pathname}
         />
       </div>
+      <div
+        className={cn(
+          'fixed z-30 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:h-screen lg:max-w-60',
+          isCollapsed ? 'fixed h-20 w-20' : 'h-screen',
+        )}
+      >
+        <NavbarHeader
+          isCollapsed={isCollapsed}
+          onToggleCollapse={toggleCollapse}
+        />
+
+        <NavbarContent
+          links={NAV_LINKS}
+          isCollapsed={isCollapsed}
+          currentPath={pathname}
+        />
+      </div>
     </NavContext.Provider>
   );
 };
