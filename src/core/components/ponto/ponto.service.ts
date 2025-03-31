@@ -51,7 +51,7 @@ export const usePontosBySequenciaId = (
   });
 };
 
-export const usePonto = (id: string, options?: ApiQueryOptions<PontoDto>) => {
+export const usePonto = (id: number, options?: ApiQueryOptions<PontoDto>) => {
   return useApiQuery({
     queryKey: ['ponto', id],
     queryFn: async () => {
@@ -75,7 +75,7 @@ export const useCriarPonto = (options?: ApiMutationOptions<PontoSchema>) => {
 };
 
 export interface EditarPontoArgs {
-  codigo: string;
+  id: number;
   ponto: PontoSchema;
 }
 
@@ -83,10 +83,10 @@ export const useEditarPonto = (
   options?: ApiMutationOptions<EditarPontoArgs>,
 ) => {
   return useApiMutation<EditarPontoArgs>({
-    mutationFn: ({ codigo, ponto }) => {
-      return updatePonto(codigo, pontoSchemaToDto(ponto));
+    mutationFn: ({ id: id, ponto }) => {
+      return updatePonto(id, pontoSchemaToDto(ponto));
     },
-    invalidateQueries: ({ codigo }) => [['pontos'], ['ponto', codigo]],
+    invalidateQueries: ({ id: codigo }) => [['pontos'], ['ponto', codigo]],
     successMessage: 'Ponto editado com sucesso!',
     errorMessage: 'Não foi possível editar o ponto',
     ...options,

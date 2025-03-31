@@ -7,21 +7,22 @@ import {
 
 export interface PontoQueryOptions {
   q?: string;
-  sequencia_id?: number;
+  tipo?: Array<number>;
   limit?: number;
 }
 
 export async function listPontos(params?: PontoQueryOptions) {
   const response = await api.get<ApiResponse<PontoDto[]>>('/pontos', {
     params,
+    paramsSerializer: {
+      indexes: null,
+    },
   });
   return response.data;
 }
 
-export async function getPonto(id: string, params?: PontoQueryOptions) {
-  const response = await api.get<ApiResponse<PontoDto>>(`/pontos/${id}`, {
-    params,
-  });
+export async function getPonto(id: number) {
+  const response = await api.get<ApiResponse<PontoDto>>(`/pontos/${id}`);
   return response.data;
 }
 
@@ -36,7 +37,7 @@ export async function createPonto(ponto: CreatePontoDto) {
   await api.post('/pontos', ponto);
 }
 
-export async function updatePonto(id: string, ponto: UpdatePontoDto) {
+export async function updatePonto(id: number, ponto: UpdatePontoDto) {
   await api.put(`/pontos/${id}`, ponto);
 }
 
