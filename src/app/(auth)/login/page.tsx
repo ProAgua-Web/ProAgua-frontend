@@ -67,7 +67,7 @@ export default function Login() {
           icon={
             <Button
               variant="ghost"
-              className="absolute right-0 top-0 hover:bg-transparent"
+              className="absolute top-0 right-0 hover:bg-transparent"
               size="icon"
               onClick={() => setShowPassword(!showPassword)}
               type="button"
@@ -90,7 +90,7 @@ export default function Login() {
         <Button
           asChild
           variant="link"
-          className="flex self-end text-primary-300"
+          className="text-primary-300 flex self-end"
         >
           <a href="#">Esqueceu a senha?</a>
         </Button>

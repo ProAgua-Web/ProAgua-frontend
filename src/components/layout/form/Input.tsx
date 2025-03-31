@@ -9,6 +9,8 @@ interface InputProps {
   required: boolean;
 }
 
+// TODO: EXCLUDE THIS PAGE
+
 export default function Input(props: InputProps) {
   const [inputValue, setInputValue] = useState('');
 

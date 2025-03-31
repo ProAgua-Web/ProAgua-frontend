@@ -92,7 +92,7 @@ export const MultiSelect = forwardRef<
                   return (
                     <div
                       key={String(value)}
-                      className="flex gap-1 rounded-full border border-black py-0.5 pl-2 pr-1 text-xs text-black"
+                      className="flex gap-1 rounded-full border border-black py-0.5 pr-1 pl-2 text-xs text-black"
                     >
                       <div>
                         {props.options.find((o) => o.value === value)?.label}

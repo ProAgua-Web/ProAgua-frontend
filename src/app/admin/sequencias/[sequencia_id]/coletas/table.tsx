@@ -64,7 +64,7 @@ function PontoColetas({ ponto, coletas }: PontoColetasProps) {
 
 function PontoHeader({ ponto }: { ponto: PontoDto }) {
   return (
-    <div className="flex w-full flex-col items-start gap-2 bg-white-200 p-2">
+    <div className="bg-white-200 flex w-full flex-col items-start gap-2 p-2">
       <Button variant="none" size="none" asChild>
         <Link
           className="text-left text-lg text-slate-500 hover:text-slate-600"

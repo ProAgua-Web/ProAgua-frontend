@@ -1,10 +1,9 @@
-import React from 'react';
-
 interface ButtonProps {
   label: string;
   onClick: () => void;
 }
 
+// TODO: EXCLUDE THIS PAGE
 export default function Button(props: ButtonProps) {
   return (
     <button

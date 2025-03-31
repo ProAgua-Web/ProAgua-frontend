@@ -1,10 +1,8 @@
-import Gotinha from '/public/gotinha.svg';
-
 import Image from 'next/image';
 
 function Header() {
   return (
-    <header className="sticky top-0 z-10 flex h-[clamp(50px,8vh,100px)] w-full items-center justify-between bg-primary-500 pe-[clamp(20px,4vw+1rem,100vw-1200px)] pl-12 text-white">
+    <header className="bg-primary-500 sticky top-0 z-10 flex h-[clamp(50px,8vh,100px)] w-full items-center justify-between pe-[clamp(20px,4vw+1rem,100vw-1200px)] pl-12 text-white">
       <a className="flex items-center gap-2 text-2xl uppercase" href="/">
         <img
           src="/Logo.svg"
@@ -41,7 +39,11 @@ export default function NotFound() {
     <main className="flex h-screen w-full flex-col">
       <Header />
       <div className="flex w-full flex-grow flex-col items-center justify-center">
-        <Image className="min-w-36" src={Gotinha} alt="Gotinha triste" />
+        <Image
+          className="min-w-36"
+          src="/gotinha-triste"
+          alt="Gotinha triste"
+        />
         <h1 className="text-3xl">404 - Not Found!</h1>
       </div>
     </main>

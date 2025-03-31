@@ -1,8 +1,9 @@
+import { type PontoDto } from '@/core/components/ponto/ponto.model';
 import { BASE_URL } from '@/services/api/index';
-import { Ponto, TIPOS_PONTOS } from '@/utils/types';
+import { TIPOS_PONTOS } from '@/utils/types';
 
 export default function CardPonto(props: {
-  ponto: Ponto;
+  ponto: PontoDto;
   publicCard: boolean;
 }) {
   const { ponto, publicCard = false } = props;
@@ -38,7 +39,7 @@ export function AddCard({
   cod_edificacao?: string;
   tipo?: string;
 }) {
-  let url_tipo =
+  const url_tipo =
     tipo === 'reservatorio'
       ? '/admin/reservatorios/criar'
       : '/admin/pontos/criar';

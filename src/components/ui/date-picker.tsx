@@ -68,7 +68,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             <PopoverTrigger asChild>
               <Button
                 variant="ghost"
-                className="absolute left-0 top-0 hover:bg-transparent"
+                className="absolute top-0 left-0 hover:bg-transparent"
                 size="icon"
                 disabled={props.disabled || props.readOnly}
               >

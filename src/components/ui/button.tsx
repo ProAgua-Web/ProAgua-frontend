@@ -3,29 +3,24 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 const buttonVariants = cva(
-  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold text-slate-950 ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        'default':
-          'bg-slate-900 text-slate-50 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90',
+        'default': 'bg-slate-900 text-slate-50 hover:bg-slate-900/90',
         'none': '',
-        'destructive':
-          'bg-red-500 text-slate-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90',
+        'destructive': 'bg-red-500 text-slate-50 hover:bg-red-500/90',
         'outline':
-          'border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50',
+          'border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900',
         'primary':
           'rounded-md border bg-primary-500 p-3 text-white hover:bg-primary-600 disabled:bg-primary-400',
-        'secondary':
-          'bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
+        'secondary': 'bg-slate-100 text-slate-900 hover:bg-slate-100/80',
         'add':
           'rounded-md border bg-green-600 text-white hover:bg-green-500 disabled:bg-green-400',
         'delete':
           'rounded-md border bg-red-500 p-3 text-white hover:bg-red-600 disabled:bg-red-400',
-        'ghost':
-          'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
-        'link':
-          'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
+        'ghost': 'hover:bg-slate-100 hover:text-slate-900',
+        'link': 'text-slate-900 underline-offset-4 hover:underline',
         'header':
           'bg-brand-header hover:bg-brand-green-500 p-1 text-xl text-white',
         'new':

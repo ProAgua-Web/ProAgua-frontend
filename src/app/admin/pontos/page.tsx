@@ -2,13 +2,14 @@
 
 import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
 import { consumerPonto } from '@/utils/api/consumerPonto';
-import { Edificacao, Ponto } from '@/utils/types';
 
+import { type EdificacaoDto } from '@/core/components/edificacao/edificacao.model';
+import { type PontoDto } from '@/core/components/ponto/ponto.model';
 import { useEffect, useState } from 'react';
 import { CardEdificacao } from './components/CardEdificacao';
 
 interface Groups {
-  [x: string]: { edificacao: Edificacao; pontos: Ponto[] };
+  [x: string]: { edificacao: EdificacaoDto; pontos: PontoDto[] };
 }
 
 interface FiltroPontos {
@@ -25,12 +26,12 @@ interface Filters {
   filtroPontos: FiltroPontos;
 }
 
-function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
-  var groups = Object();
+function groupBy(arr: PontoDto[], key: (el: PontoDto) => unknown) {
+  const groups = Object();
 
   arr.forEach((element) => {
-    let groupName = key(element);
-    let group = groups[groupName] || {
+    const groupName = key(element);
+    const group = groups[groupName] || {
       edificacao: element.edificacao,
       pontos: [],
     };
@@ -43,8 +44,8 @@ function groupBy(arr: Ponto[], key: (el: Ponto) => any) {
 }
 
 function FilterPontos(props: {
-  filtersState: any;
-  setFilters: (d: any) => void;
+  filtersState: unknown;
+  setFilters: (d: unknown) => void;
 }) {
   const { filtersState: filters, setFilters } = props;
 
@@ -80,8 +81,8 @@ function FilterPontos(props: {
 }
 
 export default function Pontos() {
-  const [pontos, setPontos] = useState<Ponto[]>([]);
-  const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
+  const [pontos, setPontos] = useState<PontoDto[]>([]);
+  const [edificacoes, setEdificacoes] = useState<EdificacaoDto[]>([]);
 
   const [filters, setFilters] = useState<Filters>({
     q: '',
@@ -110,11 +111,11 @@ export default function Pontos() {
   // Agrupa pontos de acordo com a edificação
   const groups: Groups = groupBy(
     pontos,
-    (ponto: Ponto) => ponto.edificacao.codigo,
+    (ponto: PontoDto) => ponto.edificacao.codigo,
   );
 
   // Adiciona novos grupos vazios para edificações que não possuem pontos
-  for (let edificacao of edificacoes) {
+  for (const edificacao of edificacoes) {
     if (!groups[edificacao.codigo]) {
       groups[edificacao.codigo] = { edificacao: edificacao, pontos: [] };
     }
@@ -124,7 +125,7 @@ export default function Pontos() {
     // Acessar todas as edificações pela API
     consumerEdficacao
       .list()
-      .then((data) => setEdificacoes(data as Edificacao[]));
+      .then((data) => setEdificacoes(data as EdificacaoDto[]));
 
     // Cria lista com ids referentes aos tipos de pontos filtrados
     const filtrosIds = Object.entries(filters.filtroPontos)
@@ -134,7 +135,7 @@ export default function Pontos() {
     // Acessar todos os pontos da API de acordo com os filtros
     consumerPonto
       .list('no-cache', { tipo: filtrosIds })
-      .then((data) => setPontos(data as Ponto[]));
+      .then((data) => setPontos(data as PontoDto[]));
   }, [filters]);
 
   return (

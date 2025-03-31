@@ -4,7 +4,7 @@ import {
   type ComboboxProps as PropsBase,
   type Value,
 } from '@/components/ui/combobox';
-import { forwardRef, type NamedExoticComponent } from 'react';
+import { forwardRef, type JSX, type NamedExoticComponent } from 'react';
 import {
   Controller,
   type Control,

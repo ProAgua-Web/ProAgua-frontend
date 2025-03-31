@@ -1,12 +1,13 @@
 'use client';
 import CardPonto, { AddCard } from '@/components/pontos/CardPontos';
-import { Edificacao, Ponto } from '@/utils/types';
+import { type EdificacaoDto } from '@/core/components/edificacao/edificacao.model';
+import { type PontoDto } from '@/core/components/ponto/ponto.model';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
 export function CardEdificacao(props: {
-  group: { edificacao: Edificacao; pontos: Ponto[] };
+  group: { edificacao: EdificacaoDto; pontos: PontoDto[] };
   collapsed: boolean;
 }) {
   const { group } = props;

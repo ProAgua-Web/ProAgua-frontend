@@ -1,4 +1,5 @@
 export default function OkIcon(props: { width?: '1.5rem' }) {
+  // TODO: EXCLUDE THIS PAGE
   return (
     <>
       <svg

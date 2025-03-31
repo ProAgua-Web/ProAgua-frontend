@@ -71,7 +71,7 @@ export function DataTable<TData extends Data<TCols>, TCols extends string>(
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="flex w-full flex-col border-y bg-white lg:rounded-xl lg:border-x">
+      <div className="flex w-full flex-col border-y bg-white lg:rounded-xl lg:border-x lg:border-slate-100">
         <div className="flex w-full flex-col justify-between gap-4 border-b border-slate-100 p-6 lg:flex-row">
           <div className="relative flex lg:grow">
             <Input

@@ -3,11 +3,10 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import ProAguaLogo from '/public/ProAguaLogo.svg';
 
 export default function Header(props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
-  collapsed?: Boolean;
+  collapsed?: boolean;
 }) {
   const { sair, autenticando } = useAutenticacao();
 
@@ -28,7 +27,9 @@ export default function Header(props: {
               className="flex select-none items-center gap-2 text-2xl font-semibold text-white-100"
             >
               <Image
-                src={ProAguaLogo}
+                width={10}
+                height={10}
+                src="/Logo.svg"
                 className="max-h-10"
                 alt="Logo do projeto"
               />

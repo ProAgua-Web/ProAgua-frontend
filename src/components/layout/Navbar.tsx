@@ -11,7 +11,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { createContext, type FC, useState } from 'react';
+import { createContext, type FC, JSX, useState } from 'react';
 
 interface NavContextType {
   isOpen: boolean;
@@ -117,10 +117,10 @@ const NavbarHeader: FC<NavbarHeaderProps> = ({
   isCollapsed,
   onToggleCollapse,
 }) => (
-  <header className="h-20 bg-primary-500 text-white">
+  <header className="bg-primary-500 h-20 text-white">
     <button
       onClick={onToggleCollapse}
-      className="h-20 w-full bg-primary-500 p-8 text-end hover:bg-primary-600"
+      className="bg-primary-500 hover:bg-primary-600 h-20 w-full p-8 text-end"
       aria-label={isCollapsed ? 'Expand menu' : 'Collapse menu'}
     >
       <FontAwesomeIcon icon={isCollapsed ? faBars : faChevronLeft} size="xl" />
@@ -139,7 +139,7 @@ const NavbarContent: FC<NavbarContentProps> = ({
   isCollapsed,
   currentPath,
 }) => (
-  <div className="grow border-r border-r-neutral-300 bg-background">
+  <div className="bg-background grow border-r border-r-neutral-300">
     <ul>
       {links.map((link) => (
         <NavItem
@@ -162,7 +162,7 @@ interface NavItemProps {
 const NavItem: FC<NavItemProps> = ({ link, isActive, isCollapsed }) => (
   <li
     className={`text-md m-0 hover:bg-gray-300 ${
-      isActive ? 'border-r-4 border-primary-500 bg-gray-200' : ''
+      isActive ? 'border-primary-500 border-r-4 bg-gray-200' : ''
     }`}
   >
     <Link
