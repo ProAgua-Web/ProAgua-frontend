@@ -3,7 +3,7 @@ import { type CreatePontoDto, type PontoDto } from './ponto.model';
 
 export function pontoSchemaToDto(schema: PontoSchema): CreatePontoDto {
   return {
-    edificacao_codigo: schema.codigo_edificacao,
+    codigo_edificacao: schema.codigo_edificacao,
     tipo: schema.tipo,
     localizacao: schema.localizacao,
     amontante: schema.amontante,
