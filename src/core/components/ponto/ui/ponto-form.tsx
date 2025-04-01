@@ -10,6 +10,7 @@ import { ControlledFileInput } from '@/components/form/input/file-input';
 import { ControlledSelect } from '@/components/form/input/select';
 import { ControlledTextInput } from '@/components/form/input/text-input';
 import { cn } from '@/lib/utils';
+import { useEffect } from 'react';
 import { useEdificacoesOptions } from '../../edificacao/edificacao.utils';
 import { usePontosOptions } from '../../ponto/ponto.utils';
 import { type PontoSchema } from '../ponto.form';
@@ -27,9 +28,11 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
   const tipo = form.watch('tipo');
   const pontosOptions = usePontosOptions({ tipo: [3] }); // O ponto a montante é sempre do tipo 3 (RPS)
 
-  if (codigo) {
-    form.setValue('codigo_edificacao', codigo);
-  }
+  useEffect(() => {
+    if (codigo) {
+      form.setValue('codigo_edificacao', codigo);
+    }
+  }, [codigo, form]);
 
   return (
     <FormContainer {...props}>
