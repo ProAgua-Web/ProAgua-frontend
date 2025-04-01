@@ -1,5 +1,5 @@
 'use client';
-import DataListPage from '@/components/layout/paginas/datalist-layout';
+import DataListPage from '@/components/layout/datalist';
 import { ColetasTable } from './table';
 
 interface Props {

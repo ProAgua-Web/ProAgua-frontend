@@ -1,6 +1,6 @@
 'use client';
 
-import DataListPage from '@/components/layout/paginas/datalist-layout';
+import DataListPage from '@/components/layout/datalist';
 import { EdificacaoDataTable } from './table';
 
 export default function Pagina() {

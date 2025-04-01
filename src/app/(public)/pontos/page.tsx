@@ -1,6 +1,6 @@
 'use client';
 
-import Header from '@/components/layout/Header';
+import Header from '@/components/layout/header';
 import CardPonto from '@/components/pontos/CardPontos';
 import { toURLParams, useEdificacoes } from '@/utils/api/client_side_consumer';
 import { Edificacao, Ponto } from '@/utils/types';
@@ -149,7 +149,7 @@ export default function Page() {
                       setCheckBebedouro(!checkBebedouro);
                       setFilters;
                     }}
-                    className={`cursor-pointer ${checkBebedouro ? 'text-primary-500  hover:text-primary-800' : 'hover:text-primary-400'} `}
+                    className={`cursor-pointer ${checkBebedouro ? 'text-primary-500 hover:text-primary-800' : 'hover:text-primary-400'} `}
                   >
                     {' '}
                     Bebedouro
@@ -170,7 +170,7 @@ export default function Page() {
                     onClick={(e) => {
                       setCheckRPS(!checkRPS);
                     }}
-                    className={`cursor-pointer ${checkRPS ? 'text-primary-500  hover:text-primary-800' : 'hover:text-primary-400'} `}
+                    className={`cursor-pointer ${checkRPS ? 'text-primary-500 hover:text-primary-800' : 'hover:text-primary-400'} `}
                   >
                     {' '}
                     RPS
@@ -191,7 +191,7 @@ export default function Page() {
                     onClick={(e) => {
                       setCheckRPI(!checkRPI);
                     }}
-                    className={`cursor-pointer ${checkRPI ? 'text-primary-500  hover:text-primary-800' : 'hover:text-primary-400'} `}
+                    className={`cursor-pointer ${checkRPI ? 'text-primary-500 hover:text-primary-800' : 'hover:text-primary-400'} `}
                   >
                     {' '}
                     RPI
@@ -233,7 +233,7 @@ export default function Page() {
                     onClick={(e) => {
                       setCheckRDI(!checkRDI);
                     }}
-                    className={`cursor-pointer ${checkRDI ? 'text-primary-500  hover:text-primary-800' : 'hover:text-primary-400'} `}
+                    className={`cursor-pointer ${checkRDI ? 'text-primary-500 hover:text-primary-800' : 'hover:text-primary-400'} `}
                   >
                     {' '}
                     RDI

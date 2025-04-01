@@ -2,14 +2,14 @@
 
 import { Inter } from 'next/font/google';
 
-import Header from '@/components/layout/Header';
+import Header from '@/components/layout/header';
 import { useState } from 'react';
 
 // The following import prevents a Font Awesome icon server-side rendering bug,
 // where the icons flash from a very large icon down to a properly sized one:
 import '@fortawesome/fontawesome-svg-core/styles.css';
 // Prevent fontawesome from adding its CSS since we did it manually above:
-import { Navbar } from '@/components/layout/Navbar';
+import { Navbar } from '@/components/layout/navbar';
 import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false; /* eslint-disable import/first */
 

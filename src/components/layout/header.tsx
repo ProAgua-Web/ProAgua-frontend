@@ -1,16 +1,16 @@
+'use client';
+
 import { useAutenticacao } from '@/lib/autenticacao';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Header(props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
   collapsed?: boolean;
 }) {
-  const { sair, autenticando } = useAutenticacao();
-
-  const router = useRouter();
+  const { sair } = useAutenticacao();
 
   return (
     <header>
@@ -22,19 +22,19 @@ export default function Header(props: {
 
         <div id="header-content" className="flex w-full justify-center">
           <div id="proagua-logo" className="w-fit items-center">
-            <a
+            <Link
               href="/"
               className="flex select-none items-center gap-2 text-2xl font-semibold text-white-100"
             >
               <Image
-                width={10}
-                height={10}
+                width={40}
+                height={40}
                 src="/Logo.svg"
                 className="max-h-10"
                 alt="Logo do projeto"
               />
               ProÁgua
-            </a>
+            </Link>
           </div>
         </div>
 

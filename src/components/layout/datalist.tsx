@@ -30,16 +30,16 @@ export default function DataListPage(props: Props) {
         </div>
         <div className="flex w-full flex-row justify-between px-6 py-4">
           <div>
-            <h1 className="text-primary-800 text-2xl font-semibold">{title}</h1>
+            <h1 className="text-2xl font-semibold text-primary-800">{title}</h1>
             <p className="text-xs text-slate-500">{subtitle}</p>
           </div>
           <div>
-            <Link href={createButton.link}>
-              <Button variant="add" className="h-full" asChild>
+            <Button variant="add" className="h-full" asChild>
+              <Link href={createButton.link}>
                 <HiOutlinePlus size={20} />
                 {createButton.label}
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
         <div className="w-full">{children}</div>
