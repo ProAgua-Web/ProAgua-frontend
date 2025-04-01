@@ -18,7 +18,7 @@ export interface TextInputProps extends Omit<InputProps, 'value'> {
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ label, icon, ...props }, ref) => {
+  ({ label, icon, value = '', ...props }, ref) => {
     const formProps = useFormProps();
 
     return (
@@ -27,7 +27,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         disabled={props.disabled || formProps?.disabled}
         readOnly={props.readOnly}
       >
-        <Input {...props} {...formProps} ref={ref} />
+        <Input {...props} {...formProps} value={value} ref={ref} />
         {icon}
       </FloatingLabel>
     );
