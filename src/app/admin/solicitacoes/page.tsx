@@ -1,6 +1,6 @@
 'use client';
 
-import DataListPage from '@/components/layout/datalist';
+import { DataListPage } from '@/components/layout/datalist';
 import { SolicitacaoDataTable } from './table';
 
 export default function Pagina() {
