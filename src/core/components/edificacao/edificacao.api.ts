@@ -5,8 +5,16 @@ import {
   type UpdateEdificacaoDto,
 } from './edificacao.model';
 
-export async function listEdificacoes() {
-  const response = await api.get<ApiResponse<EdificacaoDto[]>>('/edificacoes');
+export interface EdificacaoQueryOptions {
+  q?: string;
+  campus?: string;
+  limit?: number;
+}
+
+export async function listEdificacoes(params?: EdificacaoQueryOptions) {
+  const response = await api.get<ApiResponse<EdificacaoDto[]>>('/edificacoes', {
+    params,
+  });
   return response.data;
 }
 

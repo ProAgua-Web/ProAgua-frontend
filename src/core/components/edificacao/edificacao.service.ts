@@ -7,6 +7,7 @@ import {
 import {
   createEdificacao,
   deleteEdificacao,
+  EdificacaoQueryOptions,
   getEdificacao,
   listEdificacoes,
   updateEdificacao,
@@ -16,11 +17,14 @@ import { type EdificacaoSchema } from './edificacao.form';
 import { edificacaoSchemaToDto } from './edificacao.mapper';
 import { type EdificacaoDto } from './edificacao.model';
 
-export const useEdificacoes = (options?: ApiQueryOptions<EdificacaoDto[]>) => {
+export const useEdificacoes = (
+  params?: EdificacaoQueryOptions,
+  options?: ApiQueryOptions<EdificacaoDto[]>,
+) => {
   return useApiQuery({
-    queryKey: ['edificacoes'],
+    queryKey: ['edificacoes', params],
     queryFn: async () => {
-      const response = await listEdificacoes();
+      const response = await listEdificacoes(params);
       if ('items' in response.data) {
         return response.data.items as EdificacaoDto[];
       }

@@ -8,7 +8,6 @@ export interface EdificacaoDto {
   cronograma: number;
   imagens: ImagemDto[];
   informacoes_gerais?: string | null;
-  pontos_url: string;
 }
 export interface CreateEdificacaoDto
   extends Omit<EdificacaoDto, 'imagens' | 'pontos_url'> {

@@ -14,9 +14,12 @@ const edificacaoSchema = z.object({
     .string({ message: 'Nome é obrigatório' })
     .min(1, 'Nome é obrigatório'),
   campus: z.nativeEnum(Campus, { message: 'Campus é obrigatório' }),
-  cronograma: z.number({ message: 'Cronograma é obrigatório' }),
+  cronograma: z
+    .number({ message: 'Cronograma é obrigatório' })
+    .min(1, { message: 'O valor precisa ser entre 1 e 12' })
+    .max(12, { message: 'O valor precisa ser entre 1 e 12' }),
   informacoes_gerais: z.string().nullish(),
-  imagens: z.array(z.union([imageSchema, fileDescriptionSchema])),
+  imagens: z.array(z.union([imageSchema, fileDescriptionSchema])).default([]),
 });
 
 export type EdificacaoSchema = z.infer<typeof edificacaoSchema>;
