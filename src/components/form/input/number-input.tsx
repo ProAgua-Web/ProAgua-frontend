@@ -17,7 +17,7 @@ export interface NumberInputProps extends Omit<InputProps, 'value'> {
 }
 
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
-  ({ label, ...props }, ref) => {
+  ({ label, value = 0, ...props }, ref) => {
     const formProps = useFormProps();
 
     return (
@@ -26,7 +26,14 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         disabled={props.disabled || formProps?.disabled}
         readOnly={props.readOnly}
       >
-        <Input type="number" {...props} {...formProps} ref={ref} />
+        <Input
+          type="number"
+          {...props}
+          {...formProps}
+          value={String(value)}
+          onWheel={(e) => e.currentTarget.blur()}
+          ref={ref}
+        />
       </FloatingLabel>
     );
   },
