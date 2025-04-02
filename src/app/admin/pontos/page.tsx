@@ -1,200 +1,105 @@
 'use client';
 
-import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
-import { consumerPonto } from '@/utils/api/consumerPonto';
+import { Select } from '@/components/form/input/select';
+import { DataListPage } from '@/components/layout/datalist';
+import { Input } from '@/components/ui/input';
+import { useEdificacoes } from '@/core/components/edificacao/edificacao.service';
+import { usePontos } from '@/core/components/ponto/ponto.service';
+import { campusOptions } from '@/lib/utils';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
+import { DeckEdificacoes } from './components/CardEdificacao';
 
-import { type EdificacaoDto } from '@/core/components/edificacao/edificacao.model';
-import { type PontoDto } from '@/core/components/ponto/ponto.model';
-import { useEffect, useState } from 'react';
-import { CardEdificacao } from './components/CardEdificacao';
+const DEFAULT_SEARCH_VALUE = '';
+const DEFAULT_CAMPUS_VALUE = 'all';
 
-interface Groups {
-  [x: string]: { edificacao: EdificacaoDto; pontos: PontoDto[] };
-}
+const breadcrumbs = [
+  {
+    label: 'Edificações e Pontos de Coleta',
+    route: '/admin/pontos',
+  },
+];
 
-interface FiltroPontos {
-  [key: string]: boolean;
-}
+export default function Page() {
+  const searchParams = useSearchParams();
 
-interface TiposPontos {
-  [key: string]: number;
-}
+  const search = searchParams.get('q') ?? DEFAULT_SEARCH_VALUE;
+  const campusFilter = searchParams.get('campus') ?? DEFAULT_CAMPUS_VALUE;
 
-interface Filters {
-  q: string;
-  campus: string;
-  filtroPontos: FiltroPontos;
-}
-
-function groupBy(arr: PontoDto[], key: (el: PontoDto) => unknown) {
-  const groups = Object();
-
-  arr.forEach((element) => {
-    const groupName = key(element);
-    const group = groups[groupName] || {
-      edificacao: element.edificacao,
-      pontos: [],
-    };
-
-    group.pontos.push(element);
-    groups[groupName] = group;
+  const { data: pontos = [] } = usePontos({
+    ...(search && { q: search }),
+    limit: 0,
+  });
+  const { data: edificacoes = [] } = useEdificacoes({
+    ...(search && { q: search }),
+    ...(campusFilter !== DEFAULT_CAMPUS_VALUE && { campus: campusFilter }),
+    limit: 0,
   });
 
-  return groups;
-}
-
-function FilterPontos(props: {
-  filtersState: unknown;
-  setFilters: (d: unknown) => void;
-}) {
-  const { filtersState: filters, setFilters } = props;
-
-  function toggleFilter(name: string) {
-    setFilters({
-      ...filters,
-      filtroPontos: {
-        ...filters.filtroPontos,
-        [name]: !filters.filtroPontos[name],
-      },
-    });
-  }
-
   return (
-    <div className="flex gap-8">
-      {Object.entries(filters.filtroPontos).map(([key, value]) => {
-        return (
-          <label htmlFor={key} key={key} className="cursor-pointer select-none">
-            <input
-              type="checkbox"
-              className="mr-1 cursor-pointer"
-              name={key}
-              id={key}
-              checked={Boolean(value)}
-              onChange={() => toggleFilter(key)}
-            />
-            {key}
-          </label>
-        );
-      })}
-    </div>
+    <DataListPage
+      title="Edificações e Pontos de Coleta"
+      subtitle="Gerencie as edificações e os pontos de coleta do sistema."
+      newItemButton={{
+        label: 'Adicionar edificação',
+        link: '/admin/edificacoes/criar',
+      }}
+      breadcrumbs={breadcrumbs}
+    >
+      <div className="mb-4 flex w-full flex-col gap-4">
+        <SearchFilterSection />
+      </div>
+      <DeckEdificacoes edificacoes={edificacoes} pontos={pontos} />
+    </DataListPage>
   );
 }
 
-export default function Pontos() {
-  const [pontos, setPontos] = useState<PontoDto[]>([]);
-  const [edificacoes, setEdificacoes] = useState<EdificacaoDto[]>([]);
+function SearchFilterSection() {
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
 
-  const [filters, setFilters] = useState<Filters>({
-    q: '',
-    campus: '',
-    filtroPontos: {
-      Bebedouro: true,
-      Torneira: true,
-      RPS: true,
-      RPI: true,
-      RDS: true,
-      RDI: true,
-      CAERN: true,
-    },
-  });
+  const handleSearch = useDebouncedCallback((query: string) => {
+    updateQueryParam('q', query);
+  }, 300);
 
-  const tiposPontos: TiposPontos = {
-    Bebedouro: 0,
-    Torneira: 1,
-    RPS: 2,
-    RPI: 3,
-    RDS: 4,
-    RDI: 5,
-    CAERN: 6,
+  const handleCampusChange = (selected: string) => {
+    updateQueryParam('campus', selected === 'all' ? '' : selected);
   };
 
-  // Agrupa pontos de acordo com a edificação
-  const groups: Groups = groupBy(
-    pontos,
-    (ponto: PontoDto) => ponto.edificacao.codigo,
-  );
+  const updateQueryParam = (key: string, value: string) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
 
-  // Adiciona novos grupos vazios para edificações que não possuem pontos
-  for (const edificacao of edificacoes) {
-    if (!groups[edificacao.codigo]) {
-      groups[edificacao.codigo] = { edificacao: edificacao, pontos: [] };
+    if (!value) {
+      newSearchParams.delete(key);
+    } else {
+      newSearchParams.set(key, value);
     }
-  }
 
-  useEffect(() => {
-    // Acessar todas as edificações pela API
-    consumerEdficacao
-      .list()
-      .then((data) => setEdificacoes(data as EdificacaoDto[]));
+    router.push(`${pathName}?${newSearchParams.toString()}`);
+  };
 
-    // Cria lista com ids referentes aos tipos de pontos filtrados
-    const filtrosIds = Object.entries(filters.filtroPontos)
-      .filter(([key, value]) => value == true)
-      .map(([key, value]) => tiposPontos[key]);
-
-    // Acessar todos os pontos da API de acordo com os filtros
-    consumerPonto
-      .list('no-cache', { tipo: filtrosIds })
-      .then((data) => setPontos(data as PontoDto[]));
-  }, [filters]);
+  const campusSelectOptions = [
+    ...campusOptions,
+    { value: 'all', label: 'Todos' },
+  ];
 
   return (
-    <>
-      <h2 className="text-3xl text-[#525252]">
-        Edificações e Pontos de Coleta
-      </h2>
-
-      <div className="flex w-full flex-col items-center">
-        <div className="mb-4 flex w-full flex-col gap-4">
-          <div className="space-between relative flex gap-2">
-            <input
-              id="search-bar"
-              className="w-full rounded-md border bg-white px-5 py-3 text-[#525252]"
-              type="text"
-              name="search-query"
-              placeholder="Digite o termo de pesquisa"
-              onChange={(e) => setFilters({ ...filters, q: e.target.value })}
-            />
-
-            <select
-              name="campus"
-              className="w-36 rounded-md border bg-white px-3 py-2 text-[#525252]"
-              onChange={(e) =>
-                setFilters({ ...filters, campus: e.target.value })
-              }
-            >
-              <option value="" disabled selected hidden>
-                Campus
-              </option>
-              <option value="">Leste/Oeste</option>
-              <option value="LE">Leste</option>
-              <option value="OE">Oeste</option>
-            </select>
-          </div>
-
-          <div className="mb-4 flex w-full justify-between gap-3 self-end">
-            <FilterPontos filtersState={filters} setFilters={setFilters} />
-          </div>
-        </div>
-
-        <div className="flex w-full flex-col">
-          <a
-            href="/admin/edificacoes/criar"
-            className="mb-4 w-fit rounded-lg border border-gray-300 bg-gray-50 p-2 px-4 text-center font-semibold text-green-500 transition-all duration-75 hover:border-green-600 hover:bg-green-500 hover:text-white"
-          >
-            + Adicionar edificação
-          </a>
-          {Object.values(groups).map((group, i) => {
-            return (
-              <CardEdificacao
-                group={group}
-                key={'edificacao-' + i}
-                collapsed={false}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </>
+    <div className="space-between relative flex gap-2">
+      <Input
+        className="w-full rounded-md border bg-white px-5 py-3 text-[#525252]"
+        type="text"
+        name="search-query"
+        placeholder="Digite o termo de pesquisa"
+        defaultValue={searchParams.get('q') ?? ''}
+        onChange={(e) => handleSearch(e.target.value)}
+      />
+      <Select
+        className="w-36 rounded-md border bg-white px-3 py-2 text-[#525252]"
+        options={campusSelectOptions}
+        value={searchParams.get('campus') ?? 'all'}
+        onChange={handleCampusChange}
+      />
+    </div>
   );
 }
