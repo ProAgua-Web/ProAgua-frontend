@@ -26,7 +26,7 @@ export function Breadcrumbs({ path }: Props) {
           <Link
             href={segment.route}
             className={cn(
-              'text-xs font-bold text-primary-500 hover:text-primary-300 hover:underline',
+              'truncate text-xs font-bold text-primary-500 hover:text-primary-300 hover:underline',
               i === path.length - 1 ? 'text-primary-700' : 'text-primary-500',
             )}
           >

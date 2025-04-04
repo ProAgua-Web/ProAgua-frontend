@@ -53,7 +53,7 @@ export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
               size="icon"
               onClick={() => innerRef?.current?.click()}
             >
-              <HiDocumentPlus size={24} className="text-brand-primary-500" />
+              <HiDocumentPlus size={24} className="text-primary-500" />
             </Button>
             <div>
               <p className="text-xs font-medium text-slate-800">

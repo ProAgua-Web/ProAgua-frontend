@@ -49,13 +49,13 @@ export const FormContainer = forwardRef<HTMLFormElement, Props>(
         <div className="flex w-full flex-col border-y bg-white pb-8 lg:rounded-lg lg:border-x lg:border-slate-100 lg:pt-2 lg:shadow-sm">
           <div className="flex flex-row">
             <div className="flex grow flex-col gap-2 border-b border-slate-100 px-6 py-4 lg:px-14 lg:py-6">
-              <h1 className="text-primary-800 text-2xl font-semibold">
+              <h1 className="text-2xl font-semibold text-primary-800">
                 {props.title}
               </h1>
               <p className="text-xs text-slate-500">{props.subtitle}</p>
             </div>
             {props.isLoading && (
-              <div className="bg-opacity-90 flex h-full items-center justify-end bg-white px-6 py-4 lg:px-14 lg:py-6">
+              <div className="flex h-full items-center justify-end bg-white bg-opacity-90 px-6 py-4 lg:px-14 lg:py-6">
                 <Spinner className="size-12" />
               </div>
             )}
@@ -63,10 +63,10 @@ export const FormContainer = forwardRef<HTMLFormElement, Props>(
           <form onSubmit={props.onSubmit} ref={ref}>
             <div className="px-6 py-4 lg:px-14">{props.children}</div>
             <div className="flex flex-col items-end gap-2 border-t border-slate-100">
-              <div className="flex justify-end gap-2 px-6 pt-8 lg:px-14">
+              <div className="flex w-full flex-col-reverse justify-end gap-2 px-6 pt-8 lg:flex-row lg:px-14">
                 <Button
                   variant="destructive-ghost"
-                  className="px-16"
+                  className="w-full px-16"
                   onClick={props.onCancel}
                 >
                   Cancelar
@@ -99,7 +99,7 @@ export const FormSection: FC<SectionProps> = (props) => {
   return (
     <div className="flex flex-col gap-2 py-2 lg:py-4">
       {props.title && (
-        <h2 className="text-primary-800 pb-2 font-semibold">{props.title}</h2>
+        <h2 className="pb-2 font-semibold text-primary-800">{props.title}</h2>
       )}
       <div
         className={cn(

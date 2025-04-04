@@ -79,8 +79,8 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps<Value>>(
             readOnly={props.readOnly}
             ref={ref}
           >
-            <div className="flex w-full items-center justify-between">
-              <div className="scrollbar-thin scrollbar-webkit overflow-auto overflow-x-auto">
+            <div className="flex max-h-4 w-full items-center justify-between">
+              <div className="overflow-auto overflow-x-auto scrollbar-thin scrollbar-webkit">
                 {props.options.find((option) => option.value === props.value)
                   ?.label ?? (
                   <span className="truncate text-sm text-slate-500">
