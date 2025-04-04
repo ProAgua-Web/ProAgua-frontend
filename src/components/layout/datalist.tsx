@@ -28,13 +28,13 @@ export function DataListPage(props: Props) {
         <div className="flex w-fit flex-row flex-wrap items-center justify-start gap-2 self-start px-8 py-2 lg:px-4">
           <Breadcrumbs path={breadcrumbs} />
         </div>
-        <div className="flex w-full flex-row justify-between px-6 py-4">
+        <div className="flex w-full flex-col justify-between gap-4 px-6 py-4 lg:flex-row">
           <div>
             <h1 className="text-2xl font-semibold text-primary-800">{title}</h1>
             <p className="text-xs text-slate-500">{subtitle}</p>
           </div>
           <div>
-            <Button variant="add" className="h-full" asChild>
+            <Button variant="add" className="h-full w-full lg:w-fit" asChild>
               <Link href={createButton.link}>
                 <HiOutlinePlus size={20} />
                 {createButton.label}

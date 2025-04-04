@@ -20,7 +20,7 @@ const buttonVariants = cva(
           'rounded-md border bg-green-600 text-white hover:bg-green-500 disabled:bg-green-400',
         'delete':
           'rounded-md border bg-red-500 p-3 text-white hover:bg-red-600 disabled:bg-red-400',
-        'ghost': 'hover:bg-slate-100 hover:text-slate-900',
+        'ghost': 'hover:bg-slate-200 hover:text-slate-900',
         'link': 'text-slate-900 underline-offset-4 hover:underline',
         'header': 'bg-brand-header p-1 text-xl text-white hover:bg-primary-500',
         'new':

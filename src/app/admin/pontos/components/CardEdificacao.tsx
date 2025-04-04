@@ -1,9 +1,11 @@
 'use client';
-import CardPonto, { AddCard } from '@/components/pontos/CardPontos';
+import { CardPonto } from '@/components/pontos/CardPontos';
 import { type EdificacaoDto } from '@/core/components/edificacao/edificacao.model';
 import { type PontoDto } from '@/core/components/ponto/ponto.model';
+import { cn } from '@/lib/utils';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useState } from 'react';
 
 interface CardEdificacaoProps {
@@ -15,17 +17,20 @@ export const CardEdificacao = ({ edificacao, pontos }: CardEdificacaoProps) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   return (
-    <div
-      className={`mb-4 rounded-lg border border-gray-300 bg-gray-50 transition-shadow duration-75 hover:shadow-lg ${collapsed && 'rounded border-t bg-gray-200'}`}
-    >
-      <div className="flex justify-between border-b border-gray-300 p-4 py-2">
+    <div className="mb-4 rounded-lg border border-t border-gray-200 bg-gray-50 shadow-lg">
+      <div
+        className={cn(
+          'flex justify-between p-4 py-2',
+          !collapsed && 'border-b border-gray-300',
+        )}
+      >
         <button
           className="font-regular w-full px-2 py-4 text-start text-xl text-black"
           onClick={() => setCollapsed(!collapsed)}
         >
           {edificacao.codigo} - {edificacao.nome}
         </button>
-        <a
+        <Link
           href={`/admin/edificacoes/${edificacao.codigo}`}
           className="p-4 text-neutral-500 hover:text-primary-600"
         >
@@ -34,16 +39,17 @@ export const CardEdificacao = ({ edificacao, pontos }: CardEdificacaoProps) => {
             size="lg"
             className="font-light"
           />
-        </a>
+        </Link>
       </div>
       <div
-        className={`flex flex-wrap gap-4 bg-gray-100 p-4 ${collapsed ? 'hidden' : ''}`}
+        className={cn(
+          `flex flex-wrap gap-4 bg-gray-100 p-4`,
+          collapsed && 'hidden',
+        )}
       >
         {pontos.map((ponto, i) => (
-          <CardPonto ponto={ponto} key={'ponto-' + i} publicCard={false} />
+          <CardPonto ponto={ponto} key={'ponto-' + i} />
         ))}
-        <AddCard cod_edificacao={edificacao.codigo} />
-        <AddCard cod_edificacao={edificacao.codigo} tipo="reservatorio" />
       </div>
     </div>
   );

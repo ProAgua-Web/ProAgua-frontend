@@ -41,7 +41,7 @@ export default function Page() {
       title="Edificações e Pontos de Coleta"
       subtitle="Gerencie as edificações e os pontos de coleta do sistema."
       newItemButton={{
-        label: 'Adicionar edificação',
+        label: 'Criar edificação',
         link: '/admin/edificacoes/criar',
       }}
       breadcrumbs={breadcrumbs}
