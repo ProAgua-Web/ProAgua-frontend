@@ -53,7 +53,7 @@ export function useApiQuery<
   useEffect(() => {
     setTimeout(() => {
       if (query.error instanceof AxiosError) {
-        if (query.error.response?.status === 403) {
+        if (query.error.response?.status === 401) {
           handleAuthorizationError(router, toast);
         }
         if (query.error.response?.status === 401) {

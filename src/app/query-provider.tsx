@@ -22,7 +22,7 @@ function makeQueryClient() {
             }
 
             // Não tentar novamente em 403
-            if (error.response?.status === 403) {
+            if (error.response?.status === 401) {
               return false;
             }
           }
