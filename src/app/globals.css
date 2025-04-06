@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html body[data-scroll-locked] {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  overflow: auto !important;
+}
