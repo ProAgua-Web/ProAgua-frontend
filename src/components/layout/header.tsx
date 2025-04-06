@@ -5,6 +5,7 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button } from '../ui/button';
 
 export default function Header(props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
@@ -13,39 +14,32 @@ export default function Header(props: {
   const { sair } = useAutenticacao();
 
   return (
-    <header>
-      <div
-        id="header-bar"
-        className="fixed z-20 flex h-20 w-full items-center bg-primary-500 text-white-100 shadow-lg"
-      >
-        <i className="bi bi-list header-icon"></i>
-
-        <div id="header-content" className="flex w-full justify-center">
-          <div id="proagua-logo" className="w-fit items-center">
-            <Link
-              href="/"
-              className="flex select-none items-center gap-2 text-2xl font-semibold text-white-100"
-            >
-              <Image
-                width={40}
-                height={40}
-                src="/Logo.svg"
-                className="max-h-10"
-                alt="Logo do projeto"
-              />
-              ProÁgua
-            </Link>
-          </div>
+    <header className="fixed z-20 flex h-20 w-full items-center bg-primary-500 text-white-100 shadow-lg">
+      <div className="flex w-full justify-center">
+        <div className="w-fit items-center">
+          <Link
+            href="/"
+            className="flex select-none items-center gap-2 text-2xl font-semibold text-white-100"
+          >
+            <Image
+              width={40}
+              height={40}
+              src="/Logo.svg"
+              className="max-h-10"
+              alt="Logo do projeto"
+            />
+            ProÁgua
+          </Link>
         </div>
-
-        <button
-          onClick={sair}
-          className="h-[clamp(50px,8vh,100px)] w-[clamp(50px,8vh,100px)] bg-primary-500 hover:bg-primary-600"
-        >
-          <FontAwesomeIcon icon={faRightFromBracket} className="mr-1" />
-          Sair
-        </button>
       </div>
+
+      <Button
+        onClick={sair}
+        className="h-full border-none bg-primary-500 hover:bg-primary-600"
+      >
+        <FontAwesomeIcon icon={faRightFromBracket} className="mr-1" />
+        Sair
+      </Button>
     </header>
   );
 }

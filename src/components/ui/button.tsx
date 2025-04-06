@@ -23,6 +23,10 @@ const buttonVariants = cva(
         'ghost': 'hover:bg-slate-200 hover:text-slate-900',
         'link': 'text-slate-900 underline-offset-4 hover:underline',
         'header': 'bg-brand-header p-1 text-xl text-white hover:bg-primary-500',
+        'edificacao-header':
+          'justify-start truncate px-4 text-xl font-bold text-slate-700',
+        'dropdown-item':
+          'w-full rounded-none border-2 bg-slate-50 px-4 py-2 text-center text-sm font-normal hover:bg-slate-100',
         'new':
           'border border-transparent bg-white text-green-600 hover:border-primary-700 hover:bg-slate-50 hover:text-primary-700',
         'table-access':
@@ -43,7 +47,7 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-10 px-4 py-2',
-        full: 'h-10 w-full px-4 py-2',
+        full: 'min-h-full w-full',
         wide: 'h-10 px-10 py-2',
         xs: 'h-7 px-2',
         sm: 'h-9 px-3',

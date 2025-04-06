@@ -1,12 +1,18 @@
 'use client';
 import { CardPonto } from '@/components/pontos/CardPontos';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { type EdificacaoDto } from '@/core/components/edificacao/edificacao.model';
 import { type PontoDto } from '@/core/components/ponto/ponto.model';
 import { cn } from '@/lib/utils';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@radix-ui/react-dropdown-menu';
 import Link from 'next/link';
 import { useState } from 'react';
+import { FaEllipsis } from 'react-icons/fa6';
 
 interface CardEdificacaoProps {
   edificacao: EdificacaoDto;
@@ -20,26 +26,59 @@ export const CardEdificacao = ({ edificacao, pontos }: CardEdificacaoProps) => {
     <div className="mb-4 rounded-lg border border-t border-gray-200 bg-gray-50 shadow-lg">
       <div
         className={cn(
-          'flex justify-between p-4 py-2',
+          'flex min-h-14 justify-between',
           !collapsed && 'border-b border-gray-300',
         )}
       >
-        <button
-          className="font-regular w-full px-2 py-4 text-start text-xl text-black"
+        <Button
+          variant="edificacao-header"
+          size="full"
           onClick={() => setCollapsed(!collapsed)}
         >
           {edificacao.codigo} - {edificacao.nome}
-        </button>
-        <Link
-          href={`/admin/edificacoes/${edificacao.codigo}`}
-          className="p-4 text-neutral-500 hover:text-primary-600"
-        >
-          <FontAwesomeIcon
-            icon={faPenToSquare}
-            size="lg"
-            className="font-light"
-          />
-        </Link>
+        </Button>
+
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="xl">
+                <FaEllipsis size={18} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="z-50 w-screen text-center lg:max-w-fit lg:text-left">
+              <DropdownMenuItem>
+                <Button variant="dropdown-item" asChild>
+                  <Link
+                    href={`/admin/edificacoes/${edificacao.codigo}/pontos/criar`}
+                  >
+                    Criar ponto de coleta
+                  </Link>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button variant="dropdown-item" asChild>
+                  <Link
+                    href={`/admin/edificacoes/${edificacao.codigo}/reservatorio`}
+                  >
+                    Criar reservatório
+                  </Link>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button asChild variant="dropdown-item">
+                  <Link href={`/admin/edificacoes/${edificacao.codigo}`}>
+                    Editar edificação
+                  </Link>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button variant="dropdown-item" className="text-red-600">
+                  Excluir edificação
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div
         className={cn(
