@@ -1,7 +1,8 @@
 'use client';
 
 import Header from '@/components/layout/header';
-import CardPonto from '@/components/pontos/CardPontos';
+import { CardPonto } from '@/components/pontos/card';
+import { PontoDto } from '@/core/components/ponto/ponto.model';
 import { toURLParams, useEdificacoes } from '@/utils/api/client_side_consumer';
 import { Edificacao, Ponto } from '@/utils/types';
 import { useEffect, useState } from 'react';
@@ -24,7 +25,7 @@ function groupBy<Type>(arr: Type[], key: (el: Type) => any) {
 }
 
 function CardEdificacao(props: {
-  group: { edificacao: Edificacao; pontos: Ponto[] };
+  group: { edificacao: Edificacao; pontos: PontoDto[] };
 }) {
   const { group } = props;
   return (
@@ -36,7 +37,7 @@ function CardEdificacao(props: {
       </div>
       <div className="flex flex-wrap gap-4 p-4">
         {group.pontos.map((item, i) => (
-          <CardPonto ponto={item} key={'ponto-' + i} publicCard={false} />
+          <CardPonto ponto={item} key={'ponto-' + i} />
         ))}
       </div>
     </div>

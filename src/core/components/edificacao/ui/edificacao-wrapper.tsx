@@ -1,5 +1,4 @@
 'use client';
-import { CardPonto } from '@/components/pontos/CardPontos';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { type EdificacaoDto } from '@/core/components/edificacao/edificacao.model';
@@ -13,6 +12,7 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { FaEllipsis } from 'react-icons/fa6';
+import { CardPonto } from '../../../../components/pontos/card';
 
 interface CardEdificacaoProps {
   edificacao: EdificacaoDto;

@@ -4,13 +4,14 @@ import { TIPOS_PONTOS } from '@/utils/types';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 
-export function CardPonto(props: { ponto: PontoDto }) {
+export function CardPonto(props: Readonly<{ ponto: PontoDto }>) {
   const randomNumber = Math.floor((Math.random() * 10) / 5) + 1;
   const { ponto } = props;
   return (
     <div className="group relative flex min-h-64 grow flex-col items-center justify-between rounded-md bg-white text-center lg:max-w-64">
       <img
         src={`/example${randomNumber}.jpg`}
+        alt={`Imagem do ponto de coleta ${ponto.id}`}
         className="w-full select-none object-cover transition-all duration-300 ease-in-out group-hover:grayscale-[50%]"
       />
       <div
