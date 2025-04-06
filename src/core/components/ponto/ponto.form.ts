@@ -19,14 +19,14 @@ export const pontoSchema = z.object({
   }),
   amontante: z.number().nullish(),
   tombo: z.string().nullish(),
-  // quantidade: z.number().nullish(),
-  // capacidade: z.number().nullish(),
   observacao: z.string().nullish(),
   material: z.string().nullish(),
-  // fonte_informacao: z.string().nullish(),
   imagens: z
     .union([z.array(imageSchema), z.array(fileDescriptionSchema)])
     .default([]),
+  quantidade: z.number().nullish(),
+  capacidade: z.string().nullish(),
+  fonte_informacao: z.string().nullish(),
 });
 
 export type PontoSchema = z.infer<typeof pontoSchema>;

@@ -207,3 +207,4 @@ export const temperaturaMask: InputMask = floatWithSuffixMask('°C');
 export const turbidezMask: InputMask = floatWithSuffixMask('uT');
 export const cloroMask: InputMask = floatWithSuffixMask('mg/L');
 export const corMask: InputMask = floatWithSuffixMask('uH');
+export const litroMask: InputMask = floatWithSuffixMask('L');

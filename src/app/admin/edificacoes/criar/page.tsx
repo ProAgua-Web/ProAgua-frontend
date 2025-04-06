@@ -8,7 +8,6 @@ export default function Pagina() {
         <div className="flex w-fit flex-row flex-wrap items-center justify-start gap-2 self-start px-8 py-2 lg:px-4">
           <Breadcrumbs
             path={[
-              { route: '/admin/edificacoes', label: 'Edificações' },
               {
                 route: `/admin/edificacoes/criar`,
                 label: 'Criar edificação',

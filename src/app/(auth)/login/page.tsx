@@ -37,7 +37,7 @@ export default function Login() {
   function submitForm(data: FormSchema) {
     entrar.mutate(data, {
       onSuccess: () => {
-        router.push('/admin/pontos/');
+        router.push('/admin/edificacoes/');
       },
     });
   }

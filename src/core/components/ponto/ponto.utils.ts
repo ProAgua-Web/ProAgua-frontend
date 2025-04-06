@@ -43,3 +43,13 @@ export const usePontosOptions = (params?: PontoQueryOptions) => {
 
   return props;
 };
+
+export const tipoPontosOptions = [
+  { label: 'Bebedouro', value: 0 },
+  { label: 'Torneira', value: 1 },
+  { label: 'RPS', value: 2 },
+  { label: 'RPI', value: 3 },
+  { label: 'RDI', value: 4 },
+  { label: 'RDS', value: 5 },
+  { label: 'CAERN', value: 6 },
+];

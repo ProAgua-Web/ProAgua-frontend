@@ -3,14 +3,14 @@
 import { useRouter } from 'next/navigation';
 import { usePontoForm } from '../ponto.form';
 import { useEditarPonto, usePonto } from '../ponto.service';
-import { PontoForm } from './ponto-form';
+import { ReservatorioForm } from './reservatorio-form';
 
 interface Props {
   codigo: string;
   ponto_id: number;
 }
 
-export const EditarPonto: React.FC<Props> = ({
+export const EditarReservatorio: React.FC<Props> = ({
   codigo: codigo,
   ponto_id: ponto_id,
 }) => {
@@ -37,9 +37,9 @@ export const EditarPonto: React.FC<Props> = ({
   });
 
   return (
-    <PontoForm
-      title="Editar ponto de coleta"
-      subtitle="Altere os campos abaixo para editar um ponto de coleta no sistema"
+    <ReservatorioForm
+      title="Editar reservatório"
+      subtitle="Altere os campos abaixo para editar um reservatório no sistema"
       form={form}
       onSubmit={handleSubmit}
       onCancel={() => router.back()}

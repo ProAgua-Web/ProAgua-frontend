@@ -213,11 +213,10 @@ export type ImageOut = {
 export const TIPOS_PONTOS = [
   'Bebedouro',
   'Torneira',
-  // 'RPS (Reservatório predial superior)',
   'RPS',
-  'RPI (Reservatório predial inferior)',
-  'RDS (Reservatório de distribuição superior)',
-  'RDI (Reservatório de distribuição inferior)',
+  'RPI',
+  'RDS',
+  'RDI',
   'CAERN',
 ];
 

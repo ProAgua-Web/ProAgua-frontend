@@ -36,9 +36,9 @@ const NAV_LINKS: NavLink[] = [
     name: 'Coletas',
   },
   {
-    href: '/admin/pontos',
+    href: '/admin/edificacoes',
     icon: <FontAwesomeIcon icon={faLocationDot} className="h-6 w-6 p-2" />,
-    name: 'Pontos de coleta',
+    name: 'Edificações',
   },
   {
     href: '/admin/solicitacoes',
@@ -117,10 +117,10 @@ const NavbarHeader: FC<NavbarHeaderProps> = ({
   isCollapsed,
   onToggleCollapse,
 }) => (
-  <header className="bg-primary-500 h-20 text-white">
+  <header className="h-20 bg-primary-500 text-white">
     <button
       onClick={onToggleCollapse}
-      className="bg-primary-500 hover:bg-primary-600 h-20 w-full p-8 text-end"
+      className="h-20 w-full bg-primary-500 p-8 text-end hover:bg-primary-600"
       aria-label={isCollapsed ? 'Expand menu' : 'Collapse menu'}
     >
       <FontAwesomeIcon icon={isCollapsed ? faBars : faChevronLeft} size="xl" />
@@ -139,7 +139,7 @@ const NavbarContent: FC<NavbarContentProps> = ({
   isCollapsed,
   currentPath,
 }) => (
-  <div className="bg-background grow border-r border-r-neutral-300">
+  <div className="grow border-r border-r-neutral-300 bg-background">
     <ul>
       {links.map((link) => (
         <NavItem
@@ -162,7 +162,7 @@ interface NavItemProps {
 const NavItem: FC<NavItemProps> = ({ link, isActive, isCollapsed }) => (
   <li
     className={`text-md m-0 hover:bg-gray-300 ${
-      isActive ? 'border-primary-500 border-r-4 bg-gray-200' : ''
+      isActive ? 'border-r-4 border-primary-500 bg-gray-200' : ''
     }`}
   >
     <Link

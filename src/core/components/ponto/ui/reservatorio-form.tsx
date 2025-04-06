@@ -7,26 +7,28 @@ import {
 } from '@/components/form/container';
 import { ControlledCombobox } from '@/components/form/input/combobox';
 import { ControlledFileInput } from '@/components/form/input/file-input';
+import { ControlledMaskedInput } from '@/components/form/input/masked-input';
 import { ControlledSelect } from '@/components/form/input/select';
+import { ControlledTextArea } from '@/components/form/input/text-area';
 import { ControlledTextInput } from '@/components/form/input/text-input';
-import { cn } from '@/lib/utils';
+import { litroMask } from '@/lib/input-mask';
 import { useEffect } from 'react';
 import { useEdificacoesOptions } from '../../edificacao/edificacao.utils';
-import { tipoPontosOptions, usePontosOptions } from '../../ponto/ponto.utils';
 import { type PontoSchema } from '../ponto.form';
+import { tipoPontosOptions, usePontosOptions } from '../ponto.utils';
 
 interface Props {
   codigo?: string;
 }
 
-export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
+export const ReservatorioForm: React.FC<FormProps<PontoSchema> & Props> = ({
   form,
   codigo: codigo,
   ...props
 }) => {
   const edificacaoOptions = useEdificacoesOptions();
   const tipo = form.watch('tipo');
-  const pontosOptions = usePontosOptions({ tipo: [2] }); // O ponto a montante é sempre do tipo 3 (RPS)
+  const pontosOptions = usePontosOptions({ tipo: [tipo + 1], limit: 0 }); // O ponto a montante é sempre um a mais do tipo atual
 
   useEffect(() => {
     if (codigo) {
@@ -60,16 +62,27 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
           name="tipo"
           label="Tipo"
           placeholder="Informe o tipo"
-          options={tipoPontosOptions.slice(0, 2)}
+          options={tipoPontosOptions.slice(2, tipoPontosOptions.length)}
         />
-        <div className={cn({ hidden: tipo !== 1 })}>
-          <ControlledTextInput
-            control={form.control}
-            name="tombo"
-            label="Tombo"
-            placeholder="Informe o tombo"
-          />
-        </div>
+        <ControlledMaskedInput
+          control={form.control}
+          name="capacidade"
+          label="Capacidade"
+          placeholder="Informe a capacidade"
+          mask={litroMask}
+        />
+        <ControlledTextInput
+          control={form.control}
+          name="material"
+          label="Material"
+          placeholder="Informe o material"
+        />
+        <ControlledTextInput
+          control={form.control}
+          name="fonte_informacao"
+          label="Fonte de informação"
+          placeholder="Informe a fonte de informação"
+        />
         <ControlledCombobox
           control={form.control}
           name="amontante"
@@ -82,6 +95,13 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
         />
       </FormSection>
       <FormSection className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1">
+        <ControlledTextArea
+          control={form.control}
+          name="observacao"
+          label="Observação"
+          placeholder="Informe a observação"
+          rows={3}
+        />
         <ControlledFileInput
           control={form.control}
           name="imagens"

@@ -1,5 +1,5 @@
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { CriarPonto } from '@/core/components/ponto/ui/criar-ponto';
+import { CriarReservatorio } from '@/core/components/ponto/ui/criar-reservatorio';
 
 interface Props {
   params: { codigo: string };
@@ -13,14 +13,14 @@ export default function Pagina({ params }: Props) {
           <Breadcrumbs
             path={[
               {
-                route: `/admin/edificacoes/${params.codigo}/pontos/criar`,
-                label: 'Criar ponto',
+                route: `/admin/edificacoes/${params.codigo}/reservatorios/criar`,
+                label: 'Criar reservatório',
               },
             ]}
           />
         </div>
         <div className="w-full">
-          <CriarPonto codigo={params.codigo} />
+          <CriarReservatorio codigo={params.codigo} />
         </div>
       </div>
     </div>

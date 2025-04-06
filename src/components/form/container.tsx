@@ -66,16 +66,12 @@ export const FormContainer = forwardRef<HTMLFormElement, Props>(
               <div className="flex w-full flex-col-reverse justify-end gap-2 px-6 pt-8 lg:flex-row lg:px-14">
                 <Button
                   variant="destructive-ghost"
-                  className="w-full px-16"
+                  size="full"
                   onClick={props.onCancel}
                 >
                   Cancelar
                 </Button>
-                <Button
-                  className="px-16"
-                  type="submit"
-                  disabled={props.isSubmitting}
-                >
+                <Button size="full" type="submit" disabled={props.isSubmitting}>
                   {props.isSubmitting && <Spinner />}
                   Salvar informações
                 </Button>

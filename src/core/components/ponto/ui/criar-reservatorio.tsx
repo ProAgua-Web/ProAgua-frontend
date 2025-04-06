@@ -3,13 +3,13 @@
 import { useRouter } from 'next/navigation';
 import { usePontoForm } from '../ponto.form';
 import { useCriarPonto } from '../ponto.service';
-import { PontoForm } from './ponto-form';
+import { ReservatorioForm } from './reservatorio-form';
 
 interface Props {
   codigo: string;
 }
 
-export const CriarPonto: React.FC<Props> = ({ codigo: codigo }) => {
+export const CriarReservatorio: React.FC<Props> = ({ codigo: codigo }) => {
   const form = usePontoForm();
 
   const router = useRouter();
@@ -28,9 +28,9 @@ export const CriarPonto: React.FC<Props> = ({ codigo: codigo }) => {
   });
 
   return (
-    <PontoForm
-      title="Criar novo ponto de coleta"
-      subtitle="Preencha os campos abaixo para criar um novo ponto de coleta no sistema"
+    <ReservatorioForm
+      title="Criar novo reservatório"
+      subtitle="Preencha os campos abaixo para criar um reservatório no sistema"
       form={form}
       onSubmit={handleSubmit}
       onCancel={() => router.back()}

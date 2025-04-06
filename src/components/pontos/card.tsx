@@ -1,12 +1,16 @@
 import { type PontoDto } from '@/core/components/ponto/ponto.model';
+import { useExcluirPonto } from '@/core/components/ponto/ponto.service';
 import { cn } from '@/lib/utils';
 import { TIPOS_PONTOS } from '@/utils/types';
 import Link from 'next/link';
+import { DestructiveAlert } from '../alert-dialog';
 import { Button } from '../ui/button';
 
 export function CardPonto(props: Readonly<{ ponto: PontoDto }>) {
   const randomNumber = Math.floor((Math.random() * 10) / 5) + 1;
   const { ponto } = props;
+  const tipo = ponto.tipo < 2 ? 'pontos' : 'reservatorios';
+  const excluirPonto = useExcluirPonto();
   return (
     <div className="group relative flex min-h-64 grow flex-col items-center justify-between rounded-md bg-white text-center lg:max-w-64">
       <img
@@ -21,12 +25,7 @@ export function CardPonto(props: Readonly<{ ponto: PontoDto }>) {
         )}
       >
         {/* Header */}
-        <div
-          className={cn(
-            'absolute left-1/2 top-0 -translate-x-1/2',
-            'group-hover:relative group-hover:h-full',
-          )}
-        >
+        <div className={cn('flex w-full flex-col items-center p-2')}>
           <span className="text-xs text-slate-500">
             {TIPOS_PONTOS[ponto.tipo]}
             {ponto.tombo && ` (${ponto.tombo})`}
@@ -35,15 +34,20 @@ export function CardPonto(props: Readonly<{ ponto: PontoDto }>) {
             {ponto.localizacao}
           </h2>
           {/* Content */}
-          <div className="h-full w-full">
+          <div className="flex-gap flex justify-center gap-4 lg:hidden lg:group-hover:flex">
             <Button variant="ghost" asChild>
               <Link
-                href={`/admin/edificacoes/${ponto.edificacao.codigo}/pontos/${ponto.id}/editar`}
+                href={`/admin/edificacoes/${ponto.edificacao.codigo}/${tipo}/${ponto.id}/editar`}
               >
                 Editar
               </Link>
             </Button>
-            <Button variant="ghost-cancel">Excluir</Button>
+            <DestructiveAlert onConfirm={() => excluirPonto.mutate(ponto.id!)}>
+              <Button variant="table-delete">
+                {/* <FaRegTrashCan />  */}
+                Excluir
+              </Button>
+            </DestructiveAlert>
           </div>
         </div>
       </div>

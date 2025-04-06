@@ -13,14 +13,6 @@ export default function Pagina({ params }: Props) {
           <Breadcrumbs
             path={[
               {
-                route: '/admin/edificacoes',
-                label: 'Edificações',
-              },
-              {
-                route: `/admin/edificacoes/${params.ponto_id}/pontos`,
-                label: 'Pontos',
-              },
-              {
                 route: `/admin/edificacoes/${params.ponto_id}/pontos/${params.ponto_id}/editar`,
                 label: 'Editar ponto de coleta',
               },

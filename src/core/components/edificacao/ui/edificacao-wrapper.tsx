@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FaEllipsis } from 'react-icons/fa6';
 import { CardPonto } from '../../../../components/pontos/card';
+import { useExcluirEdificacao } from '../edificacao.service';
 
 interface CardEdificacaoProps {
   edificacao: EdificacaoDto;
@@ -21,6 +22,7 @@ interface CardEdificacaoProps {
 
 export const CardEdificacao = ({ edificacao, pontos }: CardEdificacaoProps) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
+  const excluirEdificacao = useExcluirEdificacao();
 
   return (
     <div className="mb-4 rounded-lg border border-t border-gray-200 bg-gray-50 shadow-lg">
@@ -45,7 +47,7 @@ export const CardEdificacao = ({ edificacao, pontos }: CardEdificacaoProps) => {
                 <FaEllipsis size={18} />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="z-50 w-screen text-center lg:max-w-fit lg:text-left">
+            <DropdownMenuContent className="z-50 w-screen text-center lg:w-fit lg:text-left">
               <DropdownMenuItem>
                 <Button variant="dropdown-item" asChild>
                   <Link
@@ -58,7 +60,7 @@ export const CardEdificacao = ({ edificacao, pontos }: CardEdificacaoProps) => {
               <DropdownMenuItem>
                 <Button variant="dropdown-item" asChild>
                   <Link
-                    href={`/admin/edificacoes/${edificacao.codigo}/reservatorio`}
+                    href={`/admin/edificacoes/${edificacao.codigo}/reservatorios/criar`}
                   >
                     Criar reservatório
                   </Link>
@@ -72,7 +74,13 @@ export const CardEdificacao = ({ edificacao, pontos }: CardEdificacaoProps) => {
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Button variant="dropdown-item" className="text-red-600">
+                <Button
+                  variant="dropdown-item"
+                  className="text-red-600"
+                  onClick={() => {
+                    excluirEdificacao.mutate(edificacao.codigo);
+                  }}
+                >
                   Excluir edificação
                 </Button>
               </DropdownMenuItem>
