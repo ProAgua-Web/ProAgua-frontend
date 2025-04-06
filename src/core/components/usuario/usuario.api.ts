@@ -17,8 +17,7 @@ export async function getUsuario(id: number) {
 
 export async function getUsuarioByUsername(username: string) {
   const response = await api.get<ApiResponse<UsuarioDto>>(
-    `/usuarios/search/login`,
-    { params: { login: username } },
+    `/usuarios/` + username,
   );
   return response.data;
 }
