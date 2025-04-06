@@ -28,6 +28,7 @@ export default function Page() {
 
   const { data: pontos = [] } = usePontos({
     ...(search && { q: search }),
+    ...(campusFilter !== DEFAULT_CAMPUS_VALUE && { campus: campusFilter }),
     limit: 0,
   });
   const { data: edificacoes = [] } = useEdificacoes({

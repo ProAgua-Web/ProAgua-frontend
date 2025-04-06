@@ -7,6 +7,7 @@ import {
 
 export interface PontoQueryOptions {
   q?: string;
+  campus?: string;
   tipo?: Array<number>;
   limit?: number;
 }
