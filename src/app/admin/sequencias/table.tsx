@@ -3,17 +3,19 @@
 import { DestructiveAlert } from '@/components/alert-dialog';
 import { DataTable } from '@/components/data-table';
 import { Button } from '@/components/ui/button';
+import Spinner from '@/components/ui/spinner';
 import {
   useExcluirSequencia,
   useSequencias,
 } from '@/core/components/sequencia-coletas/sequencia.service';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { HiEye } from 'react-icons/hi2';
 import { PiNotePencilBold } from 'react-icons/pi';
 
-export const SequenciaDataTable = () => {
+const SequenciaDataTableContent = () => {
   const sequencias = useSequencias();
   const excluirSequencia = useExcluirSequencia();
 
@@ -71,5 +73,13 @@ export const SequenciaDataTable = () => {
         </div>
       )}
     />
+  );
+};
+
+export const SequenciaDataTable = () => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <SequenciaDataTableContent />
+    </Suspense>
   );
 };
