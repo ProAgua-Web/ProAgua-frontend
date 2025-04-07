@@ -96,7 +96,12 @@ export default function Login() {
         </Button>
       </div>
 
-      <Button type="submit" size="lg" className="text-md" disabled={disabled}>
+      <Button
+        type="submit"
+        size="fullwide"
+        className="text-md"
+        disabled={disabled}
+      >
         {autenticando && <Spinner />} Entrar
       </Button>
     </form>
