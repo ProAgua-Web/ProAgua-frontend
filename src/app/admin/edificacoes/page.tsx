@@ -10,8 +10,15 @@ import { Filters } from './filters';
 export default function Page() {
   const [q] = useQueryState('q', { defaultValue: '' });
   const [campus] = useQueryState('campus', { defaultValue: '' });
-  const { data: pontos = [] } = usePontos({ q, campus, limit: 0 });
-  const { data: edificacoes = [] } = useEdificacoes({ q, campus, limit: 0 });
+
+  const params = {
+    ...(q && { q }),
+    ...(campus && { campus }),
+    limit: 0,
+  };
+  const { data: pontos = [] } = usePontos(params);
+
+  const { data: edificacoes = [] } = useEdificacoes(params);
 
   return (
     <DataListPage
