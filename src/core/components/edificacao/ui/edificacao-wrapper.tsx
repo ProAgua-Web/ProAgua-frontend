@@ -68,7 +68,7 @@ export const CardEdificacao = ({ edificacao, pontos }: CardEdificacaoProps) => {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Button asChild variant="dropdown-item">
-                  <Link href={`/admin/edificacoes/${edificacao.codigo}`}>
+                  <Link href={`/admin/edificacoes/${edificacao.codigo}/editar`}>
                     Editar edificação
                   </Link>
                 </Button>

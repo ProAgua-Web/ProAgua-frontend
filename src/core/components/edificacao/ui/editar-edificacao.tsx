@@ -1,5 +1,6 @@
 'use client';
 
+import { updateImagensEdificacao } from '@/core/common/imagem/imagem.api';
 import { useRouter } from 'next/navigation';
 import { useEdificacaoForm } from '../edificacao.form';
 import { useEdificacao, useEditarEdificacao } from '../edificacao.service';
@@ -17,8 +18,14 @@ export const EditarEdificacao: React.FC<Props> = ({ codigo: codigo }) => {
   const router = useRouter();
 
   const editarEdificacao = useEditarEdificacao({
-    onSuccess() {
-      router.push('/edificacoes');
+    async onSuccess() {
+      const codigo = form.getValues('codigo');
+      const imagensForm = form.getValues('imagens');
+      const imagensDto = edificacao.data?.imagens || [];
+
+      await updateImagensEdificacao(codigo, imagensForm, imagensDto);
+
+      router.push('/admin/edificacoes');
     },
     onFieldError(field, error) {
       form.setError(field, error);

@@ -26,6 +26,8 @@ export async function getEdificacao(codigo: string) {
 }
 
 export async function createEdificacao(edificacao: CreateEdificacaoDto) {
+  const formData = new FormData();
+
   await api.post('/edificacoes', edificacao);
 }
 

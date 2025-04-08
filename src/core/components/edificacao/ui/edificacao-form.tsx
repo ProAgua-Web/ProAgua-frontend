@@ -5,7 +5,7 @@ import {
   FormSection,
   type FormProps,
 } from '@/components/form/container';
-import { ControlledFileInput } from '@/components/form/input/file-input';
+import { ControlledImageInput } from '@/components/form/input/image-input';
 import { ControlledNumberInput } from '@/components/form/input/number-input';
 import { ControlledSelect } from '@/components/form/input/select';
 import { ControlledTextArea } from '@/components/form/input/text-area';
@@ -53,10 +53,11 @@ export const EdificacaoForm: React.FC<FormProps<EdificacaoSchema>> = ({
           label="Informações Gerais"
           placeholder="Informe informações adicionais"
         />
-        <ControlledFileInput
+        <ControlledImageInput
           control={form.control}
           name="imagens"
           label="Imagens"
+          multiple
         />
       </FormSection>
     </FormContainer>

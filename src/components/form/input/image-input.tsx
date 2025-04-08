@@ -6,17 +6,18 @@ import { type InputProps } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { type FileDescription } from '@/core/common/file';
 import { cn } from '@/lib/utils';
-import { forwardRef, Fragment, useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import {
   Controller,
   type Control,
   type FieldPath,
   type FieldValues,
 } from 'react-hook-form';
-import { HiDocumentPlus, HiXMark } from 'react-icons/hi2';
+import { FaImage } from 'react-icons/fa6';
+import { HiXMark } from 'react-icons/hi2';
 import { useFormProps } from '../container';
 
-export interface FileInputProps
+export interface ImageInputProps
   extends Omit<InputProps, 'value' | 'onChange' | 'onBlur'> {
   value?: Array<File | FileDescription>;
   onChange?: (value: Array<File | FileDescription>) => void;
@@ -24,7 +25,7 @@ export interface FileInputProps
   label?: React.ReactNode;
 }
 
-export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
+export const ImageInput = forwardRef<HTMLInputElement, ImageInputProps>(
   ({ label, value = [], onChange, className, ...props }, ref) => {
     const formProps = useFormProps();
 
@@ -43,53 +44,53 @@ export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
         </Label>
         <div
           className={cn(
-            'flex min-h-16 w-full min-w-10 items-center justify-between rounded-md border border-dashed border-slate-400 bg-white p-3',
+            'flex min-h-16 w-full min-w-10 flex-col items-center justify-between rounded-md border border-dashed border-slate-400 bg-white p-3 lg:flex-row',
             className,
           )}
         >
           <div className="flex items-center gap-2">
-            <Button
-              variant="secondary"
-              size="icon"
-              onClick={() => innerRef?.current?.click()}
-            >
-              <HiDocumentPlus size={24} className="text-primary-500" />
-            </Button>
-            <div>
-              <p className="text-xs font-medium text-slate-800">
-                {value === null || value === undefined || value.length === 0
-                  ? 'Nenhum arquivo selecionado'
-                  : value.map((file, i) => (
-                      <Fragment key={i}>
-                        {/* {i !== 0 && ', '} */}
-                        {'description' in file ? file.description : file.name}
-                        <Button
-                          variant="ghost"
-                          size="xs"
-                          onClick={() => {
-                            const newValue = value.filter(
-                              (_, index) => index !== i,
-                            );
-                            onChange?.(newValue);
-                            props.onBlur?.();
-                          }}
-                        >
-                          <HiXMark size={12} />
-                        </Button>
-                      </Fragment>
-                    ))}
-              </p>
-              <p className="text-xs text-slate-500">
-                O arquivo pode ter até 100 mb
-              </p>
+            <div className="flex flex-wrap gap-1">
+              {value === null || value === undefined || value.length === 0 ? (
+                <p className="text-xs font-medium text-slate-800">
+                  Nenhum arquivo selecionado
+                </p>
+              ) : (
+                value.map((file, i) => (
+                  <div key={i} className="relative rounded-lg">
+                    <img
+                      src={'src' in file ? file.src : URL.createObjectURL(file)}
+                      alt={'description' in file ? file.description : file.name}
+                      className="h-full w-full rounded-lg border border-slate-300 object-cover lg:max-h-32 lg:max-w-32"
+                    />
+                    <Button
+                      variant="destructive-ghost"
+                      size="icon"
+                      className={cn(
+                        'absolute right-0 top-0 h-fit w-fit p-0.5',
+                        'border border-slate-300 bg-white-100/80 transition-all duration-200',
+                      )}
+                      onClick={() => {
+                        const newValue = value.filter(
+                          (_, index) => index !== i,
+                        );
+                        onChange?.(newValue);
+                        props.onBlur?.();
+                      }}
+                    >
+                      <HiXMark size={24} className="stroke-1" />
+                    </Button>
+                  </div>
+                ))
+              )}
             </div>
           </div>
           <Button
-            size="sm"
-            className="text-xs"
+            size="fullwide"
+            className="text-xs lg:max-w-fit lg:px-4"
             onClick={() => innerRef?.current?.click()}
           >
-            Adicionar arquivos
+            <FaImage size={24} className="text-slate-50" />
+            Adicionar imagem
           </Button>
         </div>
         <input
@@ -114,18 +115,18 @@ export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
     );
   },
 );
-FileInput.displayName = 'FileInput';
+ImageInput.displayName = 'FileInput';
 
-interface ControlledFileInputProps<
+interface ControlledImageInputProps<
   TForm extends FieldValues,
   TField extends FieldPath<TForm>,
-> extends Omit<FileInputProps, 'label' | 'value' | 'onChange'> {
+> extends Omit<ImageInputProps, 'label' | 'value' | 'onChange'> {
   control: Control<TForm>;
   name: TField;
   label?: string;
 }
 
-export const ControlledFileInput = <
+export const ControlledImageInput = <
   TForm extends FieldValues,
   TField extends FieldPath<TForm>,
 >({
@@ -133,14 +134,14 @@ export const ControlledFileInput = <
   name,
   label,
   ...props
-}: ControlledFileInputProps<TForm, TField>) => {
+}: ControlledImageInputProps<TForm, TField>) => {
   return (
     <Controller
       control={control}
       name={name}
       render={({ field, fieldState }) => (
         <div className="flex flex-col gap-1">
-          <FileInput
+          <ImageInput
             label={
               <span className={fieldState.error && 'text-red-500'}>
                 {label}

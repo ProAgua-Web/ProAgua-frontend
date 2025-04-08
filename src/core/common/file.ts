@@ -1,10 +1,9 @@
 import { z } from 'zod';
 
 export interface FileDescription {
-  id: number;
-  nome: string;
-  tipo: string;
-  url: string;
+  id: string;
+  description: string;
+  src: string;
 }
 
 export const fileDescriptionSchema = z.object({
