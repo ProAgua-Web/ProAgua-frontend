@@ -5,7 +5,8 @@ interface Props {
   params: { id: number };
 }
 
-export default function Pagina({ params }: Props) {
+export default async function Pagina({ params }: Props) {
+  const { id } = await params;
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex w-full flex-col items-center">
@@ -17,14 +18,14 @@ export default function Pagina({ params }: Props) {
                 label: 'Solicitações',
               },
               {
-                route: `/admin/solicitacoes/${params.id}/editar`,
+                route: `/admin/solicitacoes/${id}/editar`,
                 label: 'Editar solicitação',
               },
             ]}
           />
         </div>
         <div className="w-full">
-          <EditarSolicitacao id={params.id} />
+          <EditarSolicitacao id={id} />
         </div>
       </div>
     </div>

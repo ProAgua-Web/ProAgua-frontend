@@ -5,7 +5,8 @@ interface Props {
   params: { codigo: string };
 }
 
-export default function Pagina({ params }: Props) {
+export default async function Pagina({ params }: Props) {
+  const { codigo } = await params;
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex w-full flex-col items-center">
@@ -13,14 +14,14 @@ export default function Pagina({ params }: Props) {
           <Breadcrumbs
             path={[
               {
-                route: `/admin/edificacoes/${params.codigo}/pontos/criar`,
+                route: `/admin/edificacoes/${codigo}/pontos/criar`,
                 label: 'Criar ponto',
               },
             ]}
           />
         </div>
         <div className="w-full">
-          <CriarPonto codigo={params.codigo} />
+          <CriarPonto codigo={codigo} />
         </div>
       </div>
     </div>

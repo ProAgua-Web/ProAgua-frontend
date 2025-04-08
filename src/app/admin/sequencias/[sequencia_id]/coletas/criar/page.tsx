@@ -5,7 +5,8 @@ interface Props {
   params: { sequencia_id: number };
 }
 
-export default function Pagina({ params }: Props) {
+export default async function Pagina({ params }: Props) {
+  const { sequencia_id } = await params;
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex w-full flex-col items-center">
@@ -17,18 +18,18 @@ export default function Pagina({ params }: Props) {
                 label: 'Sequência de coletas',
               },
               {
-                route: `/admin/sequencias/${params.sequencia_id}/coletas`,
+                route: `/admin/sequencias/${sequencia_id}/coletas`,
                 label: 'Coletas',
               },
               {
-                route: `/admin/sequencias/${params.sequencia_id}/coletas/criar`,
+                route: `/admin/sequencias/${sequencia_id}/coletas/criar`,
                 label: 'Criar coleta',
               },
             ]}
           />
         </div>
         <div className="w-full">
-          <CriarColeta id={params.sequencia_id} />
+          <CriarColeta id={sequencia_id} />
         </div>
       </div>
     </div>

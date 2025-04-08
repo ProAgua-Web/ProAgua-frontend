@@ -6,7 +6,8 @@ interface Props {
   params: { sequencia_id: number };
 }
 
-export default function Pagina({ params }: Props) {
+export default async function Pagina({ params }: Props) {
+  const { sequencia_id } = await params;
   return (
     <DataListPage
       breadcrumbs={[
@@ -15,18 +16,18 @@ export default function Pagina({ params }: Props) {
           label: 'Sequência de coletas',
         },
         {
-          route: `/admin/sequencias/${params.sequencia_id}/coletas`,
+          route: `/admin/sequencias/${sequencia_id}/coletas`,
           label: 'Coletas',
         },
       ]}
-      title={`Coletas da sequência ${params.sequencia_id}`}
-      subtitle={`Gerencie as coletas da sequência ${params.sequencia_id}`}
+      title={`Coletas da sequência ${sequencia_id}`}
+      subtitle={`Gerencie as coletas da sequência ${sequencia_id}`}
       newItemButton={{
         label: 'Criar coleta',
-        link: `/admin/sequencias/${params.sequencia_id}/coletas/criar`,
+        link: `/admin/sequencias/${sequencia_id}/coletas/criar`,
       }}
     >
-      <ColetasTable sequencia_id={params.sequencia_id} />
+      <ColetasTable sequencia_id={sequencia_id} />
     </DataListPage>
   );
 }
