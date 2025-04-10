@@ -11,17 +11,21 @@ import { StatusSolicitacao, TipoSolicitacao } from './solicitacao.utils';
 
 export const solicitacaoSchema = z.object({
   id: z.number().nullish(),
-  edificacao: z.string().min(1, { message: 'Edificação é obrigatória' }),
+  edificacao: z
+    .string({ message: 'Edificação é obrigatória' })
+    .min(1, { message: 'Edificação é obrigatória' }),
   ponto_id: z.number({ message: 'Ponto é obrigatório' }),
   tipo: z.nativeEnum(TipoSolicitacao, {
     message: 'Tipo de solicitação inválido',
   }),
-  objetivo: z.string().min(1, { message: 'Objetivo é obrigatório' }),
+  objetivo: z
+    .string({ message: 'Objetivo é obrigatório' })
+    .min(1, { message: 'Objetivo é obrigatório' }),
   justificativa: z.string().min(1, { message: 'Justificativa é obrigatória' }),
   status: z.nativeEnum(StatusSolicitacao, {
     message: 'Status de solicitação inválido',
   }),
-  imagens: z.union([z.array(imageSchema), z.array(fileDescriptionSchema)]),
+  imagens: z.array(z.union([imageSchema, fileDescriptionSchema])).default([]),
 });
 
 export type SolicitacaoSchema = z.infer<typeof solicitacaoSchema>;

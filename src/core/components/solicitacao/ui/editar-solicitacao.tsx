@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { updateImagensSolicitacao } from '../solicitacao.api';
 import { useSolicitacaoForm } from '../solicitacao.form';
 import { useEditarSolicitacao, useSolicitacao } from '../solicitacao.service';
 import { SolicitacaoForm } from './solicitacao-form';
@@ -18,6 +19,11 @@ export const EditarSolicitacao: React.FC<Props> = ({ id: id }) => {
 
   const editarSolicitacao = useEditarSolicitacao({
     onSuccess() {
+      const imagensDto = solicitacao.data?.imagens || [];
+      const imagensForm = form.getValues('imagens');
+
+      updateImagensSolicitacao(id, imagensForm, imagensDto);
+
       router.push('/admin/solicitacoes');
     },
     onFieldError(field, error) {

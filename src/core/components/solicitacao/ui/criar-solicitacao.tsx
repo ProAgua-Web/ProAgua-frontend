@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { createImagensSolicitacao } from '../solicitacao.api';
 import { useSolicitacaoForm } from '../solicitacao.form';
 import { useCriarSolicitacao } from '../solicitacao.service';
 import { SolicitacaoForm } from './solicitacao-form';
@@ -11,7 +12,12 @@ export const CriarSolicitacao = () => {
   const router = useRouter();
 
   const criarSolicitacao = useCriarSolicitacao({
-    onSuccess() {
+    onSuccess(schema, dto) {
+      const solicitacao = dto.data;
+      const imagens = schema.imagens;
+
+      createImagensSolicitacao(solicitacao.id!, imagens);
+
       router.push('/admin/solicitacoes');
     },
     onFieldError(field, error) {

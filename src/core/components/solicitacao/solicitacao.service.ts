@@ -1,3 +1,4 @@
+import { ApiResponse } from '@/lib/api';
 import {
   type ApiMutationOptions,
   type ApiQueryOptions,
@@ -46,9 +47,9 @@ export const useSolicitacao = (
 };
 
 export const useCriarSolicitacao = (
-  options?: ApiMutationOptions<SolicitacaoSchema>,
+  options?: ApiMutationOptions<SolicitacaoSchema, ApiResponse<SolicitacaoDto>>,
 ) => {
-  return useApiMutation<SolicitacaoSchema>({
+  return useApiMutation({
     mutationFn: (solicitacao) => {
       return createSolicitacao(solicitacaoSchemaToDto(solicitacao));
     },

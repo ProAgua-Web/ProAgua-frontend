@@ -6,13 +6,16 @@ import {
   type FormProps,
 } from '@/components/form/container';
 import { ControlledCombobox } from '@/components/form/input/combobox';
-import { ControlledFileInput } from '@/components/form/input/file-input';
+import { ControlledImageInput } from '@/components/form/input/image-input';
 import { ControlledSelect } from '@/components/form/input/select';
 import { ControlledTextArea } from '@/components/form/input/text-area';
 import { useEdificacoesOptions } from '../../edificacao/edificacao.utils';
 import { usePontosOptions } from '../../ponto/ponto.utils';
 import { type SolicitacaoSchema } from '../solicitacao.form';
-import { tipoSolicitacaoOptions } from '../solicitacao.utils';
+import {
+  statusSolicitacaoOptions,
+  tipoSolicitacaoOptions,
+} from '../solicitacao.utils';
 
 export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
   form,
@@ -68,10 +71,17 @@ export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
           label="Justificativa"
           placeholder="Descreva a justificativa da solicitação"
         />
-        <ControlledFileInput
+        <ControlledSelect
+          control={form.control}
+          name="status"
+          label="Status"
+          options={statusSolicitacaoOptions}
+        />
+        <ControlledImageInput
           control={form.control}
           name="imagens"
           label="Imagens"
+          multiple
         />
       </FormSection>
     </FormContainer>
