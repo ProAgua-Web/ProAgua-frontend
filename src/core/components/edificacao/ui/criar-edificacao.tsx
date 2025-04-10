@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { createImagensEdificacao } from '../edificacao.api';
 import { useEdificacaoForm } from '../edificacao.form';
 import { useCriarEdificacao } from '../edificacao.service';
 import { EdificacaoForm } from './edificacao-form';
@@ -12,6 +13,11 @@ export const CriarEdificacao = () => {
 
   const criarEdificacao = useCriarEdificacao({
     onSuccess() {
+      const codigo = form.getValues('codigo');
+      const imagens = form.getValues('imagens');
+
+      createImagensEdificacao(codigo, imagens);
+
       router.push('/admin/edificacoes');
     },
     onFieldError(field, error) {

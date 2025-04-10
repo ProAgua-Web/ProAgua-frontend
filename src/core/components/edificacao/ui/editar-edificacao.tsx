@@ -1,7 +1,7 @@
 'use client';
 
-import { updateImagensEdificacao } from '@/core/common/imagem/imagem.api';
 import { useRouter } from 'next/navigation';
+import { updateImagensEdificacao } from '../edificacao.api';
 import { useEdificacaoForm } from '../edificacao.form';
 import { useEdificacao, useEditarEdificacao } from '../edificacao.service';
 import { EdificacaoForm } from './edificacao-form';
