@@ -6,7 +6,7 @@ import {
   type FormProps,
 } from '@/components/form/container';
 import { ControlledCombobox } from '@/components/form/input/combobox';
-import { ControlledFileInput } from '@/components/form/input/file-input';
+import { ControlledImageInput } from '@/components/form/input/image-input';
 import { ControlledSelect } from '@/components/form/input/select';
 import { ControlledTextInput } from '@/components/form/input/text-input';
 import { cn } from '@/lib/utils';
@@ -62,7 +62,7 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
           placeholder="Informe o tipo"
           options={tipoPontosOptions.slice(0, 2)}
         />
-        <div className={cn({ hidden: tipo !== 1 })}>
+        <div className={cn({ hidden: tipo !== 0 })}>
           <ControlledTextInput
             control={form.control}
             name="tombo"
@@ -82,10 +82,11 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
         />
       </FormSection>
       <FormSection className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1">
-        <ControlledFileInput
+        <ControlledImageInput
           control={form.control}
           name="imagens"
           label="Imagens"
+          multiple
         />
       </FormSection>
     </FormContainer>

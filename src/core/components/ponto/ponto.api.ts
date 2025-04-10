@@ -1,3 +1,9 @@
+import {
+  createImages,
+  deleteImages,
+  ImagemDto,
+  updateImages,
+} from '@/core/common/imagem/imagem.api';
 import { api, type ApiResponse } from '@/lib/api';
 import {
   type CreatePontoDto,
@@ -34,8 +40,11 @@ export async function getPontosBySequenciaId(sequencia_id: number) {
   return response.data;
 }
 
-export async function createPonto(ponto: CreatePontoDto) {
-  await api.post('/pontos', ponto);
+export async function createPonto(
+  ponto: CreatePontoDto,
+): Promise<ApiResponse<PontoDto>> {
+  const response = await api.post<ApiResponse<PontoDto>>('/pontos', ponto);
+  return response.data;
 }
 
 export async function updatePonto(id: number, ponto: UpdatePontoDto) {
@@ -44,4 +53,27 @@ export async function updatePonto(id: number, ponto: UpdatePontoDto) {
 
 export async function deletePontos(id: number) {
   await api.delete(`/pontos/${id}`);
+}
+
+export async function createImagensPonto(
+  id: number,
+  imagens: Array<File | ImagemDto>,
+) {
+  return createImages({ entityPath: 'pontos', identifier: id }, imagens);
+}
+
+export async function deleteImagensPonto(id: number, imagens: ImagemDto[]) {
+  return deleteImages({ entityPath: 'pontos', identifier: id }, imagens);
+}
+
+export async function updateImagensPonto(
+  id: number,
+  imagensForm: Array<File | ImagemDto>,
+  imagensExistentes: ImagemDto[],
+) {
+  return updateImages(
+    { entityPath: 'pontos', identifier: id },
+    imagensForm,
+    imagensExistentes,
+  );
 }

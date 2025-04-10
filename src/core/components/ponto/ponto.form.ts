@@ -21,9 +21,7 @@ export const pontoSchema = z.object({
   tombo: z.string().nullish(),
   observacao: z.string().nullish(),
   material: z.string().nullish(),
-  imagens: z
-    .union([z.array(imageSchema), z.array(fileDescriptionSchema)])
-    .default([]),
+  imagens: z.array(z.union([imageSchema, fileDescriptionSchema])).default([]),
   quantidade: z.number().nullish(),
   capacidade: z.string().nullish(),
   fonte_informacao: z.string().nullish(),

@@ -8,7 +8,7 @@ export function pontoSchemaToDto(schema: PontoSchema): CreatePontoDto {
     tipo: schema.tipo,
     localizacao: schema.localizacao,
     amontante: schema.amontante ? schema.amontante : null,
-    tombo: schema.tipo === 1 ? schema.tombo : null,
+    tombo: schema.tipo === 0 ? schema.tombo : null,
     observacao: schema.observacao,
     material: schema.material,
     imagens: schema.imagens,

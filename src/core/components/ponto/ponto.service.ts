@@ -1,3 +1,4 @@
+import { ApiResponse } from '@/lib/api';
 import {
   type ApiMutationOptions,
   type ApiQueryOptions,
@@ -62,8 +63,10 @@ export const usePonto = (id: number, options?: ApiQueryOptions<PontoDto>) => {
   });
 };
 
-export const useCriarPonto = (options?: ApiMutationOptions<PontoSchema>) => {
-  return useApiMutation<PontoSchema>({
+export const useCriarPonto = (
+  options?: ApiMutationOptions<PontoSchema, ApiResponse<PontoDto>>,
+) => {
+  return useApiMutation({
     mutationFn: (ponto) => {
       return createPonto(pontoSchemaToDto(ponto));
     },
@@ -83,10 +86,10 @@ export const useEditarPonto = (
   options?: ApiMutationOptions<EditarPontoArgs>,
 ) => {
   return useApiMutation<EditarPontoArgs>({
-    mutationFn: ({ id: id, ponto }) => {
+    mutationFn: ({ id, ponto }) => {
       return updatePonto(id, pontoSchemaToDto(ponto));
     },
-    invalidateQueries: ({ id: codigo }) => [['pontos'], ['ponto', codigo]],
+    invalidateQueries: ({ id }) => [['pontos'], ['ponto', id]],
     successMessage: 'Ponto editado com sucesso!',
     errorMessage: 'Não foi possível editar o ponto',
     ...options,
