@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { createImagensPonto } from '../ponto.api';
 import { usePontoForm } from '../ponto.form';
 import { useCriarPonto } from '../ponto.service';
 import { ReservatorioForm } from './reservatorio-form';
@@ -15,7 +16,11 @@ export const CriarReservatorio: React.FC<Props> = ({ codigo: codigo }) => {
   const router = useRouter();
 
   const criarPonto = useCriarPonto({
-    onSuccess() {
+    onSuccess(schema, dto) {
+      const ponto = dto.data;
+      const imagens = schema.imagens;
+      createImagensPonto(ponto.id!, imagens);
+
       router.push(`/admin/edificacoes`);
     },
     onFieldError(field, error) {
