@@ -6,7 +6,7 @@ import {
   type FormProps,
 } from '@/components/form/container';
 import { ControlledCombobox } from '@/components/form/input/combobox';
-import { ControlledFileInput } from '@/components/form/input/file-input';
+import { ControlledImageInput } from '@/components/form/input/image-input';
 import { ControlledMaskedInput } from '@/components/form/input/masked-input';
 import { ControlledSelect } from '@/components/form/input/select';
 import { ControlledTextArea } from '@/components/form/input/text-area';
@@ -102,10 +102,11 @@ export const ReservatorioForm: React.FC<FormProps<PontoSchema> & Props> = ({
           placeholder="Informe a observação"
           rows={3}
         />
-        <ControlledFileInput
+        <ControlledImageInput
           control={form.control}
           name="imagens"
           label="Imagens"
+          multiple
         />
       </FormSection>
     </FormContainer>

@@ -7,17 +7,22 @@ import { DestructiveAlert } from '../alert-dialog';
 import { Button } from '../ui/button';
 
 export function CardPonto(props: Readonly<{ ponto: PontoDto }>) {
-  const randomNumber = Math.floor((Math.random() * 10) / 5) + 1;
   const { ponto } = props;
   const tipo = ponto.tipo < 2 ? 'pontos' : 'reservatorios';
   const excluirPonto = useExcluirPonto();
+
+  const pathImage = ponto.imagens.length
+    ? ponto.imagens[0].src
+    : '/sem-imagem.png';
   return (
     <div className="group relative flex min-h-64 grow flex-col items-center justify-between rounded-md bg-white text-center lg:max-w-64">
-      <img
-        src={`/example${randomNumber}.jpg`}
-        alt={`Imagem do ponto de coleta ${ponto.id}`}
-        className="w-full select-none object-cover transition-all duration-300 ease-in-out group-hover:grayscale-[50%]"
-      />
+      {pathImage && (
+        <img
+          src={pathImage}
+          alt={`Imagem do ponto de coleta ${ponto.id}`}
+          className="w-full select-none object-cover transition-all duration-300 ease-in-out group-hover:grayscale-[50%]"
+        />
+      )}
       <div
         className={cn(
           'absolute bottom-0 h-28 w-full overflow-hidden rounded-sm bg-slate-100 shadow lg:h-16',

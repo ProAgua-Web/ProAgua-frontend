@@ -21,7 +21,9 @@ export const solicitacaoSchema = z.object({
   objetivo: z
     .string({ message: 'Objetivo é obrigatório' })
     .min(1, { message: 'Objetivo é obrigatório' }),
-  justificativa: z.string().min(1, { message: 'Justificativa é obrigatória' }),
+  justificativa: z
+    .string({ message: 'Justificativa é obrigatória' })
+    .min(1, { message: 'Justificativa é obrigatória' }),
   status: z.nativeEnum(StatusSolicitacao, {
     message: 'Status de solicitação inválido',
   }),

@@ -69,7 +69,7 @@ export const useEditarSolicitacao = (
   options?: ApiMutationOptions<EditarSolicitacaoArgs>,
 ) => {
   return useApiMutation<EditarSolicitacaoArgs>({
-    mutationFn: ({ id, solicitacao: solicitacao }) => {
+    mutationFn: ({ id, solicitacao }) => {
       return updateSolicitacao(id, solicitacaoSchemaToDto(solicitacao));
     },
     invalidateQueries: ({ id }) => [['solicitacoes'], ['solicitacao', id]],
