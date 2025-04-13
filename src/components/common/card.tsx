@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 import { DestructiveAlert } from '../alert-dialog';
 import { Button } from '../ui/button';
@@ -68,11 +69,13 @@ Card.Image = function CardImage({ src, alt, link, className }: CardImageProps) {
   if (link) {
     return (
       <Link href={link}>
-        <img
+        <Image
+          width={256}
+          height={256}
           src={src}
           alt={alt}
           className={cn(
-            'w-full select-none object-cover transition-all duration-300 ease-in-out group-hover:grayscale-[50%]',
+            'h-full w-full select-none object-cover transition-all duration-300 ease-in-out group-hover:grayscale-[50%]',
             className,
           )}
         />

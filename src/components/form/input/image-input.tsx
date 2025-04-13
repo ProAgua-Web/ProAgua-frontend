@@ -6,6 +6,7 @@ import { type InputProps } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { type FileDescription } from '@/core/common/file';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 import { forwardRef, useRef } from 'react';
 import {
   Controller,
@@ -57,7 +58,9 @@ export const ImageInput = forwardRef<HTMLInputElement, ImageInputProps>(
               ) : (
                 value.map((file, i) => (
                   <div key={i} className="relative rounded-lg">
-                    <img
+                    <Image
+                      width={256}
+                      height={256}
                       src={'src' in file ? file.src : URL.createObjectURL(file)}
                       alt={'description' in file ? file.description : file.name}
                       className="h-full w-full rounded-lg border border-slate-300 object-cover lg:max-h-32 lg:max-w-32"
