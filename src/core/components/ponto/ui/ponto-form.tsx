@@ -21,7 +21,7 @@ interface Props {
 
 export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
   form,
-  codigo: codigo,
+  codigo,
   ...props
 }) => {
   const edificacaoOptions = useEdificacoesOptions();
@@ -47,6 +47,7 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
               : 'Selecione a edificação'
           }
           disabled={edificacaoOptions.isLoading}
+          readOnly={!!codigo}
           {...edificacaoOptions}
         />
         <ControlledTextInput

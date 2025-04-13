@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default async function Pagina({ params }: Props) {
-  const { codigo, ponto_id } = await params;
+  const { ponto_id, codigo } = await params;
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -15,7 +15,11 @@ export default async function Pagina({ params }: Props) {
           <Breadcrumbs
             path={[
               {
-                route: `/admin/edificacoes/${ponto_id}/pontos/${ponto_id}/editar`,
+                label: 'Pontos de coleta',
+                route: `/admin/edificacoes/${codigo}/pontos`,
+              },
+              {
+                route: `/admin/edificacoes/${codigo}/pontos/${ponto_id}/editar`,
                 label: 'Editar ponto de coleta',
               },
             ]}

@@ -1,4 +1,3 @@
-'use client';
 import { DataListPage } from '@/components/layout/datalist';
 import { ColetasTable } from './table';
 
@@ -22,10 +21,12 @@ export default async function Pagina({ params }: Props) {
       ]}
       title={`Coletas da sequência ${sequencia_id}`}
       subtitle={`Gerencie as coletas da sequência ${sequencia_id}`}
-      newItemButton={{
-        label: 'Criar coleta',
-        link: `/admin/sequencias/${sequencia_id}/coletas/criar`,
-      }}
+      newItemButton={[
+        {
+          label: 'Criar coleta',
+          route: `/admin/sequencias/${sequencia_id}/coletas/criar`,
+        },
+      ]}
     >
       <ColetasTable sequencia_id={sequencia_id} />
     </DataListPage>

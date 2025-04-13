@@ -15,6 +15,10 @@ export default async function Pagina({ params }: Props) {
           <Breadcrumbs
             path={[
               {
+                label: 'Pontos de coleta',
+                route: `/admin/edificacoes/${codigo}/pontos`,
+              },
+              {
                 route: `/admin/edificacoes/${ponto_id}/reservatorios/${ponto_id}/editar`,
                 label: 'Editar reservatório',
               },

@@ -21,7 +21,7 @@ export const CriarReservatorio: React.FC<Props> = ({ codigo: codigo }) => {
       const imagens = schema.imagens;
       createImagensPonto(ponto.id!, imagens);
 
-      router.push(`/admin/edificacoes`);
+      router.push(`/admin/edificacoes/${codigo}/pontos`);
     },
     onFieldError(field, error) {
       form.setError(field, error);

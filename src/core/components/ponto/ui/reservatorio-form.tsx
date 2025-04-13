@@ -49,6 +49,7 @@ export const ReservatorioForm: React.FC<FormProps<PontoSchema> & Props> = ({
               : 'Selecione a edificação'
           }
           disabled={edificacaoOptions.isLoading}
+          readOnly={!!codigo}
           {...edificacaoOptions}
         />
         <ControlledTextInput

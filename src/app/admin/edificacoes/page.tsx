@@ -3,7 +3,6 @@
 import { DataListPage } from '@/components/layout/datalist';
 import { useEdificacoes } from '@/core/components/edificacao/edificacao.service';
 import { CardEdificacao } from '@/core/components/edificacao/ui/card-edificacao';
-import { usePontos } from '@/core/components/ponto/ponto.service';
 import { useQueryState } from 'nuqs';
 import { Filters } from './filters';
 
@@ -16,7 +15,6 @@ export default function Page() {
     ...(campus && { campus }),
     limit: 0,
   };
-  const { data: pontos = [] } = usePontos(params);
 
   const { data: edificacoes = [] } = useEdificacoes(params);
 
@@ -24,10 +22,12 @@ export default function Page() {
     <DataListPage
       title="Edificações e Pontos de Coleta"
       subtitle="Gerencie as edificações e os pontos de coleta do sistema."
-      newItemButton={{
-        label: 'Criar edificação',
-        link: '/admin/edificacoes/criar',
-      }}
+      newItemButton={[
+        {
+          label: 'Criar edificação',
+          route: '/admin/edificacoes/criar',
+        },
+      ]}
       breadcrumbs={[]}
     >
       <div className="mb-4 flex w-full flex-col gap-4">

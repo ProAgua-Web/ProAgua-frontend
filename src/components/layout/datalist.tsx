@@ -9,7 +9,7 @@ interface Props {
   breadcrumbs: Array<{ route: string; label: string }>;
   title: string;
   subtitle: string;
-  newItemButton: { label: string; link: string };
+  newItemButton: Array<{ label: string; route: string }>;
   children: React.ReactNode;
 }
 
@@ -34,12 +34,21 @@ export function DataListPage(props: Props) {
             <p className="text-xs text-slate-500">{subtitle}</p>
           </div>
           <div>
-            <Button variant="add" className="h-full w-full lg:w-fit" asChild>
-              <Link href={createButton.link}>
-                <HiOutlinePlus size={20} />
-                {createButton.label}
-              </Link>
-            </Button>
+            <div className="flex gap-4">
+              {createButton.map((button, index) => (
+                <Button
+                  key={index}
+                  variant="add"
+                  className="h-full w-full lg:w-fit"
+                  asChild
+                >
+                  <Link href={button.route}>
+                    <HiOutlinePlus size={20} />
+                    {button.label}
+                  </Link>
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
         <div className="w-full">{children}</div>

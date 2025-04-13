@@ -8,9 +8,10 @@ import { PontoForm } from './ponto-form';
 
 interface Props {
   ponto_id: number;
+  codigo: string;
 }
 
-export const EditarPonto: React.FC<Props> = ({ ponto_id: ponto_id }) => {
+export const EditarPonto: React.FC<Props> = ({ ponto_id, codigo }) => {
   const id = ponto_id;
   const ponto = usePonto(id, { gcTime: Infinity });
 
@@ -25,7 +26,7 @@ export const EditarPonto: React.FC<Props> = ({ ponto_id: ponto_id }) => {
 
       updateImagensPonto(id, imagensForm, imagensDto);
 
-      router.push(`/admin/edificacoes`);
+      router.push(`/admin/edificacoes/${codigo}/pontos`);
     },
     onFieldError(field, error) {
       form.setError(field, error);

@@ -14,10 +14,12 @@ export default function Pagina() {
       ]}
       title="Solicitações"
       subtitle="Gerencie as solicitações do sistema"
-      newItemButton={{
-        label: 'Criar solicitação',
-        link: '/admin/solicitacoes/criar',
-      }}
+      newItemButton={[
+        {
+          label: 'Criar solicitação',
+          route: '/admin/solicitacoes/criar',
+        },
+      ]}
     >
       <SolicitacaoDataTable />
     </DataListPage>

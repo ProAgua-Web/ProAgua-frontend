@@ -14,10 +14,12 @@ export default function Pagina() {
       ]}
       title="Sequência de coletas"
       subtitle="Gerencie as sequências de coletas do sistema"
-      newItemButton={{
-        label: 'Criar sequência',
-        link: '/admin/sequencias/criar',
-      }}
+      newItemButton={[
+        {
+          label: 'Criar sequência',
+          route: '/admin/sequencias/criar',
+        },
+      ]}
     >
       <SequenciaDataTable />
     </DataListPage>

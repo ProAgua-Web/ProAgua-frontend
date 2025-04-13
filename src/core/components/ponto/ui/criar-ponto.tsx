@@ -22,7 +22,7 @@ export const CriarPonto: React.FC<Props> = ({ codigo: codigo }) => {
 
       createImagensPonto(ponto.id!, imagens);
 
-      router.push(`/admin/edificacoes`);
+      router.push(`/admin/edificacoes/${codigo}/pontos`);
     },
     onFieldError(field, error) {
       form.setError(field, error);
