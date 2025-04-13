@@ -2,7 +2,7 @@
 
 import { DataListPage } from '@/components/layout/datalist';
 import { useEdificacoes } from '@/core/components/edificacao/edificacao.service';
-import { DeckEdificacoes } from '@/core/components/edificacao/ui/edificacao-wrapper';
+import { CardEdificacao } from '@/core/components/edificacao/ui/card-edificacao';
 import { usePontos } from '@/core/components/ponto/ponto.service';
 import { useQueryState } from 'nuqs';
 import { Filters } from './filters';
@@ -33,7 +33,11 @@ export default function Page() {
       <div className="mb-4 flex w-full flex-col gap-4">
         <Filters />
       </div>
-      <DeckEdificacoes edificacoes={edificacoes} pontos={pontos} />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {edificacoes.map((edificacao) => (
+          <CardEdificacao key={edificacao.codigo} edificacao={edificacao} />
+        ))}
+      </div>
     </DataListPage>
   );
 }

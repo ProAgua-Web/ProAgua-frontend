@@ -1,7 +1,7 @@
 'use client';
 
 import Header from '@/components/layout/header';
-import { CardPonto } from '@/components/pontos/card';
+import { CardPonto } from '@/core/components/coleta/ui/card-ponto';
 import { PontoDto } from '@/core/components/ponto/ponto.model';
 import { toURLParams, useEdificacoes } from '@/utils/api/client_side_consumer';
 import { Edificacao, Ponto } from '@/utils/types';

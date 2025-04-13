@@ -12,7 +12,7 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { FaEllipsis } from 'react-icons/fa6';
-import { CardPonto } from '../../../../components/pontos/card';
+import { CardPonto } from '../../coleta/ui/card-ponto';
 import { useExcluirEdificacao } from '../edificacao.service';
 
 interface CardEdificacaoProps {

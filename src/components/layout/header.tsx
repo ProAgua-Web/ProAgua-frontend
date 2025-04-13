@@ -14,7 +14,7 @@ export default function Header(props: {
   const { sair } = useAutenticacao();
 
   return (
-    <header className="fixed z-20 flex h-20 w-full items-center bg-primary-500 text-white-100 shadow-lg">
+    <header className="fixed z-50 flex h-20 w-full items-center bg-primary-500 text-white-100 shadow-lg">
       <div className="flex w-full justify-center">
         <div className="w-fit items-center">
           <Link
