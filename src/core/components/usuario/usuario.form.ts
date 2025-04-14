@@ -1,11 +1,13 @@
+'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { usuarioDtoToSchema } from './usuario.mapper';
+import { updateUsuarioSchemaToDto } from './usuario.mapper';
 import { type UsuarioDto } from './usuario.model';
 
-export const usuarioSchema = z.object({
+export const usuarioSchemaBase = z.object({
   first_name: z
     .string({ message: 'Informe o nome do usuário' })
     .min(1, 'Informe o nome do usuário'),
@@ -18,24 +20,31 @@ export const usuarioSchema = z.object({
   email: z
     .string({ message: 'Informe o e-mail do usuário' })
     .email('E-mail inválido'),
+  is_superuser: z.boolean().default(false),
+});
+
+export const criarUsuarioSchema = usuarioSchemaBase.extend({
   password: z
     .string({ message: 'Informe a senha do usuário' })
     .min(6, 'Senha deve ter no mínimo 6 caracteres'),
 });
 
-export type UsuarioSchema = z.infer<typeof usuarioSchema>;
+export const editarUsuarioSchema = usuarioSchemaBase;
 
-export const useCriarUsuarioForm = (dto: UsuarioDto) => {
-  const form = useForm<UsuarioSchema>({
-    resolver: zodResolver(usuarioSchema),
-    defaultValues: dto ? usuarioDtoToSchema(dto) : undefined,
+export type CriarUsuarioSchema = z.infer<typeof criarUsuarioSchema>;
+export type EditarUsuarioSchema = z.infer<typeof editarUsuarioSchema>;
+
+export const useUsuarioForm = (dto?: UsuarioDto) => {
+  const form = useForm<CriarUsuarioSchema | EditarUsuarioSchema>({
+    resolver: zodResolver(dto ? editarUsuarioSchema : criarUsuarioSchema),
+    defaultValues: dto ? updateUsuarioSchemaToDto(dto) : undefined,
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
 
   useEffect(() => {
     if (dto) {
-      form.reset(usuarioDtoToSchema(dto));
+      form.reset(updateUsuarioSchemaToDto(dto));
     }
   }, [dto, form]);
 

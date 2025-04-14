@@ -11,8 +11,11 @@ import {
   type ApiMutationOptions,
   type ApiQueryOptions,
 } from '@/lib/data-service';
-import { type UsuarioSchema } from './usuario.form';
-import { usuarioSchemaToDto } from './usuario.mapper';
+import { EditarUsuarioSchema, type CriarUsuarioSchema } from './usuario.form';
+import {
+  createUsuarioSchemaToDto,
+  updateUsuarioSchemaToDto,
+} from './usuario.mapper';
 import { type UsuarioDto } from './usuario.model';
 
 export const useUsuarios = (options?: ApiQueryOptions<UsuarioDto[]>) => {
@@ -30,13 +33,13 @@ export const useUsuarios = (options?: ApiQueryOptions<UsuarioDto[]>) => {
 };
 
 export const useUsuario = (
-  id: number,
+  username: string,
   options?: ApiQueryOptions<UsuarioDto>,
 ) => {
   return useApiQuery({
-    queryKey: ['usuario', id],
+    queryKey: ['usuario', username],
     queryFn: async () => {
-      const response = await getUsuario(id);
+      const response = await getUsuario(username);
       return response.data;
     },
     ...options,
@@ -44,11 +47,11 @@ export const useUsuario = (
 };
 
 export const useCriarUsuario = (
-  options?: ApiMutationOptions<UsuarioSchema>,
+  options?: ApiMutationOptions<CriarUsuarioSchema>,
 ) => {
   return useApiMutation({
     mutationFn: (usuario) => {
-      return createUsuario(usuarioSchemaToDto(usuario));
+      return createUsuario(createUsuarioSchemaToDto(usuario));
     },
     invalidateQueries: () => [['usuarios']],
     successMessage: 'Usuário cadastrado com sucesso!',
@@ -58,20 +61,20 @@ export const useCriarUsuario = (
 };
 
 interface EditarUsuarioArgs {
-  id: number;
-  usuario: UsuarioSchema;
+  username: string;
+  usuario: EditarUsuarioSchema;
 }
 
 export const useEditarUsuario = (
   options?: ApiMutationOptions<EditarUsuarioArgs>,
 ) => {
   return useApiMutation<EditarUsuarioArgs>({
-    mutationFn: ({ id, usuario }) => {
-      return updateUsuario(id, usuarioSchemaToDto(usuario));
+    mutationFn: ({ username, usuario }) => {
+      return updateUsuario(username, updateUsuarioSchemaToDto(usuario));
     },
-    invalidateQueries: ({ id }) => [
+    invalidateQueries: ({ username }) => [
       ['usuarios'],
-      ['usuario', id],
+      ['usuario', username],
       ['usuario-autenticado'],
     ],
     successMessage: 'Usuário atualizado com sucesso!',
@@ -80,14 +83,14 @@ export const useEditarUsuario = (
   });
 };
 
-export const useExcluirUsuario = (options?: ApiMutationOptions<number>) => {
-  return useApiMutation<number>({
-    mutationFn: (id) => {
-      return deleteUsuario(id);
+export const useExcluirUsuario = (options?: ApiMutationOptions<string>) => {
+  return useApiMutation<string>({
+    mutationFn: (username) => {
+      return deleteUsuario(username);
     },
-    invalidateQueries: (id) => [
+    invalidateQueries: (username) => [
       ['usuarios'],
-      ['usuario', id],
+      ['usuario', username],
       ['usuario-autenticado'],
     ],
     successMessage: 'Usuário excluído com sucesso!',

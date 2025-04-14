@@ -28,7 +28,7 @@ export const SolicitacaoDataTable = () => {
       data={
         solicitacoes.data?.map((solicitacao) => ({
           id: solicitacao.id!,
-          Código: solicitacao.id!.toString(),
+          Código: String(solicitacao.id!).padStart(4, '0'),
           Edificação: solicitacao.ponto.edificacao.codigo,
           Tipo: tipoSolicitacaoLabel[solicitacao.tipo],
           Data: formatDate(solicitacao.data),

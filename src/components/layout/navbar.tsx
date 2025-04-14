@@ -7,6 +7,7 @@ import {
   faFileExcel,
   faGear,
   faLocationDot,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
@@ -46,6 +47,11 @@ const NAV_LINKS: NavLink[] = [
     name: 'Solicitações',
   },
   {
+    href: '/admin/usuarios',
+    icon: <FontAwesomeIcon icon={faUser} className="h-6 w-6 p-2" />,
+    name: 'Usuários',
+  },
+  {
     href: '/admin/configuracoes',
     icon: <FontAwesomeIcon icon={faGear} className="h-6 w-6 p-2" />,
     name: 'Configurações',
@@ -72,7 +78,7 @@ export const Navbar: FC = () => {
     >
       <div
         className={cn(
-          'fixed z-30 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:sticky lg:h-screen lg:max-w-60',
+          'fixed z-50 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:sticky lg:h-screen lg:max-w-60',
           isCollapsed ? 'fixed h-20 w-20' : 'h-screen',
         )}
       >

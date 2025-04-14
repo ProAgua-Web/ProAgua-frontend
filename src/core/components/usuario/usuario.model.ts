@@ -1,13 +1,12 @@
 export interface UsuarioDto {
   id?: number | null;
-  isSuperUser: boolean;
+  is_superuser: boolean;
   username: string;
   first_name: string;
   last_name: string;
   password: string;
   email: string;
 }
-export interface CreateUsuarioDto
-  extends Omit<UsuarioDto, 'id' | 'isSuperUser'> {}
+export interface CreateUsuarioDto extends Omit<UsuarioDto, 'id'> {}
 
-export type UpdateUsuarioDto = CreateUsuarioDto;
+export interface UpdateUsuarioDto extends Omit<CreateUsuarioDto, 'password'> {}

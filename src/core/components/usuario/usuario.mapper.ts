@@ -1,22 +1,38 @@
-import { type UsuarioSchema } from './usuario.form';
-import { type CreateUsuarioDto, type UsuarioDto } from './usuario.model';
+import { EditarUsuarioSchema, type CriarUsuarioSchema } from './usuario.form';
+import { UpdateUsuarioDto, type CreateUsuarioDto } from './usuario.model';
 
-export function usuarioDtoToSchema(usuario: UsuarioDto): UsuarioSchema {
+// export function usuarioDtoToSchema(dto: UsuarioDto): CriarUsuarioSchema {
+//   return {
+//     first_name: dto.first_name,
+//     last_name: dto.last_name,
+//     username: dto.username,
+//     email: dto.email,
+//     password: dto.password,
+//     is_superuser: dto.is_superuser,
+//   };
+// }
+
+export function createUsuarioSchemaToDto(
+  schema: CriarUsuarioSchema,
+): CreateUsuarioDto {
   return {
-    first_name: usuario.first_name,
-    last_name: usuario.last_name,
-    username: usuario.username,
-    email: usuario.email,
-    password: usuario.password,
+    first_name: schema.first_name,
+    last_name: schema.last_name,
+    username: schema.username,
+    email: schema.email,
+    password: schema.password,
+    is_superuser: schema.is_superuser,
   };
 }
 
-export function usuarioSchemaToDto(usuario: UsuarioSchema): CreateUsuarioDto {
+export function updateUsuarioSchemaToDto(
+  schema: EditarUsuarioSchema,
+): UpdateUsuarioDto {
   return {
-    first_name: usuario.first_name,
-    last_name: usuario.last_name,
-    username: usuario.username,
-    email: usuario.email,
-    password: usuario.password,
+    first_name: schema.first_name,
+    last_name: schema.last_name,
+    username: schema.username,
+    email: schema.email,
+    is_superuser: schema.is_superuser,
   };
 }

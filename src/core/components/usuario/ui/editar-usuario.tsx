@@ -1,85 +1,76 @@
 'use client';
 
 import { FormContainer, FormSection } from '@/components/form/container';
-import { ControlledMaskedInput } from '@/components/form/input/masked-input';
-import { ControlledMultiSelect } from '@/components/form/input/multi-select';
-import { ControlledSelect } from '@/components/form/input/select';
+import { ControlledCheckbox } from '@/components/form/input/checkbox';
 import { ControlledTextInput } from '@/components/form/input/text-input';
-import { telefoneMask } from '@/lib/input-mask';
 import { useRouter } from 'next/navigation';
-import { type UsuarioSchema, useEditarUsuarioForm } from '../usuario.form';
+import { EditarUsuarioSchema, useUsuarioForm } from '../usuario.form';
 import { useEditarUsuario, useUsuario } from '../usuario.service';
-import { nivelUsuarioOptions } from '../usuario.utils';
 
 interface Props {
-  id: number;
+  username: string;
 }
 
-export const EditarUsuario: React.FC<Props> = ({ id }) => {
-  const usuario = useUsuario(id, { gcTime: Infinity });
+export const EditarUsuario: React.FC<Props> = ({ username }) => {
+  const usuario = useUsuario(username, { gcTime: Infinity });
 
-  const form = useEditarUsuarioForm(usuario.data);
+  const form = useUsuarioForm(usuario.data);
 
   const router = useRouter();
 
   const editarUsuario = useEditarUsuario({
     onSuccess() {
-      router.push('/usuarios');
+      router.push('/admin/usuarios');
     },
     onFieldError(field, error) {
       form.setError(field, error);
     },
   });
 
-  const unidadesOptions = useUnidadesOptions();
-
-  const handleSubmit = form.handleSubmit((usuario: UsuarioSchema) => {
-    editarUsuario.mutate({ id, usuario });
+  const handleSubmit = form.handleSubmit((usuario: EditarUsuarioSchema) => {
+    editarUsuario.mutate({ username, usuario });
   });
 
   return (
     <FormContainer
       title="Editar usuário"
-      subtitle="Altere os campos abaixo para editar um usuário do sistema"
+      subtitle="Preencha os campos abaixo para editar o usuário"
       onSubmit={handleSubmit}
       onCancel={() => router.back()}
+      isSubmitting={editarUsuario.isPending}
       isLoading={usuario.isLoading}
-      isSubmitting={usuario.isPending}
     >
-      <FormSection title="Informações gerais">
+      <FormSection>
         <ControlledTextInput
           control={form.control}
-          name="nome"
-          label="Nome completo"
-          placeholder="Informe o nome completo"
+          name="first_name"
+          label="Primeiro nome"
+          placeholder="Digite o primeiro nome"
         />
-        <ControlledSelect
+        <ControlledTextInput
           control={form.control}
-          name="nivel"
-          label="Nível de acesso"
-          options={nivelUsuarioOptions}
+          name="last_name"
+          label="Sobrenome"
+          placeholder="Digite o sobrenome"
         />
-        <ControlledMultiSelect
+        <ControlledTextInput
           control={form.control}
-          name="unidades"
-          {...unidadesOptions}
-          label="Unidades"
-          placeholder="Selecione uma ou mais unidades"
+          name="username"
+          label="Nome de usuário"
+          placeholder="Digite o nome de usuário"
         />
-      </FormSection>
-      <FormSection title="Contato">
         <ControlledTextInput
           control={form.control}
           name="email"
-          label="E-mail"
-          placeholder="Informe o e-mail"
+          label="Email"
+          placeholder="Digite o email"
         />
-        <ControlledMaskedInput
+      </FormSection>
+      <FormSection>
+        <ControlledCheckbox
           control={form.control}
-          name="whatsapp"
-          mask={telefoneMask}
-          label="Telefone"
-          placeholder="Informe o Telefone"
+          name="is_superuser"
+          label="Administrador"
         />
       </FormSection>
     </FormContainer>
