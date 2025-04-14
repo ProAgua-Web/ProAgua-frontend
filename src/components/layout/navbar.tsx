@@ -95,7 +95,7 @@ export const Navbar: FC = () => {
       </div>
       <div
         className={cn(
-          'fixed z-30 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:h-screen lg:max-w-60',
+          'fixed z-50 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:h-screen lg:max-w-60',
           isCollapsed ? 'fixed h-20 w-20' : 'h-screen',
         )}
       >
