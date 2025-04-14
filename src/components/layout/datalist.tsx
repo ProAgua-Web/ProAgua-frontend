@@ -13,7 +13,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export function DataListPage(props: Props) {
+export function DataListLayout(props: Props) {
   const {
     breadcrumbs,
     title,

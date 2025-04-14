@@ -1,6 +1,6 @@
 'use client';
 
-import { DataListPage } from '@/components/layout/datalist';
+import { DataListLayout } from '@/components/layout/datalist';
 import { useEdificacoes } from '@/core/components/edificacao/edificacao.service';
 import { CardEdificacao } from '@/core/components/edificacao/ui/card-edificacao';
 import { useQueryState } from 'nuqs';
@@ -19,7 +19,7 @@ export default function Page() {
   const { data: edificacoes = [] } = useEdificacoes(params);
 
   return (
-    <DataListPage
+    <DataListLayout
       title="Edificações e Pontos de Coleta"
       subtitle="Gerencie as edificações e os pontos de coleta do sistema."
       newItemButton={[
@@ -38,6 +38,6 @@ export default function Page() {
           <CardEdificacao key={edificacao.codigo} edificacao={edificacao} />
         ))}
       </div>
-    </DataListPage>
+    </DataListLayout>
   );
 }

@@ -1,11 +1,11 @@
 'use client';
 
-import { DataListPage } from '@/components/layout/datalist';
+import { DataListLayout } from '@/components/layout/datalist';
 import { UsuarioDataTable } from './table';
 
 export default function Pagina() {
   return (
-    <DataListPage
+    <DataListLayout
       breadcrumbs={[
         {
           route: '/admin/usuarios',
@@ -22,6 +22,6 @@ export default function Pagina() {
       ]}
     >
       <UsuarioDataTable />
-    </DataListPage>
+    </DataListLayout>
   );
 }
