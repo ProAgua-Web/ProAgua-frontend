@@ -52,9 +52,9 @@ const NAV_LINKS: NavLink[] = [
     name: 'Usuários',
   },
   {
-    href: '/admin/configuracoes',
+    href: '/admin/referencia',
     icon: <FontAwesomeIcon icon={faGear} className="h-6 w-6 p-2" />,
-    name: 'Configurações',
+    name: 'Referência',
   },
   {
     href: '/admin/export',
