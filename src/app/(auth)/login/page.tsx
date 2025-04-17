@@ -102,7 +102,7 @@ export default function Login() {
         className="text-md"
         disabled={disabled}
       >
-        {autenticando && <Spinner />} Entrar
+        {autenticando && <Spinner />} {autenticando ? 'Entrando...' : 'Entrar'}
       </Button>
     </form>
   );

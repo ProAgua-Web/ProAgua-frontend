@@ -10,11 +10,11 @@ import { type Token } from '@/core/common/autenticacao/autenticacao.service';
 //   }
 // }
 
-export function salvarCSRFTokenNoLocalStorage(token: string) {
-  if ('window' in globalThis) {
-    localStorage.setItem('proagua:csrftoken', JSON.stringify(token));
-  }
-}
+// export function salvarCSRFTokenNoLocalStorage(token: string) {
+//   if ('window' in globalThis) {
+//     localStorage.setItem('proagua:csrftoken', JSON.stringify(token));
+//   }
+// }
 
 export function salvarTokenNoLocalStorage(token: Token) {
   if ('window' in globalThis) {

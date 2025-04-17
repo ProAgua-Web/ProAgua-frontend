@@ -1,5 +1,5 @@
 import { getUsuarioByUsername } from '@/core/components/usuario/usuario.api';
-import { type Usuario } from '@/core/components/usuario/usuario.model';
+import { type UsuarioDto } from '@/core/components/usuario/usuario.model';
 import {
   type ApiMutationOptions,
   type ApiQueryOptions,
@@ -56,14 +56,14 @@ export const useEntrar = ({
 
 export async function obterUsuarioAutenticado(
   username: string,
-): Promise<Usuario> {
+): Promise<UsuarioDto> {
   const response = await getUsuarioByUsername(username);
   return response.data;
 }
 
 export const useUsuarioAutenticado = (
   username?: string,
-  options?: ApiQueryOptions<Usuario | null>,
+  options?: ApiQueryOptions<UsuarioDto | null>,
 ) => {
   return useApiQuery({
     queryKey: ['usuario-autenticado', username],

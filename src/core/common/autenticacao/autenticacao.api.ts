@@ -26,6 +26,11 @@ export async function entrar(data: CredenciaisDTO) {
   return res.data;
 }
 
+export async function sair() {
+  const res = await api.get(ENDPOINT + '/logout');
+  return res.data;
+}
+
 export interface PrimeiroAcessoDTO {
   password: string;
 }
