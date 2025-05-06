@@ -90,11 +90,10 @@ export function ExportTable() {
     ...(turbidez_minima && { turbidez_minima: parseFloat(turbidez_minima) }),
     ...(turbidez_maxima && { turbidez_maxima: parseFloat(turbidez_maxima) }),
     ...(coliformes_totais !== 'all' && {
-      coliformes_totais:
-        coliformes_totais === 'true' || coliformes_totais === 'false',
+      coliformes_totais: coliformes_totais === 'false' ? false : true,
     }),
     ...(escherichia !== 'all' && {
-      escherichia: escherichia === 'true' || escherichia === 'false',
+      escherichia: escherichia === 'false' ? false : true,
     }),
     ...(cor_minima && { cor_minima: parseFloat(cor_minima) }),
     ...(cor_maxima && { cor_maxima: parseFloat(cor_maxima) }),

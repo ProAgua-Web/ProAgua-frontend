@@ -306,20 +306,13 @@ export const Filters: React.FC = () => {
         )
           return false;
 
-        // Permite valores numéricos (inclusive 0, se necessário)
         if (typeof value === 'number') return true;
-
-        // Permite valores booleanos (true/false)
         if (typeof value === 'boolean') return true;
-
-        // Permite strings não vazias
         if (typeof value === 'string' && value.trim() !== '') return true;
 
         return false;
       }),
     );
-
-    // Converte valores de data para strings no formato ISO
 
     const queryString = qs.stringify(filteredData, { skipNulls: true });
     const url = `${window.location.pathname}?${queryString}`;
