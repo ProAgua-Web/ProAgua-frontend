@@ -156,55 +156,6 @@ export const useFilterForm = () => {
   return form;
 };
 
-export function useSearchFilter() {
-  // const [ponto_id] = useQueryState('ponto_id', { defaultValue: '' });
-  // const [sequencia_id] = useQueryState('sequencia_id', { defaultValue: '' });
-  // const [responsavel] = useQueryState('responsavel', { defaultValue: '' });
-  // const [data_minima] = useQueryState('data_minima', { defaultValue: '' });
-  // const [data_maxima] = useQueryState('data_maxima', { defaultValue: '' });
-  // const [temperatura_minima] = useQueryState('temperatura_minima', {
-  //   defaultValue: '',
-  // });
-  // const [temperatura_maxima] = useQueryState('temperatura_maxima', {
-  //   defaultValue: '',
-  // });
-  // const [cloro_residual_livre_minimo] = useQueryState(
-  //   'cloro_residual_livre_minimo',
-  //   { defaultValue: '' },
-  // );
-  // const [cloro_residual_livre_maximo] = useQueryState(
-  //   'cloro_residual_livre_maximo',
-  //   { defaultValue: '' },
-  // );
-  // const [turbidez_minima] = useQueryState('turbidez_minima', {
-  //   defaultValue: '',
-  // });
-  // const [turbidez_maxima] = useQueryState('turbidez_maxima', {
-  //   defaultValue: '',
-  // });
-  // const [coliformes_totais] = useQueryState('coliformes_totais', {
-  //   defaultValue: '',
-  // });
-  // const [escherichia] = useQueryState('escherichia', { defaultValue: '' });
-  // const [cor_minima] = useQueryState('cor_minima', { defaultValue: '' });
-  // const [cor_maxima] = useQueryState('cor_maxima', { defaultValue: '' });
-  // const [ordem] = useQueryState('ordem', { defaultValue: '' });
-  // const [codigo_edificacao] = useQueryState('codigo_edificacao', {
-  //   defaultValue: '',
-  // });
-  // const [campus] = useQueryState('campus', { defaultValue: '' });
-  // const [codigoEdificacao, setCodigoEdificacao] = useQueryState('codigo_edificacao', { defaultValue: '' });
-  // const [responsavel, setResponvavel] = useQueryState('responvavel', { defaultValue: '' });
-  // const handleSearch = useDebouncedCallback((query: string) => {
-  //   setCodigoEdificacao(query || null);
-  // }, 300);
-  // return {
-  //   codigo_edificacao: codigoEdificacao,
-  //   campus: responsavel,
-  //   handleSearch,
-  // };
-}
-
 export const FilterForm: React.FC<FormProps<FilterSchema>> = ({
   form,
   isLoading,
@@ -332,9 +283,19 @@ export const Filters: React.FC = () => {
 
   const { handleSubmit } = form;
   const onSubmit = handleSubmit((data) => {
+    // Converte valores de data para strings no formato ISO antes de filtrar
+    const dataWithFormattedDates = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [
+        key,
+        value instanceof Date
+          ? value.toISOString().split('T')[0] // Extrai apenas a parte da data (YYYY-MM-DD)
+          : value,
+      ]),
+    );
+
     // Filtra os campos nulos, undefined, strings vazias e valores padrão
     const filteredData = Object.fromEntries(
-      Object.entries(data).filter(([_, value]) => {
+      Object.entries(dataWithFormattedDates).filter(([_, value]) => {
         // Remove valores nulos, undefined, strings vazias
         if (
           value === null ||
@@ -357,6 +318,8 @@ export const Filters: React.FC = () => {
         return false;
       }),
     );
+
+    // Converte valores de data para strings no formato ISO
 
     const queryString = qs.stringify(filteredData, { skipNulls: true });
     const url = `${window.location.pathname}?${queryString}`;
