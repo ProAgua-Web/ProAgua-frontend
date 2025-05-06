@@ -4,7 +4,7 @@ import {
   type SelectProps as PropsBase,
   type Value,
 } from '@/components/ui/select';
-import { forwardRef, type NamedExoticComponent } from 'react';
+import { forwardRef, JSX, type NamedExoticComponent } from 'react';
 import {
   Controller,
   type Control,

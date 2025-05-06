@@ -9,7 +9,7 @@ interface Props {
   breadcrumbs: Array<{ route: string; label: string }>;
   title: string;
   subtitle: string;
-  newItemButton: Array<{ label: string; route: string }>;
+  newItemButton?: Array<{ label: string; route: string }>;
   children: React.ReactNode;
 }
 
@@ -35,7 +35,7 @@ export function DataListLayout(props: Props) {
           </div>
           <div>
             <div className="flex gap-4">
-              {createButton.map((button, index) => (
+              {createButton?.map((button, index) => (
                 <Button
                   key={index}
                   variant="add"

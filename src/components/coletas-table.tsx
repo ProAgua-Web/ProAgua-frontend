@@ -31,7 +31,10 @@ export const Col: React.FC<ComponentProps<'th'>> = ({
   className,
   ...props
 }) => (
-  <th className={cn('px-2 font-semibold text-slate-50', className)} {...props}>
+  <th
+    className={cn('text-nowrap px-2 font-semibold text-slate-50', className)}
+    {...props}
+  >
     {children}
   </th>
 );
@@ -62,7 +65,10 @@ export const Cell: React.FC<ComponentProps<'td'>> = ({
   ...props
 }) => (
   <td
-    className={cn('whitespace-nowrap px-2 text-slate-500', className)}
+    className={cn(
+      'max-w-64 truncate whitespace-nowrap px-2 text-slate-500',
+      className,
+    )}
     {...props}
   >
     {children}

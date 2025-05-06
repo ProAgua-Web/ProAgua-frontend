@@ -52,3 +52,7 @@ export const useEdificacoesOptions = () => {
 
   return props;
 };
+
+export const edificacaoToString = (edificacao: EdificacaoDto): string => {
+  return `${edificacao.codigo} - ${edificacao.nome}`;
+};

@@ -21,7 +21,7 @@ export default function RootLayout({
     <QueryProvider>
       <NuqsAdapter>
         <AutenticacaoProvider>
-          <html lang="pt-BR">
+          <html lang="pt-BR" suppressHydrationWarning>
             <body className={inter.className}>
               {children}
               <Toaster />

@@ -53,3 +53,7 @@ export const tipoPontosOptions = [
   { label: 'RDS', value: 5 },
   { label: 'CAERN', value: 6 },
 ];
+
+export const pontoToString = (ponto: PontoDto): string => {
+  return `${tipoPontosOptions[ponto.tipo].label} - ${ponto.localizacao}${ponto.tombo ? ` (${ponto.tombo})` : ''}`;
+};

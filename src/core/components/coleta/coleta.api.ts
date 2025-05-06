@@ -8,6 +8,21 @@ import {
 export interface ColetaQueryOptions {
   ponto_id?: number;
   sequencia_id?: number;
+  responsavel?: string;
+  data_minima?: string;
+  data_maxima?: string;
+  temperatura_minima?: number;
+  temperatura_maxima?: number;
+  cloro_residual_livre_minimo?: number;
+  cloro_residual_livre_maximo?: number;
+  turbidez_minima?: number;
+  turbidez_maxima?: number;
+  coliformes_totais?: boolean;
+  escherichia?: boolean;
+  cor_minima?: number;
+  cor_maxima?: number;
+  ordem?: string;
+  codigo_edificacao?: string;
   limit?: number;
 }
 
