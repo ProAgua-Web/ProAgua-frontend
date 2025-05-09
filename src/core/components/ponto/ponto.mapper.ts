@@ -24,6 +24,7 @@ export function pontoDtoToSchema(dto: PontoDto): PontoSchema {
     codigo_edificacao: dto.edificacao.codigo,
     tipo: dto.tipo,
     localizacao: dto.localizacao,
+    amontante_codigo_edificacao: dto.amontante?.edificacao.codigo,
     amontante: dto.amontante?.id,
     tombo: dto.tombo,
     observacao: dto.observacao,

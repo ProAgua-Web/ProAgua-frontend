@@ -28,12 +28,12 @@ export const floatMask: InputMask = {
   },
 };
 
-export const stringToFloat = (valor: string) => {
-  return parseFloat(valor) / 100;
+export const stringToFloat = (valor: string | null | undefined) => {
+  return parseFloat(valor ?? '') / 100;
 };
 
-export const floatToString = (valor: number) => {
-  return (valor * 100).toFixed(0);
+export const floatToString = (valor: number | null | undefined) => {
+  return ((valor ?? 0) * 100).toFixed(0);
 };
 
 export type NonEmptyArray<T> = [T, ...T[]];

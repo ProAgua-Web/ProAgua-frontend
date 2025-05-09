@@ -36,13 +36,14 @@ export const usePontos = (
 };
 
 export const usePontosBySequenciaId = (
-  sequencia_id: number,
+  sequencia_id?: number,
   options?: ApiQueryOptions<PontoDto[]>,
 ) => {
   return useApiQuery({
+    enabled: !!sequencia_id,
     queryKey: ['pontos', 'sequencia', sequencia_id],
     queryFn: async () => {
-      const response = await getPontosBySequenciaId(sequencia_id);
+      const response = await getPontosBySequenciaId(sequencia_id!);
       if ('items' in response.data) {
         return response.data.items as PontoDto[];
       }

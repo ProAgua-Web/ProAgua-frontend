@@ -17,6 +17,7 @@ export const pontoSchema = z.object({
   localizacao: z.string({ message: 'Informe a localização' }).min(1, {
     message: 'Informe a localização',
   }),
+  amontante_codigo_edificacao: z.string().nullish(),
   amontante: z.number().nullish(),
   tombo: z.string().nullish(),
   observacao: z.string().nullish(),

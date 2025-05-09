@@ -24,9 +24,14 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
   codigo,
   ...props
 }) => {
-  const edificacaoOptions = useEdificacoesOptions();
   const tipo = form.watch('tipo');
-  const pontosOptions = usePontosOptions({ tipo: [2] }); // O ponto a montante é sempre do tipo 3 (RPS)
+  const edificacaoOptions = useEdificacoesOptions();
+  const codigo_edificacao_amontante = form.watch('amontante_codigo_edificacao');
+  const pontosOptions = usePontosOptions({
+    q: codigo_edificacao_amontante ?? '',
+    tipo: [2],
+    limit: 0,
+  }); // O ponto a montante é sempre do tipo 3 (RPS)
 
   useEffect(() => {
     if (codigo) {
@@ -46,9 +51,8 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
               ? 'Carregando...'
               : 'Selecione a edificação'
           }
-          disabled={edificacaoOptions.isLoading}
-          readOnly={!!codigo}
           {...edificacaoOptions}
+          readOnly={!!codigo || edificacaoOptions.isLoading}
         />
         <ControlledTextInput
           control={form.control}
@@ -73,13 +77,29 @@ export const PontoForm: React.FC<FormProps<PontoSchema> & Props> = ({
         </div>
         <ControlledCombobox
           control={form.control}
+          name="amontante_codigo_edificacao"
+          label="Edificação do a montante"
+          placeholder={
+            edificacaoOptions.isLoading
+              ? 'Carregando...'
+              : 'Selecione a edificação'
+          }
+          {...edificacaoOptions}
+          readOnly={!!codigo || edificacaoOptions.isLoading}
+        />
+        <ControlledCombobox
+          control={form.control}
           name="amontante"
           label="Ponto a montante"
           placeholder={
             pontosOptions.isLoading ? 'Carregando...' : 'Selecione o ponto'
           }
-          disabled={pontosOptions.isLoading}
           {...pontosOptions}
+          isLoading={pontosOptions.isLoading}
+          readOnly={
+            typeof codigo_edificacao_amontante !== 'string' ||
+            pontosOptions.isLoading
+          }
         />
       </FormSection>
       <FormSection className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1">

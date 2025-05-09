@@ -18,8 +18,9 @@ import {
   temperaturaMask,
   turbidezMask,
 } from '@/lib/input-mask';
-import { useEdificacoesOptions } from '../../edificacao/edificacao.utils';
-import { usePontosOptions } from '../../ponto/ponto.utils';
+import { useEffect } from 'react';
+import { useEdificacoesOptionsBySequenciaId } from '../../edificacao/edificacao.utils';
+import { usePontosOptionsBySequenciaIdEdificacao } from '../../ponto/ponto.utils';
 import { useUsuariosOptions } from '../../usuario/usuario.utils';
 import { type ColetaSchema } from '../coleta.form';
 import { ordemColetasOptions } from '../coleta.utils';
@@ -33,14 +34,19 @@ export const ColetaForm: React.FC<FormProps<ColetaSchema> & Props> = ({
   sequencia_id,
   ...props
 }) => {
-  const edificacaoOptions = useEdificacoesOptions();
+  const edificacaoOptions = useEdificacoesOptionsBySequenciaId(sequencia_id);
   const edificacao = form.watch('edificacao');
-  const pontosOptions = usePontosOptions({ q: edificacao });
+  const pontosOptions = usePontosOptionsBySequenciaIdEdificacao(
+    sequencia_id,
+    edificacao,
+  );
   const responsaveisOptions = useUsuariosOptions();
 
-  if (sequencia_id) {
-    form.setValue('sequencia_id', Number(sequencia_id));
-  }
+  useEffect(() => {
+    if (sequencia_id) {
+      form.setValue('sequencia_id', Number(sequencia_id));
+    }
+  }, [sequencia_id, form]);
 
   return (
     <FormContainer {...props}>

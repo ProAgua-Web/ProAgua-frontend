@@ -26,9 +26,14 @@ export const ReservatorioForm: React.FC<FormProps<PontoSchema> & Props> = ({
   codigo: codigo,
   ...props
 }) => {
-  const edificacaoOptions = useEdificacoesOptions();
   const tipo = form.watch('tipo');
-  const pontosOptions = usePontosOptions({ tipo: [tipo + 1], limit: 0 }); // O ponto a montante é sempre um a mais do tipo atual
+  const edificacaoOptions = useEdificacoesOptions();
+  const codigo_edificacao_amontante = form.watch('amontante_codigo_edificacao');
+  const pontosOptions = usePontosOptions({
+    tipo: [tipo + 1],
+    limit: 0,
+    q: codigo_edificacao_amontante ?? '',
+  }); // O ponto a montante é sempre um a mais do tipo atual
 
   useEffect(() => {
     if (codigo) {
@@ -48,9 +53,9 @@ export const ReservatorioForm: React.FC<FormProps<PontoSchema> & Props> = ({
               ? 'Carregando...'
               : 'Selecione a edificação'
           }
-          disabled={edificacaoOptions.isLoading}
-          readOnly={!!codigo}
           {...edificacaoOptions}
+          isLoading={edificacaoOptions.isLoading}
+          readOnly={edificacaoOptions.isLoading || !!codigo}
         />
         <ControlledTextInput
           control={form.control}
@@ -86,13 +91,29 @@ export const ReservatorioForm: React.FC<FormProps<PontoSchema> & Props> = ({
         />
         <ControlledCombobox
           control={form.control}
+          name="amontante_codigo_edificacao"
+          label="Edificação do a montante"
+          placeholder={
+            edificacaoOptions.isLoading
+              ? 'Carregando...'
+              : 'Selecione a edificação'
+          }
+          {...edificacaoOptions}
+          readOnly={!!codigo || edificacaoOptions.isLoading}
+        />
+        <ControlledCombobox
+          control={form.control}
           name="amontante"
           label="Ponto a montante"
           placeholder={
             pontosOptions.isLoading ? 'Carregando...' : 'Selecione o ponto'
           }
-          disabled={pontosOptions.isLoading}
           {...pontosOptions}
+          isLoading={pontosOptions.isLoading}
+          readOnly={
+            typeof codigo_edificacao_amontante !== 'string' ||
+            pontosOptions.isLoading
+          }
         />
       </FormSection>
       <FormSection className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1">
