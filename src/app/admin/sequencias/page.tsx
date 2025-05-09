@@ -14,7 +14,7 @@ export default function Pagina() {
       ]}
       title="Sequência de coletas"
       subtitle="Gerencie as sequências de coletas do sistema"
-      newItemButton={[
+      navLinks={[
         {
           label: 'Criar sequência',
           route: '/admin/sequencias/criar',

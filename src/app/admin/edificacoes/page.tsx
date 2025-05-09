@@ -22,7 +22,7 @@ export default function Page() {
     <DataListLayout
       title="Edificações e Pontos de Coleta"
       subtitle="Gerencie as edificações e os pontos de coleta do sistema."
-      newItemButton={[
+      navLinks={[
         {
           label: 'Criar edificação',
           route: '/admin/edificacoes/criar',

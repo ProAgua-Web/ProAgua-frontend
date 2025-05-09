@@ -57,7 +57,7 @@ const NAV_LINKS: NavLink[] = [
     name: 'Referência',
   },
   {
-    href: '/admin/export',
+    href: '/admin/exportar',
     icon: <FontAwesomeIcon icon={faFileExcel} className="h-6 w-6 p-2" />,
     name: 'Exportar dados',
   },

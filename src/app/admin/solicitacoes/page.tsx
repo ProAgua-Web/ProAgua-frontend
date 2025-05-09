@@ -14,7 +14,7 @@ export default function Pagina() {
       ]}
       title="Solicitações"
       subtitle="Gerencie as solicitações do sistema"
-      newItemButton={[
+      navLinks={[
         {
           label: 'Criar solicitação',
           route: '/admin/solicitacoes/criar',

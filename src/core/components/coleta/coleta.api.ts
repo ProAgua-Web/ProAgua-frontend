@@ -38,6 +38,23 @@ export async function getColeta(id: number) {
   return response.data;
 }
 
+export async function exportColetas(params?: ColetaQueryOptions) {
+  const response = await api.get<ApiResponse<Blob>>('/coletas/excel', {
+    params,
+    responseType: 'blob',
+  });
+
+  const filename = response.headers['content-disposition']
+    .split(';')[1]
+    .split('filename=')[1]
+    .replace(/"/g, '');
+
+  return {
+    data: response.data,
+    filename,
+  };
+}
+
 export async function createColeta(coleta: CreateColetaDto) {
   await api.post('/coletas', coleta);
 }

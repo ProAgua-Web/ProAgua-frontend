@@ -1,62 +1,21 @@
 'use client';
 
 import { FormProps } from '@/components/form/container';
+import { ControlledCombobox } from '@/components/form/input/combobox';
 import { ControlledDatePicker } from '@/components/form/input/date-picker';
 import { ControlledNumberInput } from '@/components/form/input/number-input';
 import { ControlledSelect } from '@/components/form/input/select';
 import { ControlledTextInput } from '@/components/form/input/text-input';
 import { Button } from '@/components/ui/button';
-import { options } from '@/lib/utils';
+import { booleanOptionalOptions } from '@/core/common/utils';
+import { ordemColetasOptions } from '@/core/components/coleta/coleta.utils';
+import { useEdificacoesOptions } from '@/core/components/edificacao/edificacao.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryState } from 'nuqs';
 import qs from 'qs';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
-export const BooleanOptional = {
-  TODOS: 'all',
-  TRUE: 'true',
-  FALSE: 'false',
-} as const;
-
-export type BooleanOptional =
-  (typeof BooleanOptional)[keyof typeof BooleanOptional];
-
-export const booleanOptional = Object.values(BooleanOptional);
-
-export const booleanLabel = {
-  all: 'Todos',
-  true: 'Presença',
-  false: 'Ausência',
-} as const satisfies Record<BooleanOptional, string>;
-
-export const booleanOptionalOptions = options(booleanOptional, (bool) => [
-  bool,
-  booleanLabel[bool],
-]);
-
-const filterSchema = z.object({
-  ponto_id: z.union([z.number(), z.nan()]).optional(),
-  sequencia_id: z.union([z.number(), z.nan()]).optional(),
-  responsavel: z.string().nullish(),
-  data_minima: z.date().nullish(),
-  data_maxima: z.date().nullish(),
-  temperatura_minima: z.union([z.number(), z.nan()]).optional(),
-  temperatura_maxima: z.union([z.number(), z.nan()]).optional(),
-  cloro_residual_livre_minimo: z.union([z.number(), z.nan()]).optional(),
-  cloro_residual_livre_maximo: z.union([z.number(), z.nan()]).optional(),
-  turbidez_minima: z.union([z.number(), z.nan()]).optional(),
-  turbidez_maxima: z.union([z.number(), z.nan()]).optional(),
-  coliformes_totais: z.nativeEnum(BooleanOptional).default('all'),
-  escherichia: z.nativeEnum(BooleanOptional).default('all'),
-  cor_minima: z.union([z.number(), z.nan()]).optional(),
-  cor_maxima: z.union([z.number(), z.nan()]).optional(),
-  ordem: z.string().nullish(),
-  codigo_edificacao: z.string().nullish(),
-});
-
-type FilterSchema = z.infer<typeof filterSchema>;
+import { filterSchema, FilterSchema } from './exportar.form';
 
 export const useFilterForm = () => {
   const [ponto_id] = useQueryState('ponto_id', { defaultValue: '' });
@@ -132,7 +91,7 @@ export const useFilterForm = () => {
       escherichia: dto.escherichia,
       cor_minima: dto.cor_minima,
       cor_maxima: dto.cor_maxima,
-      ordem: dto.ordem,
+      ordem: dto.ordem || undefined,
       codigo_edificacao: dto.codigo_edificacao,
     };
   };
@@ -162,16 +121,19 @@ export const FilterForm: React.FC<FormProps<FilterSchema>> = ({
   isSubmitting,
   ...props
 }) => {
+  const edificacaoOptions = useEdificacoesOptions();
+
   return (
     <form
       className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
       {...props}
     >
-      <ControlledTextInput
+      <ControlledCombobox
         control={form.control}
         name="codigo_edificacao"
         label="Código da Edificação"
         placeholder="Informe o código da edificação"
+        {...edificacaoOptions}
       />
       <ControlledTextInput
         control={form.control}
@@ -239,23 +201,18 @@ export const FilterForm: React.FC<FormProps<FilterSchema>> = ({
         label="Cor máxima"
         placeholder="Informe a cor máxima"
       />
-      <ControlledTextInput
+      <ControlledSelect
         control={form.control}
         name="ordem"
         label="Ordem"
         placeholder="Informe a ordem"
+        options={[{ value: 0, label: 'Todas' }, ...ordemColetasOptions]}
       />
       <ControlledNumberInput
         control={form.control}
         name="sequencia_id"
         label="Sequência ID"
         placeholder="Informe o ID da sequência"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="ponto_id"
-        label="Ponto ID"
-        placeholder="Informe o ID do ponto"
       />
       <ControlledSelect
         control={form.control}
@@ -295,13 +252,14 @@ export const Filters: React.FC = () => {
 
     // Filtra os campos nulos, undefined, strings vazias e valores padrão
     const filteredData = Object.fromEntries(
-      Object.entries(dataWithFormattedDates).filter(([_, value]) => {
+      Object.entries(dataWithFormattedDates).filter(([key, value]) => {
         // Remove valores nulos, undefined, strings vazias
         if (
           value === null ||
           value === undefined ||
           value === '' ||
           value === 'all' ||
+          (key === 'ordem' && value === 0) ||
           (typeof value === 'number' && Number.isNaN(value))
         )
           return false;

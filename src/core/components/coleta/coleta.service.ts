@@ -1,3 +1,4 @@
+import { ApiResponse } from '@/lib/api';
 import {
   type ApiMutationOptions,
   type ApiQueryOptions,
@@ -8,6 +9,7 @@ import {
   type ColetaQueryOptions,
   createColeta,
   deleteColeta,
+  exportColetas,
   getColeta,
   listColetas,
   updateColeta,
@@ -83,6 +85,29 @@ export const useExcluirColeta = (options?: ApiMutationOptions<number>) => {
     invalidateQueries: (id) => [['coletas'], ['coleta', id]],
     successMessage: 'Coleta excluída com sucesso!',
     errorMessage: 'Não foi possível excluir a coleta',
+    ...options,
+  });
+};
+
+export const useExportarColetas = (
+  params?: ColetaQueryOptions,
+  options?: ApiQueryOptions<ApiResponse<Blob>>,
+) => {
+  return useApiQuery({
+    enabled: false, // Função só funcionará através do refetch
+    queryKey: ['coletas', 'exportar', params],
+    queryFn: async () => {
+      const response = await exportColetas(params);
+      const blob = response.data as unknown as Blob;
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'coletas-exportadas.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+      return response.data;
+    },
     ...options,
   });
 };

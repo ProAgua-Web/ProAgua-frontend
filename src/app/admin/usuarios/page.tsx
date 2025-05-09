@@ -14,7 +14,7 @@ export default function Pagina() {
       ]}
       title="Usuários"
       subtitle="Gerencie os usuários do sistema"
-      newItemButton={[
+      navLinks={[
         {
           label: 'Criar usuário',
           route: '/admin/usuarios/criar',

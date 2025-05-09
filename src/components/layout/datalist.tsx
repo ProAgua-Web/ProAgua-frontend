@@ -3,24 +3,24 @@
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { HTMLAttributeAnchorTarget } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi2';
 
 interface Props {
   breadcrumbs: Array<{ route: string; label: string }>;
   title: string;
   subtitle: string;
-  newItemButton?: Array<{ label: string; route: string }>;
+  subItens?: React.ReactNode;
+  navLinks?: Array<{
+    label: string;
+    route: string;
+    target?: HTMLAttributeAnchorTarget;
+  }>;
   children: React.ReactNode;
 }
 
 export function DataListLayout(props: Props) {
-  const {
-    breadcrumbs,
-    title,
-    subtitle,
-    newItemButton: createButton,
-    children,
-  } = props;
+  const { breadcrumbs, title, subtitle, navLinks, children } = props;
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -35,14 +35,15 @@ export function DataListLayout(props: Props) {
           </div>
           <div>
             <div className="flex gap-4">
-              {createButton?.map((button, index) => (
+              {props.subItens}
+              {navLinks?.map((button, index) => (
                 <Button
                   key={index}
                   variant="add"
                   className="h-full w-full lg:w-fit"
                   asChild
                 >
-                  <Link href={button.route}>
+                  <Link href={button.route} target="_blank">
                     <HiOutlinePlus size={20} />
                     {button.label}
                   </Link>

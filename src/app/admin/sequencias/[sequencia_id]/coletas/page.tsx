@@ -21,7 +21,7 @@ export default async function Pagina({ params }: Props) {
       ]}
       title={`Coletas da sequência ${sequencia_id}`}
       subtitle={`Gerencie as coletas da sequência ${sequencia_id}`}
-      newItemButton={[
+      navLinks={[
         {
           label: 'Criar coleta',
           route: `/admin/sequencias/${sequencia_id}/coletas/criar`,

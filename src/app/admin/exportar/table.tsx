@@ -2,6 +2,10 @@
 import { T } from '@/components/coletas-table';
 import { type ColetaDto } from '@/core/components/coleta/coleta.model';
 import { useColetas } from '@/core/components/coleta/coleta.service';
+import {
+  buildColetaParams,
+  useColetaQueryParams,
+} from '@/core/components/coleta/coleta.utils';
 import { edificacaoToString } from '@/core/components/edificacao/edificacao.utils';
 import { pontoToString } from '@/core/components/ponto/ponto.utils';
 import {
@@ -12,94 +16,14 @@ import {
 } from '@/lib/input-mask';
 import { floatToString, formatDate } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import { useQueryState } from 'nuqs';
 import { Fragment } from 'react';
 import { HiCheckCircle } from 'react-icons/hi2';
 import { MdError } from 'react-icons/md';
 
 export function ExportTable() {
-  const [codigo_edificacao] = useQueryState('codigo_edificacao', {
-    defaultValue: '',
-  });
-  const [responsavel] = useQueryState('responsavel', {
-    defaultValue: '',
-  });
-  const [data_minima] = useQueryState('data_minima', {
-    defaultValue: '',
-  });
-  const [data_maxima] = useQueryState('data_maxima', {
-    defaultValue: '',
-  });
-  const [temperatura_minima] = useQueryState('temperatura_minima', {
-    defaultValue: '',
-  });
-  const [temperatura_maxima] = useQueryState('temperatura_maxima', {
-    defaultValue: '',
-  });
-  const [cloro_residual_livre_minimo] = useQueryState(
-    'cloro_residual_livre_minimo',
-    {
-      defaultValue: '',
-    },
-  );
-  const [cloro_residual_livre_maximo] = useQueryState(
-    'cloro_residual_livre_maximo',
-    {
-      defaultValue: '',
-    },
-  );
-  const [turbidez_minima] = useQueryState('turbidez_minima', {
-    defaultValue: '',
-  });
-  const [turbidez_maxima] = useQueryState('turbidez_maxima', {
-    defaultValue: '',
-  });
-  const [coliformes_totais] = useQueryState('coliformes_totais', {
-    defaultValue: 'all',
-  });
-  const [escherichia] = useQueryState('escherichia', {
-    defaultValue: 'all',
-  });
-  const [cor_minima] = useQueryState('cor_minima', {
-    defaultValue: '',
-  });
-  const [cor_maxima] = useQueryState('cor_maxima', {
-    defaultValue: '',
-  });
-  const [ordem] = useQueryState('ordem', {
-    defaultValue: '',
-  });
+  const queryParams = useColetaQueryParams();
+  const params = buildColetaParams(queryParams);
 
-  const params = {
-    ...(codigo_edificacao && { codigo_edificacao }),
-    ...(responsavel && { responsavel }),
-    ...(data_minima && { data_minima }),
-    ...(data_maxima && { data_maxima }),
-    ...(temperatura_minima && {
-      temperatura_minima: parseFloat(temperatura_minima),
-    }),
-    ...(temperatura_maxima && {
-      temperatura_maxima: parseFloat(temperatura_maxima),
-    }),
-    ...(cloro_residual_livre_minimo && {
-      cloro_residual_livre_minimo: parseFloat(cloro_residual_livre_minimo),
-    }),
-    ...(cloro_residual_livre_maximo && {
-      cloro_residual_livre_maximo: parseFloat(cloro_residual_livre_maximo),
-    }),
-    ...(turbidez_minima && { turbidez_minima: parseFloat(turbidez_minima) }),
-    ...(turbidez_maxima && { turbidez_maxima: parseFloat(turbidez_maxima) }),
-    ...(coliformes_totais !== 'all' && {
-      coliformes_totais: coliformes_totais === 'false' ? false : true,
-    }),
-    ...(escherichia !== 'all' && {
-      escherichia: escherichia === 'false' ? false : true,
-    }),
-    ...(cor_minima && { cor_minima: parseFloat(cor_minima) }),
-    ...(cor_maxima && { cor_maxima: parseFloat(cor_maxima) }),
-    ...(ordem && { ordem }),
-    limit: 0,
-  };
   const { data: coletas = [] } = useColetas(params);
 
   return (

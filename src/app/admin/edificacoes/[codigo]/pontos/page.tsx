@@ -12,7 +12,7 @@ export default async function Page({ params }: Props) {
     <DataListLayout
       title="Pontos de coleta"
       subtitle="Gerencie os ponto de coleta do sistema."
-      newItemButton={[
+      navLinks={[
         {
           label: 'Criar ponto',
           route: `/admin/edificacoes/${codigo}/pontos/criar`,
