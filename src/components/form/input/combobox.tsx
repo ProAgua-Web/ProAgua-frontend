@@ -4,7 +4,7 @@ import {
   type ComboboxProps as PropsBase,
   type Value,
 } from '@/components/ui/combobox';
-import { forwardRef, type JSX, type NamedExoticComponent } from 'react';
+import { forwardRef, JSX, type NamedExoticComponent } from 'react';
 import {
   Controller,
   type Control,
@@ -46,10 +46,11 @@ interface ControlledComboboxProps<
   TValue extends Value & PathValue<TForm, TField>,
   TForm extends FieldValues,
   TField extends FieldPath<TForm>,
-> extends Omit<ComboboxProps<TValue>, 'label' | 'value' | 'onChange'> {
+> extends Omit<ComboboxProps<TValue>, 'label' | 'value'> {
   control: Control<TForm>;
   name: TValue extends PathValue<TForm, TField> ? TField : never;
-  label: string;
+  label?: string;
+  isRequired?: boolean;
 }
 
 export function ControlledCombobox<
@@ -60,6 +61,7 @@ export function ControlledCombobox<
   control,
   name,
   label,
+  onChange,
   ...props
 }: ControlledComboboxProps<TValue, TForm, TField>) {
   return (
@@ -71,11 +73,18 @@ export function ControlledCombobox<
           <Combobox
             label={
               <span className={fieldState.error && 'text-red-500'}>
-                {label}
+                {label}{' '}
+                {props.isRequired && <span className="text-red-500">*</span>}
               </span>
             }
             {...field}
             {...props}
+            onChange={(value) => {
+              field.onChange(value);
+              if (value !== undefined) {
+                onChange?.(value);
+              }
+            }}
           />
           {fieldState.error && (
             <ErrorMessage>{fieldState.error.message}</ErrorMessage>
