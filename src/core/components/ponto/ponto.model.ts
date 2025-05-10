@@ -18,7 +18,7 @@ export interface PontoDto {
 
 export interface CreatePontoDto
   extends Omit<PontoDto, 'id' | 'imagens' | 'edificacao' | 'amontante'> {
-  amontante: number | null;
+  amontante_id: number | null;
   codigo_edificacao: string;
   imagens: Array<File | ImagemDto>;
 }

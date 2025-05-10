@@ -99,11 +99,11 @@ export const ReservatorioForm: React.FC<FormProps<PontoSchema> & Props> = ({
               : 'Selecione a edificação'
           }
           {...edificacaoOptions}
-          readOnly={!!codigo || edificacaoOptions.isLoading}
+          readOnly={edificacaoOptions.isLoading}
         />
         <ControlledCombobox
           control={form.control}
-          name="amontante"
+          name="amontante_id"
           label="Ponto a montante"
           placeholder={
             pontosOptions.isLoading ? 'Carregando...' : 'Selecione o ponto'
