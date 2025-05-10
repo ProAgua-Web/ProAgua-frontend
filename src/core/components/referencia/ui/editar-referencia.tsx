@@ -1,5 +1,6 @@
 'use client';
 
+import { addMinutes } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useReferenciaForm } from '../referencia.form';
 import { useEditarReferencia, useReferencia } from '../referencia.service';
@@ -7,8 +8,8 @@ import { ReferenciaForm } from './referencia-form';
 
 export const EditarReferencia: React.FC = () => {
   const referencia = useReferencia({ gcTime: Infinity });
-
-  const form = useReferenciaForm(referencia.data);
+  addMinutes;
+  const form = useReferenciaForm(referencia?.data);
 
   const router = useRouter();
 

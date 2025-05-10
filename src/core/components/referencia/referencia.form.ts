@@ -8,20 +8,20 @@ import { referenciaDtoToSchema } from './referencia.mapper';
 export const referenciaSchema = z.object({
   min_temperatura: z
     .string({ message: 'Informe a temperatura mínima' })
-    .default('0'),
+    .nullish(),
   max_temperatura: z
     .string({ message: 'Informe a temperatura máxima' })
-    .default('0'),
+    .nullish(),
   min_cloro_residual_livre: z
     .string({ message: 'Informe o cloro residual livre mínimo' })
-    .default('0'),
+    .nullish(),
   max_cloro_residual_livre: z
     .string({ message: 'Informe o cloro residual livre máximo' })
-    .default('0'),
-  min_turbidez: z.string({ message: 'Informe a turbidez mínima' }).default('0'),
-  max_turbidez: z.string({ message: 'Informe a turbidez máxima' }).default('0'),
-  min_cor: z.string({ message: 'Informe a cor mínima' }).default('0'),
-  max_cor: z.string({ message: 'Informe a cor máxima' }).default('0'),
+    .nullish(),
+  min_turbidez: z.string({ message: 'Informe a turbidez mínima' }).nullish(),
+  max_turbidez: z.string({ message: 'Informe a turbidez máxima' }).nullish(),
+  min_cor: z.string({ message: 'Informe a cor mínima' }).nullish(),
+  max_cor: z.string({ message: 'Informe a cor máxima' }).nullish(),
   coliformes_totais: z.boolean().default(false),
   escherichia: z.boolean().default(false),
 });

@@ -1,4 +1,4 @@
-import { api, type ApiResponse } from '@/lib/api';
+import { api, ApiResponse } from '@/lib/api';
 import { ReferenciaDto } from './referencia.model';
 
 export async function getReferencia() {
