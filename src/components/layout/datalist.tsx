@@ -43,7 +43,7 @@ export function DataListLayout(props: Props) {
                   className="h-full w-full lg:w-fit"
                   asChild
                 >
-                  <Link href={button.route} target="_blank">
+                  <Link href={button.route} target={button.target ?? '_self'}>
                     <HiOutlinePlus size={20} />
                     {button.label}
                   </Link>
