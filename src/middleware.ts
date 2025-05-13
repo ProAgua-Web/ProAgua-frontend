@@ -8,13 +8,13 @@ export async function middleware(request: NextRequest) {
   // Verify the access token in the backend
   if (accessToken && csrfToken) {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/verify_token`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify_token`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,
-          'cookie': `csrftoken=${csrfToken}`,
+          // 'cookie': `csrftoken=${csrfToken}`,
         },
         body: JSON.stringify({
           access_token: accessToken,
@@ -25,13 +25,13 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check if there is an valid access token
-  if (!isValid) {
-    if (request.nextUrl.pathname.startsWith('/admin')) {
-      return Response.redirect(new URL('/login', request.url));
-    }
-  } else if (request.nextUrl.pathname == '/login') {
-    return Response.redirect(new URL('/admin/pontos', request.url));
-  }
+  // if (!isValid) {
+  //   if (request.nextUrl.pathname.startsWith('/admin')) {
+  //     return Response.redirect(new URL('/login', request.url));
+  //   }
+  // } else if (request.nextUrl.pathname == '/login') {
+  //   return Response.redirect(new URL('/admin/pontos', request.url));
+  // }
 }
 
 export const config = {

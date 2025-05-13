@@ -1,4 +1,5 @@
 export default function Danger(props: { width?: '1.5rem' }) {
+  // TODO: EXCLUDE THIS PAGE
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

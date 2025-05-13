@@ -1,49 +1,43 @@
 'use client';
 
-import Filters from '@/components/sequencias/Filters';
-import { Edificacao } from '@/utils/types';
-import { consumerEdficacao } from '@/utils/api/consumerEdficacao';
-import { useEffect, useState } from 'react';
+import { DataListLayout } from '@/components/layout/datalist';
+import { useEdificacoes } from '@/core/components/edificacao/edificacao.service';
+import { CardEdificacao } from '@/core/components/edificacao/ui/card-edificacao';
+import { useQueryState } from 'nuqs';
+import { Filters } from './filters';
 
-export default function Edificacoes() {
-  const [edificacoes, setEdificacoes] = useState<Edificacao[]>([]);
+export default function Page() {
+  const [q] = useQueryState('q', { defaultValue: '' });
+  const [campus] = useQueryState('campus', { defaultValue: '' });
 
-  useEffect(() => {
-    consumerEdficacao.list().then((data) => setEdificacoes(data));
-  }, []);
+  const params = {
+    ...(q && { q }),
+    ...(campus && { campus }),
+    limit: 0,
+  };
+
+  const { data: edificacoes = [] } = useEdificacoes(params);
 
   return (
-    <>
-      <Filters />
-      <div className="mx-auto max-h-[70vh] w-full overflow-y-auto rounded-md border border-neutral-200 bg-white p-4 shadow-lg">
-        <h2 className="w-full text-center text-2xl font-medium text-[#7a7a7a]">
-          Lista edificações
-        </h2>
-        <a
-          className="m-4 block w-fit rounded-lg bg-primary-500 p-4 font-semibold text-white hover:bg-primary-600"
-          href="/admin/edificacoes/criar"
-        >
-          + Criar edificação
-        </a>
-        <ul>
-          {edificacoes.map((item: Edificacao, i) => {
-            return (
-              <li
-                key={'edif-' + i}
-                className="group/item flex justify-between border-b px-4 py-6 text-neutral-700 hover:bg-blue-100 hover:font-medium"
-              >
-                {item.codigo} - {item.nome}
-                <a
-                  href={'/admin/edificacoes/' + item.codigo}
-                  className="hidden rounded p-2 text-blue-900 hover:bg-white group-hover/item:block"
-                >
-                  Detalhes
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+    <DataListLayout
+      title="Edificações e Pontos de Coleta"
+      subtitle="Gerencie as edificações e os pontos de coleta do sistema."
+      navLinks={[
+        {
+          label: 'Criar edificação',
+          route: '/admin/edificacoes/criar',
+        },
+      ]}
+      breadcrumbs={[]}
+    >
+      <div className="mb-4 flex w-full flex-col gap-4">
+        <Filters />
       </div>
-    </>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {edificacoes.map((edificacao) => (
+          <CardEdificacao key={edificacao.codigo} edificacao={edificacao} />
+        ))}
+      </div>
+    </DataListLayout>
   );
 }

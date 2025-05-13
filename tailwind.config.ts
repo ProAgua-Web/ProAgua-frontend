@@ -1,4 +1,5 @@
-import type { Config } from 'tailwindcss';
+import { type Config } from 'tailwindcss';
+import { type CSSRuleObject } from 'tailwindcss/types/config';
 
 const config = {
   darkMode: ['class'],
@@ -26,6 +27,7 @@ const config = {
       colors: {
         background: 'rgb(244,244,244)',
         primary: {
+          200: '#17A5CC',
           300: '#0D99FD',
           400: '#028EF2',
           500: '#027bd0',
@@ -58,7 +60,41 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    function ({
+      addUtilities,
+    }: {
+      addUtilities: (
+        utilities: Record<string, CSSRuleObject>,
+        options?: { respectPrefix?: boolean; respectImportant?: boolean },
+      ) => void;
+    }) {
+      const newUtilities = {
+        '.scrollbar-thin': {
+          scrollbarWidth: 'thin',
+          scrollbarColor:
+            'rgba(209, 213, 219, var(--scrollbar-opacity)) rgba(156, 163, 175, var(--scrollbar-opacity))',
+        },
+        '.scrollbar-webkit': {
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'white',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: 'rgba(209, 213, 219, var(--scrollbar-opacity))',
+            borderRadius: '8px',
+            border: '1px solid white',
+          },
+        },
+      };
+      addUtilities(newUtilities, {
+        respectPrefix: false,
+        respectImportant: false,
+      });
+    },
+  ],
 } satisfies Config;
 
 export default config;

@@ -13,7 +13,7 @@ export default function Modal(props: {
     props.visible && (
       <div
         ref={backdrop}
-        className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-full bg-black bg-opacity-20 "
+        className="fixed left-0 top-16 z-[100] h-[calc(100vh-4rem)] w-full bg-black bg-opacity-20 "
         onMouseDown={(e) => {
           if (e.target == backdrop.current) props.close();
         }}

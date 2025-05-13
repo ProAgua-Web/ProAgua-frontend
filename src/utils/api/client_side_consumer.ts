@@ -41,7 +41,7 @@ export function useEdificacao(codigo_edificacao: string) {
   useEffect(() => {
     consumerEdficacao
       .get(codigo_edificacao)
-      .then((data) => setEdificacao(data));
+      .then((data) => setEdificacao(data.data));
   }, [codigo_edificacao]);
   return edificacao;
 }
@@ -181,7 +181,7 @@ export function useSequencia(id_sequencia: number) {
       }
 
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + '/sequencias/' + id_sequencia,
+        process.env.NEXT_PUBLIC_API_URL + '/api/v1/sequencias/' + id_sequencia,
         {
           headers: {
             'X-CSRFToken': csrftoken,
@@ -189,7 +189,8 @@ export function useSequencia(id_sequencia: number) {
           credentials: 'include',
         },
       );
-      const sequencia = await response.json();
+      const data = (await response.json()).data;
+      const sequencia = data;
 
       setSequencia(sequencia);
     })();
@@ -221,14 +222,14 @@ export function useColetaBySequencia(id_sequencia: number) {
     (async () => {
       const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL +
-          '/sequencias/' +
+          '/api/v1/sequencias/' +
           id_sequencia +
           '/coletas',
         {
           credentials: 'include',
         },
       );
-      const coletas = await response.json();
+      const coletas = (await response.json()).data?.items;
       setColetas(coletas);
     })();
   }, [id_sequencia]);
@@ -277,7 +278,7 @@ export function useLastColetaByPonto(id_ponto: number) {
   const [coleta, setColeta] = useState<Coleta | null>(null);
 
   const url =
-    process.env.NEXT_PUBLIC_API_URL + '/pontos/' + id_ponto + '/coletas';
+    process.env.NEXT_PUBLIC_API_URL + '/api/v1/pontos/' + id_ponto + '/coletas';
 
   useEffect(() => {
     (async () => {
@@ -302,7 +303,7 @@ export function useParametrosReferencia() {
   const [parametrosReferencia, setParametrosReferencia] =
     useState<ParametroReferencia>();
 
-  const url = process.env.NEXT_PUBLIC_API_URL + '/parametros_referencia';
+  const url = process.env.NEXT_PUBLIC_API_URL + 'api/v1/parametros_referencia';
 
   useEffect(() => {
     (async () => {

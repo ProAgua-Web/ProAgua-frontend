@@ -63,7 +63,7 @@ export default function TableColetas(props: { coletas: Coleta[] }) {
                       {coleta.escherichia ? 'Presença' : 'Ausência'}/100 mL
                     </td>
                     <td className="px-2 py-3">
-                      {String(coleta.cor).replace('.', ',')}uC
+                      {String(coleta.cor).replace('.', ',')}uH
                     </td>
                     <td className="text-nowrap px-2 py-3">
                       {formatDate(coleta.data)}

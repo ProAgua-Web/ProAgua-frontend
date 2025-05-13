@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Pagination } from '@/components/ui/pagination';
 import { Select, Value } from '@/components/ui/select';
-import Spinner from '@/components/widgets/spinner';
+import Spinner from '@/components/ui/spinner';
 import { cn, type NonEmptyArray, options } from '@/lib/utils';
 import { type ReactNode, useMemo, useState } from 'react';
 import { HiArrowLongDown, HiMagnifyingGlass } from 'react-icons/hi2';
@@ -160,8 +160,8 @@ export function DataTable<TData extends Data<TCols>, TCols extends string>(
                       title={row ? row[col].toString() : ''}
                     >
                       {row
-                        ? props.customRender?.[col]?.(row) ??
-                          row[col].toString()
+                        ? (props.customRender?.[col]?.(row) ??
+                          row[col].toString())
                         : null}
                     </td>
                   ))}

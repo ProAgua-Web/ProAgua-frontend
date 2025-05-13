@@ -1,47 +1,18 @@
-import Gotinha from '/public/gotinha.svg';
-
+import Header from '@/components/layout/header';
 import Image from 'next/image';
-
-function Header() {
-  return (
-    <header className="sticky top-0 z-10 flex h-[clamp(50px,8vh,100px)] w-full items-center justify-between bg-primary-500 pe-[clamp(20px,4vw+1rem,100vw-1200px)] pl-12 text-white">
-      <a className="flex items-center gap-2 text-2xl uppercase" href="/">
-        <img
-          src="/Logo.svg"
-          alt="Logo do projeto"
-          className="h-[clamp(2rem,1.8571rem+0.7143vw,2.5rem)]"
-        />
-        ProÁgua
-      </a>
-      <nav>
-        <ul className="nav-list flex list-none gap-8">
-          <li>
-            <a href="/#inicio">Início</a>
-          </li>
-          <li>
-            <a href="/#pesquise">Pesquise</a>
-          </li>
-          <li>
-            <a href="/#sobre">Sobre</a>
-          </li>
-        </ul>
-      </nav>
-      <a
-        href="/login"
-        className="w-fit items-center justify-center rounded border border-white px-3 py-1"
-      >
-        Login
-      </a>
-    </header>
-  );
-}
 
 export default function NotFound() {
   return (
     <main className="flex h-screen w-full flex-col">
       <Header />
       <div className="flex w-full flex-grow flex-col items-center justify-center">
-        <Image className="min-w-36" src={Gotinha} alt="Gotinha triste" />
+        <Image
+          src="/gotinha.svg"
+          alt="Gotinha triste"
+          width={100}
+          height={100}
+          className="w-1/2 max-w-[200px]"
+        />
         <h1 className="text-3xl">404 - Not Found!</h1>
       </div>
     </main>

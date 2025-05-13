@@ -13,7 +13,10 @@ export class APIConsumer<Tin, Tout> {
       credentials: 'include',
     });
 
-    const data: Tout = await response.json();
+    const data = (await response.json()).data;
+    if (data && 'items' in data) {
+      return data.items;
+    }
     return data;
   }
 
@@ -21,7 +24,7 @@ export class APIConsumer<Tin, Tout> {
     let searchParams = '';
 
     if (query) {
-      query['limit'] = 10000;
+      query['limit'] = 0;
       searchParams = '?' + toQuery(query);
     }
 
@@ -35,7 +38,7 @@ export class APIConsumer<Tin, Tout> {
 
   async list(cache: RequestCache = 'no-cache', query: any = undefined) {
     let searchParams = '';
-    query = { ...query, limit: 10000 };
+    query = { ...query, limit: 0 };
 
     if (query) {
       searchParams = '?' + toQuery(query);
@@ -46,7 +49,11 @@ export class APIConsumer<Tin, Tout> {
       credentials: 'include',
     });
 
-    const data: Tout[] = (await response.json()).items;
+    const data: Tout[] = (await response.json()).data;
+
+    if (data && 'items' in data) {
+      return data.items;
+    }
     return data;
   }
 
@@ -90,7 +97,7 @@ export class APIConsumer<Tin, Tout> {
     }
 
     // Send request
-    const response = await fetch(this.baseUrl + id, {
+    const response = await fetch(this.baseUrl + '/' + id, {
       method: 'DELETE',
       headers: headers,
       credentials: 'include',
@@ -142,4 +149,4 @@ export function toQuery(data: any): string {
     .join('&');
 }
 
-export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL + 'api/v1/';

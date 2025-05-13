@@ -9,44 +9,50 @@ export interface CSRF {
   csrftoken: string;
 }
 
-export async function getCSRFToken(): Promise<string> {
-  const resp = await fetch(API_BASE_URL + '/csrf', {
-    method: 'GET',
-    credentials: 'include',
-  });
+// TODO: colocar no padrão do ApiResponse
+// export async function getCSRFToken() {
+//   const response = await api.get<CSRF>('/csrf');
+//   return response.data;
+// }
 
-  const data = await resp.json();
+// export async function getCSRFToken(): Promise<string> {
+//   const resp = await fetch(API_BASE_URL + '/csrf', {
+//     method: 'GET',
+//     credentials: 'include',
+//   });
 
-  return data['csrftoken'];
-}
+//   const data = await resp.json();
 
-export async function entrar(data: CredenciaisDTO) {
-  try {
-    const csrfToken = await getCSRFToken();
-    localStorage.setItem('csrftoken', csrfToken);
+//   return data['csrftoken'];
+// }
 
-    const response = await fetch(API_BASE_URL + '/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-      },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    });
+// export async function entrar(data: CredenciaisDTO) {
+//   try {
+//     const csrfToken = await getCSRFToken();
+//     localStorage.setItem('proagua:csrftoken', csrfToken.csrftoken);
 
-    const responseData = await response.json();
+//     const response = await fetch(API_BASE_URL + '/auth/login', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'X-CSRFToken': csrfToken.csrftoken,
+//       },
+//       credentials: 'include',
+//       body: JSON.stringify(data),
+//     });
 
-    if (response.status != 200 || responseData == null) {
-      alert(`Erro ao fazer login!`);
-    } else {
-      alert('Login efetuado com sucesso!');
+//     const responseData = await response.json();
 
-      let token = responseData.access_token;
-      localStorage.setItem('token', token);
-      window.location.href = '/admin/pontos';
-    }
-  } catch (err) {
-    alert('Houve um erro durante a autenticação');
-  }
-}
+//     if (response.status != 200 || responseData == null) {
+//       alert(`Erro ao fazer login!`);
+//     } else {
+//       alert('Login efetuado com sucesso!');
+
+//       let token = responseData.access_token;
+//       localStorage.setItem('token', token);
+//       window.location.href = '/admin/pontos';
+//     }
+//   } catch (err) {
+//     alert('Houve um erro durante a autenticação');
+//   }
+// }

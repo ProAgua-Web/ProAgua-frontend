@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Logo from '/public/Logo.svg';
 
 export default function AuthLayout({
   children,
@@ -17,7 +16,9 @@ export default function AuthLayout({
           className={`flex h-1/5 select-none flex-row-reverse items-center justify-center gap-4 bg-primary-500 bg-right-bottom bg-no-repeat p-4 text-white lg:h-full lg:w-3/5 lg:flex-col lg:bg-login-background`}
         >
           <Image
-            src={Logo}
+            src="/Logo.svg"
+            width={36}
+            height={36}
             className="pointer-events-none flex h-36 w-36 justify-start object-fill p-8 lg:h-64 lg:w-64"
             alt="Logo do projeto"
           />

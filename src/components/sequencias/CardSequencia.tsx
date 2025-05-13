@@ -1,4 +1,4 @@
-import { Sequencia } from '@/utils/types';
+import { type Sequencia } from '@/utils/types';
 
 export default function CardSequencia(props: { sequencia: Sequencia }) {
   const { sequencia } = props;
@@ -17,7 +17,7 @@ export default function CardSequencia(props: { sequencia: Sequencia }) {
         <p className="text-sm">{sequencia.ponto?.localizacao}</p>
         <h5>Ciclo de Amostragem {sequencia.amostragem.toString()}</h5>
         <a
-          href={`sequencias_coletas/${sequencia.id}`}
+          href={`sequencias/${sequencia.id}`}
           className="filled-button rounded-md bg-primary-500 p-3 text-xs font-semibold text-white"
         >
           <i className="bi bi-eye-fill"></i>
