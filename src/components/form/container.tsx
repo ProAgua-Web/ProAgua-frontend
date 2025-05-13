@@ -21,6 +21,7 @@ interface Props {
   isLoading: boolean;
   isSubmitting: boolean;
   children: ReactNode;
+  subChildren?: ReactNode;
 }
 
 export interface FormProps<TSchema extends FieldValues>
@@ -54,9 +55,13 @@ export const FormContainer = forwardRef<HTMLFormElement, Props>(
               </h1>
               <p className="text-xs text-slate-500">{props.subtitle}</p>
             </div>
-            {props.isLoading && (
+            {props.isLoading ? (
               <div className="flex h-full items-center justify-end bg-white bg-opacity-90 px-6 py-4 lg:px-14 lg:py-6">
                 <Spinner className="size-12" />
+              </div>
+            ) : (
+              <div className="flex h-full items-center justify-end bg-white bg-opacity-90 px-6 py-4 lg:px-14 lg:py-6">
+                {props.subChildren}
               </div>
             )}
           </div>
