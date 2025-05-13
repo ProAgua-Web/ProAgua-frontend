@@ -15,7 +15,7 @@ export function ExportarButton() {
   return (
     <Button
       variant="add"
-      className="h-full w-full lg:w-fit"
+      size="wide"
       onClick={() => {
         exportarColetas.refetch();
       }}

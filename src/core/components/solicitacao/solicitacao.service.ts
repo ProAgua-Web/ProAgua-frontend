@@ -8,6 +8,7 @@ import {
 import {
   createSolicitacao,
   deleteSolicitacao,
+  exportSolicitacao,
   getSolicitacao,
   listSolicitacoes,
   updateSolicitacao,
@@ -87,6 +88,29 @@ export const useExcluirSolicitacao = (options?: ApiMutationOptions<number>) => {
     invalidateQueries: (id) => [['solicitacoes'], ['solicitacao', id]],
     successMessage: 'Solicitação excluída com sucesso!',
     errorMessage: 'Não foi possível excluir a solicitação',
+    ...options,
+  });
+};
+
+export const useExportarSolicitacao = (
+  id: number,
+  options?: ApiQueryOptions<ApiResponse<Blob>>,
+) => {
+  return useApiQuery({
+    enabled: false,
+    queryKey: ['solicitacao', id, 'documento'],
+    queryFn: async () => {
+      const response = await exportSolicitacao(id);
+      const blob = response.data as unknown as Blob;
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'solicitacao-documento.docx');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+      return response.data;
+    },
     ...options,
   });
 };

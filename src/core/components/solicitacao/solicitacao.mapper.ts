@@ -19,6 +19,7 @@ export function solicitacaoSchemaToDto(
 
 export function solicitacaoDtoToSchema(dto: SolicitacaoDto): SolicitacaoSchema {
   return {
+    id: dto.id,
     edificacao: dto.ponto?.edificacao.codigo || '',
     ponto_id: dto.ponto?.id ?? 0,
     tipo: dto.tipo,

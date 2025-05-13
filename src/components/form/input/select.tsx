@@ -46,7 +46,7 @@ interface ControlledSelectProps<
   TValue extends Value & PathValue<TForm, TField>,
   TForm extends FieldValues,
   TField extends FieldPath<TForm>,
-> extends Omit<SelectProps<TValue>, 'label' | 'value' | 'onChange'> {
+> extends Omit<SelectProps<TValue>, 'label' | 'value'> {
   control: Control<TForm>;
   name: TValue extends PathValue<TForm, TField> ? TField : never;
   label: string;
@@ -74,8 +74,12 @@ export function ControlledSelect<
                 {label}
               </span>
             }
-            {...field}
             {...props}
+            {...field}
+            onChange={(value) => {
+              field.onChange(value);
+              props.onChange?.(value);
+            }}
           />
           {fieldState.error && (
             <ErrorMessage>{fieldState.error.message}</ErrorMessage>

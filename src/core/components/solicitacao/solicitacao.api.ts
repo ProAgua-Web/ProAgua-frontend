@@ -67,3 +67,22 @@ export async function updateImagensSolicitacao(
     imagensExistentes,
   );
 }
+
+export async function exportSolicitacao(id: number) {
+  const response = await api.get<ApiResponse<Blob>>(
+    `/solicitacoes/${id}/document`,
+    {
+      responseType: 'blob',
+    },
+  );
+
+  const filename = response.headers['content-disposition']
+    .split(';')[1]
+    .split('filename=')[1]
+    .replace(/"/g, '');
+
+  return {
+    data: response.data,
+    filename,
+  };
+}

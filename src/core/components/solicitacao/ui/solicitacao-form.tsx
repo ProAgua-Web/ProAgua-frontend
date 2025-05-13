@@ -13,9 +13,12 @@ import { useEdificacoesOptions } from '../../edificacao/edificacao.utils';
 import { usePontosOptions } from '../../ponto/ponto.utils';
 import { type SolicitacaoSchema } from '../solicitacao.form';
 import {
+  SolicitacaoDefaultValues,
   statusSolicitacaoOptions,
+  TipoSolicitacao,
   tipoSolicitacaoOptions,
 } from '../solicitacao.utils';
+import { ExportarButton } from './button.exportar';
 
 export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
   form,
@@ -24,9 +27,18 @@ export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
   const edificacaoOptions = useEdificacoesOptions();
   const edificacao = form.watch('edificacao');
   const pontosOptions = usePontosOptions({ q: edificacao });
+  const solicitacaoId = form.watch('id') || 0;
+
+  function handleTipoChange(tipo: TipoSolicitacao) {
+    form.setValue('objetivo', SolicitacaoDefaultValues[tipo].objetivo);
+    form.setValue(
+      'justificativa',
+      SolicitacaoDefaultValues[tipo].justificativa,
+    );
+  }
 
   return (
-    <FormContainer {...props}>
+    <FormContainer {...props} subChildren={ExportarButton(solicitacaoId)}>
       <FormSection>
         <ControlledSelect
           control={form.control}
@@ -34,6 +46,7 @@ export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
           label="Tipo de solicitação"
           placeholder="Selecione o tipo de solicitação"
           options={tipoSolicitacaoOptions}
+          onChange={handleTipoChange}
         />
         <ControlledCombobox
           control={form.control}
