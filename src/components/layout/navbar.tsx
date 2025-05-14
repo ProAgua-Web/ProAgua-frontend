@@ -1,7 +1,5 @@
 import { cn } from '@/lib/utils';
 import {
-  faBars,
-  faChevronLeft,
   faClipboardList,
   faEnvelope,
   faFileExcel,
@@ -12,23 +10,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { createContext, type FC, JSX, useState } from 'react';
-
-interface NavContextType {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-}
+import { type FC, Fragment, JSX } from 'react';
+import { FaBars, FaChevronLeft } from 'react-icons/fa6';
+import { Button } from '../ui/button';
 
 interface NavLink {
   href: string;
   icon: JSX.Element;
   name: string;
 }
-
-const NavContext = createContext<NavContextType>({
-  isOpen: false,
-  setIsOpen: () => {},
-});
 
 const NAV_LINKS: NavLink[] = [
   {
@@ -63,74 +53,67 @@ const NAV_LINKS: NavLink[] = [
   },
 ];
 
-export const Navbar: FC = () => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const pathname = usePathname();
+interface NavbarProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  children?: React.ReactNode;
+}
 
-  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
+export const Navbar = (props: NavbarProps): JSX.Element => {
+  const pathname = usePathname();
+  const { isOpen, setIsOpen } = props;
+
+  const toggleCollapse = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <NavContext.Provider
-      value={{
-        isOpen: isCollapsed,
-        setIsOpen: setIsCollapsed,
-      }}
-    >
+    <Fragment>
       <div
         className={cn(
           'fixed z-50 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:sticky lg:h-screen lg:max-w-60',
-          isCollapsed ? 'fixed h-20 w-20' : 'h-screen',
+          isOpen ? 'fixed h-20 w-20' : 'h-screen',
         )}
       >
-        <NavbarHeader
-          isCollapsed={isCollapsed}
-          onToggleCollapse={toggleCollapse}
-        />
+        <NavbarHeader isOpen={isOpen} onToggleCollapse={toggleCollapse} />
 
         <NavbarContent
           links={NAV_LINKS}
-          isCollapsed={isCollapsed}
+          isCollapsed={isOpen}
           currentPath={pathname}
         />
       </div>
       <div
         className={cn(
           'fixed z-50 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:h-screen lg:max-w-60',
-          isCollapsed ? 'fixed h-20 w-20' : 'h-screen',
+          isOpen ? 'fixed h-20 w-20' : 'h-screen',
         )}
       >
-        <NavbarHeader
-          isCollapsed={isCollapsed}
-          onToggleCollapse={toggleCollapse}
-        />
+        <NavbarHeader isOpen={isOpen} onToggleCollapse={toggleCollapse} />
 
         <NavbarContent
           links={NAV_LINKS}
-          isCollapsed={isCollapsed}
+          isCollapsed={isOpen}
           currentPath={pathname}
         />
       </div>
-    </NavContext.Provider>
+    </Fragment>
   );
 };
 
 interface NavbarHeaderProps {
-  isCollapsed: boolean;
+  isOpen: boolean;
   onToggleCollapse: () => void;
 }
 
-const NavbarHeader: FC<NavbarHeaderProps> = ({
-  isCollapsed,
-  onToggleCollapse,
-}) => (
+const NavbarHeader: FC<NavbarHeaderProps> = ({ isOpen, onToggleCollapse }) => (
   <header className="h-20 bg-primary-500 text-white">
-    <button
+    <Button
+      className="flex h-20 w-full justify-end border-none bg-primary-500 p-8 text-end hover:bg-primary-600"
       onClick={onToggleCollapse}
-      className="h-20 w-full bg-primary-500 p-8 text-end hover:bg-primary-600"
-      aria-label={isCollapsed ? 'Expand menu' : 'Collapse menu'}
     >
-      <FontAwesomeIcon icon={isCollapsed ? faBars : faChevronLeft} size="xl" />
-    </button>
+      {isOpen ? <FaBars /> : <FaChevronLeft />}
+    </Button>
   </header>
 );
 
@@ -145,7 +128,7 @@ const NavbarContent: FC<NavbarContentProps> = ({
   isCollapsed,
   currentPath,
 }) => (
-  <div className="grow border-r border-r-neutral-300 bg-background">
+  <div className="grow bg-transparent">
     <ul>
       {links.map((link) => (
         <NavItem
@@ -177,10 +160,9 @@ const NavItem: FC<NavItemProps> = ({ link, isActive, isCollapsed }) => (
     >
       <span className="p-auto block h-10 w-10">{link.icon}</span>
       <span
-        className={cn(
-          'flex items-center justify-center truncate text-center',
-          isCollapsed ? 'hidden' : '',
-        )}
+        className={cn('flex items-center justify-center truncate text-center', {
+          hidden: isCollapsed,
+        })}
       >
         {link.name}
       </span>

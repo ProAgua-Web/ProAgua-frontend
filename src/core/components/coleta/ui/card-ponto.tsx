@@ -1,12 +1,19 @@
 import { type PontoDto } from '@/core/components/ponto/ponto.model';
 import { useExcluirPonto } from '@/core/components/ponto/ponto.service';
+import { cn } from '@/lib/utils';
 import { TIPOS_PONTOS } from '@/utils/types';
 import { Card } from '../../../../components/common/card';
 
-export function CardPonto(props: Readonly<{ ponto: PontoDto }>) {
-  const { ponto } = props;
+interface Props {
+  ponto: PontoDto;
+  isPublic?: boolean;
+}
+
+export function CardPonto(props: Readonly<Props>) {
+  const { ponto, isPublic } = props;
   const tipo = ponto.tipo < 2 ? 'pontos' : 'reservatorios';
   const excluirPonto = useExcluirPonto();
+  const adminBaseUrl = isPublic ? '/admin' : '';
 
   const pathImage = ponto.imagens.length
     ? ponto.imagens[0].src
@@ -21,7 +28,7 @@ export function CardPonto(props: Readonly<{ ponto: PontoDto }>) {
         />
       )}
 
-      <Card.Content>
+      <Card.Content expandable={!isPublic} isPublic>
         <Card.Header>
           <Card.Subtitle>
             {TIPOS_PONTOS[ponto.tipo]}
@@ -30,9 +37,9 @@ export function CardPonto(props: Readonly<{ ponto: PontoDto }>) {
 
           <Card.Title>{ponto.localizacao}</Card.Title>
 
-          <Card.Actions>
+          <Card.Actions className={cn(!isPublic && 'hidden')}>
             <Card.Action
-              href={`/admin/edificacoes/${ponto.edificacao.codigo}/${tipo}/${ponto.id}/editar`}
+              href={`${adminBaseUrl}/edificacoes/${ponto.edificacao.codigo}/${tipo}/${ponto.id}/editar`}
             >
               Editar
             </Card.Action>

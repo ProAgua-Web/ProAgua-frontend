@@ -9,8 +9,10 @@ import {
   createPonto,
   deletePontos,
   getPonto,
+  getPontoPublico,
   getPontosBySequenciaId,
   listPontos,
+  listPontosPublicos,
   type PontoQueryOptions,
   updatePonto,
 } from './ponto.api';
@@ -26,6 +28,23 @@ export const usePontos = (
     queryKey: ['pontos', params],
     queryFn: async () => {
       const response = await listPontos(params);
+      if ('items' in response.data) {
+        return response.data.items as PontoDto[];
+      }
+      return response.data;
+    },
+    ...options,
+  });
+};
+
+export const usePontosPublicos = (
+  params?: PontoQueryOptions,
+  options?: ApiQueryOptions<PontoDto[]>,
+) => {
+  return useApiQuery({
+    queryKey: ['pontos', 'publicos', params],
+    queryFn: async () => {
+      const response = await listPontosPublicos(params);
       if ('items' in response.data) {
         return response.data.items as PontoDto[];
       }
@@ -59,6 +78,21 @@ export const usePonto = (id: number, options?: ApiQueryOptions<PontoDto>) => {
     queryKey: ['ponto', id],
     queryFn: async () => {
       const response = await getPonto(id);
+      return response.data;
+    },
+    ...options,
+  });
+};
+
+export const usePontoPublico = (
+  id: number,
+  options?: ApiQueryOptions<PontoDto>,
+) => {
+  return useApiQuery({
+    enabled: !!id,
+    queryKey: ['ponto', id],
+    queryFn: async () => {
+      const response = await getPontoPublico(id);
       return response.data;
     },
     ...options,

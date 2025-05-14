@@ -24,9 +24,26 @@ export async function listEdificacoes(params?: EdificacaoQueryOptions) {
   return response.data;
 }
 
+export async function listEdificacoesPublicas(params?: EdificacaoQueryOptions) {
+  const response = await api.get<ApiResponse<EdificacaoDto[]>>(
+    '/public/edificacoes',
+    {
+      params,
+    },
+  );
+  return response.data;
+}
+
 export async function getEdificacao(codigo: string) {
   const response = await api.get<ApiResponse<EdificacaoDto>>(
     `/edificacoes/${codigo}`,
+  );
+  return response.data;
+}
+
+export async function getEdificacaoPublica(codigo: string) {
+  const response = await api.get<ApiResponse<EdificacaoDto>>(
+    `/public/edificacoes/${codigo}`,
   );
   return response.data;
 }

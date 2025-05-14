@@ -1,46 +1,67 @@
 'use client';
 
+import { NavContext } from '@/app/admin/layout';
 import { useAutenticacao } from '@/lib/autenticacao';
-import { capitalize } from '@/lib/utils';
+import { capitalize, cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useContext } from 'react';
 import { MdExitToApp } from 'react-icons/md';
 import { Button } from '../ui/button';
 
-export default function Header(props: {
+interface Props {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
   collapsed?: boolean;
-}) {
+}
+
+export default function Header(props: Props) {
   const { autenticado, token, sair } = useAutenticacao();
   const username = capitalize(token?.username);
+  const pathname = usePathname();
+  const isAdminPath = pathname?.startsWith('/admin') ?? false;
+  const { isOpen } = useContext(NavContext);
 
   return (
-    <header className="fixed z-40 flex h-20 w-full items-center bg-primary-500 text-white-100 shadow-lg">
-      <div className="flex w-full justify-center">
-        <div className="w-fit items-center">
-          <Link
-            href="/"
-            className="flex select-none items-center gap-2 text-2xl font-semibold text-white-100"
-          >
-            <Image
-              width={40}
-              height={40}
-              src="/Logo.svg"
-              className="max-h-10"
-              alt="Logo do projeto"
-            />
-            ProÁgua
-          </Link>
-        </div>
-      </div>
+    <header
+      className={cn(
+        'fixed z-40 flex h-20 w-full items-center justify-between bg-primary-500 px-24 text-white-100 shadow-lg transition-all duration-200',
+        {
+          'pl-64': !isOpen,
+        },
+      )}
+    >
+      <Link href="/" className="flex items-center gap-2 text-2xl">
+        <Image
+          src="/Logo.svg"
+          alt="Logo do projeto"
+          width={28}
+          height={40}
+          className="h-[clamp(2rem,1.8571rem+0.7143vw,2.5rem)]"
+        />
+        PROÁGUA
+      </Link>
+      <nav className={cn({ hidden: isAdminPath })}>
+        <ul className="flex gap-8">
+          <li>
+            <Link href="#inicio">Início</Link>
+          </li>
+          <li>
+            <Link href="#pesquise">Pesquise</Link>
+          </li>
+          <li>
+            <Link href="#sobre">Sobre</Link>
+          </li>
+        </ul>
+      </nav>
 
       {autenticado && (
-        <>
-          <Button onClick={sair} className={'h-full border-none'}>
-            {username}
+        <div className="flex items-center gap-4">
+          <span className="text-nowrap">Olá, {username}</span>
+          <Button onClick={sair} className={'border-none'} size="full">
             <MdExitToApp size={24} />
           </Button>
-        </>
+        </div>
       )}
     </header>
   );

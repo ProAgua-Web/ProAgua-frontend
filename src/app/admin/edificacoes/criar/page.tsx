@@ -4,6 +4,10 @@ import { CriarEdificacao } from '@/core/components/edificacao/ui/criar-edificaca
 export default function Pagina() {
   const breadcrumbs = [
     {
+      label: 'Edificações',
+      route: '/admin/edificacoes',
+    },
+    {
       route: `/admin/edificacoes/criar`,
       label: 'Criar edificação',
     },

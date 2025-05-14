@@ -9,12 +9,16 @@ export default async function Pagina({ params }: Props) {
   const { ponto_id, codigo } = await params;
   const breadcrumbs = [
     {
+      label: 'Edificações',
+      route: '/admin/edificacoes',
+    },
+    {
       label: 'Pontos de coleta',
       route: `/admin/edificacoes/${codigo}/pontos`,
     },
     {
       route: `/admin/edificacoes/${codigo}/pontos/${ponto_id}/editar`,
-      label: 'Editar ponto de coleta',
+      label: `Editar ponto de coleta ${ponto_id}`,
     },
   ];
   return (

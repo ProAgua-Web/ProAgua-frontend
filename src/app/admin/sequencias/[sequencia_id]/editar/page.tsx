@@ -14,7 +14,7 @@ export default async function Pagina({ params }: Props) {
     },
     {
       route: `/admin/sequencias/${sequencia_id}/editar`,
-      label: 'Editar sequência de coleta',
+      label: `Editar sequência de coleta ${sequencia_id}`,
     },
   ];
   return (

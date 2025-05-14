@@ -1,7 +1,7 @@
 'use client';
 
 import { DataListLayout } from '@/components/layout/datalist';
-import { useEdificacoes } from '@/core/components/edificacao/edificacao.service';
+import { useEdificacoesPublicas } from '@/core/components/edificacao/edificacao.service';
 import { CardEdificacao } from '@/core/components/edificacao/ui/card-edificacao';
 import { useQueryState } from 'nuqs';
 import { Filters } from './filters';
@@ -16,26 +16,13 @@ export default function Page() {
     limit: 0,
   };
 
-  const { data: edificacoes = [] } = useEdificacoes(params);
-
-  const breadcrumbs = [
-    {
-      label: 'Edificações',
-      route: '/admin/edificacoes',
-    },
-  ];
+  const { data: edificacoes = [] } = useEdificacoesPublicas(params);
 
   return (
     <DataListLayout
       title="Edificações e Pontos de Coleta"
-      subtitle="Gerencie as edificações e os pontos de coleta do sistema."
-      navLinks={[
-        {
-          label: 'Criar edificação',
-          route: '/admin/edificacoes/criar',
-        },
-      ]}
-      breadcrumbs={breadcrumbs}
+      subtitle="Verifique a qualidade da água da universidade."
+      breadcrumbs={[]}
     >
       <div className="mb-4 flex w-full flex-col gap-4">
         <Filters />

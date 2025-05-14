@@ -28,8 +28,23 @@ export async function listPontos(params?: PontoQueryOptions) {
   return response.data;
 }
 
+export async function listPontosPublicos(params?: PontoQueryOptions) {
+  const response = await api.get<ApiResponse<PontoDto[]>>('/public/pontos', {
+    params,
+    paramsSerializer: {
+      indexes: null,
+    },
+  });
+  return response.data;
+}
+
 export async function getPonto(id: number) {
   const response = await api.get<ApiResponse<PontoDto>>(`/pontos/${id}`);
+  return response.data;
+}
+
+export async function getPontoPublico(id: number) {
+  const response = await api.get<ApiResponse<PontoDto>>(`/public/pontos/${id}`);
   return response.data;
 }
 

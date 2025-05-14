@@ -1,49 +1,31 @@
+import { Footer } from '@/components/layout/footer';
+import Image from 'next/image';
+import Link from 'next/link';
+
 function Header() {
   return (
     <header className="sticky top-0 z-10 flex h-[clamp(50px,8vh,100px)] w-full items-center justify-between bg-primary-500 pe-[clamp(20px,4vw+1rem,100vw-1200px)] pl-12 text-white">
-      <a className="flex items-center gap-2 text-2xl uppercase" href="/">
-        <img
+      <Link className="flex items-center gap-2 text-2xl uppercase" href="/">
+        <Image
           src="/Logo.svg"
           alt="Logo do projeto"
+          width={28}
+          height={40}
           className="h-[clamp(2rem,1.8571rem+0.7143vw,2.5rem)]"
         />
         ProÁgua
-      </a>
+      </Link>
       <nav>
-        <ul className="nav-list flex list-none gap-8">
+        <ul className="flex gap-8">
           <li>
-            <a href="#inicio">Início</a>
+            <Link href="#inicio">Início</Link>
           </li>
           <li>
-            <a href="#pesquise">Pesquise</a>
-          </li>
-          <li>
-            <a href="#sobre">Sobre</a>
+            <Link href="#sobre">Sobre</Link>
           </li>
         </ul>
       </nav>
-      <a
-        href="/login"
-        className="w-fit items-center justify-center rounded border border-white px-3 py-1"
-      >
-        Login
-      </a>
     </header>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="flex w-full items-center justify-between bg-primary-500 p-[clamp(30px,4vw+1rem,100vw-1200px)] text-white">
-      <div className="justify-center">
-        <h1 className="mb-2 text-2xl">ProÁgua</h1>
-        <h5 className="font-normal">© 2023 - Bom dia.</h5>
-        <h5>Todos os direitos reservados.</h5>
-      </div>
-      <div className="logo-container">
-        <img src="../static/images/Logo_ufersa.svg" alt="Logo UFERSA" />
-      </div>
-    </footer>
   );
 }
 
@@ -67,39 +49,6 @@ export default function Home() {
           <h1 className="max-w-[1000px] text-[clamp(1.75rem,1.458vw+1.458rem,2.625rem)]">
             A verificação da sua água simplificada para você
           </h1>
-          <div className="outlined-btn flex w-fit items-center justify-center rounded border border-white px-3 py-1">
-            <i className="fa-solid fa-magnifying-glass"></i>
-            {/* <a href="#pesquise">Procure por um ponto</a> */}
-            <a href="/pontos">Procure por um ponto</a>
-          </div>
-        </section>
-
-        <section
-          id="pesquise"
-          className={sectionClassName + ' w-full items-center justify-center'}
-        >
-          <p className="mb-8 text-xs font-semibold text-neutral-600">
-            PESQUISA
-          </p>
-          <h1 className="mb-6 text-center text-4xl font-bold text-neutral-700">
-            Deseja verificar a qualidade
-            <br />
-            da água de qual ponto?
-          </h1>
-          <form
-            className="search-field relative flex"
-            action="lista_pontos"
-            method="GET"
-          >
-            <i className="fa-solid fa-magnifying-glass"></i>
-            <input
-              type="text"
-              className="w-[clamp(200px,25vw,1000px)] rounded-2xl bg-neutral-200 py-2 pl-3 pr-10"
-              name="search-query"
-              placeholder="Laboratório"
-              required
-            />
-          </form>
         </section>
 
         <section

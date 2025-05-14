@@ -35,6 +35,7 @@ type CardContentProps = {
   children: React.ReactNode;
   className?: string;
   expandable?: boolean;
+  isPublic?: boolean;
 };
 
 type CardActionsProps = {
@@ -99,6 +100,7 @@ Card.Content = function CardContent({
   children,
   className,
   expandable = true,
+  isPublic = false,
 }: CardContentProps) {
   return (
     <div
@@ -106,6 +108,7 @@ Card.Content = function CardContent({
         'absolute bottom-0 h-28 w-full overflow-hidden rounded-sm bg-slate-100 shadow lg:h-16',
         expandable &&
           'transition-all duration-300 ease-in-out group-hover:h-28',
+        isPublic && 'h-16 group-hover:h-16',
         className,
       )}
     >

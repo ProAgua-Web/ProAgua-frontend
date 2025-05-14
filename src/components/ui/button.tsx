@@ -21,7 +21,7 @@ const buttonVariants = cva(
         'delete':
           'rounded-md border bg-red-500 p-3 text-white hover:bg-red-600 disabled:bg-red-400',
         'ghost': 'hover:bg-slate-200 hover:text-slate-900',
-        'link': 'text-slate-900 underline-offset-4 hover:underline',
+        'link': 'text-primary-300 underline-offset-4 hover:underline',
         'header': 'bg-brand-header p-1 text-xl text-white hover:bg-primary-500',
         'edificacao-header':
           'justify-start truncate px-4 text-xl font-bold text-slate-700',

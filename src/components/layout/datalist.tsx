@@ -8,8 +8,8 @@ import { HiOutlinePlus } from 'react-icons/hi2';
 
 interface Props {
   breadcrumbs: Array<{ route: string; label: string }>;
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
   subItens?: React.ReactNode;
   navLinks?: Array<{
     label: string;

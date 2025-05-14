@@ -14,7 +14,7 @@ export default async function Pagina({ params }: Props) {
     },
     {
       route: `/admin/solicitacoes/${id}/editar`,
-      label: 'Editar solicitação',
+      label: `Editar solicitação ${id}`,
     },
   ];
   return (

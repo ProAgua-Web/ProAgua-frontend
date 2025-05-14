@@ -1,10 +1,17 @@
 import { Card } from '@/components/common/card';
 import { type EdificacaoDto } from '@/core/components/edificacao/edificacao.model';
 import { useExcluirEdificacao } from '@/core/components/edificacao/edificacao.service';
+import { cn } from '@/lib/utils';
 
-export function CardEdificacao(props: Readonly<{ edificacao: EdificacaoDto }>) {
-  const { edificacao } = props;
+interface Props {
+  edificacao: EdificacaoDto;
+  isPublic?: boolean;
+}
+
+export function CardEdificacao(props: Readonly<Props>) {
+  const { edificacao, isPublic } = props;
   const excluirEdificacao = useExcluirEdificacao();
+  const adminBaseUrl = isPublic ? '/admin' : '';
 
   const pathImage = edificacao.imagens.length
     ? edificacao.imagens[0].src
@@ -15,16 +22,16 @@ export function CardEdificacao(props: Readonly<{ edificacao: EdificacaoDto }>) {
       <Card.Image
         src={pathImage}
         alt={`Imagem da edificação ${edificacao.codigo}`}
-        link={`/admin/edificacoes/${edificacao.codigo}/pontos`}
+        link={`${adminBaseUrl}/edificacoes/${edificacao.codigo}/pontos`}
       />
 
-      <Card.Content>
+      <Card.Content isPublic={isPublic}>
         <Card.Header>
           <Card.Subtitle>{edificacao.codigo}</Card.Subtitle>
 
           <Card.Title>{edificacao.nome}</Card.Title>
 
-          <Card.Actions>
+          <Card.Actions className={cn(isPublic && 'hidden')}>
             <Card.Action
               href={`/admin/edificacoes/${edificacao.codigo}/editar`}
             >

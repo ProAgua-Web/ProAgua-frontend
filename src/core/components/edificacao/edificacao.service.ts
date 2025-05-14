@@ -9,7 +9,9 @@ import {
   deleteEdificacao,
   EdificacaoQueryOptions,
   getEdificacao,
+  getEdificacaoPublica,
   listEdificacoes,
+  listEdificacoesPublicas,
   updateEdificacao,
 } from './edificacao.api';
 
@@ -34,6 +36,23 @@ export const useEdificacoes = (
   });
 };
 
+export const useEdificacoesPublicas = (
+  params?: EdificacaoQueryOptions,
+  options?: ApiQueryOptions<EdificacaoDto[]>,
+) => {
+  return useApiQuery({
+    queryKey: ['edificacoes-publicas', params],
+    queryFn: async () => {
+      const response = await listEdificacoesPublicas(params);
+      if ('items' in response.data) {
+        return response.data.items as EdificacaoDto[];
+      }
+      return response.data;
+    },
+    ...options,
+  });
+};
+
 export const useEdificacao = (
   codigo: string,
   options?: ApiQueryOptions<EdificacaoDto>,
@@ -43,6 +62,21 @@ export const useEdificacao = (
     queryKey: ['edificacao', codigo],
     queryFn: async () => {
       const response = await getEdificacao(codigo);
+      return response.data;
+    },
+    ...options,
+  });
+};
+
+export const useEdificacaoPublica = (
+  codigo: string,
+  options?: ApiQueryOptions<EdificacaoDto>,
+) => {
+  return useApiQuery({
+    enabled: !!codigo,
+    queryKey: ['edificacao-publica', codigo],
+    queryFn: async () => {
+      const response = await getEdificacaoPublica(codigo);
       return response.data;
     },
     ...options,

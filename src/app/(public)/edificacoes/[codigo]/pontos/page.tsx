@@ -12,24 +12,10 @@ export default async function Page({ params }: Props) {
     <DataListLayout
       title="Pontos de coleta"
       subtitle="Gerencie os ponto de coleta do sistema."
-      navLinks={[
-        {
-          label: 'Criar ponto',
-          route: `/admin/edificacoes/${codigo}/pontos/criar`,
-        },
-        {
-          label: 'Criar reservatório',
-          route: `/admin/edificacoes/${codigo}/reservatorios/criar`,
-        },
-      ]}
       breadcrumbs={[
         {
-          label: 'Edificações',
-          route: '/admin/edificacoes',
-        },
-        {
           label: 'Pontos de coleta',
-          route: `/admin/edificacoes/${codigo}/pontos`,
+          route: `/edificacoes/${codigo}/pontos`,
         },
       ]}
     >

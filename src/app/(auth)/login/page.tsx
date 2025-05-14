@@ -87,11 +87,7 @@ export default function Login() {
           }
         />
 
-        <Button
-          asChild
-          variant="link"
-          className="flex self-end text-primary-300"
-        >
+        <Button asChild variant="link" className="flex self-end">
           <a href="#">Esqueceu a senha?</a>
         </Button>
       </div>
