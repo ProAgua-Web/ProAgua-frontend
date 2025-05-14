@@ -100,7 +100,7 @@ Card.Content = function CardContent({
   children,
   className,
   expandable = true,
-  isPublic = false,
+  isPublic,
 }: CardContentProps) {
   return (
     <div

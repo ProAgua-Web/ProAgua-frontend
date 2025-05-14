@@ -9,5 +9,7 @@ interface Props {
 export function Pontos({ codigo }: Props) {
   const { data: pontos = [] } = usePontosPublicos({ q: codigo });
 
-  return pontos.map((ponto) => <CardPonto key={ponto.id} ponto={ponto} />);
+  return pontos.map((ponto) => (
+    <CardPonto key={ponto.id} ponto={ponto} isPublic={true} />
+  ));
 }

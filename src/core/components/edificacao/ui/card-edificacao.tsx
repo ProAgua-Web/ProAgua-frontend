@@ -11,7 +11,7 @@ interface Props {
 export function CardEdificacao(props: Readonly<Props>) {
   const { edificacao, isPublic } = props;
   const excluirEdificacao = useExcluirEdificacao();
-  const adminBaseUrl = isPublic ? '/admin' : '';
+  const adminBaseUrl = !isPublic ? '/admin' : '';
 
   const pathImage = edificacao.imagens.length
     ? edificacao.imagens[0].src

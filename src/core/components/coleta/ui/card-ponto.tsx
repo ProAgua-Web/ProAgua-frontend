@@ -13,7 +13,7 @@ export function CardPonto(props: Readonly<Props>) {
   const { ponto, isPublic } = props;
   const tipo = ponto.tipo < 2 ? 'pontos' : 'reservatorios';
   const excluirPonto = useExcluirPonto();
-  const adminBaseUrl = isPublic ? '/admin' : '';
+  const adminBaseUrl = !isPublic ? '/admin' : '';
 
   const pathImage = ponto.imagens.length
     ? ponto.imagens[0].src
@@ -28,7 +28,7 @@ export function CardPonto(props: Readonly<Props>) {
         />
       )}
 
-      <Card.Content expandable={!isPublic} isPublic>
+      <Card.Content isPublic={isPublic}>
         <Card.Header>
           <Card.Subtitle>
             {TIPOS_PONTOS[ponto.tipo]}
@@ -37,7 +37,7 @@ export function CardPonto(props: Readonly<Props>) {
 
           <Card.Title>{ponto.localizacao}</Card.Title>
 
-          <Card.Actions className={cn(!isPublic && 'hidden')}>
+          <Card.Actions className={cn(isPublic && 'hidden')}>
             <Card.Action
               href={`${adminBaseUrl}/edificacoes/${ponto.edificacao.codigo}/${tipo}/${ponto.id}/editar`}
             >

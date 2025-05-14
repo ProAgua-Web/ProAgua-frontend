@@ -32,7 +32,7 @@ export default function Page() {
           <CardEdificacao
             key={edificacao.codigo}
             edificacao={edificacao}
-            isPublic
+            isPublic={true}
           />
         ))}
       </div>
