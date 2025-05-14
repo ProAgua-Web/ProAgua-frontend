@@ -19,7 +19,7 @@ export default function Header(props: Props) {
   const { autenticado, token, sair } = useAutenticacao();
   const username = capitalize(token?.username);
   const pathname = usePathname();
-  const isAdminPath = pathname?.startsWith('/admin') ?? false;
+  const isAdminPath = pathname?.startsWith('/admin');
   const { isOpen } = useContext(NavContext);
 
   return (
@@ -27,7 +27,7 @@ export default function Header(props: Props) {
       className={cn(
         'fixed z-40 flex h-20 w-full items-center justify-between bg-primary-500 px-4 text-white-100 shadow-lg transition-all duration-200 lg:px-24',
         {
-          'pl-64': isAdminPath && !isOpen,
+          'pl-64 lg:pl-64': isAdminPath && !isOpen,
         },
       )}
     >
