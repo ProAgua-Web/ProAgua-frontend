@@ -71,18 +71,10 @@ export const Navbar = (props: NavbarProps): JSX.Element => {
     <Fragment>
       <div
         className={cn(
-          'fixed z-50 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:sticky lg:h-screen lg:max-w-60',
+          'fixed z-50 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden lg:sticky lg:h-screen lg:max-w-60',
           isOpen ? 'fixed h-20 w-20' : 'h-screen',
         )}
-      >
-        <NavbarHeader isOpen={isOpen} onToggleCollapse={toggleCollapse} />
-
-        <NavbarContent
-          links={NAV_LINKS}
-          isCollapsed={isOpen}
-          currentPath={pathname}
-        />
-      </div>
+      ></div>
       <div
         className={cn(
           'fixed z-50 flex h-20 w-screen min-w-20 flex-col overflow-y-hidden shadow-lg transition-all duration-300 lg:h-screen lg:max-w-60',

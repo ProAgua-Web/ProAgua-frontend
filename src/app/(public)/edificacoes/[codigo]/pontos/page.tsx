@@ -14,6 +14,10 @@ export default async function Page({ params }: Props) {
       subtitle="Gerencie os ponto de coleta do sistema."
       breadcrumbs={[
         {
+          label: 'Edificações',
+          route: '/edificacoes',
+        },
+        {
           label: 'Pontos de coleta',
           route: `/edificacoes/${codigo}/pontos`,
         },

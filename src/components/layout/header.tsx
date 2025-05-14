@@ -25,7 +25,7 @@ export default function Header(props: Props) {
   return (
     <header
       className={cn(
-        'fixed z-40 flex h-20 w-full items-center justify-between bg-primary-500 px-24 text-white-100 shadow-lg transition-all duration-200',
+        'fixed z-40 flex h-20 w-full items-center justify-between bg-primary-500 px-4 text-white-100 shadow-lg transition-all duration-200 lg:px-24',
         {
           'pl-64': isAdminPath && !isOpen,
         },
@@ -42,7 +42,7 @@ export default function Header(props: Props) {
         PROÁGUA
       </Link>
       <nav className={cn({ hidden: isAdminPath })}>
-        <ul className="flex gap-8">
+        <ul className="hidden gap-8 lg:flex">
           <li>
             <Link href="/">Início</Link>
           </li>
