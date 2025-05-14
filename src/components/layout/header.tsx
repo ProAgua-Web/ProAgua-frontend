@@ -1,17 +1,18 @@
 'use client';
 
 import { useAutenticacao } from '@/lib/autenticacao';
-import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { capitalize } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { MdExitToApp } from 'react-icons/md';
 import { Button } from '../ui/button';
 
 export default function Header(props: {
   expand?: React.MouseEventHandler<HTMLButtonElement>;
   collapsed?: boolean;
 }) {
-  const { sair } = useAutenticacao();
+  const { autenticado, token, sair } = useAutenticacao();
+  const username = capitalize(token?.username);
 
   return (
     <header className="fixed z-40 flex h-20 w-full items-center bg-primary-500 text-white-100 shadow-lg">
@@ -33,13 +34,14 @@ export default function Header(props: {
         </div>
       </div>
 
-      <Button
-        onClick={sair}
-        className="h-full border-none bg-primary-500 hover:bg-primary-600"
-      >
-        <FontAwesomeIcon icon={faRightFromBracket} className="mr-1" />
-        Sair
-      </Button>
+      {autenticado && (
+        <>
+          <Button onClick={sair} className={'h-full border-none'}>
+            {username}
+            <MdExitToApp size={24} />
+          </Button>
+        </>
+      )}
     </header>
   );
 }

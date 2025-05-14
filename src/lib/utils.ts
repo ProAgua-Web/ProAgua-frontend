@@ -99,3 +99,11 @@ export function formatDate(dateInput: Date | string | number): string {
   const dateFormatter = new Intl.DateTimeFormat('pt-BR', dateOptions);
   return dateFormatter.format(date);
 }
+
+export function capitalize(text: string | null | undefined): string {
+  if (!text) {
+    return '';
+  }
+
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}

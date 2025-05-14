@@ -1,5 +1,4 @@
-import { api } from '@/lib/api';
-// import { csrfToken } from '@/lib/autenticacao';
+import { api, ApiResponse } from '@/lib/api';
 
 const ENDPOINT = '/auth';
 
@@ -22,7 +21,7 @@ export async function getCsrftoken(): Promise<csrfToken> {
 }
 
 export async function entrar(data: CredenciaisDTO) {
-  const res = await api.post<TokenDTO>(ENDPOINT + '/login', data);
+  const res = await api.post<ApiResponse<TokenDTO>>(ENDPOINT + '/login', data);
   return res.data;
 }
 

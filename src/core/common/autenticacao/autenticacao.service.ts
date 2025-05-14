@@ -38,7 +38,7 @@ export const useEntrar = ({
   return useApiMutation<Credenciais, Token>({
     mutationFn: async (credenciais) => {
       const response = await entrar(credenciais);
-      return response;
+      return response.data;
     },
     invalidateQueries: () => [['usuario-autenticado']],
     onSuccess(credenciais, token) {
