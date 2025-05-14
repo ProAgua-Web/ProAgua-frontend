@@ -39,6 +39,7 @@ export const useEdificacao = (
   options?: ApiQueryOptions<EdificacaoDto>,
 ) => {
   return useApiQuery({
+    enabled: !!codigo,
     queryKey: ['edificacao', codigo],
     queryFn: async () => {
       const response = await getEdificacao(codigo);

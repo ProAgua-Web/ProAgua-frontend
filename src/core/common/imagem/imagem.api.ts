@@ -108,3 +108,30 @@ export async function updateImages(
 
   await Promise.all(operations);
 }
+
+/**
+ * Mescla duas listas de imagens, evitando duplicatas
+ * @param imagensPrev - Lista de imagens existentes
+ * @param incoming - Lista de imagens a serem mescladas
+ * @returns - Lista mesclada de imagens
+ */
+export function mergeImagens(
+  imagensPrev: Array<File | ImagemDto>,
+  incoming: Array<File | ImagemDto>,
+): Array<File | ImagemDto> {
+  const allImagens = [...imagensPrev];
+
+  for (const imagem of incoming) {
+    const imagemExists = allImagens.find((img) => {
+      return (
+        isFile(imagem) ||
+        (!isFile(img) && !isFile(imagem) && img.src === imagem.src)
+      );
+    });
+    if (!imagemExists) {
+      allImagens.push(imagem);
+    }
+  }
+
+  return allImagens;
+}

@@ -14,7 +14,9 @@ export const solicitacaoSchema = z.object({
   edificacao: z
     .string({ message: 'Edificação é obrigatória' })
     .min(1, { message: 'Edificação é obrigatória' }),
-  ponto_id: z.number({ message: 'Ponto é obrigatório' }),
+  ponto_id: z
+    .number({ message: 'Ponto é obrigatório' })
+    .positive({ message: 'Ponto é obrigatório' }),
   tipo: z.nativeEnum(TipoSolicitacao, {
     message: 'Tipo de solicitação inválido',
   }),

@@ -55,6 +55,7 @@ export const usePontosBySequenciaId = (
 
 export const usePonto = (id: number, options?: ApiQueryOptions<PontoDto>) => {
   return useApiQuery({
+    enabled: !!id,
     queryKey: ['ponto', id],
     queryFn: async () => {
       const response = await getPonto(id);

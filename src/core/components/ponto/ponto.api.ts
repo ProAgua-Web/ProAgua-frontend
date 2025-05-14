@@ -56,7 +56,7 @@ export async function deletePontos(id: number) {
 }
 
 export async function createImagensPonto(
-  id: number,
+  id: string,
   imagens: Array<File | ImagemDto>,
 ) {
   return createImages({ entityPath: 'pontos', identifier: id }, imagens);

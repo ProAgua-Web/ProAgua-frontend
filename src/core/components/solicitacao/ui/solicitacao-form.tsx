@@ -9,7 +9,11 @@ import { ControlledCombobox } from '@/components/form/input/combobox';
 import { ControlledImageInput } from '@/components/form/input/image-input';
 import { ControlledSelect } from '@/components/form/input/select';
 import { ControlledTextArea } from '@/components/form/input/text-area';
+import { mergeImagens } from '@/core/common/imagem/imagem.api';
+import { useEffect } from 'react';
+import { useEdificacao } from '../../edificacao/edificacao.service';
 import { useEdificacoesOptions } from '../../edificacao/edificacao.utils';
+import { usePonto } from '../../ponto/ponto.service';
 import { usePontosOptions } from '../../ponto/ponto.utils';
 import { type SolicitacaoSchema } from '../solicitacao.form';
 import {
@@ -24,9 +28,12 @@ export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
   form,
   ...props
 }) => {
+  const codigo_edificacao = form.watch('edificacao');
+  const idPonto = form.watch('ponto_id');
+  const { data: edificacao } = useEdificacao(codigo_edificacao);
+  const { data: ponto } = usePonto(idPonto);
   const edificacaoOptions = useEdificacoesOptions();
-  const edificacao = form.watch('edificacao');
-  const pontosOptions = usePontosOptions({ q: edificacao });
+  const pontosOptions = usePontosOptions({ q: codigo_edificacao });
   const solicitacaoId = form.watch('id') || 0;
 
   function handleTipoChange(tipo: TipoSolicitacao) {
@@ -36,6 +43,31 @@ export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
       SolicitacaoDefaultValues[tipo].justificativa,
     );
   }
+
+  function handleEdificacaoChange() {
+    form.setValue('ponto_id', 0);
+  }
+
+  useEffect(() => {
+    const { setValue, getValues } = form;
+    const touchedFields = form.formState.touchedFields;
+    const imagensPrev = getValues('imagens') || [];
+
+    if (edificacao && touchedFields?.edificacao) {
+      setValue('imagens', mergeImagens(imagensPrev, edificacao?.imagens || []));
+    }
+
+    if (ponto && touchedFields?.ponto_id) {
+      setValue('imagens', mergeImagens(imagensPrev, ponto?.imagens || []));
+    }
+  }, [
+    edificacao,
+    ponto,
+    codigo_edificacao,
+    form.setValue,
+    form.getValues,
+    form.formState.touchedFields,
+  ]);
 
   return (
     <FormContainer {...props} subChildren={ExportarButton(solicitacaoId)}>
@@ -59,6 +91,7 @@ export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
           }
           disabled={edificacaoOptions.isLoading}
           {...edificacaoOptions}
+          onChange={handleEdificacaoChange}
         />
         <ControlledCombobox
           control={form.control}
@@ -67,7 +100,9 @@ export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
           placeholder={
             pontosOptions.isLoading ? 'Carregando...' : 'Selecione o ponto'
           }
-          disabled={typeof edificacao !== 'string' || pontosOptions.isLoading}
+          disabled={
+            typeof codigo_edificacao !== 'string' || pontosOptions.isLoading
+          }
           {...pontosOptions}
         />
       </FormSection>

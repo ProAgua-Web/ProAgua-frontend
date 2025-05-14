@@ -24,7 +24,7 @@ export function buscarEdificacoes(
 }
 
 export const useEdificacoesOptions = () => {
-  const edificacoes = useEdificacoes();
+  const edificacoes = useEdificacoes({ limit: 0 });
 
   const [
     [buscaEdificacoes, buscaEdificacoesDebounce],
