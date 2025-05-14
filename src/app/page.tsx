@@ -1,4 +1,5 @@
 import { Footer } from '@/components/layout/footer';
+import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -45,17 +46,22 @@ export default function Home() {
             ' color-white gap-6 text-balance bg-primary-500 pl-[max(30px,4vh+1rem)] text-white'
           }
         >
-          <p className="text-xs uppercase">BOAS-VINDAS AO PROÁGUA</p>
+          <p className="uppercase">BOAS-VINDAS AO PROÁGUA</p>
           <h1 className="max-w-[1000px] text-[clamp(1.75rem,1.458vw+1.458rem,2.625rem)]">
             A verificação da sua água simplificada para você
           </h1>
+          <Button size="wide" className="w-fit px-12 py-8" asChild>
+            <Link href="/edificacoes" className="font-mono text-xl">
+              Procure por um ponto
+            </Link>
+          </Button>
         </section>
 
         <section
           id="sobre"
           className={sectionClassName + ' py-12 pl-[max(30px,6vh+1rem)]'}
         >
-          <h2 className="text-xs font-semibold text-primary-500">SOBRE NÓS</h2>
+          <h2 className="font-semibold text-primary-500">SOBRE NÓS</h2>
           <h1 className="max-w-[95%] text-balance">
             Um projeto construído por diversas mãos, sempre buscando melhorar.
           </h1>

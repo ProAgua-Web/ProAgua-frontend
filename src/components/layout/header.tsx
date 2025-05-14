@@ -27,7 +27,7 @@ export default function Header(props: Props) {
       className={cn(
         'fixed z-40 flex h-20 w-full items-center justify-between bg-primary-500 px-24 text-white-100 shadow-lg transition-all duration-200',
         {
-          'pl-64': !isOpen,
+          'pl-64': isAdminPath && !isOpen,
         },
       )}
     >
@@ -44,21 +44,22 @@ export default function Header(props: Props) {
       <nav className={cn({ hidden: isAdminPath })}>
         <ul className="flex gap-8">
           <li>
-            <Link href="#inicio">Início</Link>
+            <Link href="/">Início</Link>
           </li>
           <li>
-            <Link href="#pesquise">Pesquise</Link>
-          </li>
-          <li>
-            <Link href="#sobre">Sobre</Link>
+            <Link href="/#sobre">Sobre</Link>
           </li>
         </ul>
       </nav>
 
       {autenticado && (
-        <div className="flex items-center gap-4">
+        <div className="flex h-full items-center gap-4">
           <span className="text-nowrap">Olá, {username}</span>
-          <Button onClick={sair} className={'border-none'} size="full">
+          <Button
+            onClick={sair}
+            size="full"
+            className="aspect-square border-none"
+          >
             <MdExitToApp size={24} />
           </Button>
         </div>

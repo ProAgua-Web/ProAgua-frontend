@@ -29,10 +29,6 @@ export default function RootLayout({
 }>) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleCollapsed = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <div className={inter.className + 'relative min-h-screen bg-background'}>
       <NavContext.Provider

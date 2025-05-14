@@ -21,7 +21,7 @@ export default function RootLayout({
 
   return (
     <div className={inter.className + 'relative min-h-screen bg-background'}>
-      <Header expand={toggleCollapsed} collapsed={collapsed} />
+      <Header collapsed={false} />
 
       <div className="flex flex-row">
         {/* <Navbar /> */}
