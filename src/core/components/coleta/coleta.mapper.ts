@@ -15,6 +15,7 @@ export function coletaSchemaToDto(schema: ColetaSchema): CreateColetaDto {
     ordem: schema.ordem,
     ponto_id: schema.pontoId,
     responsavel: schema.responsaveis_id,
+    publico: schema.publico,
   };
 }
 
@@ -33,5 +34,6 @@ export function coletaDtoToSchema(dto: ColetaDto): ColetaSchema {
     ordem: dto.ordem,
     pontoId: dto.ponto.id!,
     responsaveis_id: [dto.responsaveis_id[0], ...dto.responsaveis_id.slice(1)], // [number, ...number[]]
+    publico: dto.publico,
   };
 }

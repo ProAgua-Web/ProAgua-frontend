@@ -38,6 +38,13 @@ export async function getColeta(id: number) {
   return response.data;
 }
 
+export async function getColetaPublica(ponto_id: number) {
+  const response = await api.get<ApiResponse<ColetaDto>>(
+    `/public/pontos/${ponto_id}/coleta`,
+  );
+  return response.data;
+}
+
 export async function exportColetas(params?: ColetaQueryOptions) {
   const response = await api.get<ApiResponse<Blob>>('/coletas/excel', {
     params,

@@ -14,6 +14,7 @@ export interface ColetaDto {
   sequencia_id: number;
   ponto: PontoDto;
   status: boolean;
+  publico: boolean;
 }
 
 export interface CreateColetaDto

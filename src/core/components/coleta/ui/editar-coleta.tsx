@@ -45,6 +45,7 @@ export const EditarColeta: React.FC<Props> = ({
       onCancel={() => router.back()}
       isSubmitting={editarColeta.isPending}
       isLoading={coleta.isFetching}
+      sequencia_id={sequencia_id}
     />
   );
 };

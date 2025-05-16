@@ -25,8 +25,9 @@ export default function Header(props: Props) {
   return (
     <header
       className={cn(
-        'fixed z-40 flex h-20 w-full items-center justify-between bg-primary-500 px-4 text-white-100 shadow-lg transition-all duration-200 lg:px-24',
+        'fixed z-40 flex h-20 w-full items-center justify-between bg-primary-500 px-4 text-white-100 shadow-lg transition-all duration-200',
         {
+          'px-24': isAdminPath,
           'pl-64 lg:pl-64': isAdminPath && !isOpen,
         },
       )}

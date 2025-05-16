@@ -25,6 +25,7 @@ export function CardPonto(props: Readonly<Props>) {
         <Card.Image
           src={pathImage}
           alt={`Imagem do ponto de coleta ${ponto.id}`}
+          link={`/edificacoes/${ponto.edificacao.codigo}/pontos/${ponto.id}`}
         />
       )}
 

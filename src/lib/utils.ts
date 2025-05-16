@@ -107,3 +107,13 @@ export function capitalize(text: string | null | undefined): string {
 
   return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 }
+
+export const checkInterval = (
+  valor: number,
+  min?: number | null,
+  max?: number | null,
+) => {
+  if (min != null && valor < min) return false;
+  if (max != null && valor > max) return false;
+  return true;
+};

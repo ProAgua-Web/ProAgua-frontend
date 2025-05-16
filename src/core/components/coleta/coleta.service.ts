@@ -11,6 +11,7 @@ import {
   deleteColeta,
   exportColetas,
   getColeta,
+  getColetaPublica,
   listColetas,
   updateColeta,
 } from './coleta.api';
@@ -37,9 +38,25 @@ export const useColetas = (
 
 export const useColeta = (id: number, options?: ApiQueryOptions<ColetaDto>) => {
   return useApiQuery({
+    enabled: !!id,
     queryKey: ['coleta', id],
     queryFn: async () => {
       const response = await getColeta(id);
+      return response.data;
+    },
+    ...options,
+  });
+};
+
+export const useColetaPublica = (
+  ponto_id: number,
+  options?: ApiQueryOptions<ColetaDto>,
+) => {
+  return useApiQuery({
+    enabled: !!ponto_id,
+    queryKey: ['coleta', 'publica', ponto_id],
+    queryFn: async () => {
+      const response = await getColetaPublica(ponto_id);
       return response.data;
     },
     ...options,

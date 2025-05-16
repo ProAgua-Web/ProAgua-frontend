@@ -12,6 +12,7 @@ import { ControlledMaskedInput } from '@/components/form/input/masked-input';
 import { ControlledMultiSelect } from '@/components/form/input/multi-select';
 import { ControlledNumberInput } from '@/components/form/input/number-input';
 import { ControlledSelect } from '@/components/form/input/select';
+import { ControlledSwitch } from '@/components/form/input/switch';
 import {
   cloroMask,
   corMask,
@@ -43,10 +44,12 @@ export const ColetaForm: React.FC<FormProps<ColetaSchema> & Props> = ({
   const responsaveisOptions = useUsuariosOptions();
 
   useEffect(() => {
+    const setValue = form.setValue;
+
     if (sequencia_id) {
-      form.setValue('sequencia_id', Number(sequencia_id));
+      setValue('sequencia_id', Number(sequencia_id));
     }
-  }, [sequencia_id, form]);
+  }, [sequencia_id, form.setValue]);
 
   return (
     <FormContainer {...props}>
@@ -151,6 +154,13 @@ export const ColetaForm: React.FC<FormProps<ColetaSchema> & Props> = ({
           />
         </div>
       </FormSection>
+      <div className="flex items-center justify-end pr-8">
+        <ControlledSwitch
+          control={form.control}
+          name="publico"
+          label="Coleta pública"
+        />
+      </div>
     </FormContainer>
   );
 };

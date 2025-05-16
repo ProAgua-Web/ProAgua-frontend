@@ -1,19 +1,31 @@
 'use client';
 
+import { NavContext } from '@/app/admin/layout';
 import { useAutenticacao } from '@/lib/autenticacao';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useContext } from 'react';
 import { Button } from '../ui/button';
 
 export function Footer() {
   const pathname = usePathname();
   const isAdminPath = pathname?.startsWith('/admin') ?? false;
   const { autenticado } = useAutenticacao();
+  const { isOpen } = useContext(NavContext);
 
   return (
-    <footer className="z-[60] flex w-full items-center justify-between bg-primary-500 p-[clamp(30px,4vw+1rem,100vw-1200px)] text-white">
-      <div className="justify-center gap-4">
+    <footer
+      className={
+        'z-50 flex w-full items-center justify-between bg-primary-500 p-[clamp(30px,4vw+1rem,100vw-1200px)] text-white'
+      }
+    >
+      <div
+        className={cn('justify-center gap-4', {
+          'ml-40': !isOpen && isAdminPath,
+        })}
+      >
         <h1 className="mb-2 text-3xl font-bold">
           ProÁgua <span className="text-base font-normal">- © 2023</span>
         </h1>

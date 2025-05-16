@@ -120,7 +120,7 @@ const NavbarContent: FC<NavbarContentProps> = ({
   isCollapsed,
   currentPath,
 }) => (
-  <div className="grow bg-transparent">
+  <div className="grow bg-white">
     <ul>
       {links.map((link) => (
         <NavItem
