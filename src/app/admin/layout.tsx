@@ -5,22 +5,13 @@ import { Inter } from 'next/font/google';
 import { Footer } from '@/components/layout/footer';
 import Header from '@/components/layout/header';
 import { Navbar } from '@/components/layout/navbar';
+import { NavContext } from '@/lib/nav-context';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { createContext, useState } from 'react';
+import { useState } from 'react';
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
-
-interface NavContextType {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-}
-
-export const NavContext = createContext<NavContextType>({
-  isOpen: false,
-  setIsOpen: () => {},
-});
 
 export default function RootLayout({
   children,

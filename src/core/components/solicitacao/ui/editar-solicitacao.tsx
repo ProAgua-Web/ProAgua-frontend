@@ -18,11 +18,11 @@ export const EditarSolicitacao: React.FC<Props> = ({ id: id }) => {
   const router = useRouter();
 
   const editarSolicitacao = useEditarSolicitacao({
-    onSuccess() {
+    async onSuccess() {
       const imagensDto = solicitacao.data?.imagens || [];
       const imagensForm = form.getValues('imagens');
 
-      updateImagensSolicitacao(id, imagensForm, imagensDto);
+      await updateImagensSolicitacao(id, imagensForm, imagensDto);
 
       router.push('/admin/solicitacoes');
     },

@@ -78,12 +78,10 @@ export const usePontosOptionsBySequenciaIdEdificacao = (
       isLoading: buscaPontosDebounce.isPending() || pontosEdificacao.isLoading,
     }),
     [
-      pontos,
       pontosOptions,
       setBuscaPontos,
       buscaPontosDebounce,
       pontosEdificacao.isLoading,
-      pontosSequencia.isLoading,
     ],
   );
   return props;
@@ -99,6 +97,24 @@ export const tipoPontosOptions = [
   { label: 'CAERN', value: 6 },
 ];
 
-export const pontoToString = (ponto: PontoDto): string => {
-  return `${tipoPontosOptions[ponto.tipo].label} - ${ponto.localizacao}${ponto.tombo ? ` (${ponto.tombo})` : ''}`;
+export const tipoOptionsLabel = (tipo: number): string => {
+  const tipoPonto = tipoPontosOptions.find((option) => option.value === tipo);
+  if (!tipoPonto) {
+    return 'Tipo não encontrado';
+  }
+  return tipoPonto.label;
 };
+
+export const pontoToString = (ponto: PontoDto): string => {
+  return `${tipoOptionsLabel(ponto.tipo)} - ${ponto.localizacao}${ponto.tombo ? ` (${ponto.tombo})` : ''}`;
+};
+
+export const TIPOS_PONTOS = [
+  'Bebedouro',
+  'Torneira',
+  'RPS',
+  'RPI',
+  'RDS',
+  'RDI',
+  'CAERN',
+];

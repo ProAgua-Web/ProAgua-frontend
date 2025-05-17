@@ -1,4 +1,4 @@
-import { ApiResponse } from '@/lib/api';
+import { type ApiResponse } from '@/lib/api';
 import {
   type ApiMutationOptions,
   type ApiQueryOptions,

@@ -1,12 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useUsuarioForm } from '../usuario.form';
+import { type UseFormReturn } from 'react-hook-form';
+import { type CriarUsuarioSchema, useUsuarioForm } from '../usuario.form';
+import { usuarioSchemaToDto } from '../usuario.mapper';
 import { useCriarUsuario } from '../usuario.service';
 import { UsuarioForm } from './usuario-form';
 
 export const CriarUsuario: React.FC = () => {
-  const form = useUsuarioForm();
+  const form = useUsuarioForm() as UseFormReturn<CriarUsuarioSchema>;
 
   const router = useRouter();
 
@@ -20,7 +22,7 @@ export const CriarUsuario: React.FC = () => {
   });
 
   const handleSubmit = form.handleSubmit((form) => {
-    criarUsuario.mutate(form);
+    criarUsuario.mutate(usuarioSchemaToDto(form) as CriarUsuarioSchema);
   });
 
   return (

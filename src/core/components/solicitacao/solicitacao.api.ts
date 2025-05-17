@@ -1,8 +1,8 @@
 import {
-  ImagemDto,
   createImages,
   deleteImages,
   updateImages,
+  type ImagemDto,
 } from '@/core/common/imagem/imagem.api';
 import { api, type ApiResponse } from '@/lib/api';
 import {
@@ -27,7 +27,10 @@ export async function getSolicitacao(id: number) {
 export async function createSolicitacao(
   solicitacao: CreateSolicitacaoDto,
 ): Promise<ApiResponse<SolicitacaoDto>> {
-  const response = await api.post('/solicitacoes', solicitacao);
+  const response = await api.post<ApiResponse<SolicitacaoDto>>(
+    '/solicitacoes',
+    solicitacao,
+  );
   return response.data;
 }
 
@@ -46,14 +49,20 @@ export async function createImagensSolicitacao(
   id: number,
   imagens: Array<File | ImagemDto>,
 ) {
-  return createImages({ entityPath: 'solicitacoes', identifier: id }, imagens);
+  return await createImages(
+    { entityPath: 'solicitacoes', identifier: id },
+    imagens,
+  );
 }
 
 export async function deleteImagensSolicitacao(
   id: number,
   imagens: ImagemDto[],
 ) {
-  return deleteImages({ entityPath: 'solicitacoes', identifier: id }, imagens);
+  return await deleteImages(
+    { entityPath: 'solicitacoes', identifier: id },
+    imagens,
+  );
 }
 
 export async function updateImagensSolicitacao(
@@ -61,7 +70,7 @@ export async function updateImagensSolicitacao(
   imagensForm: Array<File | ImagemDto>,
   imagensExistentes: ImagemDto[],
 ) {
-  return updateImages(
+  return await updateImages(
     { entityPath: 'solicitacoes', identifier: id },
     imagensForm,
     imagensExistentes,
@@ -76,10 +85,15 @@ export async function exportSolicitacao(id: number) {
     },
   );
 
-  const filename = response.headers['content-disposition']
-    .split(';')[1]
-    .split('filename=')[1]
-    .replace(/"/g, '');
+  const contentDisposition = response.headers['content-disposition'] as
+    | string
+    | undefined;
+  const filename =
+    contentDisposition
+      ?.split(';')
+      .find((part) => part.trim().startsWith('filename='))
+      ?.split('=')[1]
+      ?.replace(/"/g, '') ?? 'default-filename';
 
   return {
     data: response.data,

@@ -33,7 +33,7 @@ export function coletaDtoToSchema(dto: ColetaDto): ColetaSchema {
     data: new Date(dto.data),
     ordem: dto.ordem,
     pontoId: dto.ponto.id!,
-    responsaveis_id: [dto.responsaveis_id[0], ...dto.responsaveis_id.slice(1)], // [number, ...number[]]
+    responsaveis_id: [dto.responsaveis_id[0]!, ...dto.responsaveis_id.slice(1)], // [number, ...number[]]
     publico: dto.publico,
   };
 }

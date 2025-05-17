@@ -2,7 +2,7 @@ import { CrudLayout } from '@/components/layout/crud';
 import { CriarColeta } from '@/core/components/coleta/ui/criar-coleta';
 
 interface Props {
-  params: { sequencia_id: number };
+  params: Promise<{ sequencia_id: number }>;
 }
 
 export default async function Pagina({ params }: Props) {

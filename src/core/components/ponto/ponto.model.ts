@@ -1,5 +1,5 @@
 import { type ImagemDto } from '@/core/common/imagem/imagem.api';
-import { EdificacaoDto } from '../edificacao/edificacao.model';
+import { type EdificacaoDto } from '../edificacao/edificacao.model';
 
 export interface PontoDto {
   id?: number | null;

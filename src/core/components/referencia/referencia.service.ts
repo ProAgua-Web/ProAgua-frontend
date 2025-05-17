@@ -1,13 +1,13 @@
 import {
-  ApiMutationOptions,
-  ApiQueryOptions,
+  type ApiMutationOptions,
+  type ApiQueryOptions,
   useApiMutation,
   useApiQuery,
 } from '@/lib/data-service';
 import { getReferencia, updateReferencia } from './referencia.api';
-import { ReferenciaSchema } from './referencia.form';
+import { type ReferenciaSchema } from './referencia.form';
 import { referenciaSchemaToDto } from './referencia.mapper';
-import { ReferenciaDto } from './referencia.model';
+import { type ReferenciaDto } from './referencia.model';
 
 export const useReferencia = (options?: ApiQueryOptions<ReferenciaDto>) => {
   return useApiQuery({

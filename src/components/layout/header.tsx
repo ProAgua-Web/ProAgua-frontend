@@ -1,7 +1,7 @@
 'use client';
 
-import { NavContext } from '@/app/admin/layout';
 import { useAutenticacao } from '@/lib/autenticacao';
+import { NavContext } from '@/lib/nav-context';
 import { capitalize, cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,12 +10,7 @@ import { useContext } from 'react';
 import { MdExitToApp } from 'react-icons/md';
 import { Button } from '../ui/button';
 
-interface Props {
-  expand?: React.MouseEventHandler<HTMLButtonElement>;
-  collapsed?: boolean;
-}
-
-export default function Header(props: Props) {
+export default function Header() {
   const { autenticado, token, sair } = useAutenticacao();
   const username = capitalize(token?.username);
   const pathname = usePathname();

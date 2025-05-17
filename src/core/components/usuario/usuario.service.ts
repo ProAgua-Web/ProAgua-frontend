@@ -11,11 +11,11 @@ import {
   type ApiMutationOptions,
   type ApiQueryOptions,
 } from '@/lib/data-service';
-import { EditarUsuarioSchema, type CriarUsuarioSchema } from './usuario.form';
 import {
-  createUsuarioSchemaToDto,
-  updateUsuarioSchemaToDto,
-} from './usuario.mapper';
+  type CriarUsuarioSchema,
+  type EditarUsuarioSchema,
+} from './usuario.form';
+import { usuarioSchemaToDto } from './usuario.mapper';
 import { type UsuarioDto } from './usuario.model';
 
 export const useUsuarios = (options?: ApiQueryOptions<UsuarioDto[]>) => {
@@ -51,7 +51,7 @@ export const useCriarUsuario = (
 ) => {
   return useApiMutation({
     mutationFn: (usuario) => {
-      return createUsuario(createUsuarioSchemaToDto(usuario));
+      return createUsuario(usuarioSchemaToDto(usuario) as CriarUsuarioSchema);
     },
     invalidateQueries: () => [['usuarios']],
     successMessage: 'Usuário cadastrado com sucesso!',
@@ -70,7 +70,7 @@ export const useEditarUsuario = (
 ) => {
   return useApiMutation<EditarUsuarioArgs>({
     mutationFn: ({ username, usuario }) => {
-      return updateUsuario(username, updateUsuarioSchemaToDto(usuario));
+      return updateUsuario(username, usuarioSchemaToDto(usuario));
     },
     invalidateQueries: ({ username }) => [
       ['usuarios'],

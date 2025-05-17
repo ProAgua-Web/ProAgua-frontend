@@ -2,7 +2,7 @@ import { CrudLayout } from '@/components/layout/crud';
 import { EditarPonto } from '@/core/components/ponto/ui/editar-ponto';
 
 interface Props {
-  params: { codigo: string; ponto_id: number };
+  params: Promise<{ codigo: string; ponto_id: number }>;
 }
 
 export default async function Pagina({ params }: Props) {

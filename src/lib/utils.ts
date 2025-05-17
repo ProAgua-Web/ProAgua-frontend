@@ -76,8 +76,11 @@ export const campusOptions = options(campus, (campus) => [
   campusLabel[campus],
 ]);
 
-export function DateISO(d: string): string {
-  return new Date(d).toISOString().split('T')[0];
+export function DateISO(d?: string | null): string {
+  if (!d) {
+    return '';
+  }
+  return new Date(d).toISOString().split('T')[0] ?? '';
 }
 
 const dateOptions = {
@@ -113,7 +116,11 @@ export const checkInterval = (
   min?: number | null,
   max?: number | null,
 ) => {
-  if (min != null && valor < min) return false;
-  if (max != null && valor > max) return false;
+  if (min !== null && min !== undefined && valor < min) {
+    return false;
+  }
+  if (max !== null && max !== undefined && valor > max) {
+    return false;
+  }
   return true;
 };

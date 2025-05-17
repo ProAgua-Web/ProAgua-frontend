@@ -12,11 +12,11 @@ export const CriarEdificacao = () => {
   const router = useRouter();
 
   const criarEdificacao = useCriarEdificacao({
-    onSuccess() {
+    async onSuccess() {
       const codigo = form.getValues('codigo');
       const imagens = form.getValues('imagens');
 
-      createImagensEdificacao(codigo, imagens);
+      await createImagensEdificacao(codigo, imagens);
 
       router.push('/admin/edificacoes');
     },

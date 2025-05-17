@@ -12,8 +12,8 @@ export function ExportarButton(id: number) {
       variant="add"
       className={cn('h-full w-full lg:w-fit', !id && 'hidden')}
       size="wide"
-      onClick={() => {
-        exportarSolicitacao.refetch();
+      onClick={async () => {
+        await exportarSolicitacao.refetch();
       }}
     >
       Exportar

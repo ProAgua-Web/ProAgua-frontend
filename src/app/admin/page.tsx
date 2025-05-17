@@ -1,6 +1,6 @@
 import { DataListLayout } from '@/components/layout/datalist';
 
-function Page() {
+export default function Pagina() {
   return (
     <DataListLayout breadcrumbs={[]}>
       <div className="flex w-full flex-col items-center justify-center gap-4 pt-64 text-center">
@@ -14,4 +14,3 @@ function Page() {
     </DataListLayout>
   );
 }
-export default Page;

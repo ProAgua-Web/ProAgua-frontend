@@ -3,7 +3,6 @@
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ptBR } from 'date-fns/locale';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import * as React from 'react';
 import { DayPicker, type DropdownProps } from 'react-day-picker';
 import { ScrollArea } from './scroll-area';
@@ -103,8 +102,8 @@ function Calendar({
             </SelectRoot>
           );
         },
-        IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-        IconRight: () => <ChevronRight className="h-4 w-4" />,
+        // IconLeft: () => <ChevronLeft className="h-4 w-4" />,
+        // IconRight: () => <ChevronRight className="h-4 w-4" />,
       }}
       {...props}
       locale={ptBR}

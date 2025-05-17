@@ -16,10 +16,10 @@ export const CriarReservatorio: React.FC<Props> = ({ codigo: codigo }) => {
   const router = useRouter();
 
   const criarPonto = useCriarPonto({
-    onSuccess(schema, dto) {
+    async onSuccess(schema, dto) {
       const ponto = dto.data;
       const imagens = schema.imagens;
-      createImagensPonto(ponto.id!, imagens);
+      await createImagensPonto(ponto.id!, imagens);
 
       router.push(`/admin/edificacoes/${codigo}/pontos`);
     },

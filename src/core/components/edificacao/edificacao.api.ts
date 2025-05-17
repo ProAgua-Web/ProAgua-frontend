@@ -1,7 +1,7 @@
 import {
   createImages,
   deleteImages,
-  ImagemDto,
+  type ImagemDto,
   updateImages,
 } from '@/core/common/imagem/imagem.api';
 import { api, type ApiResponse } from '@/lib/api';
@@ -49,8 +49,6 @@ export async function getEdificacaoPublica(codigo: string) {
 }
 
 export async function createEdificacao(edificacao: CreateEdificacaoDto) {
-  const formData = new FormData();
-
   await api.post('/edificacoes', edificacao);
 }
 
@@ -69,7 +67,7 @@ export async function createImagensEdificacao(
   codigo: string,
   imagens: Array<File | ImagemDto>,
 ) {
-  return createImages(
+  return await createImages(
     { entityPath: 'edificacoes', identifier: codigo },
     imagens,
   );
@@ -79,7 +77,7 @@ export async function deleteImagensEdificacao(
   codigo: string,
   imagens: ImagemDto[],
 ) {
-  return deleteImages(
+  return await deleteImages(
     { entityPath: 'edificacoes', identifier: codigo },
     imagens,
   );
@@ -90,7 +88,7 @@ export async function updateImagensEdificacao(
   imagensForm: Array<File | ImagemDto>,
   imagensExistentes: ImagemDto[],
 ) {
-  return updateImages(
+  return await updateImages(
     { entityPath: 'edificacoes', identifier: codigo },
     imagensForm,
     imagensExistentes,

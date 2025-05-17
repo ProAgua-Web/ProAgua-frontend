@@ -1,5 +1,8 @@
 import { type EdificacaoSchema } from './edificacao.form';
-import { CreateEdificacaoDto, type EdificacaoDto } from './edificacao.model';
+import {
+  type CreateEdificacaoDto,
+  type EdificacaoDto,
+} from './edificacao.model';
 
 export function edificacaoSchemaToDto({
   ...schema

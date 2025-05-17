@@ -1,8 +1,8 @@
 import { type PontoDto } from '@/core/components/ponto/ponto.model';
 import { useExcluirPonto } from '@/core/components/ponto/ponto.service';
 import { cn } from '@/lib/utils';
-import { TIPOS_PONTOS } from '@/utils/types';
 import { Card } from '../../../../components/common/card';
+import { tipoOptionsLabel } from '../../ponto/ponto.utils';
 
 interface Props {
   ponto: PontoDto;
@@ -15,9 +15,7 @@ export function CardPonto(props: Readonly<Props>) {
   const excluirPonto = useExcluirPonto();
   const adminBaseUrl = !isPublic ? '/admin' : '';
 
-  const pathImage = ponto.imagens.length
-    ? ponto.imagens[0].src
-    : '/sem-imagem.png';
+  const pathImage = ponto.imagens[0]?.src || '/sem-imagem.png';
 
   return (
     <Card>
@@ -32,7 +30,7 @@ export function CardPonto(props: Readonly<Props>) {
       <Card.Content isPublic={isPublic}>
         <Card.Header>
           <Card.Subtitle>
-            {TIPOS_PONTOS[ponto.tipo]}
+            {tipoOptionsLabel(ponto.tipo)}
             {ponto.tombo && ` (${ponto.tombo})`}
           </Card.Subtitle>
 

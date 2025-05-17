@@ -2,7 +2,7 @@ import { CrudLayout } from '@/components/layout/crud';
 import { CriarPonto } from '@/core/components/ponto/ui/criar-ponto';
 
 interface Props {
-  params: { codigo: string };
+  params: Promise<{ codigo: string }>;
 }
 
 export default async function Pagina({ params }: Props) {

@@ -2,7 +2,7 @@ import { CrudLayout } from '@/components/layout/crud';
 import { EditarUsuario } from '@/core/components/usuario/ui/editar-usuario';
 
 interface Props {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }
 
 export default async function Pagina({ params }: Props) {

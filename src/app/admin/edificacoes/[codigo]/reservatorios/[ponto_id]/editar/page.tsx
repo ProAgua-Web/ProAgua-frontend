@@ -2,7 +2,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { EditarReservatorio } from '@/core/components/ponto/ui/editar-reservatorio';
 
 interface Props {
-  params: { codigo: string; ponto_id: number };
+  params: Promise<{ codigo: string; ponto_id: number }>;
 }
 
 export default async function Pagina({ params }: Props) {

@@ -4,9 +4,10 @@ import { DataListLayout } from '@/components/layout/datalist';
 import { useEdificacoes } from '@/core/components/edificacao/edificacao.service';
 import { CardEdificacao } from '@/core/components/edificacao/ui/card-edificacao';
 import { useQueryState } from 'nuqs';
+import { Suspense } from 'react';
 import { Filters } from './filters';
 
-export default function Page() {
+const EdificacoesContent = () => {
   const [q] = useQueryState('q', { defaultValue: '' });
   const [campus] = useQueryState('campus', { defaultValue: '' });
 
@@ -18,25 +19,8 @@ export default function Page() {
 
   const { data: edificacoes = [] } = useEdificacoes(params);
 
-  const breadcrumbs = [
-    {
-      label: 'Edificações',
-      route: '/admin/edificacoes',
-    },
-  ];
-
   return (
-    <DataListLayout
-      title="Edificações e Pontos de Coleta"
-      subtitle="Gerencie as edificações e os pontos de coleta do sistema."
-      navLinks={[
-        {
-          label: 'Criar edificação',
-          route: '/admin/edificacoes/criar',
-        },
-      ]}
-      breadcrumbs={breadcrumbs}
-    >
+    <>
       <div className="mb-4 flex w-full flex-col gap-4">
         <Filters />
       </div>
@@ -45,6 +29,35 @@ export default function Page() {
           <CardEdificacao key={edificacao.codigo} edificacao={edificacao} />
         ))}
       </div>
-    </DataListLayout>
+    </>
+  );
+};
+
+export default function Pagina() {
+  const breadcrumbs = [
+    {
+      label: 'Edificações',
+      route: '/admin/edificacoes',
+    },
+  ];
+
+  return (
+    <>
+      <DataListLayout
+        title="Edificações e Pontos de Coleta"
+        subtitle="Gerencie as edificações e os pontos de coleta do sistema."
+        navLinks={[
+          {
+            label: 'Criar edificação',
+            route: '/admin/edificacoes/criar',
+          },
+        ]}
+        breadcrumbs={breadcrumbs}
+      >
+        <Suspense fallback={<div>Carregando...</div>}>
+          <EdificacoesContent />
+        </Suspense>
+      </DataListLayout>
+    </>
   );
 }

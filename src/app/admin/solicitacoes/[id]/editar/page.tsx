@@ -2,7 +2,7 @@ import { CrudLayout } from '@/components/layout/crud';
 import { EditarSolicitacao } from '@/core/components/solicitacao/ui/editar-solicitacao';
 
 interface Props {
-  params: { id: number };
+  params: Promise<{ id: number }>;
 }
 
 export default async function Pagina({ params }: Props) {

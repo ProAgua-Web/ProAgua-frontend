@@ -51,10 +51,14 @@ export async function exportColetas(params?: ColetaQueryOptions) {
     responseType: 'blob',
   });
 
-  const filename = response.headers['content-disposition']
-    .split(';')[1]
-    .split('filename=')[1]
-    .replace(/"/g, '');
+  const contentDisposition = response.headers['content-disposition'] as
+    | string
+    | undefined;
+  const filename =
+    contentDisposition
+      ?.split(';')[1]
+      ?.split('filename=')[1]
+      ?.replace(/"/g, '') ?? 'default-filename';
 
   return {
     data: response.data,

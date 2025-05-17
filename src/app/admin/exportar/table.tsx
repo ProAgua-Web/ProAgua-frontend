@@ -16,7 +16,7 @@ import {
 } from '@/lib/input-mask';
 import { floatToString, formatDate } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import { Fragment } from 'react';
+import { Suspense } from 'react';
 import { HiCheckCircle } from 'react-icons/hi2';
 import { MdError } from 'react-icons/md';
 
@@ -27,12 +27,12 @@ export function ExportTable() {
   const { data: coletas = [] } = useColetas(params);
 
   return (
-    <Fragment>
+    <Suspense>
       <T.Table className="w-full">
         <TableHeader />
         <TableBody coletas={coletas ?? []} />
       </T.Table>
-    </Fragment>
+    </Suspense>
   );
 }
 

@@ -2,7 +2,7 @@ import { CrudLayout } from '@/components/layout/crud';
 import { EditarEdificacao } from '@/core/components/edificacao/ui/editar-edificacao';
 
 interface Props {
-  params: { codigo: string };
+  params: Promise<{ codigo: string }>;
 }
 
 export default async function Pagina({ params }: Props) {

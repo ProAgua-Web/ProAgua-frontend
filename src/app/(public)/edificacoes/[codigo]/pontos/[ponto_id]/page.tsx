@@ -2,10 +2,10 @@ import { DataListLayout } from '@/components/layout/datalist';
 import { ColetaPublica } from './content';
 
 interface Props {
-  params: { codigo: string; ponto_id: number };
+  params: Promise<{ codigo: string; ponto_id: string }>;
 }
 
-async function Pagina({ params }: Props) {
+export default async function Pagina({ params }: Props) {
   const { codigo, ponto_id } = await params;
 
   const breadcrumbs = [
@@ -29,9 +29,7 @@ async function Pagina({ params }: Props) {
       title="Resultado da coleta"
       subtitle="Acompanhe os resultados da coleta de água."
     >
-      <ColetaPublica ponto_id={ponto_id} />
+      <ColetaPublica ponto_id={Number(ponto_id)} />
     </DataListLayout>
   );
 }
-
-export default Pagina;

@@ -55,7 +55,7 @@ export function csrfTokenSalvoNosCookies(): string | null {
       const csrfToken = cookies.find((cookie) =>
         cookie.trim().startsWith('csrftoken='),
       );
-      return csrfToken ? csrfToken.split('=')[1] : null;
+      return csrfToken?.split('=')[1] || null;
     } catch {
       return null;
     }

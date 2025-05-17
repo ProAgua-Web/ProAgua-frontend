@@ -2,7 +2,7 @@ import { DataListLayout } from '@/components/layout/datalist';
 import { ColetasTable } from './table';
 
 interface Props {
-  params: { sequencia_id: number };
+  params: Promise<{ sequencia_id: number }>;
 }
 
 export default async function Pagina({ params }: Props) {

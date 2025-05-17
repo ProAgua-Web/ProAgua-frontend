@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google';
 
 import { Footer } from '@/components/layout/footer';
 import Header from '@/components/layout/header';
-import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,15 +12,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-
   return (
     <div className={inter.className + 'relative min-h-screen bg-background'}>
-      <Header collapsed={false} />
+      <Header />
 
       <div className="flex flex-row">
         {/* <Navbar /> */}

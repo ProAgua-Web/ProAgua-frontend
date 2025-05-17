@@ -10,7 +10,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type FC, Fragment, JSX } from 'react';
+import { type FC, Fragment, type JSX } from 'react';
 import { FaBars, FaChevronLeft } from 'react-icons/fa6';
 import { Button } from '../ui/button';
 

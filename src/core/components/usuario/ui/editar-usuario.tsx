@@ -4,7 +4,7 @@ import { FormContainer, FormSection } from '@/components/form/container';
 import { ControlledCheckbox } from '@/components/form/input/checkbox';
 import { ControlledTextInput } from '@/components/form/input/text-input';
 import { useRouter } from 'next/navigation';
-import { EditarUsuarioSchema, useUsuarioForm } from '../usuario.form';
+import { type EditarUsuarioSchema, useUsuarioForm } from '../usuario.form';
 import { useEditarUsuario, useUsuario } from '../usuario.service';
 
 interface Props {

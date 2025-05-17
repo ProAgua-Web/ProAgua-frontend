@@ -84,7 +84,7 @@ export default function Home() {
             consumo humano e especificidades do sistema de distribuição da água
             da UFERSA, incluindo seus sistemas prediais de água fria.
           </p>
-          <a href="/">Saiba mais</a>
+          <Link href="/">Saiba mais</Link>
         </section>
       </main>
 

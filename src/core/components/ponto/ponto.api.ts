@@ -1,7 +1,7 @@
 import {
   createImages,
   deleteImages,
-  ImagemDto,
+  type ImagemDto,
   updateImages,
 } from '@/core/common/imagem/imagem.api';
 import { api, type ApiResponse } from '@/lib/api';
@@ -71,14 +71,14 @@ export async function deletePontos(id: number) {
 }
 
 export async function createImagensPonto(
-  id: string,
+  id: number,
   imagens: Array<File | ImagemDto>,
 ) {
-  return createImages({ entityPath: 'pontos', identifier: id }, imagens);
+  return await createImages({ entityPath: 'pontos', identifier: id }, imagens);
 }
 
 export async function deleteImagensPonto(id: number, imagens: ImagemDto[]) {
-  return deleteImages({ entityPath: 'pontos', identifier: id }, imagens);
+  return await deleteImages({ entityPath: 'pontos', identifier: id }, imagens);
 }
 
 export async function updateImagensPonto(
@@ -86,7 +86,7 @@ export async function updateImagensPonto(
   imagensForm: Array<File | ImagemDto>,
   imagensExistentes: ImagemDto[],
 ) {
-  return updateImages(
+  return await updateImages(
     { entityPath: 'pontos', identifier: id },
     imagensForm,
     imagensExistentes,

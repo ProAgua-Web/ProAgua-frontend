@@ -1,7 +1,7 @@
 'use client';
 
-import { NavContext } from '@/app/admin/layout';
 import { useAutenticacao } from '@/lib/autenticacao';
+import { NavContext } from '@/lib/nav-context';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';

@@ -1,25 +1,25 @@
 import { z } from 'zod';
 
-export type CreateImagem = {
+export interface CreateImagem {
   file: File;
   description: string;
-};
+}
 
-export type ImageOut = {
+export interface ImageOut {
   id: string;
   src: string;
   description: string;
-};
+}
 
 export type Imagem = CreateImagem | ImageOut;
 
 const MAX_FILE_SIZE = 10000000;
-const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp',
-];
+// const ACCEPTED_IMAGE_TYPES = [
+//   'image/jpeg',
+//   'image/jpg',
+//   'image/png',
+//   'image/webp',
+// ];
 
 // const imageSchema = z.object({
 //   image: z

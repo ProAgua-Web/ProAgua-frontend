@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { updateUsuarioSchemaToDto } from './usuario.mapper';
+import { usuarioDtoToSchema } from './usuario.mapper';
 import { type UsuarioDto } from './usuario.model';
 
 export const usuarioSchemaBase = z.object({
@@ -31,20 +31,23 @@ export const criarUsuarioSchema = usuarioSchemaBase.extend({
 
 export const editarUsuarioSchema = usuarioSchemaBase;
 
+export const usuarioSchema = z.union([criarUsuarioSchema, editarUsuarioSchema]);
+
 export type CriarUsuarioSchema = z.infer<typeof criarUsuarioSchema>;
 export type EditarUsuarioSchema = z.infer<typeof editarUsuarioSchema>;
+export type UsuarioSchema = z.infer<typeof usuarioSchema>;
 
 export const useUsuarioForm = (dto?: UsuarioDto) => {
-  const form = useForm<CriarUsuarioSchema | EditarUsuarioSchema>({
-    resolver: zodResolver(dto ? editarUsuarioSchema : criarUsuarioSchema),
-    defaultValues: dto ? updateUsuarioSchemaToDto(dto) : undefined,
+  const form = useForm<UsuarioSchema>({
+    resolver: zodResolver(usuarioSchema),
+    defaultValues: dto ? usuarioDtoToSchema(dto) : undefined,
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
 
   useEffect(() => {
     if (dto) {
-      form.reset(updateUsuarioSchemaToDto(dto));
+      form.reset(usuarioDtoToSchema(dto));
     }
   }, [dto, form]);
 

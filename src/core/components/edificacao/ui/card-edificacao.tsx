@@ -13,9 +13,7 @@ export function CardEdificacao(props: Readonly<Props>) {
   const excluirEdificacao = useExcluirEdificacao();
   const adminBaseUrl = !isPublic ? '/admin' : '';
 
-  const pathImage = edificacao.imagens.length
-    ? edificacao.imagens[0].src
-    : '/sem-imagem.png';
+  const pathImage = edificacao.imagens?.[0]?.src || '/sem-imagem.png';
 
   return (
     <Card>

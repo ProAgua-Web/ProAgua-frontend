@@ -4,52 +4,52 @@ import Link from 'next/link';
 import { DestructiveAlert } from '../alert-dialog';
 import { Button } from '../ui/button';
 
-type CardProps = {
+interface CardProps {
   children: React.ReactNode;
   className?: string;
-};
+}
 
-type CardImageProps = {
+interface CardImageProps {
   src: string;
   alt: string;
   link?: string;
   className?: string;
-};
+}
 
-type CardHeaderProps = {
+interface CardHeaderProps {
   children: React.ReactNode;
   className?: string;
-};
+}
 
-type CardTitleProps = {
+interface CardTitleProps {
   children: React.ReactNode;
   className?: string;
-};
+}
 
-type CardSubtitleProps = {
+interface CardSubtitleProps {
   children: React.ReactNode;
   className?: string;
-};
+}
 
-type CardContentProps = {
+interface CardContentProps {
   children: React.ReactNode;
   className?: string;
   expandable?: boolean;
   isPublic?: boolean;
-};
+}
 
-type CardActionsProps = {
+interface CardActionsProps {
   children: React.ReactNode;
   className?: string;
-};
+}
 
-type CardActionProps = {
+interface CardActionProps {
   children: React.ReactNode;
   href?: string;
   onClick?: () => void;
   variant?: 'default' | 'destructive' | 'ghost' | 'link';
   className?: string;
-};
+}
 
 // Componente principal Card
 export function Card({ children, className }: CardProps) {
@@ -84,11 +84,13 @@ Card.Image = function CardImage({ src, alt, link, className }: CardImageProps) {
     );
   }
   return (
-    <img
+    <Image
+      width={256}
+      height={256}
       src={src}
       alt={alt}
       className={cn(
-        'w-full select-none object-cover transition-all duration-300 ease-in-out group-hover:grayscale-[50%]',
+        'h-full w-full select-none object-cover transition-all duration-300 ease-in-out group-hover:grayscale-[50%]',
         className,
       )}
     />

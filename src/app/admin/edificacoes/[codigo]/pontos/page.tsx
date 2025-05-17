@@ -2,10 +2,10 @@ import { DataListLayout } from '@/components/layout/datalist';
 import { Pontos } from './content';
 
 interface Props {
-  params: { codigo: string };
+  params: Promise<{ codigo: string }>;
 }
 
-export default async function Page({ params }: Props) {
+export default async function Pagina({ params }: Props) {
   const { codigo } = await params;
 
   return (

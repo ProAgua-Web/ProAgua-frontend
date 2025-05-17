@@ -1,5 +1,5 @@
-import { api, ApiResponse } from '@/lib/api';
-import { ReferenciaDto } from './referencia.model';
+import { api, type ApiResponse } from '@/lib/api';
+import { type ReferenciaDto } from './referencia.model';
 
 export async function getReferencia() {
   const response = await api.get<ApiResponse<ReferenciaDto>>(

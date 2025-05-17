@@ -1,8 +1,10 @@
-import { api, ApiResponse } from '@/lib/api';
+import { api, type ApiResponse } from '@/lib/api';
 
 const ENDPOINT = '/auth';
 
-type csrfToken = { csrfToken: string };
+interface csrfToken {
+  csrfToken: string;
+}
 
 export interface CredenciaisDTO {
   username: string;
@@ -26,7 +28,7 @@ export async function entrar(data: CredenciaisDTO) {
 }
 
 export async function sair() {
-  const res = await api.get(ENDPOINT + '/logout');
+  const res = await api.get<null>(ENDPOINT + '/logout');
   return res.data;
 }
 

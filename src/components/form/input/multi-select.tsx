@@ -4,7 +4,7 @@ import {
   type MultiSelectProps as PropsBase,
   type Value,
 } from '@/components/ui/multi-select';
-import { forwardRef, JSX, type NamedExoticComponent } from 'react';
+import { forwardRef, type JSX, type NamedExoticComponent } from 'react';
 import {
   Controller,
   type Control,

@@ -1,9 +1,10 @@
 import { DataListLayout } from '@/components/layout/datalist';
+import { Suspense } from 'react';
 import { ExportarButton } from './button.exportar';
 import { Filters } from './filters';
 import { ExportTable } from './table';
 
-export default async function Pagina() {
+export default function Pagina() {
   const breadcrumbs = [
     {
       label: 'Exportar',
@@ -16,10 +17,16 @@ export default async function Pagina() {
       breadcrumbs={breadcrumbs}
       title={`Exportar`}
       subtitle={`Gerencie as coletas e exporte os dados`}
-      subItens={<ExportarButton />}
+      subItens={
+        <Suspense>
+          <ExportarButton />
+        </Suspense>
+      }
     >
-      <Filters />
-      <ExportTable />
+      <Suspense>
+        <Filters />
+        <ExportTable />
+      </Suspense>
     </DataListLayout>
   );
 }

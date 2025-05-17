@@ -3,7 +3,7 @@
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { HTMLAttributeAnchorTarget } from 'react';
+import { type HTMLAttributeAnchorTarget } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi2';
 
 interface Props {

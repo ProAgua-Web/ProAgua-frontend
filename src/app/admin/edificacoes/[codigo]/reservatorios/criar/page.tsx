@@ -2,7 +2,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { CriarReservatorio } from '@/core/components/ponto/ui/criar-reservatorio';
 
 interface Props {
-  params: { codigo: string };
+  params: Promise<{ codigo: string }>;
 }
 
 export default async function Pagina({ params }: Props) {

@@ -7,7 +7,7 @@ import {
 import {
   createEdificacao,
   deleteEdificacao,
-  EdificacaoQueryOptions,
+  type EdificacaoQueryOptions,
   getEdificacao,
   getEdificacaoPublica,
   listEdificacoes,

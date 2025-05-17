@@ -12,11 +12,11 @@ export const CriarSolicitacao = () => {
   const router = useRouter();
 
   const criarSolicitacao = useCriarSolicitacao({
-    onSuccess(schema, dto) {
+    async onSuccess(schema, dto) {
       const solicitacao = dto.data;
       const imagens = schema.imagens;
 
-      createImagensSolicitacao(solicitacao.id!, imagens);
+      await createImagensSolicitacao(solicitacao.id!, imagens);
 
       router.push('/admin/solicitacoes');
     },

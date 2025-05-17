@@ -6,6 +6,7 @@ import {
   buildColetaParams,
   useColetaQueryParams,
 } from '@/core/components/coleta/coleta.utils';
+import { Suspense } from 'react';
 
 export function ExportarButton() {
   const queryParams = useColetaQueryParams();
@@ -13,14 +14,16 @@ export function ExportarButton() {
   const exportarColetas = useExportarColetas(params);
 
   return (
-    <Button
-      variant="add"
-      size="wide"
-      onClick={() => {
-        exportarColetas.refetch();
-      }}
-    >
-      Exportar
-    </Button>
+    <Suspense>
+      <Button
+        variant="add"
+        size="wide"
+        onClick={async () => {
+          await exportarColetas.refetch();
+        }}
+      >
+        Exportar
+      </Button>
+    </Suspense>
   );
 }

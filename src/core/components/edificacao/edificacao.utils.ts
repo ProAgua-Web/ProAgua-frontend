@@ -86,10 +86,10 @@ export const useEdificacoesOptionsBySequenciaId = (sequencia_id?: number) => {
       isLoading: buscaEdificacoesDebounce.isPending() || pontos.isLoading,
     }),
     [
-      edificacoes,
       edificacoesOptions,
       setBuscaEdificacoes,
       buscaEdificacoesDebounce,
+      pontos.isLoading,
     ],
   );
   return props;

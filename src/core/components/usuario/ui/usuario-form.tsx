@@ -10,7 +10,7 @@ import { ControlledTextInput } from '@/components/form/input/text-input';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { HiOutlineEye, HiOutlineEyeSlash } from 'react-icons/hi2';
-import { CriarUsuarioSchema } from '../usuario.form';
+import { type CriarUsuarioSchema } from '../usuario.form';
 
 export const UsuarioForm: React.FC<FormProps<CriarUsuarioSchema>> = ({
   form,

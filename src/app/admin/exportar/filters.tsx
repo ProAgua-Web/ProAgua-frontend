@@ -1,6 +1,6 @@
 'use client';
 
-import { FormProps } from '@/components/form/container';
+import { type FormProps } from '@/components/form/container';
 import { ControlledCombobox } from '@/components/form/input/combobox';
 import { ControlledDatePicker } from '@/components/form/input/date-picker';
 import { ControlledNumberInput } from '@/components/form/input/number-input';
@@ -13,9 +13,29 @@ import { useEdificacoesOptions } from '@/core/components/edificacao/edificacao.u
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryState } from 'nuqs';
 import qs from 'qs';
-import { useEffect } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { filterSchema, FilterSchema } from './exportar.form';
+import { filterSchema, type FilterSchema } from './exportar.form';
+
+interface FilterDto {
+  ponto_id?: string | null;
+  sequencia_id?: string | null;
+  responsavel?: string | null;
+  data_minima?: string | null;
+  data_maxima?: string | null;
+  temperatura_minima?: number | null;
+  temperatura_maxima?: number | null;
+  cloro_residual_livre_minimo?: number | null;
+  cloro_residual_livre_maximo?: number | null;
+  turbidez_minima?: number | null;
+  turbidez_maxima?: number | null;
+  coliformes_totais?: boolean | null;
+  escherichia?: boolean | null;
+  cor_minima?: number | null;
+  cor_maxima?: number | null;
+  ordem?: number | null;
+  codigo_edificacao?: string | null;
+}
 
 export const useFilterForm = () => {
   const [ponto_id] = useQueryState('ponto_id', { defaultValue: '' });
@@ -54,45 +74,99 @@ export const useFilterForm = () => {
     defaultValue: '',
   });
 
-  const dto = {
-    ...(ponto_id && { ponto_id }),
-    ...(sequencia_id && { sequencia_id }),
-    ...(responsavel && { responsavel }),
-    ...(data_minima && { data_minima }),
-    ...(data_maxima && { data_maxima }),
-    ...(temperatura_minima && { temperatura_minima }),
-    ...(temperatura_maxima && { temperatura_maxima }),
-    ...(cloro_residual_livre_minimo && { cloro_residual_livre_minimo }),
-    ...(cloro_residual_livre_maximo && { cloro_residual_livre_maximo }),
-    ...(turbidez_minima && { turbidez_minima }),
-    ...(turbidez_maxima && { turbidez_maxima }),
-    ...(coliformes_totais && { coliformes_totais }),
-    ...(escherichia && { escherichia }),
-    ...(cor_minima && { cor_minima }),
-    ...(cor_maxima && { cor_maxima }),
-    ...(ordem && { ordem }),
-    ...(codigo_edificacao && { codigo_edificacao }),
-  };
+  const dto = useMemo(
+    () => ({
+      ...(ponto_id && { ponto_id }),
+      ...(sequencia_id && { sequencia_id }),
+      ...(responsavel && { responsavel }),
+      ...(data_minima && { data_minima }),
+      ...(data_maxima && { data_maxima }),
+      ...(temperatura_minima && {
+        temperatura_minima: Number(temperatura_minima),
+      }),
+      ...(temperatura_maxima && {
+        temperatura_maxima: Number(temperatura_maxima),
+      }),
+      ...(cloro_residual_livre_minimo && {
+        cloro_residual_livre_minimo: Number(cloro_residual_livre_minimo),
+      }),
+      ...(cloro_residual_livre_maximo && {
+        cloro_residual_livre_maximo: Number(cloro_residual_livre_maximo),
+      }),
+      ...(turbidez_minima && { turbidez_minima: Number(turbidez_minima) }),
+      ...(turbidez_maxima && { turbidez_maxima: Number(turbidez_maxima) }),
+      ...(coliformes_totais && {
+        coliformes_totais: coliformes_totais === 'true',
+      }),
+      ...(escherichia && { escherichia: escherichia === 'true' }),
+      ...(cor_minima && { cor_minima: Number(cor_minima) }),
+      ...(cor_maxima && { cor_maxima: Number(cor_maxima) }),
+      ...(ordem && { ordem: Number(ordem) }),
+      ...(codigo_edificacao && { codigo_edificacao }),
+    }),
+    [
+      ponto_id,
+      sequencia_id,
+      responsavel,
+      data_minima,
+      data_maxima,
+      temperatura_minima,
+      temperatura_maxima,
+      cloro_residual_livre_minimo,
+      cloro_residual_livre_maximo,
+      turbidez_minima,
+      turbidez_maxima,
+      coliformes_totais,
+      escherichia,
+      cor_minima,
+      cor_maxima,
+      ordem,
+      codigo_edificacao,
+    ],
+  );
 
-  const filterDtoToSchema = (dto: any) => {
+  const filterDtoToSchema = (dto: Partial<FilterDto>): FilterSchema => {
     return {
-      ponto_id: dto.ponto_id,
-      sequencia_id: dto.sequencia_id,
-      responsavel: dto.responsavel,
+      ponto_id: dto.ponto_id ? Number(dto.ponto_id) : undefined,
+      sequencia_id: dto.sequencia_id ? Number(dto.sequencia_id) : undefined,
+      responsavel: dto.responsavel || null,
       data_minima: dto.data_minima ? new Date(dto.data_minima) : null,
       data_maxima: dto.data_maxima ? new Date(dto.data_maxima) : null,
-      temperatura_minima: dto.temperatura_minima,
-      temperatura_maxima: dto.temperatura_maxima,
-      cloro_residual_livre_minimo: dto.cloro_residual_livre_minimo,
-      cloro_residual_livre_maximo: dto.cloro_residual_livre_maximo,
-      turbidez_minima: dto.turbidez_minima,
-      turbidez_maxima: dto.turbidez_maxima,
-      coliformes_totais: dto.coliformes_totais,
-      escherichia: dto.escherichia,
-      cor_minima: dto.cor_minima,
-      cor_maxima: dto.cor_maxima,
-      ordem: dto.ordem || undefined,
-      codigo_edificacao: dto.codigo_edificacao,
+      temperatura_minima: dto.temperatura_minima
+        ? Number(dto.temperatura_minima)
+        : undefined,
+      temperatura_maxima: dto.temperatura_maxima
+        ? Number(dto.temperatura_maxima)
+        : undefined,
+      cloro_residual_livre_minimo: dto.cloro_residual_livre_minimo
+        ? Number(dto.cloro_residual_livre_minimo)
+        : undefined,
+      cloro_residual_livre_maximo: dto.cloro_residual_livre_maximo
+        ? Number(dto.cloro_residual_livre_maximo)
+        : undefined,
+      turbidez_minima: dto.turbidez_minima
+        ? Number(dto.turbidez_minima)
+        : undefined,
+      turbidez_maxima: dto.turbidez_maxima
+        ? Number(dto.turbidez_maxima)
+        : undefined,
+      coliformes_totais:
+        dto.coliformes_totais === true
+          ? 'true'
+          : dto.coliformes_totais === false
+            ? 'false'
+            : 'all',
+      escherichia:
+        dto.escherichia === true
+          ? 'true'
+          : dto.escherichia === false
+            ? 'false'
+            : 'all',
+      cor_minima: dto.cor_minima ? Number(dto.cor_minima) : undefined,
+      cor_maxima: dto.cor_maxima ? Number(dto.cor_maxima) : undefined,
+
+      ordem: dto.ordem ? Number(dto.ordem) : null,
+      codigo_edificacao: dto.codigo_edificacao || null,
     };
   };
 
@@ -124,114 +198,120 @@ export const FilterForm: React.FC<FormProps<FilterSchema>> = ({
   const edificacaoOptions = useEdificacoesOptions();
 
   return (
-    <form
-      className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
-      {...props}
-    >
-      <ControlledCombobox
-        control={form.control}
-        name="codigo_edificacao"
-        label="Código da Edificação"
-        placeholder="Informe o código da edificação"
-        {...edificacaoOptions}
-      />
-      <ControlledTextInput
-        control={form.control}
-        name="responsavel"
-        label="Responsável"
-        placeholder="Informe o responsável"
-      />
-      <ControlledDatePicker
-        control={form.control}
-        name="data_minima"
-        label="Data mínima"
-        placeholder="Informe a data mínima"
-      />
-      <ControlledDatePicker
-        control={form.control}
-        name="data_maxima"
-        label="Data máxima"
-        placeholder="Informe a data máxima"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="temperatura_minima"
-        label="Temperatura mínima"
-        placeholder="Informe a temperatura mínima"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="temperatura_maxima"
-        label="Temperatura máxima"
-        placeholder="Informe a temperatura máxima"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="cloro_residual_livre_minimo"
-        label="Cloro residual livre mínimo"
-        placeholder="Informe o cloro residual livre mínimo"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="cloro_residual_livre_maximo"
-        label="Cloro residual livre máximo"
-        placeholder="Informe o cloro residual livre máximo"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="turbidez_minima"
-        label="Turbidez mínima"
-        placeholder="Informe a turbidez mínima"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="turbidez_maxima"
-        label="Turbidez máxima"
-        placeholder="Informe a turbidez máxima"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="cor_minima"
-        label="Cor mínima"
-        placeholder="Informe a cor mínima"
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="cor_maxima"
-        label="Cor máxima"
-        placeholder="Informe a cor máxima"
-      />
-      <ControlledSelect
-        control={form.control}
-        name="ordem"
-        label="Ordem"
-        placeholder="Informe a ordem"
-        options={[{ value: 0, label: 'Todas' }, ...ordemColetasOptions]}
-      />
-      <ControlledNumberInput
-        control={form.control}
-        name="sequencia_id"
-        label="Sequência ID"
-        placeholder="Informe o ID da sequência"
-      />
-      <ControlledSelect
-        control={form.control}
-        name="coliformes_totais"
-        label="Coliformes Totais"
-        placeholder="Selecione coliformes totais"
-        options={booleanOptionalOptions}
-      />
-      <ControlledSelect
-        control={form.control}
-        name="escherichia"
-        label="Escherichia coli"
-        placeholder="Selecione Escherichia coli"
-        options={booleanOptionalOptions}
-      />
-      <Button type="submit" className="col-span-1 md:col-span-2 lg:col-span-3">
-        Filtrar
-      </Button>
-    </form>
+    <Suspense fallback={<div>Carregando filtros...</div>}>
+      <form
+        className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+        {...props}
+      >
+        <ControlledCombobox
+          control={form.control}
+          name="codigo_edificacao"
+          label="Código da Edificação"
+          placeholder="Informe o código da edificação"
+          {...edificacaoOptions}
+        />
+        <ControlledTextInput
+          control={form.control}
+          name="responsavel"
+          label="Responsável"
+          placeholder="Informe o responsável"
+        />
+        <ControlledDatePicker
+          control={form.control}
+          name="data_minima"
+          label="Data mínima"
+          placeholder="Informe a data mínima"
+        />
+        <ControlledDatePicker
+          control={form.control}
+          name="data_maxima"
+          label="Data máxima"
+          placeholder="Informe a data máxima"
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="temperatura_minima"
+          label="Temperatura mínima"
+          placeholder="Informe a temperatura mínima"
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="temperatura_maxima"
+          label="Temperatura máxima"
+          placeholder="Informe a temperatura máxima"
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="cloro_residual_livre_minimo"
+          label="Cloro residual livre mínimo"
+          placeholder="Informe o cloro residual livre mínimo"
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="cloro_residual_livre_maximo"
+          label="Cloro residual livre máximo"
+          placeholder="Informe o cloro residual livre máximo"
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="turbidez_minima"
+          label="Turbidez mínima"
+          placeholder="Informe a turbidez mínima"
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="turbidez_maxima"
+          label="Turbidez máxima"
+          placeholder="Informe a turbidez máxima"
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="cor_minima"
+          label="Cor mínima"
+          placeholder="Informe a cor mínima"
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="cor_maxima"
+          label="Cor máxima"
+          placeholder="Informe a cor máxima"
+        />
+        <ControlledSelect
+          control={form.control}
+          name="ordem"
+          label="Ordem"
+          placeholder="Informe a ordem"
+          options={[{ value: 0, label: 'Todas' }, ...ordemColetasOptions]}
+        />
+        <ControlledNumberInput
+          control={form.control}
+          name="sequencia_id"
+          label="Sequência ID"
+          placeholder="Informe o ID da sequência"
+        />
+        <ControlledSelect
+          control={form.control}
+          name="coliformes_totais"
+          label="Coliformes Totais"
+          placeholder="Selecione coliformes totais"
+          options={booleanOptionalOptions}
+        />
+        <ControlledSelect
+          control={form.control}
+          name="escherichia"
+          label="Escherichia coli"
+          placeholder="Selecione Escherichia coli"
+          options={booleanOptionalOptions}
+        />
+        <Button
+          type="submit"
+          className="col-span-1 md:col-span-2 lg:col-span-3"
+          disabled={isLoading || isSubmitting}
+        >
+          Filtrar
+        </Button>
+      </form>
+    </Suspense>
   );
 };
 
@@ -261,12 +341,19 @@ export const Filters: React.FC = () => {
           value === 'all' ||
           (key === 'ordem' && value === 0) ||
           (typeof value === 'number' && Number.isNaN(value))
-        )
+        ) {
           return false;
+        }
 
-        if (typeof value === 'number') return true;
-        if (typeof value === 'boolean') return true;
-        if (typeof value === 'string' && value.trim() !== '') return true;
+        if (typeof value === 'number') {
+          return true;
+        }
+        if (typeof value === 'boolean') {
+          return true;
+        }
+        if (typeof value === 'string' && value.trim() !== '') {
+          return true;
+        }
 
         return false;
       }),
@@ -281,16 +368,18 @@ export const Filters: React.FC = () => {
   };
 
   return (
-    <div className="space-between relative flex gap-2">
-      <FilterForm
-        form={form}
-        title="Filtro"
-        subtitle="Escolha os parâmetros para filtrar as coletas do sistema"
-        onSubmit={onSubmit}
-        onCancel={onCancel}
-        isLoading={false}
-        isSubmitting={false}
-      />
-    </div>
+    <Suspense fallback={<div>Carregando filtros...</div>}>
+      <div className="space-between relative flex gap-2">
+        <FilterForm
+          form={form}
+          title="Filtro"
+          subtitle="Escolha os parâmetros para filtrar as coletas do sistema"
+          onSubmit={onSubmit}
+          onCancel={onCancel}
+          isLoading={false}
+          isSubmitting={false}
+        />
+      </div>
+    </Suspense>
   );
 };

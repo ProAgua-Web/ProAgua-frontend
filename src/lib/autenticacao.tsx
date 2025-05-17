@@ -13,7 +13,7 @@ import {
   tokenSalvoNoLocalStorage,
 } from '@/lib/storage';
 import { AxiosError } from 'axios';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {
   createContext,
   useCallback,
@@ -86,8 +86,8 @@ export const AutenticacaoProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
-  const sair = useCallback(() => {
-    logout();
+  const sair = useCallback(async () => {
+    await logout();
     removerTokenDoLocalStorage();
     setToken(null);
     router.push('/');
@@ -96,7 +96,7 @@ export const AutenticacaoProvider: React.FC<{ children: React.ReactNode }> = ({
   const usuarioAutenticado = useUsuarioAutenticado(token?.username);
 
   const { toast } = useToast();
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
   // useEffect(() => {
   //   if (
@@ -122,7 +122,7 @@ export const AutenticacaoProvider: React.FC<{ children: React.ReactNode }> = ({
   // Executa somente uma vez, quando a aplicação é iniciada
   // Recupera a autenticação a partir do localStorage
   useEffect(() => {
-    async function recuperarAutenticacao() {
+    function recuperarAutenticacao() {
       try {
         const tokenSalvo = tokenSalvoNoLocalStorage();
         // const csrfTokenSalvo = csrfTokenSalvoNoLocalStorage();
@@ -187,14 +187,7 @@ export const AutenticacaoProvider: React.FC<{ children: React.ReactNode }> = ({
       autenticado: true,
       ...funcoes,
     };
-  }, [
-    entrar,
-    sair,
-    token,
-    // csrfToken,
-    usuarioAutenticado.data,
-    usuarioAutenticado.isPending,
-  ]);
+  }, [entrar, sair, token, usuarioAutenticado.data]);
 
   return (
     <AutenticacaoContext.Provider value={contexto}>

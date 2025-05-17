@@ -20,11 +20,11 @@ export const EditarReservatorio: React.FC<Props> = ({ ponto_id, codigo }) => {
   const router = useRouter();
 
   const editarPonto = useEditarPonto({
-    onSuccess() {
+    async onSuccess() {
       const imagensDto = ponto.data?.imagens || [];
       const imagensForm = form.getValues('imagens');
 
-      updateImagensPonto(id, imagensForm, imagensDto);
+      await updateImagensPonto(id, imagensForm, imagensDto);
 
       router.push(`/admin/edificacoes/${codigo}/pontos`);
     },

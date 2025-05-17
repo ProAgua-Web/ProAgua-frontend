@@ -2,7 +2,7 @@ import { CrudLayout } from '@/components/layout/crud';
 import { EditarSequencia } from '@/core/components/sequencia-coletas/ui/editar-sequencia';
 
 interface Props {
-  params: { sequencia_id: number };
+  params: Promise<{ sequencia_id: number }>;
 }
 
 export default async function Pagina({ params }: Props) {

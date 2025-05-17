@@ -1,6 +1,6 @@
 import {
   FormContainer,
-  FormProps,
+  type FormProps,
   FormSection,
 } from '@/components/form/container';
 import { ControlledCheckbox } from '@/components/form/input/checkbox';
@@ -11,7 +11,7 @@ import {
   temperaturaMask,
   turbidezMask,
 } from '@/lib/input-mask';
-import { ReferenciaSchema } from '../referencia.form';
+import { type ReferenciaSchema } from '../referencia.form';
 
 export const ReferenciaForm: React.FC<FormProps<ReferenciaSchema>> = ({
   form,

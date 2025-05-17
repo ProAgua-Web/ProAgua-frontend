@@ -19,8 +19,8 @@ import { type SolicitacaoSchema } from '../solicitacao.form';
 import {
   SolicitacaoDefaultValues,
   statusSolicitacaoOptions,
-  TipoSolicitacao,
   tipoSolicitacaoOptions,
+  type TipoSolicitacao,
 } from '../solicitacao.utils';
 import { ExportarButton } from './button.exportar';
 
@@ -49,7 +49,8 @@ export const SolicitacaoForm: React.FC<FormProps<SolicitacaoSchema>> = ({
   }
 
   useEffect(() => {
-    const { setValue, getValues } = form;
+    const setValue = form.setValue;
+    const getValues = form.getValues;
     const touchedFields = form.formState.touchedFields;
     const imagensPrev = getValues('imagens') || [];
 
