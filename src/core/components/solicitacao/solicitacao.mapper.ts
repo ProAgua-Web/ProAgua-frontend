@@ -1,3 +1,4 @@
+import { type ImagemDto } from '@/core/common/imagem/imagem.api';
 import { type SolicitacaoSchema } from './solicitacao.form';
 import {
   type CreateSolicitacaoDto,
@@ -13,7 +14,9 @@ export function solicitacaoSchemaToDto(
     objetivo: schema.objetivo,
     justificativa: schema.justificativa,
     status: schema.status,
-    imagens: schema.imagens,
+    imagens: schema.imagens.filter(
+      (imagem): imagem is ImagemDto => !(imagem instanceof File),
+    ),
   };
 }
 
