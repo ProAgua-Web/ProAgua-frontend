@@ -31,6 +31,7 @@ export function useColetaQueryParams() {
       defaultValue: 'all',
     }),
     escherichia: useQueryState('escherichia', { defaultValue: 'all' }),
+    status: useQueryState('status', { defaultValue: 'all' }),
     cor_minima: useQueryState('cor_minima', { defaultValue: '' }),
     cor_maxima: useQueryState('cor_maxima', { defaultValue: '' }),
     ordem: useQueryState('ordem', { defaultValue: '' }),
@@ -89,6 +90,9 @@ export function buildColetaParams(
     }),
     ...(queryParams.escherichia[0] !== 'all' && {
       escherichia: queryParams.escherichia[0] === 'false' ? false : true,
+    }),
+    ...(queryParams.status[0] !== 'all' && {
+      status: queryParams.status[0] === 'false' ? false : true,
     }),
     ...(queryParams.cor_minima[0] && {
       cor_minima: parseFloat(queryParams.cor_minima[0]),

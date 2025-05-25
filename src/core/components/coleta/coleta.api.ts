@@ -19,6 +19,7 @@ export interface ColetaQueryOptions {
   turbidez_maxima?: number;
   coliformes_totais?: boolean;
   escherichia?: boolean;
+  status?: boolean;
   cor_minima?: number;
   cor_maxima?: number;
   ordem?: string;

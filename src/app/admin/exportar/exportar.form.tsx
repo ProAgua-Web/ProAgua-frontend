@@ -15,6 +15,7 @@ export const filterSchema = z.object({
   turbidez_maxima: z.union([z.number(), z.nan()]).optional(),
   coliformes_totais: z.nativeEnum(BooleanOptional).default('all'),
   escherichia: z.nativeEnum(BooleanOptional).default('all'),
+  status: z.nativeEnum(BooleanOptional).default('all'),
   cor_minima: z.union([z.number(), z.nan()]).optional(),
   cor_maxima: z.union([z.number(), z.nan()]).optional(),
   ordem: z.number().nullish(),

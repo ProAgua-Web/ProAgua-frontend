@@ -31,6 +31,7 @@ interface FilterDto {
   turbidez_maxima?: number | null;
   coliformes_totais?: boolean | null;
   escherichia?: boolean | null;
+  status?: boolean | null;
   cor_minima?: number | null;
   cor_maxima?: number | null;
   ordem?: number | null;
@@ -73,6 +74,7 @@ export const useFilterForm = () => {
   const [codigo_edificacao] = useQueryState('codigo_edificacao', {
     defaultValue: '',
   });
+  const [status] = useQueryState('status', { defaultValue: '' });
 
   const dto = useMemo(
     () => ({
@@ -99,6 +101,7 @@ export const useFilterForm = () => {
         coliformes_totais: coliformes_totais === 'true',
       }),
       ...(escherichia && { escherichia: escherichia === 'true' }),
+      ...(status && { status: status === 'true' }),
       ...(cor_minima && { cor_minima: Number(cor_minima) }),
       ...(cor_maxima && { cor_maxima: Number(cor_maxima) }),
       ...(ordem && { ordem: Number(ordem) }),
@@ -118,6 +121,7 @@ export const useFilterForm = () => {
       turbidez_maxima,
       coliformes_totais,
       escherichia,
+      status,
       cor_minima,
       cor_maxima,
       ordem,
@@ -162,6 +166,8 @@ export const useFilterForm = () => {
           : dto.escherichia === false
             ? 'false'
             : 'all',
+      status:
+        dto.status === true ? 'true' : dto.status === false ? 'false' : 'all',
       cor_minima: dto.cor_minima ? Number(dto.cor_minima) : undefined,
       cor_maxima: dto.cor_maxima ? Number(dto.cor_maxima) : undefined,
 
@@ -301,6 +307,13 @@ export const FilterForm: React.FC<FormProps<FilterSchema>> = ({
           name="escherichia"
           label="Escherichia coli"
           placeholder="Selecione Escherichia coli"
+          options={booleanOptionalOptions}
+        />
+        <ControlledSelect
+          control={form.control}
+          name="status"
+          label="Status"
+          placeholder="Selecione o status"
           options={booleanOptionalOptions}
         />
         <Button
