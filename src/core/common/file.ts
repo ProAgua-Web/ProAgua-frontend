@@ -12,7 +12,7 @@ export const fileDescriptionSchema = z.object({
   description: z.string(),
 });
 
-const fileSizeLimit = 5 * 1024 * 1024; // 5MB
+// const fileSizeLimit = 5 * 1024 * 1024; // 5MB
 
 export const documentSchema = z
   .instanceof(File)
@@ -29,18 +29,8 @@ export const documentSchema = z
 export const imageSchema = z
   .instanceof(File)
   .refine(
-    (file) =>
-      [
-        'image/png',
-        'image/jpeg',
-        'image/jpg',
-        'image/svg+xml',
-        'image/gif',
-      ].includes(file.type),
+    (file) => ['image/png', 'image/jpeg', 'image/jpg'].includes(file.type),
     { message: 'Invalid image file type' },
-  )
-  .refine((file) => file.size <= fileSizeLimit, {
-    message: 'File size should not exceed 5MB',
-  });
+  );
 
 export const fileUploadSchema = documentSchema.or(imageSchema);

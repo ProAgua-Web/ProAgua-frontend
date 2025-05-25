@@ -99,6 +99,7 @@ export const ImageInput = forwardRef<HTMLInputElement, ImageInputProps>(
         <input
           type="file"
           className="hidden"
+          accept="image/png, image/jpeg, image/jpg"
           {...props}
           {...formProps}
           ref={(r) => {
@@ -154,7 +155,9 @@ export const ControlledImageInput = <
             {...props}
           />
           {fieldState.error && (
-            <ErrorMessage>{fieldState.error.message}</ErrorMessage>
+            <ErrorMessage>
+              {fieldState.error.message || 'Campo inválido'}
+            </ErrorMessage>
           )}
         </div>
       )}
