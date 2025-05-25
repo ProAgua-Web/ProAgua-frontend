@@ -151,7 +151,7 @@ export {
   SelectScrollUpButton,
   SelectSeparator,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 };
 
 export type Value = string | number | boolean;

@@ -13,17 +13,20 @@ export function Footer() {
   const pathname = usePathname();
   const isAdminPath = pathname?.startsWith('/admin') ?? false;
   const { autenticado } = useAutenticacao();
-  const { isOpen } = useContext(NavContext);
+  const { isOpen: isCollapsed } = useContext(NavContext);
 
   return (
     <footer
-      className={
-        'z-50 flex w-full items-center justify-between bg-primary-500 p-[clamp(30px,4vw+1rem,100vw-1200px)] text-white'
-      }
+      className={cn(
+        'z-30 w-full items-center justify-between bg-primary-500 p-[clamp(30px,4vw+1rem,100vw-1200px)] text-white',
+        'flex flex-col gap-4 lg:flex-row',
+        !isAdminPath ? 'flex' : 'hidden lg:flex',
+      )}
     >
       <div
         className={cn('justify-center gap-4', {
-          'ml-40': !isOpen && isAdminPath,
+          'lg:ml-64': isAdminPath && !isCollapsed,
+          'lg:ml-16': isAdminPath && isCollapsed,
         })}
       >
         <h1 className="mb-2 text-3xl font-bold">
