@@ -26,9 +26,11 @@ export const solicitacaoSchema = z.object({
   justificativa: z
     .string({ message: 'Justificativa é obrigatória' })
     .min(1, { message: 'Justificativa é obrigatória' }),
-  status: z.nativeEnum(StatusSolicitacao, {
-    message: 'Status de solicitação inválido',
-  }),
+  status: z
+    .nativeEnum(StatusSolicitacao, {
+      message: 'Status de solicitação inválido',
+    })
+    .default(StatusSolicitacao.PENDENTE),
   imagens: z.array(z.union([imageSchema, fileDescriptionSchema])).default([]),
 });
 
@@ -37,7 +39,9 @@ export type SolicitacaoSchema = z.infer<typeof solicitacaoSchema>;
 export const useSolicitacaoForm = (dto?: SolicitacaoDto) => {
   const form = useForm<SolicitacaoSchema>({
     resolver: zodResolver(solicitacaoSchema),
-    defaultValues: dto ? solicitacaoDtoToSchema(dto) : undefined,
+    defaultValues: dto
+      ? solicitacaoDtoToSchema(dto)
+      : { status: StatusSolicitacao.PENDENTE },
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
