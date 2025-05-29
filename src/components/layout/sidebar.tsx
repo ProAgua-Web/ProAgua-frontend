@@ -67,10 +67,21 @@ const NAV_LINKS: NavLink[] = [
 interface NavbarProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  auth?: boolean;
 }
 
-export const Navbar = ({ isOpen, setIsOpen }: NavbarProps): JSX.Element => {
+export const Navbar = ({
+  isOpen,
+  setIsOpen,
+  auth,
+}: NavbarProps): JSX.Element => {
+  //const { autenticado } = useAutenticacao();
+
   const pathname = usePathname();
+
+  if (!auth) {
+    return <></>; // Render nothing if not authenticated
+  }
 
   return (
     <Fragment>

@@ -22,16 +22,13 @@ export default function Header() {
     <header
       className={cn(
         'fixed z-40 flex h-20 w-full items-center justify-between bg-primary-500 px-4 text-white-100 shadow-lg transition-all duration-200',
-        {
-          'pl-64 lg:pl-64': isAdminPath && !isOpen,
-        },
       )}
     >
       <div
         className={cn('flex h-full items-center gap-4', {
           'lg:ml-64': isAdminPath && !isOpen,
           'lg:ml-16': isAdminPath && isOpen,
-          'ml-0': isAdminPath && isMobile,
+          'ml-0': isMobile,
         })}
       >
         <Link href="/" className="flex items-center gap-2 text-2xl">

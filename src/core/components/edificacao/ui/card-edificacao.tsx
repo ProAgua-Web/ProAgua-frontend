@@ -5,13 +5,15 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   edificacao: EdificacaoDto;
-  isPublic?: boolean;
 }
 
 export function CardEdificacao(props: Readonly<Props>) {
-  const { edificacao, isPublic } = props;
+  //const { autenticado } = useAutenticacao();
+  const autenticado = false;
+  console.log('autenticado', autenticado);
+  const { edificacao } = props;
   const excluirEdificacao = useExcluirEdificacao();
-  const adminBaseUrl = !isPublic ? '/admin' : '';
+  const isPublic = !autenticado;
 
   const pathImage = edificacao.imagens?.[0]?.src || '/sem-imagem.png';
 
@@ -20,7 +22,7 @@ export function CardEdificacao(props: Readonly<Props>) {
       <Card.Image
         src={pathImage}
         alt={`Imagem da edificação ${edificacao.codigo}`}
-        link={`${adminBaseUrl}/edificacoes/${edificacao.codigo}/pontos`}
+        link={`/edificacoes/${edificacao.codigo}/pontos`}
       />
 
       <Card.Content isPublic={isPublic}>
@@ -29,7 +31,7 @@ export function CardEdificacao(props: Readonly<Props>) {
 
           <Card.Title>{edificacao.nome}</Card.Title>
 
-          <Card.Actions className={cn(isPublic && 'hidden')}>
+          <Card.Actions className={cn(autenticado && 'hidden')}>
             <Card.Action
               href={`/admin/edificacoes/${edificacao.codigo}/editar`}
             >

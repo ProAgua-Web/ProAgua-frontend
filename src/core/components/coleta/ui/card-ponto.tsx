@@ -6,13 +6,17 @@ import { tipoOptionsLabel } from '../../ponto/ponto.utils';
 
 interface Props {
   ponto: PontoDto;
-  isPublic?: boolean;
 }
 
 export function CardPonto(props: Readonly<Props>) {
-  const { ponto, isPublic } = props;
+  //const { autenticado } = useAutenticacao();
+  const autenticado = false;
+  console.log('autenticado', autenticado);
+  const { ponto } = props;
   const tipo = ponto.tipo < 2 ? 'pontos' : 'reservatorios';
   const excluirPonto = useExcluirPonto();
+  const isPublic = !autenticado;
+
   const adminBaseUrl = !isPublic ? '/admin' : '';
 
   const pathImage = ponto.imagens[0]?.src || '/sem-imagem.png';

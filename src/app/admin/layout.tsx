@@ -33,7 +33,7 @@ export default function RootLayout({
         <Header />
 
         <div className="flex min-h-screen">
-          <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
+          <Navbar isOpen={isOpen} setIsOpen={setIsOpen} auth={true} />
 
           <main
             className={cn(
