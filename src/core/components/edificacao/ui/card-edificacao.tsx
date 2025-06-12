@@ -1,6 +1,7 @@
 import { Card } from '@/components/common/card';
 import { type EdificacaoDto } from '@/core/components/edificacao/edificacao.model';
 import { useExcluirEdificacao } from '@/core/components/edificacao/edificacao.service';
+import { useAutenticacao } from '@/lib/autenticacao';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -8,12 +9,12 @@ interface Props {
 }
 
 export function CardEdificacao(props: Readonly<Props>) {
-  //const { autenticado } = useAutenticacao();
-  const autenticado = false;
-  console.log('autenticado', autenticado);
+  const { autenticado } = useAutenticacao();
   const { edificacao } = props;
   const excluirEdificacao = useExcluirEdificacao();
   const isPublic = !autenticado;
+
+  const adminBaseUrl = !isPublic ? '/admin' : '';
 
   const pathImage = edificacao.imagens?.[0]?.src || '/sem-imagem.png';
 
@@ -22,7 +23,9 @@ export function CardEdificacao(props: Readonly<Props>) {
       <Card.Image
         src={pathImage}
         alt={`Imagem da edificação ${edificacao.codigo}`}
-        link={`/edificacoes/${edificacao.codigo}/pontos`}
+        link={autenticado ?
+          `${adminBaseUrl}/edificacoes/${edificacao.codigo}/pontos` :
+          `/edificacoes/${edificacao.codigo}/pontos`}
       />
 
       <Card.Content isPublic={isPublic}>
@@ -31,7 +34,7 @@ export function CardEdificacao(props: Readonly<Props>) {
 
           <Card.Title>{edificacao.nome}</Card.Title>
 
-          <Card.Actions className={cn(autenticado && 'hidden')}>
+          <Card.Actions className={cn(!autenticado && 'hidden')}>
             <Card.Action
               href={`/admin/edificacoes/${edificacao.codigo}/editar`}
             >

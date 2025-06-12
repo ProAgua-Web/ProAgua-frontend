@@ -1,5 +1,6 @@
 'use client';
 
+import { useAutenticacao } from '@/lib/autenticacao';
 import { cn } from '@/lib/utils';
 import {
   faClipboardList,
@@ -75,12 +76,11 @@ export const Navbar = ({
   setIsOpen,
   auth,
 }: NavbarProps): JSX.Element => {
-  //const { autenticado } = useAutenticacao();
-
+  const { autenticado } = useAutenticacao();
   const pathname = usePathname();
 
-  if (!auth) {
-    return <></>; // Render nothing if not authenticated
+  if (!autenticado) {
+    return <></>; // Não renderiza a sidebar se não autenticado
   }
 
   return (

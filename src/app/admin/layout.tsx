@@ -11,6 +11,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { useState } from 'react';
 
+
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
@@ -33,7 +34,7 @@ export default function RootLayout({
         <Header />
 
         <div className="flex min-h-screen">
-          <Navbar isOpen={isOpen} setIsOpen={setIsOpen} auth={true} />
+          <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
 
           <main
             className={cn(
