@@ -29,7 +29,7 @@ export function CardEdificacao(props: Readonly<Props>) {
 
           <Card.Title>{edificacao.nome}</Card.Title>
 
-          <Card.Actions className={cn(isPublic && 'hidden')}>
+          <Card.Actions className={cn({ hidden: isPublic })}>
             <Card.Action
               href={`/admin/edificacoes/${edificacao.codigo}/editar`}
             >
