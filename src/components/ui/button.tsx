@@ -16,6 +16,8 @@ const buttonVariants = cva(
         'primary':
           'rounded-md border bg-primary-500 p-3 text-white hover:bg-primary-600 disabled:bg-primary-400',
         'secondary': 'bg-slate-100 text-slate-900 hover:bg-slate-100/80',
+        'edit':
+          'rounded-md border bg-slate-500 p-3 text-white hover:bg-slate-600 disabled:bg-slate-400',
         'add':
           'rounded-md border bg-green-600 text-white hover:bg-green-500 disabled:bg-green-400',
         'delete':
